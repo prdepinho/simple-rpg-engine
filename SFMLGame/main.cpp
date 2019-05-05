@@ -38,7 +38,6 @@ void register_lua_accessible_functions()
 
 int main() 
 {
-#if true
 	register_lua_accessible_functions();
 	try {
 		game.start();
@@ -48,32 +47,6 @@ int main()
 		char a;
 		std::cin >> a;
 	}
-#else
-	char a;
-	try {
-
-		{
-			Json json("../config/button.json", ParseType::SIMPLE);
-			std::cout << json.to_string() << std::endl;
-
-			json.to_file("../config/test.json");
-			std::cout << "File saved" << std::endl;
-		}
-
-	}
-	catch (JsonParseException &e) {
-		std::cout << "ERROR" << std::endl;
-		std::cout << "index: " << e.index << ", ";
-		std::cout << "token: " << e.token << ", ";
-		std::cout << "msg: " << e.msg << std::endl;
-	}
-	catch (std::exception &e) {
-		std::cout << e.what() << std::endl;
-	}
-
-	std::cin >> a;
-
-#endif
 	return 0;
 }
 
