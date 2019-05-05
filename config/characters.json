@@ -1,0 +1,37 @@
+{
+
+  "characters": {
+    "boy": {
+      "animation": {
+        "type": "human",
+        "index": 0
+      }
+    },
+    "girl": {
+      "animation":{
+        "type": "human",
+        "index": 1
+      }
+    }
+  },
+
+  "animation_types": {
+    "human":{
+      "file": "sprites",
+      "size": {
+        "height": 18,
+        "width": 16
+      },
+      "animations":{
+        "stand": {
+          "fps": 4,
+          "frames": [0]
+        },
+        "walk":{
+          "fps": 4,
+          "frames": [1, 0, 2, 0]
+        }
+      }
+    }
+  }
+}

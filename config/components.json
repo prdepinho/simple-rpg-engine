@@ -1,0 +1,20 @@
+{
+  "button": {
+    "file": "gui",
+    "released": [2, 24],
+    "pressed": [20, 24]
+  },
+  "panel": {
+    "file": "gui",
+    "coords": [58, 24]
+  },
+  "text_area": {
+    "file": "gui",
+    "coords": [76, 24]
+  },
+  "radio_button": {
+    "file": "gui",
+    "checked": [47, 26],
+    "released": [38, 26]
+  }
+}

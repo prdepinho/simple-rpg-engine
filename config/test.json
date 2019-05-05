@@ -1,0 +1,103 @@
+{
+  "file": "font",
+  "parts": [
+    {
+      "dimension": [
+        2,
+        2
+      ],
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "dimension": [
+        12,
+        2
+      ],
+      "position": [
+        2,
+        0
+      ]
+    },
+    {
+      "dimension": [
+        2,
+        2
+      ],
+      "position": [
+        14,
+        0
+      ]
+    },
+    {
+      "dimension": [
+        2,
+        8
+      ],
+      "position": [
+        0,
+        2
+      ]
+    },
+    {
+      "dimension": [
+        11,
+        8
+      ],
+      "position": [
+        2,
+        2
+      ]
+    },
+    {
+      "dimension": [
+        2,
+        8
+      ],
+      "position": [
+        14,
+        2
+      ]
+    },
+    {
+      "dimension": [
+        2,
+        2
+      ],
+      "position": [
+        0,
+        10
+      ]
+    },
+    {
+      "dimension": [
+        12,
+        2
+      ],
+      "position": [
+        2,
+        10
+      ]
+    },
+    {
+      "dimension": [
+        2,
+        2
+      ],
+      "position": [
+        14,
+        10
+      ]
+    }
+  ],
+  "pressed": [
+    20,
+    24
+  ],
+  "released": [
+    2,
+    24
+  ]
+}

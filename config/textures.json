@@ -1,0 +1,7 @@
+{
+  "font": "font.png",
+  "gui": "font.png",
+  "tileset": "tileset.png",
+  "default_tile": "default_tile.png",
+  "sprites": "sprite_sheet.png"
+}

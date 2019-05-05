@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="lua5.3.5">
+      <UniqueIdentifier>{6184b8cc-a621-49d6-9283-1fbfa2f6ee02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="base">
+      <UniqueIdentifier>{0950a90b-4015-411f-80a4-df6d1d62c7e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gui">
+      <UniqueIdentifier>{fcf532bb-d846-467b-9f6d-69b9abda75b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripting">
+      <UniqueIdentifier>{6ddc1d61-1618-4929-87f0-991c817393ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="json">
+      <UniqueIdentifier>{4189d242-6cc3-4ed9-ad15-d2118ce5df00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="screens">
+      <UniqueIdentifier>{964e114f-32b7-445c-be5f-2c056b0d88c3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tilemap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="font.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\lapi.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\lauxlib.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\lbaselib.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\lbitlib.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\lcode.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\lcorolib.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\lctype.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\ldblib.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\ldebug.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\ldo.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\ldump.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\lfunc.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\lgc.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\linit.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\liolib.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\llex.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\lmathlib.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\lmem.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\loadlib.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\lobject.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\lopcodes.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\loslib.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\lparser.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\lstate.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\lstring.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\lstrlib.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\ltable.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\ltablib.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\ltm.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\lundump.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\lutf8lib.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\lvm.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="lua5.3.5\lzio.c">
+      <Filter>lua5.3.5</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua.cpp">
+      <Filter>scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Screen.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="Label.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="Json.cpp">
+      <Filter>json</Filter>
+    </ClCompile>
+    <ClCompile Include="consts.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreenMainMenu.cpp">
+      <Filter>screens</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditorScreen.cpp">
+      <Filter>screens</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScreen.cpp">
+      <Filter>screens</Filter>
+    </ClCompile>
+    <ClCompile Include="Panel.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="TextField.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Tilemap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="font.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\lapi.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\lauxlib.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\lcode.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\lctype.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\ldebug.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\ldo.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\lfunc.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\lgc.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\llex.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\llimits.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\lmem.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\lobject.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\lopcodes.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\lparser.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\lprefix.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\lstate.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\lstring.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\ltable.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\ltm.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\lua.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\lua.hpp">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\luaconf.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\lualib.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\lundump.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\lvm.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="lua5.3.5\lzio.h">
+      <Filter>lua5.3.5</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua.h">
+      <Filter>scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Screen.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="Label.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Callback.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="consts.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="Json.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenMainMenu.h">
+      <Filter>screens</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditorScreen.h">
+      <Filter>screens</Filter>
+    </ClInclude>
+    <ClInclude Include="TestScreen.h">
+      <Filter>screens</Filter>
+    </ClInclude>
+    <ClInclude Include="Panel.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="TextField.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
