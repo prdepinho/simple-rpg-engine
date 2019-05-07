@@ -183,6 +183,9 @@
     <ClCompile Include="TextField.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CustomPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tilemap.h">
@@ -321,6 +324,9 @@
       <Filter>gui</Filter>
     </ClInclude>
     <ClInclude Include="TextField.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

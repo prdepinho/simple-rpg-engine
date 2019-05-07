@@ -51,4 +51,3 @@ private:
 	Font font;
 	std::string message;
 };
-

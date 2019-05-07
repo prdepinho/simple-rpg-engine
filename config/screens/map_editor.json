@@ -2,5 +2,66 @@
   "palette": {
     "tile_width": 4,
     "tile_height": 16
+  },
+  "menu":{
+    "new":{
+      "dimensions": {
+        "height": 100,
+        "width": 160
+      },
+      "components":{
+        "filename": {
+          "type": "text_field",
+          "dimensions": {
+            "width": 100
+          },
+          "position": {
+            "vertical": 0.25
+          }
+        },
+        "width": {
+          "type": "number_field",
+          "dimensions": {
+            "width": 30
+          },
+          "position": {
+            "vertical": 0.5,
+            "horizontal": 0.3
+          }
+        },
+        "height": {
+          "type": "number_field",
+          "dimensions": {
+            "width": 30
+          },
+          "position": {
+            "vertical": 0.5,
+            "horizontal": 0.7
+          }
+        },
+        "create": {
+          "type": "button",
+          "function": "new_map_button",
+          "dimensions": {
+            "width": 20
+          },
+          "position":{
+            "vertical": 0.75,
+            "horizontal": 0.3
+          }
+        },
+        "cancel": {
+          "type": "button",
+          "function": "close_panel",
+          "dimensions": {
+            "width": 20
+          },
+          "position":{
+            "vertical": 0.75,
+            "horizontal": 0.7
+          }
+        }
+      }
+    }
   }
 }

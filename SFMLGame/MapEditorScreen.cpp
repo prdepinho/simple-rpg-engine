@@ -118,7 +118,10 @@ void MapEditorScreen::create() {
 
 	new_button = Button("New", x, y, 0, 0, [&](Component*) {
 		game->log("New button pressed");
-		MessagePanel::show("The quick brown fox jumps over the lazy dog.", *this);
+		Json json(Path::SCREENS + "map_editor.json");
+		new_panel = CustomPanel(this, json.get_token("menu/new"));
+		new_panel.create();
+		add_component(new_panel);
 		return true;
 	});
 	new_button.create();
@@ -127,6 +130,7 @@ void MapEditorScreen::create() {
 	x += new_button.get_width();
 	load_button = Button("Load", x, y, 0, 0, [&](Component*) {
 		game->log("Load button");
+		MessagePanel::show("The quick brown fox jumps over the lazy dog.", *this);
 		return true;
 	});
 	load_button.create();

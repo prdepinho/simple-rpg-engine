@@ -6,6 +6,7 @@
 #include "Resources.h"
 #include "Json.h"
 #include "TextField.h"
+#include "CustomPanel.h"
 
 class TilePalette : public Component 
 {
@@ -77,11 +78,11 @@ private:
 	Button new_button;
 	Button load_button;
 	Button save_button;
-
 	TextField text_field;
 
-	TilePalette palette;
+	CustomPanel new_panel;
 
+	TilePalette palette;
 	Tilemap map;
 	bool holding_screen;
 	sf::Vector2f holding_start_position;
