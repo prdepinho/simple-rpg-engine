@@ -4,6 +4,11 @@
 #include <iostream>
 #include "lua5.3.5/lua.hpp"
 
+class LuaException : public std::exception {
+public: 
+	LuaException(std::string msg = "") : std::exception(msg.c_str()) { }
+};
+
 class Lua
 {
 public:

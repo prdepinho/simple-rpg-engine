@@ -4,6 +4,7 @@
 
 Component::Component()
 {
+	identifier = "";
 	set_position(0, 0);
 	set_dimensions(0, 0);
 	visible = true;
@@ -50,19 +51,24 @@ void Component::draw(sf::RenderTarget &target, sf::RenderStates states) const
 }
 
 void Component::add_component(Component & component) {
+	component.parent_component = this;
 	components.push_back(&component);
 }
 
 void Component::remove_component(Component & component) {
 	for (auto it = components.begin(); it != components.end();) {
-		if (&component == *it)
+		if (&component == *it) {
+			component.parent_component = nullptr;
 			it = components.erase(it);
+		}
 		else
 			++it;
 	}
 }
 
 void Component::clear_components() {
+	for (auto *component : components)
+		component->parent_component = nullptr;
 	components.clear();
 }
 

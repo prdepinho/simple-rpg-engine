@@ -17,6 +17,7 @@ public:
 	GameInterface *get_game();
 	Screen *get_screen() { return parent_screen; }
 	void set_screen(Screen *screen) { parent_screen = screen; }
+	Component *get_parent() { return parent_component; }
 
 	// loop
 	virtual void update(float fElapsedTime) override;
@@ -25,6 +26,14 @@ public:
 	// component management
 	void add_component(Component &component);
 	void remove_component(Component &component);
+	Component *get_component(std::string identifier) {
+		for (Component *c : components) {
+			if (c->identifier == identifier) {
+				return c;
+			}
+		}
+		return nullptr;
+	}
 	void clear_components();
 	void select(Component &component);
 	void select_previous() {
@@ -85,6 +94,10 @@ public:
 	bool is_visible() const { return visible; }
 	void set_visible(bool v) { visible = v; }
 
+	// identifier
+	void set_identifier(std::string id) { identifier = id; }
+	std::string get_identifier() const { return identifier; }
+
 private:
 	void set_show_selection_outline(bool show) {
 		show_selection_outline = show;
@@ -107,9 +120,11 @@ protected:
 	Component *selected_component = nullptr;
 	bool activated = true;
 	bool shown = true;
+	Component *parent_component;
 	Screen *parent_screen;
 
 private:
+	std::string identifier;
 	sf::RectangleShape selection_outline;
 	bool show_selection_outline;
 	bool selected = false;

@@ -17,11 +17,11 @@ void Lua::load()
 {
 	int result = luaL_loadfile(state, Script::LUA_MAIN.c_str());
 	if (result != LUA_OK) {
-		throw std::exception(get_error(state));
+		throw LuaException(get_error(state));
 	}
 	result = lua_pcall(state, 0, LUA_MULTRET, 0);
 	if (result != LUA_OK) {
-		throw std::exception(get_error(state));
+		throw LuaException(get_error(state));
 	}
 }
 
@@ -43,7 +43,7 @@ void Lua::start_game()
 	lua_getglobal(state, "start_game");
 	int result = lua_pcall(state, 0, 0, 0);
 	if (result != LUA_OK) {
-		throw std::exception(get_error(state));
+		throw LuaException(get_error(state));
 		return;
 	}
 }
@@ -55,7 +55,7 @@ void Lua::log(std::string msg)
 	lua_pushstring(state, _msg.c_str());
 	int result = lua_pcall(state, 1, 1, 0);
 	if (result != LUA_OK) {
-		throw std::exception(get_error(state));
+		throw LuaException(get_error(state));
 	}
 	int rval = lua_tonumber(state, -1);
 }
@@ -68,13 +68,13 @@ void Lua::execute(const char *filename)
 	if (result != LUA_OK) {
 		const char *msg = get_error(lua_state);
 		lua_close(lua_state);
-		throw std::exception(msg);
+		throw LuaException(msg);
 	}
 	result = lua_pcall(lua_state, 0, LUA_MULTRET, 0);
 	if (result != LUA_OK) {
 		const char *msg = get_error(lua_state);
 		lua_close(lua_state);
-		throw std::exception(msg);
+		throw LuaException(msg);
 	}
 	lua_close(lua_state);
 }

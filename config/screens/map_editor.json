@@ -9,9 +9,10 @@
         "height": 100,
         "width": 160
       },
-      "components":{
-        "filename": {
+      "components":[
+        {
           "type": "text_field",
+          "label": "filename",
           "dimensions": {
             "width": 100
           },
@@ -19,8 +20,9 @@
             "vertical": 0.25
           }
         },
-        "width": {
+        {
           "type": "number_field",
+          "label": "width",
           "dimensions": {
             "width": 30
           },
@@ -29,8 +31,9 @@
             "horizontal": 0.3
           }
         },
-        "height": {
+        {
           "type": "number_field",
+          "label": "height",
           "dimensions": {
             "width": 30
           },
@@ -39,9 +42,9 @@
             "horizontal": 0.7
           }
         },
-        "create": {
+        {
           "type": "button",
-          "function": "new_map_button",
+          "label": "create",
           "dimensions": {
             "width": 20
           },
@@ -50,9 +53,9 @@
             "horizontal": 0.3
           }
         },
-        "cancel": {
+        {
           "type": "button",
-          "function": "close_panel",
+          "label": "cancel",
           "dimensions": {
             "width": 20
           },
@@ -61,7 +64,7 @@
             "horizontal": 0.7
           }
         }
-      }
+      ]
     }
   }
 }

@@ -120,6 +120,15 @@ void MapEditorScreen::create() {
 		game->log("New button pressed");
 		Json json(Path::SCREENS + "map_editor.json");
 		new_panel = CustomPanel(this, json.get_token("menu/new"));
+		new_panel.set_callback("create", [&](Component *c) {
+			TextField *field = dynamic_cast<TextField*>(new_panel.get_component("filename"));
+			game->log("Function callback: create: " + field->get_text());
+			return true; 
+		});
+		new_panel.set_callback("cancel", [&](Component *c) {
+			remove_component(new_panel);
+			return true; 
+		});
 		new_panel.create();
 		add_component(new_panel);
 		return true;
