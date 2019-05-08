@@ -17,6 +17,7 @@ public:
 
 	virtual void create() override;
 
+	/// Set a callback function for a component identified as the 'label' field at the Json object.
 	void set_callback(std::string identifier, Callback callback) {
 		callback_map[identifier] = callback;
 	}

@@ -32,6 +32,12 @@ void CustomPanel::create() {
 				return true; 
 			});
 		}
+		else if (type == "number_field") {
+			component = new NumberField("", 0, 0, component_width, [&](Component* c) {
+				callback_map[c->get_identifier()](this);
+				return true; 
+			});
+		}
 		else if (type == "button") {
 			component = new Button(label, 0, 0, component_width, component_height, [&](Component* c) {
 				callback_map[c->get_identifier()](this);

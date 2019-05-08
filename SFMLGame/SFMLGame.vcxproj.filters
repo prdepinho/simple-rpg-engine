@@ -180,11 +180,11 @@
     <ClCompile Include="Panel.cpp">
       <Filter>gui</Filter>
     </ClCompile>
-    <ClCompile Include="TextField.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CustomPanel.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextField.cpp">
+      <Filter>gui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -323,11 +323,11 @@
     <ClInclude Include="Panel.h">
       <Filter>gui</Filter>
     </ClInclude>
-    <ClInclude Include="TextField.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CustomPanel.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextField.h">
+      <Filter>gui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

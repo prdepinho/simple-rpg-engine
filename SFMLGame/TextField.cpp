@@ -106,3 +106,39 @@ void TextField::update_view() {
 	line.setOutlineThickness(0.5);
 	line.setOutlineColor(sf::Color::Black);
 }
+
+
+
+	void NumberField::on_text_input(char c) {
+		switch (c) {
+		case 8:  // backspace
+		case 13:  // enter
+		case 127:  // ctrl + backspace
+		case '.':
+		case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+			TextField::on_text_input(c);
+		}
+	}
+
+	int NumberField::get_int() {
+		if (text.length() == 0) {
+			return 0;
+		}
+		return std::stoi(text);
+	}
+
+	float NumberField::get_float() {
+		if (text.length() == 0) {
+			return 0.0f;
+		}
+		return std::stof(text);
+	}
+
+	void NumberField::set_int(int i) {
+		set_text(std::to_string(i));
+	}
+
+	void NumberField::set_float(float f) {
+		set_text(std::to_string(f));
+	}
+
