@@ -6,6 +6,7 @@
 #include "TextField.h"
 #include "Button.h"
 #include "Screen.h"
+#include "Label.h"
 
 class CustomPanel : public Panel
 {
@@ -28,6 +29,7 @@ private:
 private:
 	Screen *screen;
 	Json *json;
+	std::vector<Label*> labels;
 	std::vector<Component*> dynamic_components;
 	std::map<std::string, Callback> callback_map;
 };

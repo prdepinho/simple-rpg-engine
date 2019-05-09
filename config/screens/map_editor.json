@@ -6,45 +6,45 @@
   "menu":{
     "new":{
       "dimensions": {
-        "height": 100,
-        "width": 160
+        "height": 120,
+        "width": 180
       },
       "components":[
         {
           "type": "text_field",
-          "label": "filename",
+          "label": "Filename",
           "dimensions": {
-            "width": 100
+            "width": 120
           },
           "position": {
-            "vertical": 0.25
+            "vertical": 0.20
           }
         },
         {
           "type": "number_field",
-          "label": "width",
+          "label": "Width",
           "dimensions": {
             "width": 30
           },
           "position": {
-            "vertical": 0.5,
+            "vertical": 0.45,
             "horizontal": 0.3
           }
         },
         {
           "type": "number_field",
-          "label": "height",
+          "label": "Height",
           "dimensions": {
             "width": 30
           },
           "position": {
-            "vertical": 0.5,
+            "vertical": 0.45,
             "horizontal": 0.7
           }
         },
         {
           "type": "button",
-          "label": "create",
+          "label": "Create",
           "dimensions": {
             "width": 20
           },
@@ -55,7 +55,7 @@
         },
         {
           "type": "button",
-          "label": "cancel",
+          "label": "Cancel",
           "dimensions": {
             "width": 20
           },

@@ -39,7 +39,8 @@ void TestScreen::create()
 	log_font.draw_line(50, 50, "Hello, world!", sf::Color::Blue);
 	add_component(log_font);
 
-	label = Label("Label", 0, 0);
+	label = Label("LABEL", 100, 50);
+	label.create();
 	add_component(label);
 
 	button = Button("Button", 50, 50, 0, 0);

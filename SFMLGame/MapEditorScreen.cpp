@@ -120,7 +120,7 @@ void MapEditorScreen::create() {
 		game->log("New button pressed");
 		Json json(Path::SCREENS + "map_editor.json");
 		new_panel = CustomPanel(this, json.get_token("menu/new"));
-		new_panel.set_callback("create", [&](Component *c) {
+		new_panel.set_callback("Create", [&](Component *c) {
 			TextField *field = dynamic_cast<TextField*>(new_panel.get_component("filename"));
 			NumberField *height_field = dynamic_cast<NumberField*>(new_panel.get_component("height"));
 			NumberField *width_field = dynamic_cast<NumberField*>(new_panel.get_component("width"));
@@ -130,7 +130,7 @@ void MapEditorScreen::create() {
 			game->log(ss.str());
 			return true; 
 		});
-		new_panel.set_callback("cancel", [&](Component *c) {
+		new_panel.set_callback("Cancel", [&](Component *c) {
 			remove_component(new_panel);
 			return true; 
 		});
