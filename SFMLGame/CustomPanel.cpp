@@ -26,10 +26,12 @@ void CustomPanel::create() {
 		std::string function = data.get_string("function", "");
 
 		Component *component = nullptr;
+		bool has_label = false;
 
 		std::string type = data.get_string("type");
 		if (type == "text_field") {
 
+			has_label = true;
 			labels.push_back(new Label(label, 0, 0));
 			int width = component_width - labels.back()->get_width();
 
@@ -40,6 +42,7 @@ void CustomPanel::create() {
 		}
 		else if (type == "number_field") {
 
+			has_label = true;
 			labels.push_back(new Label(label, 0, 0));
 			int width = component_width - labels.back()->get_width();
 
@@ -59,7 +62,7 @@ void CustomPanel::create() {
 			dynamic_components[i] = component;
 			component->create();
 
-			if (type == "text_field" || type == "number_field") {
+			if (has_label) {
 				x = get_x() + get_width() * component_horizonta_position - (labels.back()->get_width() + component->get_width()) / 2;
 				y = get_y() + get_height() * component_vertical_position - labels.back()->get_height() / 2;
 				labels.back()->set_position(x, y);
