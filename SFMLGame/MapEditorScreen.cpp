@@ -121,12 +121,14 @@ void MapEditorScreen::create() {
 		Json json(Path::SCREENS + "map_editor.json");
 		new_panel = CustomPanel(this, json.get_token("menu/new"));
 		new_panel.set_callback("Create", [&](Component *c) {
-			TextField *field = dynamic_cast<TextField*>(new_panel.get_component("filename"));
-			NumberField *height_field = dynamic_cast<NumberField*>(new_panel.get_component("height"));
-			NumberField *width_field = dynamic_cast<NumberField*>(new_panel.get_component("width"));
+			TextField *field = dynamic_cast<TextField*>(new_panel.get_component("Filename"));
+			NumberField *height_field = dynamic_cast<NumberField*>(new_panel.get_component("Height"));
+			NumberField *width_field = dynamic_cast<NumberField*>(new_panel.get_component("Width"));
+			std::string text = field->get_text();
+			float width = width_field->get_float();
+			float height = height_field->get_float();
 			std::stringstream ss;
-			ss << "Function callback: create: " << field->get_text() << " (" << width_field->get_float() << ", "
-				<< height_field->get_float() << ")";
+			ss << "Function callback: create: " << text << " (" << width << ", " << height << ")";
 			game->log(ss.str());
 			return true; 
 		});
