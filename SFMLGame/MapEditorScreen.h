@@ -7,6 +7,7 @@
 #include "Json.h"
 #include "TextField.h"
 #include "CustomPanel.h"
+#include "CheckButton.h"
 
 class TilePalette : public Component 
 {
@@ -81,6 +82,7 @@ private:
 	TextField text_field;
 
 	CustomPanel new_panel;
+	CheckButton check_button;
 
 	TilePalette palette;
 	Tilemap map;

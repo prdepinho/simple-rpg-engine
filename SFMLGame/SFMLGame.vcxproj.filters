@@ -186,6 +186,9 @@
     <ClCompile Include="TextField.cpp">
       <Filter>gui</Filter>
     </ClCompile>
+    <ClCompile Include="CheckButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tilemap.h">
@@ -328,6 +331,9 @@
     </ClInclude>
     <ClInclude Include="TextField.h">
       <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckButton.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

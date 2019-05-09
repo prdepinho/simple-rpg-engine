@@ -85,9 +85,7 @@ bool Button::on_released(int x, int y) {
 void Button::on_key_pressed(sf::Keyboard::Key key) {
 	switch(key){
 	case sf::Keyboard::Key::Enter:
-		for (auto function : functions) {
-			function(this);
-		}
+		on_click();
 		break;
 	}
 }

@@ -29,8 +29,6 @@ public:
 	void set_label(std::string str);
 	void set_centered_label(bool centered) { this->centered = centered; }
 
-	bool is_pressed() const { return pressed; }
-
 private:
 	void center_label();
 
@@ -41,8 +39,6 @@ protected:
 
 	int vertical_margin = 10;
 	int horizontal_margin = 10;
-
-	bool pressed;
 
 	sf::VertexArray pressed_vertices;
 	sf::VertexArray released_vertices;

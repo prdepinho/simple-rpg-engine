@@ -16,5 +16,10 @@
     "file": "gui",
     "checked": [47, 26],
     "released": [38, 26]
+  },
+  "check_button": {
+    "file": "gui",
+    "checked": [38, 35],
+    "released": [47, 35]
   }
 }

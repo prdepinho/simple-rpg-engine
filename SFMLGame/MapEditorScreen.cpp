@@ -179,6 +179,16 @@ void MapEditorScreen::create() {
 	text_field.create();
 	add_component(text_field);
 
+	x += text_field.get_width();
+	check_button = CheckButton(x, y, [&](Component*) {
+		std::stringstream ss;
+		ss << "CheckButton: " << (check_button.is_checked() ? "Checked" : "Not checked");
+		game->log(ss.str());
+		return true; 
+	});
+	check_button.create();
+	add_component(check_button);
+
 	int tile_width = json.get_int("palette/tile_width", 3);
 	int tile_height = json.get_int("palette/tile_height", 10);
 	palette = TilePalette(tile_width, tile_height, Textures::get("tileset"));
