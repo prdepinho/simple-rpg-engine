@@ -100,7 +100,7 @@ bool TilePalette::on_click() {
 
 
 
-MapEditorScreen::MapEditorScreen() : holding_screen(false)
+MapEditorScreen::MapEditorScreen() : holding_screen(false), filename("")
 {
 }
 
@@ -125,12 +125,17 @@ void MapEditorScreen::create() {
 				TextField *field = dynamic_cast<TextField*>(new_panel.get_component("Filename"));
 				NumberField *height_field = dynamic_cast<NumberField*>(new_panel.get_component("Height"));
 				NumberField *width_field = dynamic_cast<NumberField*>(new_panel.get_component("Width"));
+
 				std::string text = field->get_text();
 				float width = width_field->get_float();
 				float height = height_field->get_float();
+
 				std::stringstream ss;
 				ss << "Function callback: create: " << text << " (" << width << ", " << height << ")";
 				game->log(ss.str());
+
+				filename = text;
+				create_map(width, height);
 				return true;
 			});
 			new_panel.set_callback("Cancel", [&](Component *c) {
@@ -147,7 +152,20 @@ void MapEditorScreen::create() {
 		x += new_button.get_width();
 		load_button = Button("Load", x, y, 0, 0, [&](Component*) {
 			game->log("Load button");
-			MessagePanel::show("The quick brown fox jumps over the lazy dog.", *this);
+			Json json(Path::SCREENS + "map_editor.json");
+			load_panel = CustomPanel(this, json.get_token("menu/load_map_panel"));
+			load_panel.set_callback("Load", [&](Component*) {
+				TextField *field = dynamic_cast<TextField*>(load_panel.get_component("Filename"));
+				std::string text = field->get_text();
+				game->log("Load: " + text);
+				return true;
+			});
+			load_panel.set_callback("Cancel", [&](Component*) {
+				remove_component(load_panel);
+				return true;
+			});
+			load_panel.create();
+			add_component(load_panel);
 			return true;
 		});
 		load_button.create();
@@ -155,6 +173,7 @@ void MapEditorScreen::create() {
 
 		x += load_button.get_width();
 		save_button = Button("Save", x, y, 0, 0, [&](Component*) {
+			MessagePanel::show("The quick brown fox jumps over the lazy dog.", *this);
 			game->log("Save button");
 			return true;
 		});
@@ -202,17 +221,7 @@ void MapEditorScreen::create() {
 		add_component(check_button_panel);
 	}
 
-	// map
-	{
-		int tiles[5 * 5];
-		for (int i = 0; i < 5 * 5; i++) {
-			tiles[i] = 0;
-		}
-		map.load(Textures::get("tileset"), sf::Vector2u(16, 16), tiles, 5, 5);
-		map.set_position(palette.get_width() + 1, exit_button.get_height());
-		map.set_dimensions(100, 100); // bounds are not right.
-		map.set_show_outline(true);
-	}
+	create_map(10, 10);
 
 	game_view.setSize(sf::Vector2f(game->get_resolution_width(), game->get_resolution_height()));
 	game_view.setCenter(sf::Vector2f(game->get_resolution_width() / 2, game->get_resolution_height() / 2));
@@ -341,5 +350,17 @@ void MapEditorScreen::handle_event(sf::Event &event, float elapsed_time) {
 		}
 		break;
 	}
+}
+
+void MapEditorScreen::create_map(int w, int h) {
+	map = Tilemap();
+	std::vector<int> tiles(w * h);
+	for (int i = 0; i < (w * h); i++) {
+		tiles[i] = 0;
+	}
+	map.load(Textures::get("tileset"), sf::Vector2u(16, 16), tiles.data(), w, h);
+	map.set_position(palette.get_width() + 1, exit_button.get_height());
+	map.set_dimensions(w * 16, h * 16);
+	map.set_show_outline(true);
 }
 

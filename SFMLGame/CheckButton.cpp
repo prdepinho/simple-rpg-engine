@@ -50,3 +50,13 @@ void CheckButton::on_key_pressed(sf::Keyboard::Key key) {
 		break;
 	}
 }
+
+void CheckButton::check() { 
+	checked = false;
+	on_click(); 
+}
+
+void CheckButton::uncheck() {
+	checked = true;
+	on_click();
+}

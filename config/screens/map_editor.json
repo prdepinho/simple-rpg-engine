@@ -69,6 +69,50 @@
           }
         }
       ]
+    },
+    "load_map_panel": {
+      "dimensions": {
+        "height": 120,
+        "width": 180
+      },
+      "position": {
+        "horizontal": 0.5,
+        "vertical": 0.5
+      },
+      "components":[
+        {
+          "type": "text_field",
+          "label": "Filename",
+          "dimensions": {
+            "width": 120
+          },
+          "position": {
+            "vertical": 0.25
+          }
+        },
+        {
+          "type": "button",
+          "label": "Load",
+          "dimensions": {
+            "width": 20
+          },
+          "position":{
+            "vertical": 0.75,
+            "horizontal": 0.3
+          }
+        },
+        {
+          "type": "button",
+          "label": "Cancel",
+          "dimensions": {
+            "width": 20
+          },
+          "position":{
+            "vertical": 0.75,
+            "horizontal": 0.7
+          }
+        }
+      ]
     }
   },
   "check_button_panel": {

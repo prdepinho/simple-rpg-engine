@@ -24,8 +24,8 @@ public:
 	virtual bool on_click() override;
 	void on_key_pressed(sf::Keyboard::Key key) override;
 
-	void check() { checked = true; }
-	void uncheck() { checked = false; }
+	void check();
+	void uncheck();
 	bool is_checked() const { return checked; }
 
 private:

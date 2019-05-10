@@ -75,6 +75,9 @@ public:
 	virtual void handle_event(sf::Event &event, float elapsed_time) override;
 
 private:
+	void create_map(int w, int h);
+
+private:
 	Button exit_button;
 	Button new_button;
 	Button load_button;
@@ -83,6 +86,9 @@ private:
 	CustomPanel check_button_panel;
 
 	CustomPanel new_panel;
+	CustomPanel load_panel;
+
+	std::string filename;
 
 	TilePalette palette;
 	Tilemap map;
