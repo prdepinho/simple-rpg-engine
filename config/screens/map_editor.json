@@ -4,10 +4,14 @@
     "tile_height": 16
   },
   "menu":{
-    "new":{
+    "new_map_panel":{
       "dimensions": {
         "height": 120,
         "width": 180
+      },
+      "position": {
+        "horizontal": 0.5,
+        "vertical": 0.5
       },
       "components":[
         {
@@ -24,7 +28,7 @@
           "type": "number_field",
           "label": "Width",
           "dimensions": {
-            "width": 30
+            "width": 50
           },
           "position": {
             "vertical": 0.45,
@@ -35,7 +39,7 @@
           "type": "number_field",
           "label": "Height",
           "dimensions": {
-            "width": 30
+            "width": 50
           },
           "position": {
             "vertical": 0.45,
@@ -66,5 +70,20 @@
         }
       ]
     }
+  },
+  "check_button_panel": {
+    "dimensions": {
+      "height": 20
+    },
+    "components": [
+      {
+        "type": "check_button",
+        "label": "Block",
+        "position": {
+          "vertical": 0.5,
+          "horizonta": 0.5
+        }
+      }
+    ]
   }
 }

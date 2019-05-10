@@ -113,98 +113,106 @@ void MapEditorScreen::create() {
 	Screen::create();
 	Json json(Path::SCREENS + "map_editor.json");
 
-	int x = 0;
-	int y = 0;
-
-	new_button = Button("New", x, y, 0, 0, [&](Component*) {
-		game->log("New button pressed");
-		Json json(Path::SCREENS + "map_editor.json");
-		new_panel = CustomPanel(this, json.get_token("menu/new"));
-		new_panel.set_callback("Create", [&](Component *c) {
-			TextField *field = dynamic_cast<TextField*>(new_panel.get_component("Filename"));
-			NumberField *height_field = dynamic_cast<NumberField*>(new_panel.get_component("Height"));
-			NumberField *width_field = dynamic_cast<NumberField*>(new_panel.get_component("Width"));
-			std::string text = field->get_text();
-			float width = width_field->get_float();
-			float height = height_field->get_float();
-			std::stringstream ss;
-			ss << "Function callback: create: " << text << " (" << width << ", " << height << ")";
-			game->log(ss.str());
-			return true; 
+	// menu buttons
+	{
+		int x = 0;
+		int y = 0;
+		new_button = Button("New", x, y, 0, 0, [&](Component*) {
+			game->log("New button pressed");
+			Json json(Path::SCREENS + "map_editor.json");
+			new_panel = CustomPanel(this, json.get_token("menu/new_map_panel"));
+			new_panel.set_callback("Create", [&](Component *c) {
+				TextField *field = dynamic_cast<TextField*>(new_panel.get_component("Filename"));
+				NumberField *height_field = dynamic_cast<NumberField*>(new_panel.get_component("Height"));
+				NumberField *width_field = dynamic_cast<NumberField*>(new_panel.get_component("Width"));
+				std::string text = field->get_text();
+				float width = width_field->get_float();
+				float height = height_field->get_float();
+				std::stringstream ss;
+				ss << "Function callback: create: " << text << " (" << width << ", " << height << ")";
+				game->log(ss.str());
+				return true;
+			});
+			new_panel.set_callback("Cancel", [&](Component *c) {
+				remove_component(new_panel);
+				return true;
+			});
+			new_panel.create();
+			add_component(new_panel);
+			return true;
 		});
-		new_panel.set_callback("Cancel", [&](Component *c) {
-			remove_component(new_panel);
-			return true; 
+		new_button.create();
+		add_component(new_button);
+
+		x += new_button.get_width();
+		load_button = Button("Load", x, y, 0, 0, [&](Component*) {
+			game->log("Load button");
+			MessagePanel::show("The quick brown fox jumps over the lazy dog.", *this);
+			return true;
 		});
-		new_panel.create();
-		add_component(new_panel);
-		return true;
-	});
-	new_button.create();
-	add_component(new_button);
+		load_button.create();
+		add_component(load_button);
 
-	x += new_button.get_width();
-	load_button = Button("Load", x, y, 0, 0, [&](Component*) {
-		game->log("Load button");
-		MessagePanel::show("The quick brown fox jumps over the lazy dog.", *this);
-		return true;
-	});
-	load_button.create();
-	add_component(load_button);
+		x += load_button.get_width();
+		save_button = Button("Save", x, y, 0, 0, [&](Component*) {
+			game->log("Save button");
+			return true;
+		});
+		save_button.create();
+		add_component(save_button);
 
-	x += load_button.get_width();
-	save_button = Button("Save", x, y, 0, 0, [&](Component*) {
-		game->log("Save button");
-		return true;
-	});
-	save_button.create();
-	add_component(save_button);
-
-	x += save_button.get_width();
-	exit_button = Button("Exit", x, y, 0, 0, [&](Component*) {
-		ChoicePanel::show("Are you sure?", *this, 
-			[&]() { game->log("Yes"); game->change_to_main_menu_screen(); }, 
-			[&]() { game->log("No"); }
-		);
-		return true;
-	});
-	exit_button.create();
-	add_component(exit_button);
-
-	x += exit_button.get_width();
-	text_field = TextField("", x, y, 100, [&](Component*) {
-		game->log("Text: " + text_field.get_text());
-		return true;
-	});
-	text_field.create();
-	add_component(text_field);
-
-	x += text_field.get_width();
-	check_button = CheckButton(x, y, [&](Component*) {
-		std::stringstream ss;
-		ss << "CheckButton: " << (check_button.is_checked() ? "Checked" : "Not checked");
-		game->log(ss.str());
-		return true; 
-	});
-	check_button.create();
-	add_component(check_button);
-
-	int tile_width = json.get_int("palette/tile_width", 3);
-	int tile_height = json.get_int("palette/tile_height", 10);
-	palette = TilePalette(tile_width, tile_height, Textures::get("tileset"));
-	palette.set_position(0, exit_button.get_height());
-	palette.set_show_outline(true);
-	palette.create();
-	add_component(palette);
-
-	int tiles[5 * 5];
-	for (int i = 0; i < 5 * 5; i++) {
-		tiles[i] = 0;
+		x += save_button.get_width();
+		exit_button = Button("Exit", x, y, 0, 0, [&](Component*) {
+			ChoicePanel::show("Are you sure?", *this,
+				[&]() { game->log("Yes"); game->change_to_main_menu_screen(); },
+				[&]() { game->log("No"); }
+			);
+			return true;
+		});
+		exit_button.create();
+		add_component(exit_button);
 	}
-	map.load(Textures::get("tileset"), sf::Vector2u(16, 16), tiles, 5, 5);
-	map.set_position(palette.get_width() + 1, exit_button.get_height());
-	map.set_dimensions(100, 100); // bounds are not right.
-	map.set_show_outline(true);
+	// palette
+	{
+		int tile_width = json.get_int("palette/tile_width", 3);
+		int tile_height = json.get_int("palette/tile_height", 10);
+		palette = TilePalette(tile_width, tile_height, Textures::get("tileset"));
+		palette.set_position(0, exit_button.get_height());
+		palette.set_show_outline(true);
+		palette.create();
+		add_component(palette);
+	}
+
+	// check buttons
+	{
+		Json json(Path::SCREENS + "map_editor.json");
+
+		int x = palette.get_x();
+		int y = palette.get_y() + palette.get_height();
+		int w = palette.get_width();
+
+		check_button_panel = CustomPanel(this, json.get_token("check_button_panel"));
+		check_button_panel.set_callback("Block", [&](Component*) {
+			game->log("check_button");
+			return true; 
+		});
+		check_button_panel.set_position(x, y);
+		check_button_panel.set_dimensions(w, 0);
+		check_button_panel.create();
+		add_component(check_button_panel);
+	}
+
+	// map
+	{
+		int tiles[5 * 5];
+		for (int i = 0; i < 5 * 5; i++) {
+			tiles[i] = 0;
+		}
+		map.load(Textures::get("tileset"), sf::Vector2u(16, 16), tiles, 5, 5);
+		map.set_position(palette.get_width() + 1, exit_button.get_height());
+		map.set_dimensions(100, 100); // bounds are not right.
+		map.set_show_outline(true);
+	}
 
 	game_view.setSize(sf::Vector2f(game->get_resolution_width(), game->get_resolution_height()));
 	game_view.setCenter(sf::Vector2f(game->get_resolution_width() / 2, game->get_resolution_height() / 2));

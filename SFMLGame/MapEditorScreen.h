@@ -79,10 +79,10 @@ private:
 	Button new_button;
 	Button load_button;
 	Button save_button;
-	TextField text_field;
+
+	CustomPanel check_button_panel;
 
 	CustomPanel new_panel;
-	CheckButton check_button;
 
 	TilePalette palette;
 	Tilemap map;

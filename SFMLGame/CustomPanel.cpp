@@ -1,13 +1,25 @@
 #include "CustomPanel.h"
+#include "TextField.h"
+#include "Button.h"
+#include "CheckButton.h"
 
 void CustomPanel::create() {
 	if (json == nullptr || screen == nullptr)
 		return;
 
-	set_dimensions(json->get_int("dimensions/width"), json->get_int("dimensions/height"));
+	int w = json->get_int("dimensions/width", get_width());
+	int h = json->get_int("dimensions/height", get_height());
+	set_dimensions(w, h);
 
-	int x = screen->get_game()->get_resolution_width() / 2 - get_width() / 2;
-	int y = screen->get_game()->get_resolution_height() / 2 - get_height() / 2;
+	float horizonta_position = json->get_float("position/horizontal", -1.f);
+	float vertical_position = json->get_float("position/vertical", -1.f);
+
+	int x = horizonta_position > -1 
+		? (screen->get_game()->get_resolution_width() * horizonta_position - get_width() / 2)
+		: get_x();
+	int y = vertical_position > -1 
+		? (screen->get_game()->get_resolution_height() * vertical_position - get_height() / 2)
+		: get_y();
 	set_position(x, y);
 
 	Panel::create();
@@ -46,9 +58,18 @@ void CustomPanel::create() {
 			labels.push_back(new Label(label, 0, 0));
 			int width = component_width - labels.back()->get_width();
 
-			component = new NumberField("", 0, 0, component_width, [&](Component* c) {
+			component = new NumberField("", 0, 0, width, [&](Component* c) {
 				callback_map[c->get_identifier()](this);
 				return true; 
+			});
+		}
+		else if (type == "check_button") {
+			has_label = true;
+			labels.push_back(new Label(label, 0, 0));
+
+			component = new CheckButton(0, 0, [&](Component* c) {
+				callback_map[c->get_identifier()](this);
+				return true;
 			});
 		}
 		else if (type == "button") {
