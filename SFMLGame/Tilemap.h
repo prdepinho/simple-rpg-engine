@@ -51,6 +51,22 @@ public:
 		}
 	}
 
+	void paint_tile(int tile_x, int tile_y, sf::Color color) {
+		for (sf::VertexArray &frame : frames) {
+			sf::Vertex *quad = &frame[(tile_y * width + tile_x) * 4];
+			for(int i = 0; i < 4; ++i)
+				quad[i].color = color;
+		}
+	}
+
+	void clear_tile_color(int tile_x, int tile_y) {
+		for (sf::VertexArray &frame : frames) {
+			sf::Vertex *quad = &frame[(tile_y * width + tile_x) * 4];
+			for(int i = 0; i < 4; ++i)
+				quad[i].color = sf::Color::White;
+		}
+	}
+
 	unsigned int get_tile_width() const { return width; }
 	unsigned int get_tile_height() const { return height; }
 

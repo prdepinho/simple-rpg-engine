@@ -64,8 +64,16 @@ private:
 class MapEditorScreen : public Screen
 {
 public:
-	MapEditorScreen();
-	~MapEditorScreen();
+
+MapEditorScreen() 
+	: holding_screen(false), 
+	filename("unamed_map"), 
+	obstacle(false), 
+	highlight_obstacles(false) 
+{ }
+
+
+~MapEditorScreen() { }
 
 	virtual void create() override;
 	virtual void destroy() override;
@@ -76,6 +84,9 @@ public:
 
 private:
 	void create_map(int w, int h);
+	void load_map(std::string filename);
+
+	void set_highlight_obstacles(bool highlight);
 
 private:
 	Button exit_button;
@@ -89,9 +100,12 @@ private:
 	CustomPanel load_panel;
 
 	std::string filename;
+	bool obstacle;
+	bool highlight_obstacles;
 
 	TilePalette palette;
 	Tilemap map;
+
 	bool holding_screen;
 	sf::Vector2f holding_start_position;
 };

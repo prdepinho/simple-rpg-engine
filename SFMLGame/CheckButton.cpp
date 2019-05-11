@@ -34,11 +34,10 @@ bool CheckButton::on_released(int x, int y) {
 
 bool CheckButton::on_click() {
 	bool rval = true;
-	if (checked = !checked) {
-		vertices = pressed_vertices;
-		for (auto function : functions) {
-			rval &= function(this);
-		}
+	checked = !checked;
+	vertices = checked ? pressed_vertices : released_vertices;
+	for (auto function : functions) {
+		rval &= function(this);
 	}
 	return rval;
 }
@@ -58,5 +57,9 @@ void CheckButton::check() {
 
 void CheckButton::uncheck() {
 	checked = true;
+	on_click();
+}
+
+void CheckButton::toggle() {
 	on_click();
 }

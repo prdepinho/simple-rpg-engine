@@ -55,5 +55,7 @@ bool Tilemap::load(
 	}
 	set_animation(animation, fps); 
 
+	set_dimensions(width * 16, height * 16);
+
 	return true;
 }

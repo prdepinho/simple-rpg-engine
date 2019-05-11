@@ -101,14 +101,6 @@ bool TilePalette::on_click() {
 
 
 
-MapEditorScreen::MapEditorScreen() : holding_screen(false), filename("")
-{
-}
-
-
-MapEditorScreen::~MapEditorScreen()
-{
-}
 
 void MapEditorScreen::create() {
 	Screen::create();
@@ -164,9 +156,7 @@ void MapEditorScreen::create() {
 					TextField *field = dynamic_cast<TextField*>(load_panel.get_component("Filename"));
 					std::string text = field->get_text();
 					game->log("Load: " + text);
-
-					filename = text;
-					TilemapDAO::load_map(filename, map);
+					load_map(text);
 				}
 				catch (std::exception &e) {
 					MessagePanel::show(e.what(), *this);
@@ -241,9 +231,18 @@ void MapEditorScreen::create() {
 		int w = palette.get_width();
 
 		check_button_panel = CustomPanel(this, json.get_token("check_button_panel"));
-		check_button_panel.set_callback("Block", [&](Component*) {
+		check_button_panel.set_callback("Obstacle", [&](Component* c) {
 			game->log("check_button");
+			CustomPanel *panel = dynamic_cast<CustomPanel*>(c);
+			CheckButton *check_button = dynamic_cast<CheckButton*>(panel->get_component("Obstacle"));
+			obstacle = check_button->is_checked();
 			return true; 
+		});
+		check_button_panel.set_callback("Show Obst.", [&](Component*c) {
+			CustomPanel *panel = dynamic_cast<CustomPanel*>(c);
+			CheckButton *check_button = dynamic_cast<CheckButton*>(panel->get_component("Show Obst."));
+			set_highlight_obstacles(check_button->is_checked());
+			return true;
 		});
 		check_button_panel.set_position(x, y);
 		check_button_panel.set_dimensions(w, 0);
@@ -313,6 +312,14 @@ void MapEditorScreen::poll_events(float elapsed_time) {
 
 						if (map.in_tile_bounds(tile_x, tile_y)) {
 							map.set_texture_coords(i, tile_x, tile_y, tex_x, tex_y);
+							map.get_tile(tile_x, tile_y).obstacle = obstacle;
+							if(highlight_obstacles)
+								if (obstacle) {
+									map.paint_tile(tile_x, tile_y, sf::Color::Red);
+								}
+								else {
+									map.clear_tile_color(tile_x, tile_y);
+								}
 						}
 					}
 
@@ -362,6 +369,31 @@ void MapEditorScreen::handle_event(sf::Event &event, float elapsed_time) {
 			}
 		}
 		break;
+	case sf::Event::KeyPressed:
+		if (!pressed_gui) {
+			switch (event.key.code) {
+			case sf::Keyboard::O:
+			{
+				CheckButton* check_button; 
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RShift)) 
+					check_button = dynamic_cast<CheckButton*>(check_button_panel.get_component("Show Obst."));
+				else 
+					check_button = dynamic_cast<CheckButton*>(check_button_panel.get_component("Obstacle"));
+				check_button->toggle();
+				break;
+
+			}
+			case sf::Keyboard::Up:
+				break;
+			case sf::Keyboard::Down:
+				break;
+			case sf::Keyboard::Left:
+				break;
+			case sf::Keyboard::Right:
+				break;
+			}
+		}
+		break;
 	case sf::Event::MouseButtonReleased:
 		if (!pressed_gui) {
 			if (event.mouseButton.button == sf::Mouse::Button::Middle) {
@@ -387,7 +419,29 @@ void MapEditorScreen::create_map(int w, int h) {
 	std::vector<int> tiles(w * h, 0);
 	map.load(Textures::get("tileset"), sf::Vector2u(16, 16), tiles.data(), w, h);
 	map.set_position(palette.get_width() + 1, exit_button.get_height());
-	map.set_dimensions(w * 16, h * 16);
 	map.set_show_outline(true);
+}
+
+void MapEditorScreen::load_map(std::string filename) {
+	this->filename = filename;
+	TilemapDAO::load_map(filename, map);
+	map.set_position(palette.get_width() + 1, exit_button.get_height());
+	map.set_show_outline(true);
+	set_highlight_obstacles(highlight_obstacles);
+}
+
+void MapEditorScreen::set_highlight_obstacles(bool highlight) {
+	highlight_obstacles = highlight;
+	for (int tile_x = 0; tile_x < map.get_tile_width(); ++tile_x) {
+		for (int tile_y = 0; tile_y < map.get_tile_height(); ++tile_y) {
+			if (highlight) {
+				if (map.get_tile(tile_x, tile_y).obstacle)
+					map.paint_tile(tile_x, tile_y, sf::Color::Red);
+			}
+			else {
+				map.clear_tile_color(tile_x, tile_y);
+			}
+		}
+	}
 }
 

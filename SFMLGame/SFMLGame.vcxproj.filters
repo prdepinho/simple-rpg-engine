@@ -180,17 +180,17 @@
     <ClCompile Include="Panel.cpp">
       <Filter>gui</Filter>
     </ClCompile>
-    <ClCompile Include="CustomPanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TextField.cpp">
       <Filter>gui</Filter>
     </ClCompile>
-    <ClCompile Include="CheckButton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TilemapDAO.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CheckButton.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomPanel.cpp">
+      <Filter>gui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -329,17 +329,17 @@
     <ClInclude Include="Panel.h">
       <Filter>gui</Filter>
     </ClInclude>
-    <ClInclude Include="CustomPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TextField.h">
       <Filter>gui</Filter>
     </ClInclude>
-    <ClInclude Include="CheckButton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TilemapDAO.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckButton.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomPanel.h">
+      <Filter>gui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

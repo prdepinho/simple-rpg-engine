@@ -117,14 +117,22 @@
   },
   "check_button_panel": {
     "dimensions": {
-      "height": 20
+      "height": 40
     },
     "components": [
       {
         "type": "check_button",
-        "label": "Block",
+        "label": "Obstacle",
         "position": {
-          "vertical": 0.5,
+          "vertical": 0.3,
+          "horizonta": 0.5
+        }
+      },
+      {
+        "type": "check_button",
+        "label": "Show Obst.",
+        "position": {
+          "vertical": 0.6,
           "horizonta": 0.5
         }
       }

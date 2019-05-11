@@ -26,6 +26,7 @@ public:
 
 	void check();
 	void uncheck();
+	void toggle();
 	bool is_checked() const { return checked; }
 
 private:
