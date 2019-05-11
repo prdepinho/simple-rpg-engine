@@ -25,6 +25,17 @@ public:
 		return coord;
 	}
 
+	sf::Vector2f get_tile_pix_coords(int tile_x, int tile_y) {
+		sf::Vertex *quad = &vertices[(tile_y * width + tile_x) * 4];
+		return quad[0].position;
+	}
+
+	sf::Vector2f get_texture_coords(int frame_index, int tile_x, int tile_y) {
+		sf::VertexArray &frame = frames[frame_index];
+		sf::Vertex *quad = &frame[(tile_y * width + tile_x) * 4];
+		return quad[0].texCoords;
+	}
+
 	void set_texture_coords(int frame_index, int tile_x, int tile_y, float tex_x, float tex_y) {
 		sf::VertexArray &frame = frames[frame_index];
 		sf::Vertex *quad = &frame[(tile_y * width + tile_x) * 4];

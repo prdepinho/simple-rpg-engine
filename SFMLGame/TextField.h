@@ -21,7 +21,7 @@ public:
 	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 	virtual void update(float elapsed_time) override;
 
-	virtual void on_text_input(char c);
+	virtual void on_text_input(char c) override;
 	void set_text(std::string text);
 	std::string get_text() const { return text; }
 

@@ -175,6 +175,7 @@
     <ClCompile Include="TestScreen.cpp" />
     <ClCompile Include="TextField.cpp" />
     <ClCompile Include="Tilemap.cpp" />
+    <ClCompile Include="TilemapDAO.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
@@ -225,6 +226,7 @@
     <ClInclude Include="TestScreen.h" />
     <ClInclude Include="TextField.h" />
     <ClInclude Include="Tilemap.h" />
+    <ClInclude Include="TilemapDAO.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

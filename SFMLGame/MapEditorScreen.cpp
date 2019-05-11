@@ -1,6 +1,7 @@
 #include "MapEditorScreen.h"
 #include "Resources.h"
 #include "Json.h"
+#include "TilemapDAO.h"
 
 
 
@@ -115,6 +116,8 @@ void MapEditorScreen::create() {
 
 	// menu buttons
 	{
+
+		// new map button
 		int x = 0;
 		int y = 0;
 		new_button = Button("New", x, y, 0, 0, [&](Component*) {
@@ -136,6 +139,7 @@ void MapEditorScreen::create() {
 
 				filename = text;
 				create_map(width, height);
+				remove_component(new_panel);
 				return true;
 			});
 			new_panel.set_callback("Cancel", [&](Component *c) {
@@ -149,15 +153,25 @@ void MapEditorScreen::create() {
 		new_button.create();
 		add_component(new_button);
 
+		// load map button
 		x += new_button.get_width();
 		load_button = Button("Load", x, y, 0, 0, [&](Component*) {
 			game->log("Load button");
 			Json json(Path::SCREENS + "map_editor.json");
 			load_panel = CustomPanel(this, json.get_token("menu/load_map_panel"));
 			load_panel.set_callback("Load", [&](Component*) {
-				TextField *field = dynamic_cast<TextField*>(load_panel.get_component("Filename"));
-				std::string text = field->get_text();
-				game->log("Load: " + text);
+				try {
+					TextField *field = dynamic_cast<TextField*>(load_panel.get_component("Filename"));
+					std::string text = field->get_text();
+					game->log("Load: " + text);
+
+					filename = text;
+					TilemapDAO::load_map(filename, map);
+				}
+				catch (std::exception &e) {
+					MessagePanel::show(e.what(), *this);
+				}
+				remove_component(load_panel);
 				return true;
 			});
 			load_panel.set_callback("Cancel", [&](Component*) {
@@ -171,15 +185,31 @@ void MapEditorScreen::create() {
 		load_button.create();
 		add_component(load_button);
 
+		// save map button
 		x += load_button.get_width();
 		save_button = Button("Save", x, y, 0, 0, [&](Component*) {
-			MessagePanel::show("The quick brown fox jumps over the lazy dog.", *this);
+			ChoicePanel::show("Are you sure?", *this,
+				[&]() {
+					try {
+						game->log("Save");
+						if (!TilemapDAO::backup(filename)) {
+							game->log("Backup [" + filename + "] could not be created");
+						}
+						TilemapDAO::save_map(filename, map);
+					}
+					catch (std::exception &e) {
+						MessagePanel::show(e.what(), *this);
+					}
+				},
+				[&]() {}
+			);
 			game->log("Save button");
 			return true;
 		});
 		save_button.create();
 		add_component(save_button);
 
+		// exit button
 		x += save_button.get_width();
 		exit_button = Button("Exit", x, y, 0, 0, [&](Component*) {
 			ChoicePanel::show("Are you sure?", *this,
@@ -354,10 +384,7 @@ void MapEditorScreen::handle_event(sf::Event &event, float elapsed_time) {
 
 void MapEditorScreen::create_map(int w, int h) {
 	map = Tilemap();
-	std::vector<int> tiles(w * h);
-	for (int i = 0; i < (w * h); i++) {
-		tiles[i] = 0;
-	}
+	std::vector<int> tiles(w * h, 0);
 	map.load(Textures::get("tileset"), sf::Vector2u(16, 16), tiles.data(), w, h);
 	map.set_position(palette.get_width() + 1, exit_button.get_height());
 	map.set_dimensions(w * 16, h * 16);

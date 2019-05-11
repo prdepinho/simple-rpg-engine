@@ -189,6 +189,9 @@
     <ClCompile Include="CheckButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TilemapDAO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tilemap.h">
@@ -333,6 +336,9 @@
       <Filter>gui</Filter>
     </ClInclude>
     <ClInclude Include="CheckButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TilemapDAO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

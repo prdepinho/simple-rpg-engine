@@ -35,6 +35,7 @@ public:
 	static const std::string CONFIG;
 	static const std::string SCRIPTS;
 	static const std::string SCREENS;
+	static const std::string MAPS;
 
 };
 

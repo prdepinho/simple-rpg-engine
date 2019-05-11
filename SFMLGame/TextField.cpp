@@ -70,6 +70,9 @@ void TextField::on_text_input(char c) {
 				break;
 		}
 		break;
+	case '\t':
+		// ignore
+		break;
 	default:
 		text.push_back(c);
 		break;
@@ -114,6 +117,7 @@ void TextField::update_view() {
 		case 8:  // backspace
 		case 13:  // enter
 		case 127:  // ctrl + backspace
+		case '\t':
 		case '.':
 		case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
 			TextField::on_text_input(c);

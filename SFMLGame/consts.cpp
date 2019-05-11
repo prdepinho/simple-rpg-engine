@@ -26,6 +26,7 @@
 	const std::string Path::CONFIG = "../config/";
 	const std::string Path::SCRIPTS = "../scripts/";
 	const std::string Path::SCREENS = Path::CONFIG + "screens/";
+	const std::string Path::MAPS = "../maps/";
 
 	const std::string Config::TEXTURES = Path::CONFIG + "textures.json";
 	const std::string Config::SETTINGS = Path::CONFIG + "settings.json";
