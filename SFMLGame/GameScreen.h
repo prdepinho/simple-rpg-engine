@@ -60,9 +60,11 @@ public:
 					break;
 				case Direction::LEFT:
 					character->set_position(character->get_x() - 1, character->get_y());
+					character->face_left();
 					break;
 				case Direction::RIGHT:
 					character->set_position(character->get_x() + 1, character->get_y());
+					character->face_right();
 					break;
 				}
 			}
@@ -90,7 +92,8 @@ public:
 		turn(0),
 		turn_count(0.f),
 		seconds_for_turn(1.f),
-		player_busy(false)
+		player_busy(false),
+		camera_follow(true)
 	{ }
 
 
@@ -108,7 +111,7 @@ private:
 
 	void put_character_on_tile(Character &character, int x, int y) {
 		auto tile_coords = map.get_tile_pix_coords(x, y);
-		character.set_position(map.get_x() + tile_coords.x, map.get_y() + tile_coords.y);
+		character.set_position(map.get_x() + tile_coords.x + 8, map.get_y() + tile_coords.y + 8);
 	}
 
 
@@ -127,6 +130,7 @@ private:
 	float seconds_for_turn;
 	float turn_count;
 
+	bool camera_follow;
 	bool holding_screen;
 	sf::Vector2f holding_start_position;
 };

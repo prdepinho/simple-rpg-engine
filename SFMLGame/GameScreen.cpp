@@ -40,7 +40,8 @@ void GameScreen::create() {
 	}
 
 	game_view.setSize(sf::Vector2f(game->get_resolution_width(), game->get_resolution_height()));
-	game_view.setCenter(sf::Vector2f(game->get_resolution_width() / 2, game->get_resolution_height() / 2));
+	//game_view.setCenter(sf::Vector2f(game->get_resolution_width() / 2, game->get_resolution_height() / 2));
+	game_view.setCenter(sf::Vector2f(player_character->get_x(), player_character->get_y()));
 	gui_view.setSize(sf::Vector2f(game->get_resolution_width(), game->get_resolution_height()));
 	gui_view.setCenter(game->get_resolution_width() / 2, game->get_resolution_height() / 2);
 }
@@ -56,6 +57,7 @@ void GameScreen::draw() {
 	}
 	window->setView(gui_view);
 	Screen::draw();
+
 }
 
 bool GameScreen::update(float elapsed_time) {
@@ -82,6 +84,11 @@ bool GameScreen::update(float elapsed_time) {
 				++it;
 			}
 		}
+	}
+
+	// camera movement, after entity and effect handling
+	if(camera_follow && player_busy) {
+		game_view.setCenter(sf::Vector2f(player_character->getPosition()));
 	}
 
 	// turn handling
@@ -197,6 +204,13 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	case sf::Event::KeyPressed:
 		if (!pressed_gui) {
 			switch (event.key.code) {
+			case sf::Keyboard::F: {
+				camera_follow = !camera_follow;
+				std::stringstream ss;
+				ss << "Camera follow: " << (camera_follow ? "True" : "False");
+				game->log(ss.str());
+			}
+				break;
 			case sf::Keyboard::O:
 				break;
 			case sf::Keyboard::Up:

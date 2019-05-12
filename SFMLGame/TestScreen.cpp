@@ -17,6 +17,7 @@ void TestScreen::create()
 	character.create(character_type);
 	character.set_animation(AnimationType::WALK);
 	character.set_position(tilemap.get_x() + 0, tilemap.get_y() + 60);
+	character.set_show_outline(true);
 
 	unsigned int totalCharacters = 0; // capable of 1000 chracters in 40 fps
 	characters = std::vector<Character>(totalCharacters);
@@ -55,7 +56,8 @@ void TestScreen::create()
 	add_component(back_button);
 
 	game_view.setSize(sf::Vector2f(game->get_resolution_width(), game->get_resolution_height()));
-	game_view.setCenter(sf::Vector2f(game->get_resolution_width() / 2, game->get_resolution_height() / 2));
+	game_view.setCenter(sf::Vector2f(character.get_x() + 8, character.get_y() + 8));
+	//game_view.setCenter(sf::Vector2f(game->get_resolution_width() / 2, game->get_resolution_height() / 2));
 
 	gui_view.setSize(sf::Vector2f(game->get_resolution_width(), game->get_resolution_height()));
 	//gui_view.setCenter(160, 100);
@@ -154,6 +156,10 @@ void TestScreen::handle_event(sf::Event &event, float elapsed_time)
 			break;
 		case sf::Keyboard::Space:
 			game->log("The quick brown fox jumps \nover the lazy dog.");
+			break;
+		case sf::Keyboard::Num4:
+			game->log("-1");
+			character.scale(-1, 1);
 			break;
 		}
 	case sf::Keyboard::R:

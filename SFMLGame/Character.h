@@ -28,7 +28,8 @@ static std::map<std::string, AnimationType> animation_type_map = {
 
 class Character : public AnimatedEntity {
 public:
-	Character() {}
+	Character() : facing_left(true) {}
+
 	void create(std::string type) {
 		Json json(Config::CHARACTERS);
 		
@@ -69,6 +70,8 @@ public:
 			animations[type] = Animation{ type, frames, fps };
 		}
 
+		set_dimensions(16, 16);
+		setOrigin(sf::Vector2f(8.f, 8.f));
 	}
 
 	void set_animation(AnimationType type) { 
@@ -81,8 +84,23 @@ public:
 		AnimatedEntity::update(elapsedTime);
 	}
 
+	void face_left() {
+		if (!facing_left) {
+			facing_left = true;
+			scale(-1, 1);
+			//set_position(get_x() - 16, get_y());
+		}
+	}
+
+	void face_right() {
+		if (facing_left) {
+			facing_left = false;
+			scale(-1, 1);
+			//set_position(get_x() + 16, get_y());
+		}
+	}
+
 private:
 	std::map<AnimationType, Animation> animations;
-	int x;
-	int y;
+	bool facing_left;
 };
