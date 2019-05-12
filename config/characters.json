@@ -19,7 +19,7 @@
     "human":{
       "file": "sprites",
       "size": {
-        "height": 18,
+        "height": 16,
         "width": 16
       },
       "animations":{

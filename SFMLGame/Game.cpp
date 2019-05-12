@@ -61,6 +61,11 @@ void Game::change_to_map_editor_screen() {
 	to_change_screen = new MapEditorScreen();
 }
 
+void Game::change_to_game_screen() {
+	to_change_screen = new GameScreen();
+	to_change_screen->config_filename = Path::SCREENS + "game.json";
+}
+
 void Game::change_screen() {
 	if (screen != nullptr) {
 		screen->destroy();

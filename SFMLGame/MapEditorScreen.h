@@ -65,15 +65,15 @@ class MapEditorScreen : public Screen
 {
 public:
 
-MapEditorScreen() 
-	: holding_screen(false), 
-	filename("unamed_map"), 
-	obstacle(false), 
-	highlight_obstacles(false) 
-{ }
+	MapEditorScreen() 
+		: holding_screen(false), 
+		filename("unamed_map"), 
+		obstacle(false), 
+		highlight_obstacles(false) 
+	{ }
 
 
-~MapEditorScreen() { }
+	~MapEditorScreen() { }
 
 	virtual void create() override;
 	virtual void destroy() override;

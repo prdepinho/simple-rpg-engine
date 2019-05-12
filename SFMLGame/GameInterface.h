@@ -19,6 +19,7 @@ public:
 	virtual void change_to_test_screen() = 0;
 	virtual void change_to_main_menu_screen() = 0;
 	virtual void change_to_map_editor_screen() = 0;
+	virtual void change_to_game_screen() = 0;
 	virtual void exit() = 0;
 
 	// graphic configuration

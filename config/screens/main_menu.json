@@ -3,6 +3,10 @@
     "title_string": "SFML Game",
     "buttons": [
       {
+        "label": "Start Game",
+        "function": "game"
+      },
+      {
         "label": "Test",
         "function": "test"
       },

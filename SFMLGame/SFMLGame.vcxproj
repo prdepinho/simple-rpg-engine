@@ -172,6 +172,7 @@
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="ScreenMainMenu.cpp" />
+    <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="TestScreen.cpp" />
     <ClCompile Include="TextField.cpp" />
     <ClCompile Include="Tilemap.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="Resources.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="ScreenMainMenu.h" />
+    <ClInclude Include="GameScreen.h" />
     <ClInclude Include="TestScreen.h" />
     <ClInclude Include="TextField.h" />
     <ClInclude Include="Tilemap.h" />

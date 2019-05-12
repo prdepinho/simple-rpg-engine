@@ -48,6 +48,14 @@ void ScreenMainMenu::create()
 				return true;
 			});
 		}
+		else if (function == "game") {
+			button.set_function([&](Component* c) {
+				std::string label = dynamic_cast<Button*>(c)->get_label();
+				game->log(label);
+				game->change_to_game_screen();
+				return true;
+			});
+		}
 		button.create();
 		add_component(button);
 	}

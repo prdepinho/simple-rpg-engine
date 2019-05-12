@@ -12,6 +12,7 @@
 #include "Screen.h"
 #include "ScreenMainMenu.h"
 #include "TestScreen.h"
+#include "GameScreen.h"
 #include "GameInterface.h"
 #include "MapEditorScreen.h"
 
@@ -28,6 +29,7 @@ public:
 	virtual void change_to_test_screen();
 	virtual void change_to_main_menu_screen();
 	virtual void change_to_map_editor_screen();
+	virtual void change_to_game_screen();
 
 	virtual void exit() override { run = false; }
 

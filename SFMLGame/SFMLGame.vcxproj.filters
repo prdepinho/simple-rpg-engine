@@ -174,9 +174,6 @@
     <ClCompile Include="MapEditorScreen.cpp">
       <Filter>screens</Filter>
     </ClCompile>
-    <ClCompile Include="TestScreen.cpp">
-      <Filter>screens</Filter>
-    </ClCompile>
     <ClCompile Include="Panel.cpp">
       <Filter>gui</Filter>
     </ClCompile>
@@ -191,6 +188,12 @@
     </ClCompile>
     <ClCompile Include="CustomPanel.cpp">
       <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScreen.cpp">
+      <Filter>screens</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScreen.cpp">
+      <Filter>screens</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -323,9 +326,6 @@
     <ClInclude Include="MapEditorScreen.h">
       <Filter>screens</Filter>
     </ClInclude>
-    <ClInclude Include="TestScreen.h">
-      <Filter>screens</Filter>
-    </ClInclude>
     <ClInclude Include="Panel.h">
       <Filter>gui</Filter>
     </ClInclude>
@@ -340,6 +340,12 @@
     </ClInclude>
     <ClInclude Include="CustomPanel.h">
       <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScreen.h">
+      <Filter>screens</Filter>
+    </ClInclude>
+    <ClInclude Include="TestScreen.h">
+      <Filter>screens</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

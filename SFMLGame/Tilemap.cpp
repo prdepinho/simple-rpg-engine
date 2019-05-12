@@ -59,3 +59,52 @@ bool Tilemap::load(
 
 	return true;
 }
+
+sf::Vector2i Tilemap::get_tile_coord(int pix_x, int pix_y) const {
+	sf::Vector2i coord;
+	coord.x = (pix_x - get_x()) / 16;
+	coord.y = (pix_y - get_y()) / 16;
+	return coord;
+}
+
+sf::Vector2f Tilemap::get_tile_pix_coords(int tile_x, int tile_y) {
+	sf::Vertex *quad = &vertices[(tile_y * width + tile_x) * 4];
+	return quad[0].position;
+}
+
+sf::Vector2f Tilemap::get_texture_coords(int frame_index, int tile_x, int tile_y) {
+	sf::VertexArray &frame = frames[frame_index];
+	sf::Vertex *quad = &frame[(tile_y * width + tile_x) * 4];
+	return quad[0].texCoords;
+}
+
+void Tilemap::set_texture_coords(int frame_index, int tile_x, int tile_y, float tex_x, float tex_y) {
+	sf::VertexArray &frame = frames[frame_index];
+	sf::Vertex *quad = &frame[(tile_y * width + tile_x) * 4];
+	set_quad_tex_coords(quad, tex_x, tex_y, 16.f, 16.f);
+	set_animation(frames, 1.f);
+}
+
+void Tilemap::set_texture_coords(int tile_x, int tile_y, float tex_x, float tex_y) {
+	for (sf::VertexArray &frame : frames) {
+		sf::Vertex *quad = &frame[(tile_y * width + tile_x) * 4];
+		set_quad_tex_coords(quad, tex_x, tex_y, 16.f, 16.f);
+		set_animation(frames, 1.f);
+	}
+}
+
+void Tilemap::paint_tile(int tile_x, int tile_y, sf::Color color) {
+	for (sf::VertexArray &frame : frames) {
+		sf::Vertex *quad = &frame[(tile_y * width + tile_x) * 4];
+		for (int i = 0; i < 4; ++i)
+			quad[i].color = color;
+	}
+}
+
+void Tilemap::clear_tile_color(int tile_x, int tile_y) {
+	for (sf::VertexArray &frame : frames) {
+		sf::Vertex *quad = &frame[(tile_y * width + tile_x) * 4];
+		for (int i = 0; i < 4; ++i)
+			quad[i].color = sf::Color::White;
+	}
+}

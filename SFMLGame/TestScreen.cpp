@@ -10,29 +10,23 @@ void TestScreen::create()
 		tiles[i] = i % 3;
 	}
 	tilemap.load(Textures::get("tileset"), sf::Vector2u(16, 16), tiles, mapSide, mapSide);
+	tilemap.set_position(100, 100);
 
-#if true
 	std::string character_type = "girl";
 	character = Character();
 	character.create(character_type);
 	character.set_animation(AnimationType::WALK);
-	character.set_position(0, 60);
+	character.set_position(tilemap.get_x() + 0, tilemap.get_y() + 60);
 
-#else
-	character.setSpriteSheet(Textures::get("sprites"));
-	character.setPosition(sf::Vector2f(0.f, 60.f));
-#endif
-
-	unsigned int totalCharacters = 0; // capable of 8000 chracters in 40 fps
-	characters.resize(totalCharacters);
+	unsigned int totalCharacters = 0; // capable of 1000 chracters in 40 fps
+	characters = std::vector<Character>(totalCharacters);
 	for (int i = 0; i < totalCharacters; ++i) {
 		float x = std::rand() % mapSide * 16;
 		float y = std::rand() % mapSide * 16;
-#if false
-		characters[i] = Character(sf::Color::Yellow);
-		characters[i].setSpriteSheet(Textures::get("sprite"));
-		characters[i].setPosition(x, y);
-#endif
+		characters[i] = Character();
+		characters[i].create("boy");
+		characters[i].set_animation(AnimationType::WALK);
+		characters[i].set_position(tilemap.get_x() + x, tilemap.get_y() + y);
 	}
 
 	log_font.set_texture(Textures::get("gui"));

@@ -418,14 +418,18 @@ void MapEditorScreen::create_map(int w, int h) {
 	map = Tilemap();
 	std::vector<int> tiles(w * h, 0);
 	map.load(Textures::get("tileset"), sf::Vector2u(16, 16), tiles.data(), w, h);
-	map.set_position(palette.get_width() + 1, exit_button.get_height());
+	int x = game->get_resolution_width() / 2 - map.get_width() / 2;
+	int y = game->get_resolution_height() / 2 -  map.get_height() / 2;
+	map.set_position(x, y);
 	map.set_show_outline(true);
 }
 
 void MapEditorScreen::load_map(std::string filename) {
 	this->filename = filename;
 	TilemapDAO::load_map(filename, map);
-	map.set_position(palette.get_width() + 1, exit_button.get_height());
+	int x = game->get_resolution_width() / 2 - map.get_width() / 2;
+	int y = game->get_resolution_height() / 2 -  map.get_height() / 2;
+	map.set_position(x, y);
 	map.set_show_outline(true);
 	set_highlight_obstacles(highlight_obstacles);
 }
