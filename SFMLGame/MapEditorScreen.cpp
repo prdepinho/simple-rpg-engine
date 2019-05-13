@@ -106,9 +106,10 @@ void MapEditorScreen::create() {
 	Screen::create();
 	Json json(Path::SCREENS + "map_editor.json");
 
+	game->change_resolution(640, 400, 2);
+
 	// menu buttons
 	{
-
 		// new map button
 		int x = 0;
 		int y = 0;
@@ -203,7 +204,11 @@ void MapEditorScreen::create() {
 		x += save_button.get_width();
 		exit_button = Button("Exit", x, y, 0, 0, [&](Component*) {
 			ChoicePanel::show("Are you sure?", *this,
-				[&]() { game->log("Yes"); game->change_to_main_menu_screen(); },
+				[&]() { 
+					game->log("Yes");
+					game->change_to_main_menu_screen();
+					game->revert_resolution();
+				},
 				[&]() { game->log("No"); }
 			);
 			return true;

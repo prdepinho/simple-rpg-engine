@@ -1,16 +1,12 @@
 {
   "screen":{
-    "_resolution": { "width": 320, "height": 200 },
-    "_size_modifier": 3,
-
-    "resolution": { "width": 640, "height": 400 },
-    "size_modifier": 2,
-
+    "resolution": { "width": 320, "height": 200 },
+    "size_modifier": 3,
     "fullscreen": false
   },
 
   "framerate": {
-    "use_vsync": true,
+    "use_vsync": false,
     "limited": false,
     "fps": 30
   }

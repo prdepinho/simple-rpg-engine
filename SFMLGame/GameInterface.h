@@ -32,6 +32,8 @@ public:
 	virtual bool is_limit_framerate() const = 0;
 	virtual int get_framerate() const = 0;
 
+	virtual void change_resolution(int w, int h, float modifier) = 0;
+	virtual void revert_resolution() = 0;
 };
 
 

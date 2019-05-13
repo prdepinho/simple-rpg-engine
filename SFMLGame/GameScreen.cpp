@@ -3,6 +3,34 @@
 #include "Json.h"
 #include "TilemapDAO.h"
 
+void MoveEffect::update(float elapsed_time) {
+	// TODO make it smoother.
+	if ((time_count += elapsed_time) >= seconds_per_pixel) {
+		time_count = 0;
+		if (character != nullptr) {
+			switch (direction) {
+			case Direction::UP:
+				character->move(0.f, -1.f);
+				break;
+			case Direction::DOWN:
+				character->move(0.f, 1.f);
+				break;
+			case Direction::LEFT:
+				character->move(-1.f, 0.f);
+				character->face_left();
+				break;
+			case Direction::RIGHT:
+				character->move(1.f, 0.f);
+				character->face_right();
+				break;
+			}
+		}
+		if (++moved_pixels == 16) {
+			stop_running();
+		}
+	}
+}
+
 
 void GameScreen::create() {
 	Screen::create();
@@ -40,7 +68,6 @@ void GameScreen::create() {
 	}
 
 	game_view.setSize(sf::Vector2f(game->get_resolution_width(), game->get_resolution_height()));
-	//game_view.setCenter(sf::Vector2f(game->get_resolution_width() / 2, game->get_resolution_height() / 2));
 	game_view.setCenter(sf::Vector2f(player_character->get_x(), player_character->get_y()));
 	gui_view.setSize(sf::Vector2f(game->get_resolution_width(), game->get_resolution_height()));
 	gui_view.setCenter(game->get_resolution_width() / 2, game->get_resolution_height() / 2);
@@ -88,7 +115,7 @@ bool GameScreen::update(float elapsed_time) {
 
 	// camera movement, after entity and effect handling
 	if(camera_follow && player_busy) {
-		game_view.setCenter(sf::Vector2f(player_character->getPosition()));
+		game_view.setCenter(player_character->getPosition());
 	}
 
 	// turn handling
@@ -252,3 +279,7 @@ void GameScreen::load_map(std::string filename) {
 	map.set_show_outline(true);
 }
 
+void GameScreen::put_character_on_tile(Character & character, int x, int y) {
+	auto tile_coords = map.get_tile_pix_coords(x, y);
+	character.set_position(map.get_x() + tile_coords.x + 8, map.get_y() + tile_coords.y + 8);
+}

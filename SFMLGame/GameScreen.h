@@ -47,32 +47,7 @@ public:
 		time_count(0),
 		moved_pixels(0)
 	{}
-	virtual void update(float elapsed_time) override {
-		if ((time_count += elapsed_time) >= seconds_per_pixel) {
-			time_count = 0;
-			if (character != nullptr) {
-				switch (direction) {
-				case Direction::UP:
-					character->set_position(character->get_x(), character->get_y() - 1);
-					break;
-				case Direction::DOWN:
-					character->set_position(character->get_x(), character->get_y() + 1);
-					break;
-				case Direction::LEFT:
-					character->set_position(character->get_x() - 1, character->get_y());
-					character->face_left();
-					break;
-				case Direction::RIGHT:
-					character->set_position(character->get_x() + 1, character->get_y());
-					character->face_right();
-					break;
-				}
-			}
-			if (++moved_pixels == 16) {
-				stop_running();
-			}
-		}
-	}
+	virtual void update(float elapsed_time) override;
 protected:
 	Character *character;
 	Direction direction;
@@ -109,10 +84,7 @@ public:
 private:
 	void load_map(std::string filename);
 
-	void put_character_on_tile(Character &character, int x, int y) {
-		auto tile_coords = map.get_tile_pix_coords(x, y);
-		character.set_position(map.get_x() + tile_coords.x + 8, map.get_y() + tile_coords.y + 8);
-	}
+	void put_character_on_tile(Character &character, int x, int y);
 
 
 

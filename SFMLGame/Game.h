@@ -71,6 +71,9 @@ public:
 	virtual bool is_use_vsync() const override { return use_vsync; }
 	virtual bool is_limit_framerate() const override { return limit_framerate; }
 	virtual int get_framerate() const override { return framerate; }
+
+	virtual void change_resolution(int w, int h, float modifier);
+	virtual void revert_resolution();
 };
 
 
