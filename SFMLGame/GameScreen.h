@@ -14,53 +14,12 @@
 #include "TextField.h"
 #include "CustomPanel.h"
 #include "CheckButton.h"
-
-
-enum class Direction {
-	UP, DOWN, LEFT, RIGHT
-};
-
-class Effect {
-public:
-	Effect(bool run = true)
-		: running(run),
-		on_end([&]() {})
-	{}
-
-	virtual void update(float elapsed_time) { stop_running(); }
-
-	bool is_running() const { return running; }
-	void stop_running() { running = false; on_end(); }
-	void set_on_end(std::function<void()> callback) { on_end = callback; }
-private:
-	bool running;
-	std::function<void()> on_end;
-};
-
-class MoveEffect : public Effect {
-public:
-	MoveEffect(Character *character = nullptr, Direction direction = Direction::UP, float seconds_for_pixel = 1.f)
-		: Effect(true),
-		character(character),
-		direction(direction),
-		seconds_per_pixel(seconds_for_pixel),
-		time_count(0),
-		moved_pixels(0)
-	{}
-	virtual void update(float elapsed_time) override;
-protected:
-	Character *character;
-	Direction direction;
-	float seconds_per_pixel;
-	float time_count;
-	int moved_pixels;
-};
+#include "Effect.h"
 
 
 class GameScreen : public Screen
 {
 public:
-
 	GameScreen()
 		: holding_screen(false),
 		player_character(nullptr),
@@ -94,6 +53,7 @@ private:
 
 	Character *player_character;
 	bool player_busy;
+	sf::Keyboard::Key player_input;
 	std::vector<Character> characters;
 
 	std::vector<Effect*> effects;

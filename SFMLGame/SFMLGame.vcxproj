@@ -123,12 +123,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Action.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="CheckButton.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="consts.cpp" />
     <ClCompile Include="CustomPanel.cpp" />
+    <ClCompile Include="Effect.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Json.cpp" />
@@ -179,12 +181,14 @@
     <ClCompile Include="TilemapDAO.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Action.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="CheckButton.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="consts.h" />
     <ClInclude Include="CustomPanel.h" />
+    <ClInclude Include="Effect.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="Game.h" />

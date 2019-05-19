@@ -3,34 +3,6 @@
 #include "Json.h"
 #include "TilemapDAO.h"
 
-void MoveEffect::update(float elapsed_time) {
-	// TODO make it smoother.
-	if ((time_count += elapsed_time) >= seconds_per_pixel) {
-		time_count = 0;
-		if (character != nullptr) {
-			switch (direction) {
-			case Direction::UP:
-				character->move(0.f, -1.f);
-				break;
-			case Direction::DOWN:
-				character->move(0.f, 1.f);
-				break;
-			case Direction::LEFT:
-				character->move(-1.f, 0.f);
-				character->face_left();
-				break;
-			case Direction::RIGHT:
-				character->move(1.f, 0.f);
-				character->face_right();
-				break;
-			}
-		}
-		if (++moved_pixels == 16) {
-			stop_running();
-		}
-	}
-}
-
 
 void GameScreen::create() {
 	Screen::create();
@@ -113,10 +85,12 @@ bool GameScreen::update(float elapsed_time) {
 		}
 	}
 
+#if false
 	// camera movement, after entity and effect handling
 	if(camera_follow && player_busy) {
 		game_view.setCenter(player_character->getPosition());
 	}
+#endif
 
 	// turn handling
 	{
@@ -124,6 +98,48 @@ bool GameScreen::update(float elapsed_time) {
 			++turn;
 			turn_count = 0.f;
 			game->log("turn: " + std::to_string(turn));
+
+#if false
+			// player input handling
+			{
+				switch (player_input) {
+				case sf::Keyboard::Up: {
+					Effect *effect = new MoveEffect(player_character, Direction::UP, seconds_for_turn / 16);
+					effect->set_on_end([&]() {
+						player_busy = false;
+					});
+					effects.push_back(effect);
+					player_busy = true;
+				}
+				case sf::Keyboard::Down: {
+					Effect *effect = new MoveEffect(player_character, Direction::DOWN, seconds_for_turn / 16);
+					effect->set_on_end([&]() {
+						player_busy = false;
+					});
+					effects.push_back(effect);
+					player_busy = true;
+				}
+				case sf::Keyboard::Right: {
+					Effect *effect = new MoveEffect(player_character, Direction::RIGHT, seconds_for_turn / 16);
+					effect->set_on_end([&]() {
+						player_busy = false;
+					});
+					effects.push_back(effect);
+					player_busy = true;
+				}
+				case sf::Keyboard::Left: {
+					Effect *effect = new MoveEffect(player_character, Direction::LEFT, seconds_for_turn / 16);
+					effect->set_on_end([&]() {
+						player_busy = false;
+					});
+					effects.push_back(effect);
+					player_busy = true;
+				}
+				}
+				player_input = sf::Keyboard::Pause;
+			}
+#endif
+
 		}
 	}
 
@@ -135,10 +151,16 @@ void GameScreen::poll_events(float elapsed_time) {
 	float move_speed = 100.0f;
 	try {
 		// constant input handler
+
 #if true
 		if (!player_busy) {
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
 				Effect *effect = new MoveEffect(player_character, Direction::UP, seconds_for_turn / 16);
+				effect->set_on_update([&]() {
+					if (camera_follow && player_busy) {
+						game_view.setCenter(player_character->getPosition());
+					}
+				});
 				effect->set_on_end([&]() {
 					player_busy = false;
 				});
@@ -147,6 +169,11 @@ void GameScreen::poll_events(float elapsed_time) {
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 				Effect *effect = new MoveEffect(player_character, Direction::DOWN, seconds_for_turn / 16);
+				effect->set_on_update([&]() {
+					if (camera_follow && player_busy) {
+						game_view.setCenter(player_character->getPosition());
+					}
+				});
 				effect->set_on_end([&]() {
 					player_busy = false;
 				});
@@ -155,6 +182,11 @@ void GameScreen::poll_events(float elapsed_time) {
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 				Effect *effect = new MoveEffect(player_character, Direction::RIGHT, seconds_for_turn / 16);
+				effect->set_on_update([&]() {
+					if (camera_follow && player_busy) {
+						game_view.setCenter(player_character->getPosition());
+					}
+				});
 				effect->set_on_end([&]() {
 					player_busy = false;
 				});
@@ -163,6 +195,11 @@ void GameScreen::poll_events(float elapsed_time) {
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
 				Effect *effect = new MoveEffect(player_character, Direction::LEFT, seconds_for_turn / 16);
+				effect->set_on_update([&]() {
+					if (camera_follow && player_busy) {
+						game_view.setCenter(player_character->getPosition());
+					}
+				});
 				effect->set_on_end([&]() {
 					player_busy = false;
 				});
@@ -170,6 +207,21 @@ void GameScreen::poll_events(float elapsed_time) {
 				player_busy = true;
 			}
 		}
+#else
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+			player_input = sf::Keyboard::Up;
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+			player_input = sf::Keyboard::Down;
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+			player_input = sf::Keyboard::Right;
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+			player_input = sf::Keyboard::Left;
+		}
+
 #endif
 
 		if (!pressed_gui) {

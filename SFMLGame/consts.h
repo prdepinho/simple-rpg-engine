@@ -63,3 +63,8 @@ public:
 	static const bool LIMIT_FRAMERATE;
 	static const int FRAMERATE;
 };
+
+enum class Direction {
+	UP, DOWN, LEFT, RIGHT
+};
+
