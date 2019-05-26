@@ -27,7 +27,8 @@ public:
 		turn_count(0.f),
 		seconds_for_turn(1.f),
 		player_busy(false),
-		camera_follow(true)
+		camera_follow(true),
+		player_input(sf::Keyboard::Pause)
 	{ }
 
 
@@ -44,6 +45,10 @@ private:
 	void load_map(std::string filename);
 
 	void put_character_on_tile(Character &character, int x, int y);
+	void move_player_character(Direction direction);
+	void move_player_character(int tile_x, int tile_y);
+	sf::Vector2i character_position(Character &character);
+	bool can_move(Character &character, Direction direction);
 
 
 

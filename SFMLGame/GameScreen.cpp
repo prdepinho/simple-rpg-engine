@@ -2,6 +2,7 @@
 #include "Resources.h"
 #include "Json.h"
 #include "TilemapDAO.h"
+#include "AStar.h"
 
 
 void GameScreen::create() {
@@ -85,60 +86,39 @@ bool GameScreen::update(float elapsed_time) {
 		}
 	}
 
-#if false
-	// camera movement, after entity and effect handling
-	if(camera_follow && player_busy) {
-		game_view.setCenter(player_character->getPosition());
-	}
-#endif
-
-	// turn handling
-	{
+	// Turn handling. Wait player input to process the next turn.
+	if(player_input != sf::Keyboard::Pause){
 		if ((turn_count += elapsed_time) >= seconds_for_turn) {
 			++turn;
 			turn_count = 0.f;
-			game->log("turn: " + std::to_string(turn));
 
-#if false
+			std::stringstream ss;
+			ss << "turn: " << turn;
+			game->log(ss.str());
+
 			// player input handling
-			{
-				switch (player_input) {
-				case sf::Keyboard::Up: {
-					Effect *effect = new MoveEffect(player_character, Direction::UP, seconds_for_turn / 16);
-					effect->set_on_end([&]() {
-						player_busy = false;
-					});
-					effects.push_back(effect);
-					player_busy = true;
-				}
-				case sf::Keyboard::Down: {
-					Effect *effect = new MoveEffect(player_character, Direction::DOWN, seconds_for_turn / 16);
-					effect->set_on_end([&]() {
-						player_busy = false;
-					});
-					effects.push_back(effect);
-					player_busy = true;
-				}
-				case sf::Keyboard::Right: {
-					Effect *effect = new MoveEffect(player_character, Direction::RIGHT, seconds_for_turn / 16);
-					effect->set_on_end([&]() {
-						player_busy = false;
-					});
-					effects.push_back(effect);
-					player_busy = true;
-				}
-				case sf::Keyboard::Left: {
-					Effect *effect = new MoveEffect(player_character, Direction::LEFT, seconds_for_turn / 16);
-					effect->set_on_end([&]() {
-						player_busy = false;
-					});
-					effects.push_back(effect);
-					player_busy = true;
-				}
-				}
+			switch (player_input) {
+			case sf::Keyboard::Up:
+				if (can_move(*player_character, Direction::UP))
+					move_player_character(Direction::UP);
 				player_input = sf::Keyboard::Pause;
+				break;
+			case sf::Keyboard::Down:
+				if (can_move(*player_character, Direction::DOWN))
+					move_player_character(Direction::DOWN);
+				player_input = sf::Keyboard::Pause;
+				break;
+			case sf::Keyboard::Right:
+				if (can_move(*player_character, Direction::RIGHT))
+					move_player_character(Direction::RIGHT);
+				player_input = sf::Keyboard::Pause;
+				break;
+			case sf::Keyboard::Left:
+				if (can_move(*player_character, Direction::LEFT))
+					move_player_character(Direction::LEFT);
+				player_input = sf::Keyboard::Pause;
+				break;
 			}
-#endif
 
 		}
 	}
@@ -148,66 +128,8 @@ bool GameScreen::update(float elapsed_time) {
 
 void GameScreen::poll_events(float elapsed_time) {
 	Screen::poll_events(elapsed_time);
-	float move_speed = 100.0f;
 	try {
 		// constant input handler
-
-#if true
-		if (!player_busy) {
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-				Effect *effect = new MoveEffect(player_character, Direction::UP, seconds_for_turn / 16);
-				effect->set_on_update([&]() {
-					if (camera_follow && player_busy) {
-						game_view.setCenter(player_character->getPosition());
-					}
-				});
-				effect->set_on_end([&]() {
-					player_busy = false;
-				});
-				effects.push_back(effect);
-				player_busy = true;
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-				Effect *effect = new MoveEffect(player_character, Direction::DOWN, seconds_for_turn / 16);
-				effect->set_on_update([&]() {
-					if (camera_follow && player_busy) {
-						game_view.setCenter(player_character->getPosition());
-					}
-				});
-				effect->set_on_end([&]() {
-					player_busy = false;
-				});
-				effects.push_back(effect);
-				player_busy = true;
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-				Effect *effect = new MoveEffect(player_character, Direction::RIGHT, seconds_for_turn / 16);
-				effect->set_on_update([&]() {
-					if (camera_follow && player_busy) {
-						game_view.setCenter(player_character->getPosition());
-					}
-				});
-				effect->set_on_end([&]() {
-					player_busy = false;
-				});
-				effects.push_back(effect);
-				player_busy = true;
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-				Effect *effect = new MoveEffect(player_character, Direction::LEFT, seconds_for_turn / 16);
-				effect->set_on_update([&]() {
-					if (camera_follow && player_busy) {
-						game_view.setCenter(player_character->getPosition());
-					}
-				});
-				effect->set_on_end([&]() {
-					player_busy = false;
-				});
-				effects.push_back(effect);
-				player_busy = true;
-			}
-		}
-#else
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
 			player_input = sf::Keyboard::Up;
@@ -221,8 +143,6 @@ void GameScreen::poll_events(float elapsed_time) {
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
 			player_input = sf::Keyboard::Left;
 		}
-
-#endif
 
 		if (!pressed_gui) {
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
@@ -272,6 +192,8 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 					std::stringstream ss;
 					ss << "CLick: " << "(x: " << x << ", y: " << y << "); Tile: (" << tile_x << ", " << tile_y << ")";
 					game->log(ss.str());
+
+					move_player_character(tile_x, tile_y);
 				}
 			}
 			else if (event.mouseButton.button == sf::Mouse::Button::Middle) {
@@ -293,12 +215,16 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			case sf::Keyboard::O:
 				break;
 			case sf::Keyboard::Up:
+				player_input = sf::Keyboard::Up;
 				break;
 			case sf::Keyboard::Down:
+				player_input = sf::Keyboard::Down;
 				break;
 			case sf::Keyboard::Left:
+				player_input = sf::Keyboard::Left;
 				break;
 			case sf::Keyboard::Right:
+				player_input = sf::Keyboard::Right;
 				break;
 			}
 		}
@@ -334,4 +260,55 @@ void GameScreen::load_map(std::string filename) {
 void GameScreen::put_character_on_tile(Character & character, int x, int y) {
 	auto tile_coords = map.get_tile_pix_coords(x, y);
 	character.set_position(map.get_x() + tile_coords.x + 8, map.get_y() + tile_coords.y + 8);
+}
+
+void GameScreen::move_player_character(Direction direction) {
+	Effect *effect = new MoveEffect(player_character, direction, seconds_for_turn / 16);
+	effect->set_on_update([&]() {
+		if (camera_follow) {
+			game_view.setCenter(player_character->getPosition());
+		}
+	});
+	effect->set_on_end([&]() {
+		player_busy = false;
+	});
+	effects.push_back(effect);
+	player_busy = true;
+}
+
+void GameScreen::move_player_character(int tile_x, int tile_y) {
+	sf::Vector2i start(character_position(*player_character));
+	sf::Vector2i end(tile_x, tile_y);
+	std::vector<sf::Vector2i> path = AStar::search(map, start, end);
+
+	for (sf::Vector2i &coords : path) {
+		std::stringstream ss;
+		ss << "x: " << coords.x << ", y: " << coords.y;
+		game->log(ss.str());
+	}
+}
+
+inline sf::Vector2i GameScreen::character_position(Character &character) {
+	return map.get_tile_coord(character.get_x(), character.get_y());
+}
+
+bool GameScreen::can_move(Character &character, Direction direction) {
+	sf::Vector2i position = character_position(character);
+	int dst_x = position.x;
+	int dst_y = position.y;
+	switch (direction) {
+	case Direction::UP:
+		dst_y -= 1; break;
+	case Direction::DOWN:
+		dst_y += 1; break;
+	case Direction::RIGHT:
+		dst_x += 1; break;
+	case Direction::LEFT:
+		dst_x -= 1; break;
+	}
+	if (map.in_tile_bounds(dst_x, dst_y)) {
+		TileData &tile = map.get_tile(dst_x, dst_y);
+		return !tile.obstacle;
+	}
+	return false;
 }

@@ -1,16 +1,5 @@
 #include "Tilemap.h"
 
-
-
-Tilemap::Tilemap()
-{
-}
-
-
-Tilemap::~Tilemap()
-{
-}
-
 bool Tilemap::load(
 	sf::Texture * tileset, 
 	sf::Vector2u tileSize, 
@@ -107,4 +96,22 @@ void Tilemap::clear_tile_color(int tile_x, int tile_y) {
 		for (int i = 0; i < 4; ++i)
 			quad[i].color = sf::Color::White;
 	}
+}
+
+std::vector<sf::Vector2i> Tilemap::get_neighbors(sf::Vector2i tile_coords) {
+	std::vector<sf::Vector2i> neighbors;
+	std::tuple<int, int> tuples[4] = {
+		std::make_tuple(-1, 0),
+		std::make_tuple(1, 0),
+		std::make_tuple(0, -1),
+		std::make_tuple(0, 1),
+	};
+	for (int i = 0; i < 4; i++) {
+		int x = tile_coords.x + std::get<0>(tuples[i]);
+		int y = tile_coords.y + std::get<1>(tuples[i]);
+		if (in_tile_bounds(x, y) && !get_tile(x, y).obstacle) {
+			neighbors.push_back(sf::Vector2i(x, y));
+		}
+	}
+	return neighbors;
 }

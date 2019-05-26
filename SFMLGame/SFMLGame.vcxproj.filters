@@ -201,6 +201,9 @@
     <ClCompile Include="Action.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AStar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tilemap.h">
@@ -357,6 +360,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Action.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AStar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
