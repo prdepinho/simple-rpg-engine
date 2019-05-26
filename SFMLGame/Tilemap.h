@@ -37,9 +37,6 @@ public:
 	/// Return whether the tile coordinates are inside the map.
 	bool in_tile_bounds(int tile_x, int tile_y) const { return tile_x < width && tile_x >= 0 && tile_y < height && tile_y >= 0; }
 
-	/// Return a vector of the four neighbors of a specific file.
-	std::vector<sf::Vector2i> get_neighbors(sf::Vector2i tile_coords);
-
 private:
 	unsigned int width;
 	unsigned int height;

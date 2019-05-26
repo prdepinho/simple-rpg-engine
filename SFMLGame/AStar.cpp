@@ -1,13 +1,18 @@
 #include "AStar.h"
 
-float AStar::distance(sf::Vector2i na, sf::Vector2i nb) {
-	float xl = std::abs((float)(na.x - nb.x));
-	float yl = std::abs((float)(na.y - nb.y));
-	return std::sqrt((xl * xl) + (yl * yl));
-}
-
-std::vector<sf::Vector2i> AStar::search(Tilemap & map, sf::Vector2i start, sf::Vector2i end, unsigned int limit)
+std::stack<Direction> AStar::search(Tilemap & map, sf::Vector2i start, sf::Vector2i end, unsigned int limit)
 {
+	std::map<Direction, std::tuple<int, int>> direction_mods = {
+		{Direction::UP, std::make_tuple(0, -1)},
+		{Direction::DOWN, std::make_tuple(0, +1)},
+		{Direction::RIGHT, std::make_tuple(+1, 0)},
+		{Direction::LEFT, std::make_tuple(-1, 0)}
+	};
+
+	std::vector<Direction> directions = {
+		Direction::UP, Direction::DOWN, Direction::RIGHT, Direction::LEFT
+	};
+
 	int map_height = map.get_tile_height();
 	int map_width = map.get_tile_width();
 
@@ -30,19 +35,24 @@ std::vector<sf::Vector2i> AStar::search(Tilemap & map, sf::Vector2i start, sf::V
 			break;
 		}
 
-		std::vector<sf::Vector2i> neighbors = map.get_neighbors(current->coords);
-		for (sf::Vector2i &neighbor : neighbors) {
-			Node *neighbor_node = &search_grid[neighbor.y * map_width + neighbor.x];
+		for (Direction &direction : directions) {
+			int x = current->coords.x + std::get<0>(direction_mods[direction]);
+			int y = current->coords.y + std::get<1>(direction_mods[direction]);
+			if (map.in_tile_bounds(x, y) && !map.get_tile(x, y).obstacle) {
+				sf::Vector2i neighbor(x, y);
+				Node *neighbor_node = &search_grid[neighbor.y * map_width + neighbor.x];
 
-			if (!neighbor_node->visited && neighbor_node->local > current->local + 1) {
-				neighbor_node->local = current->local + 1;
-				neighbor_node->global = neighbor_node->local + AStar::distance(neighbor, end);
-				neighbor_node->parent = current;
+				if (!neighbor_node->visited && neighbor_node->local > current->local + 1) {
+					neighbor_node->local = current->local + 1;
+					neighbor_node->global = neighbor_node->local + AStar::distance(neighbor, end);
+					neighbor_node->parent = current;
+					neighbor_node->direction = direction;
 
-				search_queue.push(neighbor_node);
+					search_queue.push(neighbor_node);
 
-				if (neighbor == end) {
-					dst_node = neighbor_node;
+					if (neighbor == end) {
+						dst_node = neighbor_node;
+					}
 				}
 			}
 		}
@@ -50,13 +60,20 @@ std::vector<sf::Vector2i> AStar::search(Tilemap & map, sf::Vector2i start, sf::V
 		search_queue.pop();
 	}
 
-	std::vector<sf::Vector2i> path;
+	std::stack<Direction> path;
 	if (dst_node != nullptr) {
 		Node *a_star_node = dst_node;
 		do {
-			path.push_back(a_star_node->coords);
+			path.push(a_star_node->direction);
 		} while ((a_star_node = a_star_node->parent) != nullptr);
 	}
 
 	return path;
 }
+
+inline float AStar::distance(sf::Vector2i na, sf::Vector2i nb) {
+	float xl = std::abs((float)(na.x - nb.x));
+	float yl = std::abs((float)(na.y - nb.y));
+	return std::sqrt((xl * xl) + (yl * yl));
+}
+

@@ -3,6 +3,7 @@
 #include "Json.h"
 #include "TilemapDAO.h"
 #include "AStar.h"
+#include <stack>
 
 
 void GameScreen::create() {
@@ -87,8 +88,8 @@ bool GameScreen::update(float elapsed_time) {
 	}
 
 	// Turn handling. Wait player input to process the next turn.
-	if(player_input != sf::Keyboard::Pause){
-		if ((turn_count += elapsed_time) >= seconds_for_turn) {
+	if ((turn_count += elapsed_time) >= seconds_for_turn) {
+		if (player_character->schedule_size() > 0){
 			++turn;
 			turn_count = 0.f;
 
@@ -96,31 +97,24 @@ bool GameScreen::update(float elapsed_time) {
 			ss << "turn: " << turn;
 			game->log(ss.str());
 
-			// player input handling
-			switch (player_input) {
-			case sf::Keyboard::Up:
-				if (can_move(*player_character, Direction::UP))
-					move_player_character(Direction::UP);
-				player_input = sf::Keyboard::Pause;
-				break;
-			case sf::Keyboard::Down:
-				if (can_move(*player_character, Direction::DOWN))
-					move_player_character(Direction::DOWN);
-				player_input = sf::Keyboard::Pause;
-				break;
-			case sf::Keyboard::Right:
-				if (can_move(*player_character, Direction::RIGHT))
-					move_player_character(Direction::RIGHT);
-				player_input = sf::Keyboard::Pause;
-				break;
-			case sf::Keyboard::Left:
-				if (can_move(*player_character, Direction::LEFT))
-					move_player_character(Direction::LEFT);
-				player_input = sf::Keyboard::Pause;
-				break;
-			}
+			// execute scheduled actions.
+			for (Character &character : characters) {
+				Action *action = character.next_action();
+				if (action != nullptr) {
+					action->execute(this);
 
+					for (auto it = actions.begin(); it != actions.end(); ++it) {
+						if (action == *it) {
+							delete action;
+							actions.erase(it);
+							break;
+						}
+					}
+
+				}
+			}
 		}
+
 	}
 
 	return true;
@@ -131,17 +125,35 @@ void GameScreen::poll_events(float elapsed_time) {
 	try {
 		// constant input handler
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-			player_input = sf::Keyboard::Up;
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-			player_input = sf::Keyboard::Down;
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-			player_input = sf::Keyboard::Right;
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-			player_input = sf::Keyboard::Left;
+		if (!player_busy) {
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+				if (can_move(*player_character, Direction::UP)) {
+					actions.push_back(new MoveAction(player_character, Direction::UP));
+					player_character->schedule_action(actions.back());
+					player_busy = true;
+				}
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+				if (can_move(*player_character, Direction::DOWN)) {
+					actions.push_back(new MoveAction(player_character, Direction::DOWN));
+					player_character->schedule_action(actions.back());
+					player_busy = true;
+				}
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+				if (can_move(*player_character, Direction::RIGHT)) {
+					actions.push_back(new MoveAction(player_character, Direction::RIGHT));
+					player_character->schedule_action(actions.back());
+					player_busy = true;
+				}
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+				if (can_move(*player_character, Direction::LEFT)) {
+					actions.push_back(new MoveAction(player_character, Direction::LEFT));
+					player_character->schedule_action(actions.back());
+					player_busy = true;
+				}
+			}
 		}
 
 		if (!pressed_gui) {
@@ -193,7 +205,7 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 					ss << "CLick: " << "(x: " << x << ", y: " << y << "); Tile: (" << tile_x << ", " << tile_y << ")";
 					game->log(ss.str());
 
-					move_player_character(tile_x, tile_y);
+					schedule_player_character_movement(tile_x, tile_y);
 				}
 			}
 			else if (event.mouseButton.button == sf::Mouse::Button::Middle) {
@@ -215,16 +227,12 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			case sf::Keyboard::O:
 				break;
 			case sf::Keyboard::Up:
-				player_input = sf::Keyboard::Up;
 				break;
 			case sf::Keyboard::Down:
-				player_input = sf::Keyboard::Down;
 				break;
 			case sf::Keyboard::Left:
-				player_input = sf::Keyboard::Left;
 				break;
 			case sf::Keyboard::Right:
-				player_input = sf::Keyboard::Right;
 				break;
 			}
 		}
@@ -276,15 +284,36 @@ void GameScreen::move_player_character(Direction direction) {
 	player_busy = true;
 }
 
-void GameScreen::move_player_character(int tile_x, int tile_y) {
+void GameScreen::schedule_player_character_movement(int tile_x, int tile_y) {
 	sf::Vector2i start(character_position(*player_character));
 	sf::Vector2i end(tile_x, tile_y);
-	std::vector<sf::Vector2i> path = AStar::search(map, start, end);
+	std::stack<Direction> path = AStar::search(map, start, end);
 
-	for (sf::Vector2i &coords : path) {
-		std::stringstream ss;
-		ss << "x: " << coords.x << ", y: " << coords.y;
-		game->log(ss.str());
+	player_character->clear_schedule();
+	while (!path.empty()) {
+		Direction direction = path.top();
+		std::map<Direction, std::string> direction_name = {
+			{Direction::UP, "UP"},
+			{Direction::DOWN, "DOWN"},
+			{Direction::RIGHT, "RIGHT"},
+			{Direction::LEFT, "LEFT"},
+		};
+		game->log(direction_name[direction]);
+
+		actions.push_back(new MoveAction(player_character, direction));
+		player_character->schedule_action(actions.back());
+
+		path.pop();
+	}
+}
+
+void GameScreen::move_character(Character &character, Direction direction) {
+	if (&character == player_character) {
+		move_player_character(direction);
+	}
+	else {
+		Effect *effect = new MoveEffect(player_character, direction, seconds_for_turn / 16);
+		effects.push_back(effect);
 	}
 }
 
