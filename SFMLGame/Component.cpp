@@ -1,5 +1,6 @@
 #include "Component.h"
 #include "Screen.h"
+#include "Game.h"
 
 
 Component::Component()
@@ -17,7 +18,7 @@ Component::~Component()
 {
 }
 
-GameInterface *Component::get_game() {
+Game *Component::get_game() {
 	return parent_screen->get_game();
 }
 

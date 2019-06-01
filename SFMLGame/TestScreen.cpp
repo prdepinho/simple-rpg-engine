@@ -1,4 +1,5 @@
 #include "TestScreen.h"
+#include "Game.h"
 
 void TestScreen::create()
 {

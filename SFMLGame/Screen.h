@@ -1,12 +1,13 @@
 #pragma once
 #include <vector>
 #include "Component.h"
-#include "GameInterface.h"
+
+class Game;
 
 class Screen
 {
 public:
-	Screen(sf::RenderWindow *window=nullptr, GameInterface *game=nullptr);
+	Screen(sf::RenderWindow *window=nullptr, Game *game=nullptr);
 	virtual ~Screen();
 
 	virtual void create();
@@ -21,8 +22,8 @@ public:
 	void select_component(Component &component) { this->selected_component = &component; }
 	Component &get_container() { return container; }
 	void set_window(sf::RenderWindow *window) { this->window = window; }
-	void set_game(GameInterface *game) { this->game = game; }
-	GameInterface *get_game() { return game; }
+	void set_game(Game *game) { this->game = game; }
+	Game *get_game() { return game; }
 
 	sf::View &get_game_view() { return game_view; }
 	sf::View &get_gui_view() { return gui_view; }
@@ -42,7 +43,7 @@ protected:
 	Component container;
 	Component *selected_component = nullptr;
 	sf::RenderWindow *window;
-	GameInterface *game;
+	Game *game;
 	bool created;
 
 	bool pressed_gui;

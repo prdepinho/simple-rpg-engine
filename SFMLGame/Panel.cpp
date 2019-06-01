@@ -2,6 +2,7 @@
 #include "Resources.h"
 #include "Json.h"
 #include "Screen.h"
+#include "Game.h"
 
 
 void Panel::create() {

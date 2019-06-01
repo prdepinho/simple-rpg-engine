@@ -6,9 +6,9 @@
   },
 
   "framerate": {
-    "use_vsync": false,
+    "use_vsync": true,
     "limited": false,
-    "fps": 30
+    "fps": 60
   }
 
 }

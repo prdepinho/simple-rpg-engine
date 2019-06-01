@@ -1,9 +1,9 @@
 #pragma once
 #include <vector>
 #include "Entity.h"
-#include "GameInterface.h"
 
 class Screen;
+class Game;
 
 class Component : public Entity
 {
@@ -14,7 +14,7 @@ public:
 
 	virtual void create();
 
-	GameInterface *get_game();
+	Game *get_game();
 	Screen *get_screen() { return parent_screen; }
 	void set_screen(Screen *screen) { parent_screen = screen; }
 	Component *get_parent() { return parent_component; }

@@ -1,5 +1,6 @@
 #include "ScreenMainMenu.h"
 #include "Json.h"
+#include "Game.h"
 
 
 ScreenMainMenu::ScreenMainMenu()

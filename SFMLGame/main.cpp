@@ -28,6 +28,11 @@ extern "C"
 		lua->log("Game start");
 		return 1;
 	}
+
+	int sfml_get_map_width(lua_State *state) {
+		return 1;
+	}
+
 }
 
 void register_lua_accessible_functions()

@@ -2,6 +2,7 @@
 #include "TextField.h"
 #include "Button.h"
 #include "CheckButton.h"
+#include "Game.h"
 
 void CustomPanel::create() {
 	if (json == nullptr || screen == nullptr)

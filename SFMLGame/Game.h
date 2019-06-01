@@ -13,16 +13,15 @@
 #include "ScreenMainMenu.h"
 #include "TestScreen.h"
 #include "GameScreen.h"
-#include "GameInterface.h"
 #include "MapEditorScreen.h"
 
-class Game : public GameInterface {
+class Game {
 public:
 	Game();
 	~Game();
 
-	virtual void log(std::string text) override{ lua.log(text); }
-	virtual Lua* get_lua() override { return &lua; }
+	virtual void log(std::string text) { lua.log(text); }
+	virtual Lua* get_lua() { return &lua; }
 
 	void start();
 
@@ -31,7 +30,7 @@ public:
 	virtual void change_to_map_editor_screen();
 	virtual void change_to_game_screen();
 
-	virtual void exit() override { run = false; }
+	virtual void exit() { run = false; }
 
 private:
 	void change_screen();
@@ -63,14 +62,14 @@ private:
 	int framerate;
 
 public:
-	virtual int get_resolution_width() const override { return resolution_width; }
-	virtual int get_resolution_height() const override { return resolution_height; }
-	virtual int get_screen_width() const override { return screen_width; }
-	virtual int get_screen_height() const override { return screen_height; }
-	virtual bool is_fullscreen() const override { return fullscreen; }
-	virtual bool is_use_vsync() const override { return use_vsync; }
-	virtual bool is_limit_framerate() const override { return limit_framerate; }
-	virtual int get_framerate() const override { return framerate; }
+	virtual int get_resolution_width() const { return resolution_width; }
+	virtual int get_resolution_height() const { return resolution_height; }
+	virtual int get_screen_width() const { return screen_width; }
+	virtual int get_screen_height() const { return screen_height; }
+	virtual bool is_fullscreen() const { return fullscreen; }
+	virtual bool is_use_vsync() const { return use_vsync; }
+	virtual bool is_limit_framerate() const { return limit_framerate; }
+	virtual int get_framerate() const { return framerate; }
 
 	virtual void change_resolution(int w, int h, float modifier);
 	virtual void revert_resolution();

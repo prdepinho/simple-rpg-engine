@@ -1,8 +1,9 @@
 #include "Screen.h"
+#include "Game.h"
 
 
 
-Screen::Screen(sf::RenderWindow *window, GameInterface *game) : pressed_gui(false)
+Screen::Screen(sf::RenderWindow *window, Game *game) : pressed_gui(false)
 {
 	this->window = window;
 	this->game = game;

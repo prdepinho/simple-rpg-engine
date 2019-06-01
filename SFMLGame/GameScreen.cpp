@@ -3,6 +3,7 @@
 #include "Json.h"
 #include "TilemapDAO.h"
 #include "AStar.h"
+#include "Game.h"
 #include <stack>
 
 
@@ -26,7 +27,7 @@ void GameScreen::create() {
 
 	// create characters
 	{
-		int total_characters = 5;
+		int total_characters = 2;
 		characters = std::vector<Character>(total_characters);
 		for (int i = 0; i < total_characters; ++i) {
 			characters[i] = Character();
