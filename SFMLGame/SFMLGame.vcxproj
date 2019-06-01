@@ -131,6 +131,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="consts.cpp" />
     <ClCompile Include="CustomPanel.cpp" />
+    <ClCompile Include="DebugConsole.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="consts.h" />
     <ClInclude Include="CustomPanel.h" />
+    <ClInclude Include="DebugConsole.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="font.h" />

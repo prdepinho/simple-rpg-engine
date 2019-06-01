@@ -16,6 +16,7 @@
 #include "CheckButton.h"
 #include "Effect.h"
 #include "Action.h"
+#include "DebugConsole.h"
 
 
 class GameScreen : public Screen
@@ -50,6 +51,8 @@ public:
 	virtual void poll_events(float elased_time) override;
 	virtual void handle_event(sf::Event &event, float elapsed_time) override;
 
+	Tilemap &get_map() { return map; }
+
 public:
 	void load_map(std::string filename);
 
@@ -81,5 +84,7 @@ private:
 	bool camera_follow;
 	bool holding_screen;
 	sf::Vector2f holding_start_position;
+
+	DebugConsole debug_console;
 };
 

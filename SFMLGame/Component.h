@@ -26,6 +26,9 @@ public:
 	// component management
 	void add_component(Component &component);
 	void remove_component(Component &component);
+	Component *get_component(int index) {
+		return components[index];
+	}
 	Component *get_component(std::string identifier) {
 		for (Component *c : components) {
 			if (c->identifier == identifier) {

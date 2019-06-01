@@ -22,8 +22,8 @@ function on_idle()
     map_h = sfml_get_map_height()
 
     -- get current character position
-    tile_x = sfml_current_tile_position_x()
-    tile_y = sfml_current_tile_position_y()
+    tile_x = sfml_get_current_tile_position_x()
+    tile_y = sfml_get_current_tile_position_y()
 
     -- horizontal movement
     move_h = math.random(4)

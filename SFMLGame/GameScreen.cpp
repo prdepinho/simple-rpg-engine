@@ -42,6 +42,18 @@ void GameScreen::create() {
 		player_character = &characters.back();
 	}
 
+	// debug console
+	{
+		int width = game->get_resolution_width() - 10;
+		debug_console = DebugConsole(width);
+		debug_console.create();
+		int x = 0;
+		int y = 0;
+		debug_console.set_position(x, y);
+		debug_console.hide();
+		add_component(debug_console);
+	}
+
 	game_view.setSize(sf::Vector2f(game->get_resolution_width(), game->get_resolution_height()));
 	game_view.setCenter(sf::Vector2f(player_character->get_x(), player_character->get_y()));
 	gui_view.setSize(sf::Vector2f(game->get_resolution_width(), game->get_resolution_height()));
@@ -224,7 +236,7 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				ss << "Camera follow: " << (camera_follow ? "True" : "False");
 				game->log(ss.str());
 			}
-				break;
+								  break;
 			case sf::Keyboard::O:
 				break;
 			case sf::Keyboard::Up:
@@ -235,9 +247,24 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				break;
 			case sf::Keyboard::Right:
 				break;
-			}
+
 		}
 		break;
+		}
+	case sf::Event::KeyReleased: 
+		if (!pressed_gui) {
+			switch (event.key.code) {
+			case sf::Keyboard::Tilde:
+				if (debug_console.is_visible()) {
+					debug_console.show();
+					container.select(debug_console);
+				}
+				else {
+					debug_console.hide();
+				}
+				break;
+			}
+		}
 	case sf::Event::MouseButtonReleased:
 		if (!pressed_gui) {
 			if (event.mouseButton.button == sf::Mouse::Button::Middle) {

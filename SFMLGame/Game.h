@@ -20,17 +20,19 @@ public:
 	Game();
 	~Game();
 
-	virtual void log(std::string text) { lua.log(text); }
-	virtual Lua* get_lua() { return &lua; }
+	void log(std::string text) { lua.log(text); }
+	Lua* get_lua() { return &lua; }
 
 	void start();
 
-	virtual void change_to_test_screen();
-	virtual void change_to_main_menu_screen();
-	virtual void change_to_map_editor_screen();
-	virtual void change_to_game_screen();
+	void change_to_test_screen();
+	void change_to_main_menu_screen();
+	void change_to_map_editor_screen();
+	void change_to_game_screen();
 
-	virtual void exit() { run = false; }
+	void exit() { run = false; }
+
+	Screen *get_screen() { return screen; }
 
 private:
 	void change_screen();
@@ -62,17 +64,17 @@ private:
 	int framerate;
 
 public:
-	virtual int get_resolution_width() const { return resolution_width; }
-	virtual int get_resolution_height() const { return resolution_height; }
-	virtual int get_screen_width() const { return screen_width; }
-	virtual int get_screen_height() const { return screen_height; }
-	virtual bool is_fullscreen() const { return fullscreen; }
-	virtual bool is_use_vsync() const { return use_vsync; }
-	virtual bool is_limit_framerate() const { return limit_framerate; }
-	virtual int get_framerate() const { return framerate; }
+	int get_resolution_width() const { return resolution_width; }
+	int get_resolution_height() const { return resolution_height; }
+	int get_screen_width() const { return screen_width; }
+	int get_screen_height() const { return screen_height; }
+	bool is_fullscreen() const { return fullscreen; }
+	bool is_use_vsync() const { return use_vsync; }
+	bool is_limit_framerate() const { return limit_framerate; }
+	int get_framerate() const { return framerate; }
 
-	virtual void change_resolution(int w, int h, float modifier);
-	virtual void revert_resolution();
+	void change_resolution(int w, int h, float modifier);
+	void revert_resolution();
 };
 
 

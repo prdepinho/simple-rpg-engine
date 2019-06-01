@@ -7,6 +7,22 @@
 // Game is visible to the Lua accessible functions.
 Game game;
 
+void register_lua_accessible_functions();
+
+int main() 
+{
+	register_lua_accessible_functions();
+	try {
+		game.start();
+	}
+	catch (std::exception &e) {
+		std::cout << e.what() << std::endl;
+		char a;
+		std::cin >> a;
+	}
+	return 0;
+}
+
 
 // Lua accessible functions.
 extern "C"
@@ -30,7 +46,13 @@ extern "C"
 	}
 
 	int sfml_get_map_width(lua_State *state) {
-		return 1;
+		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
+		return screen->get_map().get_tile_width();
+	}
+
+	int sfml_get_map_height(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
+		return screen->get_map().get_tile_height();
 	}
 
 }
@@ -39,19 +61,6 @@ void register_lua_accessible_functions()
 {
 	Lua *lua = game.get_lua();
 	lua_register(lua->get_state(), "sfml_game_start", sfml_game_start);
+	lua_register(lua->get_state(), "sfml_get_map_width", sfml_get_map_width);
+	lua_register(lua->get_state(), "sfml_get_map_height", sfml_get_map_height);
 }
-
-int main() 
-{
-	register_lua_accessible_functions();
-	try {
-		game.start();
-	}
-	catch (std::exception &e) {
-		std::cout << e.what() << std::endl;
-		char a;
-		std::cin >> a;
-	}
-	return 0;
-}
-
