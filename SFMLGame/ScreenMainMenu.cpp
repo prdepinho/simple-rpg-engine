@@ -57,8 +57,8 @@ void ScreenMainMenu::create()
 				return true;
 			});
 		}
-		button.create();
 		add_component(button);
+		button.create();
 	}
 	select_component(*container.get_component(0));
 

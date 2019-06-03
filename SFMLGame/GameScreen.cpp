@@ -46,12 +46,12 @@ void GameScreen::create() {
 	{
 		int width = game->get_resolution_width() - 10;
 		debug_console = DebugConsole(width);
+		add_component(debug_console);
 		debug_console.create();
 		int x = 0;
 		int y = 0;
 		debug_console.set_position(x, y);
 		debug_console.hide();
-		add_component(debug_console);
 	}
 
 	game_view.setSize(sf::Vector2f(game->get_resolution_width(), game->get_resolution_height()));
@@ -228,15 +228,16 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		}
 		break;
 	case sf::Event::KeyPressed:
-		if (!pressed_gui) {
+		if (!typed_gui) {
 			switch (event.key.code) {
-			case sf::Keyboard::F: {
-				camera_follow = !camera_follow;
-				std::stringstream ss;
-				ss << "Camera follow: " << (camera_follow ? "True" : "False");
-				game->log(ss.str());
-			}
-								  break;
+			case sf::Keyboard::F: 
+				{
+					camera_follow = !camera_follow;
+					std::stringstream ss;
+					ss << "Camera follow: " << (camera_follow ? "True" : "False");
+					game->log(ss.str());
+				}
+				break;
 			case sf::Keyboard::O:
 				break;
 			case sf::Keyboard::Up:
@@ -252,21 +253,18 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		break;
 		}
 	case sf::Event::KeyReleased: 
-		if (!pressed_gui) {
+		if (!typed_gui) {
 			switch (event.key.code) {
 			case sf::Keyboard::Tilde:
-				if (debug_console.is_visible()) {
-					debug_console.show();
-					container.select(debug_console);
-				}
-				else {
-					debug_console.hide();
+				if (!debug_console.is_visible()) {
+					get_game()->log("screen tilde: show");
+					debug_console.show_console();
 				}
 				break;
 			}
 		}
 	case sf::Event::MouseButtonReleased:
-		if (!pressed_gui) {
+		if (!typed_gui) {
 			if (event.mouseButton.button == sf::Mouse::Button::Middle) {
 				holding_screen = false;
 			}

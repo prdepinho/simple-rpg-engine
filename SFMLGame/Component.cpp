@@ -3,16 +3,6 @@
 #include "Game.h"
 
 
-Component::Component()
-{
-	identifier = "";
-	set_position(0, 0);
-	set_dimensions(0, 0);
-	visible = true;
-	parent_screen = nullptr;
-	show_selection_outline = false;
-}
-
 
 Component::~Component()
 {
@@ -20,6 +10,13 @@ Component::~Component()
 
 Game *Component::get_game() {
 	return parent_screen->get_game();
+}
+
+void Component::set_screen(Screen * screen) {
+	parent_screen = screen;
+	for (Component *c : components) {
+		c->set_screen(screen);
+	}
 }
 
 void Component::create() {
@@ -39,7 +36,7 @@ void Component::update(float fElapsedTime) {
 
 void Component::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-	if (!shown) {
+	if (!visible) {
 		return;
 	}
 	Entity::draw(target, states);
@@ -54,6 +51,7 @@ void Component::draw(sf::RenderTarget &target, sf::RenderStates states) const
 void Component::add_component(Component & component) {
 	component.parent_component = this;
 	components.push_back(&component);
+	component.set_screen(parent_screen);
 }
 
 void Component::remove_component(Component & component) {
@@ -67,21 +65,67 @@ void Component::remove_component(Component & component) {
 	}
 }
 
+Component * Component::get_component(std::string identifier) {
+	for (Component *c : components) {
+		if (c->identifier == identifier) {
+			return c;
+		}
+	}
+	return nullptr;
+}
+
 void Component::clear_components() {
 	for (auto *component : components)
 		component->parent_component = nullptr;
 	components.clear();
 }
 
-void Component::select(Component & component) {
+Component * Component::get_selected_component() {
+	if (selected_component != nullptr)
+		return selected_component->get_selected_component();
+	else
+		return this;
+}
+
+void Component::select(Component &child_component) {
+	child_component.select();
+}
+
+void Component::select() {
 	if (!activated) {
 		return;
 	}
-	if (selected_component != nullptr) {
-		selected_component->on_deselected();
+	if (parent_component != nullptr) {
+		if (parent_component->selected_component != nullptr) {
+			parent_component->selected_component->on_deselected();
+		}
+		on_selected();
+		parent_component->selected_component = this;
+		parent_component->select();
 	}
-	component.on_selected();
-	selected_component = &component;
+	// the root component cannot be selected.
+}
+
+void Component::select_previous() {
+	Component *new_selected = selected_component;
+	for (auto it = components.begin(); it != components.end(); ++it) {
+		if (*it == selected_component) {
+			break;
+		}
+		new_selected = *it;
+	}
+	select(*new_selected);
+}
+
+void Component::select_next() {
+	Component *new_selected = selected_component;
+	for (auto it = components.rbegin(); it != components.rend(); ++it) {
+		if (*it == selected_component) {
+			break;
+		}
+		new_selected = *it;
+	}
+	select(*new_selected);
 }
 
 bool Component::on_pressed(int x, int y) {
@@ -133,22 +177,48 @@ bool Component::on_held(int x, int y) {
 	return false;
 }
 
-void Component::on_key_pressed(sf::Keyboard::Key key){
+bool Component::on_key_pressed(sf::Keyboard::Key key){
 	if (!activated) {
-		return;
+		return false;
 	}
 	if (selected_component != nullptr) {
-		selected_component->on_key_pressed(key);
+		return selected_component->on_key_pressed(key);
 	}
+	return false;
 }
 
-void Component::on_text_input(char c) {
+bool Component::on_text_input(char c) {
 	if (!activated) {
-		return;
+		return false;
 	}
 	if (selected_component != nullptr) {
-		selected_component->on_text_input(c);
+		return selected_component->on_text_input(c);
 	}
+	return false;
+}
+
+void Component::on_moved() {
+	Entity::on_moved();
+	update_selection_outline();
+}
+
+void Component::on_dimensions_changed() {
+	Entity::on_dimensions_changed();
+	update_selection_outline();
+}
+
+void Component::set_show_selection_outline(bool show) {
+	show_selection_outline = show;
+	selection_outline.setOutlineThickness(show ? 1.f : 0.f);
+	update_selection_outline();
+}
+
+void Component::update_selection_outline() {
+	selection_outline.setPosition(sf::Vector2f(get_x(), get_y()));
+	selection_outline.setSize(sf::Vector2f(get_width(), get_height()));
+	selection_outline.setOutlineThickness(show_selection_outline ? 1.f : 0.f);
+	selection_outline.setFillColor(sf::Color::Transparent);
+	selection_outline.setOutlineColor(sf::Color::Red);
 }
 
 

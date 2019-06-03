@@ -20,7 +20,7 @@ public:
 	virtual void create() override;
 	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 	virtual void update(float elapsed_time) override;
-	virtual void on_text_input(char c) override;
+	virtual bool on_text_input(char c) override;
 
 	void set_text(std::string text);
 	std::string get_text() const { return text; }
@@ -47,7 +47,7 @@ public:
 	NumberField(std::string text = "0", int x = 0, int y = 0, int width = 8, Callback func = [](Component*) {return true; })
 		: TextField(text, x, y, width, func) { }
 
-	virtual void on_text_input(char c);
+	virtual bool on_text_input(char c);
 
 	int get_int();
 	float get_float();

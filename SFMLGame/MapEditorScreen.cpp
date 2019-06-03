@@ -19,8 +19,8 @@ void TilePalette::create() {
 		scroll(-1, 0);
 		return true;
 	});
-	scroll_left_button.create();
 	add_component(scroll_left_button);
+	scroll_left_button.create();
 
 	x = get_x() + scroll_left_button.get_width() + 1;
 	y = get_y() + 16 * tile_height;
@@ -28,8 +28,8 @@ void TilePalette::create() {
 		scroll(1, 0);
 		return true;
 	});
-	scroll_right_button.create();
 	add_component(scroll_right_button);
+	scroll_right_button.create();
 
 	select(0, sf::Vector2i{ 0, 0 });
 	select(1, sf::Vector2i{ 0, 0 });
@@ -140,12 +140,12 @@ void MapEditorScreen::create() {
 				remove_component(new_panel);
 				return true;
 			});
-			new_panel.create();
 			add_component(new_panel);
+			new_panel.create();
 			return true;
 		});
-		new_button.create();
 		add_component(new_button);
+		new_button.create();
 
 		// load map button
 		x += new_button.get_width();
@@ -170,12 +170,12 @@ void MapEditorScreen::create() {
 				remove_component(load_panel);
 				return true;
 			});
-			load_panel.create();
 			add_component(load_panel);
+			load_panel.create();
 			return true;
 		});
-		load_button.create();
 		add_component(load_button);
+		load_button.create();
 
 		// save map button
 		x += load_button.get_width();
@@ -198,8 +198,8 @@ void MapEditorScreen::create() {
 			game->log("Save button");
 			return true;
 		});
-		save_button.create();
 		add_component(save_button);
+		save_button.create();
 
 		// exit button
 		x += save_button.get_width();
@@ -214,8 +214,8 @@ void MapEditorScreen::create() {
 			);
 			return true;
 		});
-		exit_button.create();
 		add_component(exit_button);
+		exit_button.create();
 	}
 	// palette
 	{
@@ -224,8 +224,8 @@ void MapEditorScreen::create() {
 		palette = TilePalette(tile_width, tile_height, Textures::get("tileset"));
 		palette.set_position(0, exit_button.get_height());
 		palette.set_show_outline(true);
-		palette.create();
 		add_component(palette);
+		palette.create();
 	}
 
 	// check buttons
@@ -252,8 +252,8 @@ void MapEditorScreen::create() {
 		});
 		check_button_panel.set_position(x, y);
 		check_button_panel.set_dimensions(w, 0);
-		check_button_panel.create();
 		add_component(check_button_panel);
+		check_button_panel.create();
 	}
 
 	create_map(10, 10);

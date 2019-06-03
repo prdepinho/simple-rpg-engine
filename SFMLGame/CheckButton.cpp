@@ -42,12 +42,13 @@ bool CheckButton::on_click() {
 	return rval;
 }
 
-void CheckButton::on_key_pressed(sf::Keyboard::Key key) {
+bool CheckButton::on_key_pressed(sf::Keyboard::Key key) {
 	switch (key) {
 	case sf::Keyboard::Key::Enter:
 		on_click();
 		break;
 	}
+	return true;
 }
 
 void CheckButton::check() { 

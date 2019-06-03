@@ -22,7 +22,7 @@ public:
 	virtual void set_position(int x, int y) override;
 	virtual bool on_pressed(int x, int y) override; 
 	virtual bool on_released(int x, int y) override;
-	virtual void on_key_pressed(sf::Keyboard::Key key) override;
+	virtual bool on_key_pressed(sf::Keyboard::Key key) override;
 	virtual bool on_click() override;
 
 	std::string get_label() { return label; }

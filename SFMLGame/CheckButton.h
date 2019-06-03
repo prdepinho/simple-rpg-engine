@@ -22,7 +22,7 @@ public:
 	virtual bool on_pressed(int x, int y) override;
 	virtual bool on_released(int x, int y) override;
 	virtual bool on_click() override;
-	void on_key_pressed(sf::Keyboard::Key key) override;
+	virtual bool on_key_pressed(sf::Keyboard::Key key) override;
 
 	void check();
 	void uncheck();

@@ -82,12 +82,13 @@ bool Button::on_released(int x, int y) {
 	return true;
 }
 
-void Button::on_key_pressed(sf::Keyboard::Key key) {
+bool Button::on_key_pressed(sf::Keyboard::Key key) {
 	switch(key){
 	case sf::Keyboard::Key::Enter:
 		on_click();
 		break;
 	}
+	return true;
 }
 
 bool Button::on_click() {

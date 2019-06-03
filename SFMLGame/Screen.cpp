@@ -3,12 +3,6 @@
 
 
 
-Screen::Screen(sf::RenderWindow *window, Game *game) : pressed_gui(false)
-{
-	this->window = window;
-	this->game = game;
-}
-
 
 Screen::~Screen()
 {
@@ -78,10 +72,13 @@ void Screen::handle_event(sf::Event &event, float elapsed_time)
 		window->close();
 		break;
 	case sf::Event::TextEntered: 
-		// used for user text input. You have to filter out backspaces and other non printable characters.
-		if (selected_component != nullptr) {
-			wchar_t c = static_cast<char>(event.text.unicode);
-			selected_component->on_text_input(c);
+		{
+			// used for user text input. You have to filter out backspaces and other non printable characters.
+			Component *selected_component = container.get_selected_component();
+			if (selected_component != nullptr) {
+				wchar_t c = static_cast<char>(event.text.unicode);
+				typed_gui = selected_component->on_text_input(c);
+			}
 		}
 		break;
 	case sf::Event::KeyReleased:
@@ -90,20 +87,27 @@ void Screen::handle_event(sf::Event &event, float elapsed_time)
 			window->close();
 			break;
 		case sf::Keyboard::Tab:
-			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RShift)){
-				if (selected_component != nullptr) {
-					selected_component->select_previous();
+			{
+				if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RShift)){
+					Component *selected_component = container.get_selected_component();
+					if (selected_component != nullptr) {
+						selected_component->get_parent()->select_previous();
+					}
 				}
-			}
-			else {
-				if (selected_component != nullptr) {
-					selected_component->select_next();
+				else {
+					Component *selected_component = container.get_selected_component();
+					if (selected_component != nullptr) {
+						selected_component->get_parent()->select_next();
+					}
 				}
 			}
 			break;
 		default:
-			if (selected_component != nullptr) {
-				selected_component->on_key_pressed(event.key.code);
+			{
+				Component *selected_component = container.get_selected_component();
+				if (selected_component != nullptr) {
+					typed_gui = selected_component->on_key_pressed(event.key.code);
+				}
 			}
 			break;
 		}
@@ -119,11 +123,6 @@ void Screen::handle_event(sf::Event &event, float elapsed_time)
 			int mouse_position_map_y = static_cast<int>(mouse_map_position.y);
 
 			pressed_gui = container.on_pressed(mouse_position_gui_x, mouse_position_gui_y);
-			if (selected_component != nullptr) {
-				selected_component->on_deselected();
-			}
-			selected_component = &container;
-			selected_component->on_selected();
 		}
 		break;
 	case sf::Event::MouseButtonReleased:

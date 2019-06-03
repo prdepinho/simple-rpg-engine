@@ -41,7 +41,7 @@ void TextField::update(float elapsed_time) {
 	}
 }
 
-void TextField::on_text_input(char c) {
+bool TextField::on_text_input(char c) {
 	Component::on_text_input(c);
 
 #if false
@@ -80,6 +80,7 @@ void TextField::on_text_input(char c) {
 
 	update_view();
 
+	return true;
 }
 
 void TextField::set_text(std::string text) {
@@ -112,7 +113,7 @@ void TextField::update_view() {
 
 
 
-	void NumberField::on_text_input(char c) {
+	bool NumberField::on_text_input(char c) {
 		switch (c) {
 		case 8:  // backspace
 		case 13:  // enter
@@ -122,6 +123,7 @@ void TextField::update_view() {
 		case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
 			TextField::on_text_input(c);
 		}
+		return true;
 	}
 
 	int NumberField::get_int() {

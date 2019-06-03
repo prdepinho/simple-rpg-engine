@@ -7,7 +7,13 @@ class Game;
 class Screen
 {
 public:
-	Screen(sf::RenderWindow *window=nullptr, Game *game=nullptr);
+	Screen(sf::RenderWindow *window=nullptr, Game *game=nullptr) 
+		: window(window),
+		game(game),
+		pressed_gui(false),
+		typed_gui(false),
+		created(false)
+	{ }
 	virtual ~Screen();
 
 	virtual void create();
@@ -19,7 +25,7 @@ public:
 
 	void add_component(Component &component);
 	void remove_component(Component &component);
-	void select_component(Component &component) { this->selected_component = &component; }
+	void select_component(Component &component) { container.select(component); }
 	Component &get_container() { return container; }
 	void set_window(sf::RenderWindow *window) { this->window = window; }
 	void set_game(Game *game) { this->game = game; }
@@ -41,11 +47,11 @@ protected:
 
 
 	Component container;
-	Component *selected_component = nullptr;
 	sf::RenderWindow *window;
 	Game *game;
 	bool created;
 
+	bool typed_gui;
 	bool pressed_gui;
 };
 
