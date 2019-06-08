@@ -24,7 +24,7 @@ public:
 
 	~Component();
 
-	virtual void create();
+	virtual void create();  // create should be called after adding it to its parent component to give the component a screen reference.
 
 	Game *get_game();
 	Screen *get_screen() { return parent_screen; }
@@ -36,7 +36,7 @@ public:
 	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 	// component management
-	void add_component(Component &component);
+	void add_component(Component &component);  // add_component should be done before the component is created to give the component a screen reference.
 	void remove_component(Component &component);
 	Component *get_component(int index) { return components[index]; }
 	Component *get_component(std::string identifier);

@@ -130,17 +130,17 @@ Component* Component::on_text_input(char c) {
 	return this;
 }
 
-void Component::show() {
+inline void Component::show() {
 	activate();
 	visible = true;
 }
 
-void Component::hide() {
+inline void Component::hide() {
 	disactivate();
 	visible = false;
 }
 
-bool Component::is_visible() const {
+inline bool Component::is_visible() const {
 	return visible;
 }
 
