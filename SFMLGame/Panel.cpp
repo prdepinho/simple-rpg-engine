@@ -52,7 +52,7 @@ void MessagePanel::create() {
 	y = (get_height() * 3 / 4) - (ok_button.get_height() / 2);
 	ok_button.set_position(get_x() + x, get_y() + y);
 
-	select(ok_button);
+	get_screen()->select(ok_button);
  }
 
 void MessagePanel::show( std::string msg, Screen &screen) {
@@ -103,7 +103,7 @@ void ChoicePanel::create() {
 	y = (get_height() * 3 / 4) - (yes_button.get_height() / 2);
 	no_button.set_position(get_x() + x, get_y() + y);
 
-	select(yes_button);
+	get_screen()->select(yes_button);
  }
 
 void ChoicePanel::show( std::string msg, Screen &screen, std::function<void()> yes_func, std::function<void()> no_func) {

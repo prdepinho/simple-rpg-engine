@@ -12,8 +12,8 @@ public:
 	DebugTextField(DebugConsole *debut_console=nullptr, std::string text = "Field", int x = 0, int y = 0, int width = 8, Callback func = [](Component*) {return true; })
 		: TextField(text, x, y, width, func), debug_console(debug_console) {}
 
-	virtual bool on_key_pressed(sf::Keyboard::Key key) override;
-	virtual bool on_text_input(char c) override;
+	virtual Component* on_key_pressed(sf::Keyboard::Key key) override;
+	virtual Component* on_text_input(char c) override;
 
 private:
 	DebugConsole *debug_console;
@@ -29,14 +29,9 @@ public:
 	virtual void create() override;
 	bool callback();
 
-	void show_console() {
-		show();
-		text_field.select();
-	}
+	void show_console();
 
-	void hide_console() {
-		hide();
-	}
+	void hide_console();
 
 	std::string history_next() {
 		return "";

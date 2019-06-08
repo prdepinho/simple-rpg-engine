@@ -22,33 +22,32 @@ void CheckButton::create() {
 	vertices = released_vertices;
 }
 
-bool CheckButton::on_pressed(int x, int y) {
+Component* CheckButton::on_pressed(int x, int y) {
 	vertices = pressed_vertices;
-	return true;
+	return this;
 }
 
-bool CheckButton::on_released(int x, int y) {
+Component* CheckButton::on_released(int x, int y) {
 	vertices = released_vertices;
-	return true;
+	return this;
 }
 
-bool CheckButton::on_click() {
-	bool rval = true;
+Component* CheckButton::on_click() {
 	checked = !checked;
 	vertices = checked ? pressed_vertices : released_vertices;
 	for (auto function : functions) {
-		rval &= function(this);
+		function(this);
 	}
-	return rval;
+	return this;
 }
 
-bool CheckButton::on_key_pressed(sf::Keyboard::Key key) {
+Component* CheckButton::on_key_pressed(sf::Keyboard::Key key) {
 	switch (key) {
 	case sf::Keyboard::Key::Enter:
-		on_click();
+		return on_click();
 		break;
 	}
-	return true;
+	return this;
 }
 
 void CheckButton::check() { 

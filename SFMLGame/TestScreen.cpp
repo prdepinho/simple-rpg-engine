@@ -56,6 +56,25 @@ void TestScreen::create()
 	back_button.create();
 	add_component(back_button);
 
+
+	panel1 = Panel(0, 0, 200, 200);
+	add_component(panel1);
+
+	panel2 = Panel(50, 50, 100, 100);
+	panel1.add_component(panel2);
+
+	button1 = Button("Button 1", 150, 150, 0, 0, [&](Component*) {get_game()->log("Button 1"); return true; });
+	panel1.add_component(button1);
+	button1.create();
+
+	button2 = Button("Button 2", 60, 60, 0, 0, [&](Component*) {get_game()->log("Button 2"); return true; });
+	panel2.add_component(button2);
+	button2.create();
+
+	panel2.create();
+	panel1.create();
+
+
 	game_view.setSize(sf::Vector2f(game->get_resolution_width(), game->get_resolution_height()));
 	game_view.setCenter(sf::Vector2f(character.get_x() + 8, character.get_y() + 8));
 	//game_view.setCenter(sf::Vector2f(game->get_resolution_width() / 2, game->get_resolution_height() / 2));

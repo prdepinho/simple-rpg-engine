@@ -80,121 +80,54 @@ void Component::clear_components() {
 	components.clear();
 }
 
-Component * Component::get_selected_component() {
-	if (selected_component != nullptr)
-		return selected_component->get_selected_component();
-	else
-		return this;
-}
-
-void Component::select(Component &child_component) {
-	child_component.select();
-}
-
-void Component::select() {
+Component* Component::on_pressed(int x, int y) {
 	if (!activated) {
-		return;
-	}
-	if (parent_component != nullptr) {
-		if (parent_component->selected_component != nullptr) {
-			parent_component->selected_component->on_deselected();
-		}
-		on_selected();
-		parent_component->selected_component = this;
-		parent_component->select();
-	}
-	// the root component cannot be selected.
-}
-
-void Component::select_previous() {
-	Component *new_selected = selected_component;
-	for (auto it = components.begin(); it != components.end(); ++it) {
-		if (*it == selected_component) {
-			break;
-		}
-		new_selected = *it;
-	}
-	select(*new_selected);
-}
-
-void Component::select_next() {
-	Component *new_selected = selected_component;
-	for (auto it = components.rbegin(); it != components.rend(); ++it) {
-		if (*it == selected_component) {
-			break;
-		}
-		new_selected = *it;
-	}
-	select(*new_selected);
-}
-
-bool Component::on_pressed(int x, int y) {
-	if (!activated) {
-		return false;
+		return nullptr;
 	}
 	for (auto it = components.rbegin(); it != components.rend(); ++it) {
 		if ((*it)->in_bounds(x, y)) {
-			(*it)->on_pressed(x, y);
-			pressed_component = (*it);
-			select(*(*it));
-			return true;
+			return (*it)->on_pressed(x, y);
 		}
 	}
-	pressed_component = nullptr;
-	if (selected_component != nullptr) {
-		selected_component->on_deselected();
-		selected_component = nullptr;
-	}
-	return false;
+	return this;
 }
 
-bool Component::on_released(int x, int y) {
+Component* Component::on_released(int x, int y) {
 	if (!activated) {
-		return false;
-	}
-	if (pressed_component != nullptr) {
-		pressed_component->on_released(x, y);
+		return nullptr;
 	}
 	for (auto it = components.rbegin(); it != components.rend(); ++it) {
 		if ((*it)->in_bounds(x, y)) {
-			if ((*it) == pressed_component) {
-				(*it)->on_click();
-				return true;
-			}
+			return (*it)->on_released(x, y);
 		}
 	}
-	return false;
+	return this;
 }
 
-bool Component::on_held(int x, int y) {
+Component* Component::on_held(int x, int y) {
 	if (!activated) {
-		return false;
+		return nullptr;
 	}
-	if (pressed_component != nullptr) {
-		pressed_component->on_held(x, y);
-		return true;
+	for (auto it = components.rbegin(); it != components.rend(); ++it) {
+		if ((*it)->in_bounds(x, y)) {
+			return (*it)->on_held(x, y);
+		}
 	}
-	return false;
+	return this;
 }
 
-bool Component::on_key_pressed(sf::Keyboard::Key key){
+Component* Component::on_key_pressed(sf::Keyboard::Key key){
 	if (!activated) {
-		return false;
+		return nullptr;
 	}
-	if (selected_component != nullptr) {
-		return selected_component->on_key_pressed(key);
-	}
-	return false;
+	return this;
 }
 
-bool Component::on_text_input(char c) {
+Component* Component::on_text_input(char c) {
 	if (!activated) {
-		return false;
+		return nullptr;
 	}
-	if (selected_component != nullptr) {
-		return selected_component->on_text_input(c);
-	}
-	return false;
+	return this;
 }
 
 void Component::on_moved() {

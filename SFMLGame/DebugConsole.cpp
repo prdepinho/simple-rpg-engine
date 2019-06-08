@@ -1,11 +1,10 @@
 #include "DebugConsole.h"
 #include "Game.h"
 
-bool DebugTextField::on_key_pressed(sf::Keyboard::Key key) {
+Component* DebugTextField::on_key_pressed(sf::Keyboard::Key key) {
 	switch (key) {
 	case sf::Keyboard::Tilde: 
 		{
-			get_game()->log("on_key_pressed");
 			debug_console->hide_console();
 			break;
 		}
@@ -24,20 +23,19 @@ bool DebugTextField::on_key_pressed(sf::Keyboard::Key key) {
 		}
 		break;
 	}
-	return true;
+	return this;
 }
 
-bool DebugTextField::on_text_input(char c) {
+Component* DebugTextField::on_text_input(char c) {
 	switch (c) {
 	case '`':
 		{
-			get_game()->log("on_text_input");
 		}
 		break;
 	default:
 		TextField::on_text_input(c);
 	}
-	return true;
+	return this;
 }
 
 void DebugConsole::create() {
@@ -58,4 +56,20 @@ bool DebugConsole::callback() {
 	get_game()->log(command);
 	history.push_back(command);
 	return true;
+}
+
+void DebugConsole::show_console() {
+	if (!is_visible()) {
+		get_game()->log("DebugConsole show console");
+		show();
+		get_screen()->select(text_field);
+	}
+}
+
+void DebugConsole::hide_console() {
+	if (is_visible()) {
+		get_game()->log("DebugConsole hide console");
+		hide();
+		get_screen()->select(get_screen()->get_container());
+	}
 }

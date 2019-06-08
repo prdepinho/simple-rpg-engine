@@ -14,8 +14,6 @@ public:
 		visible(true),
 		activated(true),
 		show_selection_outline(false),
-		pressed_component(nullptr),
-		selected_component(nullptr),
 		parent_component(nullptr),
 		parent_screen(nullptr),
 		selected(false)
@@ -42,26 +40,22 @@ public:
 	void remove_component(Component &component);
 	Component *get_component(int index) { return components[index]; }
 	Component *get_component(std::string identifier);
+	std::vector<Component*> get_components() { return components; }
 	void clear_components();
 
 	// selection
-	Component* get_selected_component();
-	void select(Component &child_component);
-	void select();
-	void select_previous();
-	void select_next();
 
 	virtual void on_selected() { selected = true; set_show_selection_outline(true); }
 	virtual void on_deselected() { selected = false; set_show_selection_outline(false); }
 	bool is_selected() const { return selected; }
 
 	// input
-	virtual bool on_pressed(int x, int y);
-	virtual bool on_released(int x, int y);
-	virtual bool on_held(int x, int y);
-	virtual bool on_key_pressed(sf::Keyboard::Key key);
-	virtual bool on_text_input(char c);
-	virtual bool on_click() { return true; }
+	virtual Component* on_pressed(int x, int y);
+	virtual Component* on_released(int x, int y);
+	virtual Component* on_held(int x, int y);
+	virtual Component* on_key_pressed(sf::Keyboard::Key key);
+	virtual Component* on_text_input(char c);
+	virtual Component* on_click() { return nullptr; }
 
 	// show, work
 	void activate() { activated = true; }
@@ -88,8 +82,6 @@ protected:
 	bool visible;
 	bool activated;
 	std::vector<Component*> components;
-	Component *pressed_component;
-	Component *selected_component;
 	Component *parent_component;
 	Screen *parent_screen;
 

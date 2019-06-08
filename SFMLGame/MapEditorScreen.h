@@ -27,14 +27,14 @@ public:
 	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 	virtual void set_dimensions(int w, int h) override; 
-	virtual bool on_pressed(int x, int y) override; 
-	virtual bool on_released(int x, int y) override;
-	virtual bool on_click() override;
+	virtual Component* on_pressed(int x, int y) override; 
+	virtual Component* on_released(int x, int y) override;
+	virtual Component* on_click() override;
 
 	void scroll(int x, int y);
 
 	sf::Vector2i get_tile_coords(int pix_x, int pix_y);
-	void select(int index, sf::Vector2i tile_coords);
+	void select_tile(int index, sf::Vector2i tile_coords);
 
 	/// Return the pixel coords of the selected tile.
 	sf::Vector2i get_select_coords(int index) const { 

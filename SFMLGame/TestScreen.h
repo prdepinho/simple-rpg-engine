@@ -9,6 +9,7 @@
 #include "Label.h"
 #include "Button.h"
 #include "Resources.h"
+#include "Panel.h"
 
 
 class TestScreen : public Screen
@@ -33,6 +34,13 @@ private:
 	Label label;
 	Button button;
 	Button back_button;
+
+	Panel panel1;
+	Panel panel2;
+	Panel panel3;
+
+	Button button1;
+	Button button2;
 
 	// game configuration
 	float move_speed = 100.f; //px / s

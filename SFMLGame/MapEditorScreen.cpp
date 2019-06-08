@@ -31,8 +31,8 @@ void TilePalette::create() {
 	add_component(scroll_right_button);
 	scroll_right_button.create();
 
-	select(0, sf::Vector2i{ 0, 0 });
-	select(1, sf::Vector2i{ 0, 0 });
+	select_tile(0, sf::Vector2i{ 0, 0 });
+	select_tile(1, sf::Vector2i{ 0, 0 });
 	set_dimensions(16 * tile_width, 16 * tile_height + scroll_left_button.get_height());
 }
 
@@ -56,7 +56,7 @@ inline sf::Vector2i TilePalette::get_tile_coords(int pix_x, int pix_y) {
 	};
 }
 
-inline void TilePalette::select(int index, sf::Vector2i tile_coords) {
+inline void TilePalette::select_tile(int index, sf::Vector2i tile_coords) {
 	selections[index] = tile_coords;
 	selection_rects[index].setFillColor(sf::Color::Transparent);
 	selection_rects[index].setOutlineColor(sf::Color::White);
@@ -69,33 +69,33 @@ void TilePalette::set_dimensions(int x, int y) {
 	Component::set_dimensions(x, y);
 }
 
-bool TilePalette::on_pressed(int x, int y) {
+Component* TilePalette::on_pressed(int x, int y) {
 	return Component::on_pressed(x, y);
 }
 
-bool TilePalette::on_released(int x, int y) {
-	if (!Component::on_released(x, y)) {
-
+Component* TilePalette::on_released(int x, int y) {
+	Component* released_component = Component::on_released(x, y);
+	if(released_component == this)
+	{
 		auto tile_coords = get_tile_coords(x, y);
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RShift)) {
-			select(1, tile_coords);
+			select_tile(1, tile_coords);
 		}
 		else {
-			select(0, tile_coords);
-			select(1, tile_coords);
+			select_tile(0, tile_coords);
+			select_tile(1, tile_coords);
 		}
 
 		get_game()->log("Click x: " + std::to_string(x) + ", y: " + std::to_string(y));
 		get_game()->log("Tile  x: " + std::to_string(tile_coords.x) + ", y: " + std::to_string(tile_coords.y));
 
 	}
-	return true;
+	return released_component;
 }
 
-bool TilePalette::on_click() {
-	Component::on_click();
-	return true;
+Component* TilePalette::on_click() {
+	return Component::on_click();
 }
 
 
@@ -298,7 +298,7 @@ void MapEditorScreen::poll_events(float elapsed_time) {
 			game_view.move(sf::Vector2f(move_speed * elapsed_time * -1, 0.f));
 		}
 
-		if (!pressed_gui) {
+		if (selected_component == &container) {
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
 				auto mouse_position = get_mouse_game_position();
 				int x = mouse_position.x;
@@ -353,7 +353,7 @@ void MapEditorScreen::handle_event(sf::Event &event, float elapsed_time) {
 	Screen::handle_event(event, elapsed_time);
 	switch (event.type) {
 	case sf::Event::MouseButtonPressed:
-		if (!pressed_gui) {
+		if (selected_component == &container) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				auto mouse_position = get_mouse_game_position();
 				int x = mouse_position.x;
@@ -376,7 +376,7 @@ void MapEditorScreen::handle_event(sf::Event &event, float elapsed_time) {
 		}
 		break;
 	case sf::Event::KeyPressed:
-		if (!pressed_gui) {
+		if (selected_component == &container) {
 			switch (event.key.code) {
 			case sf::Keyboard::O:
 			{
@@ -401,7 +401,7 @@ void MapEditorScreen::handle_event(sf::Event &event, float elapsed_time) {
 		}
 		break;
 	case sf::Event::MouseButtonReleased:
-		if (!pressed_gui) {
+		if (selected_component == &container) {
 			if (event.mouseButton.button == sf::Mouse::Button::Middle) {
 				holding_screen = false;
 			}

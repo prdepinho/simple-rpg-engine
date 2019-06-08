@@ -109,7 +109,7 @@ void CustomPanel::create() {
 	}
 
 	if (dynamic_components.size() > 0) {
-		select(*dynamic_components[0]);
+		get_screen()->select(*dynamic_components[0]);
 	}
 }
 

@@ -10,8 +10,7 @@ public:
 	Screen(sf::RenderWindow *window=nullptr, Game *game=nullptr) 
 		: window(window),
 		game(game),
-		pressed_gui(false),
-		typed_gui(false),
+		selected_component(nullptr),
 		created(false)
 	{ }
 	virtual ~Screen();
@@ -25,7 +24,12 @@ public:
 
 	void add_component(Component &component);
 	void remove_component(Component &component);
-	void select_component(Component &component) { container.select(component); }
+
+	void select(Component &component);
+	void deselect(Component &root);
+	void select_previous();
+	void select_next();
+
 	Component &get_container() { return container; }
 	void set_window(sf::RenderWindow *window) { this->window = window; }
 	void set_game(Game *game) { this->game = game; }
@@ -39,19 +43,16 @@ public:
 
 	std::string config_filename;
 
-
 protected:
 
 	sf::View game_view;
 	sf::View gui_view;
 
+	Component *selected_component;
 
 	Component container;
 	sf::RenderWindow *window;
 	Game *game;
 	bool created;
-
-	bool typed_gui;
-	bool pressed_gui;
 };
 

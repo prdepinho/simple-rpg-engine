@@ -169,7 +169,7 @@ void GameScreen::poll_events(float elapsed_time) {
 			}
 		}
 
-		if (!pressed_gui) {
+		if (selected_component != &container) {
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
 				auto mouse_position = get_mouse_game_position();
 				int x = mouse_position.x;
@@ -203,7 +203,7 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	Screen::handle_event(event, elapsed_time);
 	switch (event.type) {
 	case sf::Event::MouseButtonPressed:
-		if (!pressed_gui) {
+		if (selected_component != &container) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				auto mouse_position = get_mouse_game_position();
 				int x = mouse_position.x;
@@ -228,7 +228,7 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		}
 		break;
 	case sf::Event::KeyPressed:
-		if (!typed_gui) {
+		if (selected_component != &container) {
 			switch (event.key.code) {
 			case sf::Keyboard::F: 
 				{
@@ -253,18 +253,16 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		break;
 		}
 	case sf::Event::KeyReleased: 
-		if (!typed_gui) {
+		if (selected_component != &container) {
 			switch (event.key.code) {
 			case sf::Keyboard::Tilde:
-				if (!debug_console.is_visible()) {
-					get_game()->log("screen tilde: show");
-					debug_console.show_console();
-				}
+				get_game()->log("GameScreen tilde");
+				debug_console.show_console();
 				break;
 			}
 		}
 	case sf::Event::MouseButtonReleased:
-		if (!typed_gui) {
+		if (selected_component != &container) {
 			if (event.mouseButton.button == sf::Mouse::Button::Middle) {
 				holding_screen = false;
 			}

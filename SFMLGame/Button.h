@@ -20,10 +20,10 @@ public:
 
 	virtual void set_dimensions(int w, int h) override; 
 	virtual void set_position(int x, int y) override;
-	virtual bool on_pressed(int x, int y) override; 
-	virtual bool on_released(int x, int y) override;
-	virtual bool on_key_pressed(sf::Keyboard::Key key) override;
-	virtual bool on_click() override;
+	virtual Component* on_pressed(int x, int y) override; 
+	virtual Component* on_released(int x, int y) override;
+	virtual Component* on_key_pressed(sf::Keyboard::Key key) override;
+	virtual Component* on_click() override;
 
 	std::string get_label() { return label; }
 	void set_label(std::string str);

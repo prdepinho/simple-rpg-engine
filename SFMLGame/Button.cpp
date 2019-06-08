@@ -72,31 +72,30 @@ void Button::set_position(int x, int y) {
 	center_label();
 }
 
-bool Button::on_pressed(int x, int y) {
+Component* Button::on_pressed(int x, int y) {
 	vertices = pressed_vertices;
-	return true;
+	return this;
 }
 
-bool Button::on_released(int x, int y) {
+Component* Button::on_released(int x, int y) {
 	vertices = released_vertices;
-	return true;
+	return this;
 }
 
-bool Button::on_key_pressed(sf::Keyboard::Key key) {
+Component* Button::on_key_pressed(sf::Keyboard::Key key) {
 	switch(key){
 	case sf::Keyboard::Key::Enter:
-		on_click();
+		return on_click();
 		break;
 	}
-	return true;
+	return this;
 }
 
-bool Button::on_click() {
-	bool rval = true;
+Component* Button::on_click() {
 	for (Callback function : functions) {
-		rval &= function(this);
+		function(this);
 	}
-	return rval;
+	return this;
 }
 
 void Button::set_label(std::string str) 

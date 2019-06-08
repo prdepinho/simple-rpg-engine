@@ -60,7 +60,7 @@ void ScreenMainMenu::create()
 		add_component(button);
 		button.create();
 	}
-	select_component(*container.get_component(0));
+	select(*container.get_component(0));
 
 	gui_view.setSize(sf::Vector2f(game->get_resolution_width(), game->get_resolution_height()));
 	gui_view.setCenter(game->get_resolution_width() / 2, game->get_resolution_height() / 2);
