@@ -61,10 +61,10 @@ public:
 	void activate() { activated = true; }
 	void disactivate() { activated = false; }
 	bool is_activated() const { return activated; }
-	void show() { activate();  visible = true; }
-	void hide() { disactivate();  visible = false; }
-	bool is_visible() const { return visible; }
-	void set_visible(bool v) { visible = v; }
+	void show();
+	void hide();
+	bool is_visible() const;
+	void set_visible(bool v);
 
 	// change dimensions / position
 	virtual void on_moved() override;

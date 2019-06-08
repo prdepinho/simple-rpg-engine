@@ -130,6 +130,30 @@ Component* Component::on_text_input(char c) {
 	return this;
 }
 
+void Component::show() {
+	activate();
+	visible = true;
+}
+
+void Component::hide() {
+	disactivate();
+	visible = false;
+}
+
+bool Component::is_visible() const {
+	return visible;
+}
+
+void Component::set_visible(bool v) {
+	if (v) {
+		show();
+		activate();
+	} else {
+		hide();
+		disactivate();
+	}
+}
+
 void Component::on_moved() {
 	Entity::on_moved();
 	update_selection_outline();

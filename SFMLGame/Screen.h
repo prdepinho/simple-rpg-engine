@@ -27,6 +27,8 @@ public:
 
 	void select(Component &component);
 	void deselect(Component &root);
+	void deselect_all() { deselect(container); }
+	void select_container() { select(container); }
 	void select_previous();
 	void select_next();
 

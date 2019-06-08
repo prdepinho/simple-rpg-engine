@@ -54,6 +54,8 @@ void GameScreen::create() {
 		debug_console.hide();
 	}
 
+	select(container);
+
 	game_view.setSize(sf::Vector2f(game->get_resolution_width(), game->get_resolution_height()));
 	game_view.setCenter(sf::Vector2f(player_character->get_x(), player_character->get_y()));
 	gui_view.setSize(sf::Vector2f(game->get_resolution_width(), game->get_resolution_height()));
@@ -169,7 +171,7 @@ void GameScreen::poll_events(float elapsed_time) {
 			}
 		}
 
-		if (selected_component != &container) {
+		if (selected_component == &container) {
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
 				auto mouse_position = get_mouse_game_position();
 				int x = mouse_position.x;
@@ -203,7 +205,7 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	Screen::handle_event(event, elapsed_time);
 	switch (event.type) {
 	case sf::Event::MouseButtonPressed:
-		if (selected_component != &container) {
+		if (selected_component == &container) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				auto mouse_position = get_mouse_game_position();
 				int x = mouse_position.x;
@@ -228,7 +230,7 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		}
 		break;
 	case sf::Event::KeyPressed:
-		if (selected_component != &container) {
+		if (selected_component == &container) {
 			switch (event.key.code) {
 			case sf::Keyboard::F: 
 				{
@@ -250,19 +252,24 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				break;
 
 		}
+		}
 		break;
-		}
 	case sf::Event::KeyReleased: 
-		if (selected_component != &container) {
-			switch (event.key.code) {
-			case sf::Keyboard::Tilde:
-				get_game()->log("GameScreen tilde");
+		switch (event.key.code) {
+		case sf::Keyboard::Tilde:
+			if (!debug_console.is_visible()) {
+				get_game()->log("Console is invisible: show it");
 				debug_console.show_console();
-				break;
 			}
+			else {
+				get_game()->log("Console is visible: hide it");
+				debug_console.hide_console();
+			}
+			break;
 		}
+		break;
 	case sf::Event::MouseButtonReleased:
-		if (selected_component != &container) {
+		if (selected_component == &container) {
 			if (event.mouseButton.button == sf::Mouse::Button::Middle) {
 				holding_screen = false;
 			}

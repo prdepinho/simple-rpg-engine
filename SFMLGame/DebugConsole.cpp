@@ -4,10 +4,7 @@
 Component* DebugTextField::on_key_pressed(sf::Keyboard::Key key) {
 	switch (key) {
 	case sf::Keyboard::Tilde: 
-		{
-			debug_console->hide_console();
-			break;
-		}
+		break;
 	case sf::Keyboard::Up:
 		break;
 	case sf::Keyboard::Down:
@@ -29,8 +26,6 @@ Component* DebugTextField::on_key_pressed(sf::Keyboard::Key key) {
 Component* DebugTextField::on_text_input(char c) {
 	switch (c) {
 	case '`':
-		{
-		}
 		break;
 	default:
 		TextField::on_text_input(c);
@@ -59,17 +54,13 @@ bool DebugConsole::callback() {
 }
 
 void DebugConsole::show_console() {
-	if (!is_visible()) {
-		get_game()->log("DebugConsole show console");
-		show();
-		get_screen()->select(text_field);
-	}
+	get_game()->log("DebugConsole show console");
+	show();
+	get_screen()->select(text_field);
 }
 
 void DebugConsole::hide_console() {
-	if (is_visible()) {
-		get_game()->log("DebugConsole hide console");
-		hide();
-		get_screen()->select(get_screen()->get_container());
-	}
+	get_game()->log("DebugConsole hide console");
+	hide();
+	get_screen()->select_container();
 }
