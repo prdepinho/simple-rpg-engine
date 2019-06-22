@@ -1,5 +1,7 @@
 #include "Lua.h"
 #include "consts.h"
+#include <fstream>
+#include <cstdio>
 
 
 
@@ -57,10 +59,100 @@ void Lua::log(std::string msg)
 	if (result != LUA_OK) {
 		throw LuaException(get_error(state));
 	}
-	int rval = lua_tonumber(state, -1);
+	lua_pop(state, 1);
 }
 
-void Lua::execute(const char *filename)
+std::string Lua::stack_dump() {
+	std::stringstream ss;
+	ss << "Stack trace: {" << std::endl;
+	int top = lua_gettop(state);
+	for (int i = 0; i <= top; ++i) {
+		int t = lua_type(state, i);
+		switch (t) {
+		case LUA_TSTRING:
+			ss << "  " << i << ": (string) [" << lua_tostring(state, i) << "]" << std::endl;
+			break;
+		case LUA_TBOOLEAN:
+			ss << "  " << i << ": (boolean) " << (lua_toboolean(state, i) ? "true" : "false") << std::endl;
+			break;
+		case LUA_TNUMBER:
+			ss << "  " << i << ": (number) " << lua_tonumber(state, i) << std::endl;
+			break;
+		default:
+			ss << "  " << i << ": (" << lua_typename(state, t) << ")" << std::endl;
+			break;
+		}
+	}
+	ss << "}" << std::endl;
+	return ss.str();
+}
+
+std::map<std::string, std::string> Lua::get_table() {
+	lua_getglobal(state, "get_double_table");
+
+	lua_newtable(state); 
+	{
+		lua_pushliteral(state, "a");
+		lua_pushnumber(state, 2);
+		lua_settable(state, -3);
+
+		lua_pushliteral(state, "b");
+		lua_pushnumber(state, 6);
+		lua_settable(state, -3);
+
+		lua_pushliteral(state, "c");
+		lua_newtable(state);
+		{
+			lua_pushliteral(state, "ca");
+			lua_pushnumber(state, 20);
+			lua_settable(state, -3);
+		}
+		lua_settable(state, -3);
+	}
+
+
+	int result = lua_pcall(state, 1, 1, 0);
+	if (result != LUA_OK) {
+		throw LuaException(get_error(state));
+	}
+
+	std::map<std::string, std::string> table;
+
+	const char *k, *v;
+	std::string sk, sv;
+	lua_pushnil(state);
+	while (lua_next(state, -2) != 0) {
+		v = lua_tostring(state, -1);
+		sv = std::string(v);
+		lua_pop(state, 1);
+		k = lua_tostring(state, -1);
+		sk = std::string(k);
+
+		table[sk] = sv;
+	}
+	
+	return table;
+}
+
+void Lua::execute_method(std::string method) {
+	lua_getglobal(state, method.c_str());
+	int result = lua_pcall(state, 0, 0, 0);
+	if (result != LUA_OK) {
+		throw LuaException(get_error(state));
+	}
+}
+
+void Lua::execute(std::string code) {
+	const char* filename = "dynamic_script.lua";
+	std::ofstream outfile;
+	outfile.open(filename);
+	outfile << code;
+	outfile.close();
+	execute_script(filename);
+	std::remove(filename);
+}
+
+void Lua::execute_script(const char *filename)
 {
 	lua_State *lua_state = luaL_newstate();
 	luaL_openlibs(lua_state);

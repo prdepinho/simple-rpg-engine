@@ -258,11 +258,9 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		switch (event.key.code) {
 		case sf::Keyboard::Tilde:
 			if (!debug_console.is_visible()) {
-				get_game()->log("Console is invisible: show it");
 				debug_console.show_console();
 			}
 			else {
-				get_game()->log("Console is visible: hide it");
 				debug_console.hide_console();
 			}
 			break;

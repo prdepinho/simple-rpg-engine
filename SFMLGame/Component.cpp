@@ -82,7 +82,7 @@ void Component::clear_components() {
 
 Component* Component::on_pressed(int x, int y) {
 	if (!activated) {
-		return nullptr;
+		return parent_component;
 	}
 	for (auto it = components.rbegin(); it != components.rend(); ++it) {
 		if ((*it)->in_bounds(x, y)) {
@@ -94,7 +94,7 @@ Component* Component::on_pressed(int x, int y) {
 
 Component* Component::on_released(int x, int y) {
 	if (!activated) {
-		return nullptr;
+		return parent_component;
 	}
 	for (auto it = components.rbegin(); it != components.rend(); ++it) {
 		if ((*it)->in_bounds(x, y)) {
@@ -106,7 +106,7 @@ Component* Component::on_released(int x, int y) {
 
 Component* Component::on_held(int x, int y) {
 	if (!activated) {
-		return nullptr;
+		return parent_component;
 	}
 	for (auto it = components.rbegin(); it != components.rend(); ++it) {
 		if ((*it)->in_bounds(x, y)) {
@@ -118,14 +118,14 @@ Component* Component::on_held(int x, int y) {
 
 Component* Component::on_key_pressed(sf::Keyboard::Key key){
 	if (!activated) {
-		return nullptr;
+		return parent_component;
 	}
 	return this;
 }
 
 Component* Component::on_text_input(char c) {
 	if (!activated) {
-		return nullptr;
+		return parent_component;
 	}
 	return this;
 }

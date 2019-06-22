@@ -23,27 +23,24 @@ private:
 class DebugConsole : public Component
 {
 public:
-	DebugConsole(int width=20) : width(width) {} 
+	DebugConsole(int width=20) : width(width),
+		history_cursor(0) {} 
+
 	~DebugConsole() {}
 
 	virtual void create() override;
 	bool callback();
 
 	void show_console();
-
 	void hide_console();
 
-	std::string history_next() {
-		return "";
-	}
-
-	std::string history_prev() {
-		return "";
-	}
+	std::string history_next();
+	std::string history_prev();
 
 private:
 	int width;
 	DebugTextField text_field;
+	int history_cursor;
 	std::vector<std::string> history;
 };
 

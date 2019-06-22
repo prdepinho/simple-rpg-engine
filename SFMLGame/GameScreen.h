@@ -55,6 +55,8 @@ public:
 
 public:
 	void load_map(std::string filename);
+	Character *get_player_character() { return player_character; }
+	std::vector<Character> get_characters() { return characters; }
 
 	void put_character_on_tile(Character &character, int x, int y);
 	void move_player_character(Direction direction);

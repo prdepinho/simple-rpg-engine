@@ -5,25 +5,73 @@ end
 
 function log(msg)
   io.write(msg)
-  return(1)
 end
 
+function version()
+  io.write(string.format("Lua Version: %s\n", _VERSION))
+end
+
+function width()
+  io.write(string.format("%d", sfml_get_map_width()))
+end
+
+function get_double_table(table)
+  local double_table = {}
+
+  double_table.a = tostring(table.a * 2)
+  double_table.b = tostring(table.b * 2)
+  double_table.ca = tostring(table.c.ca * 2)
+
+  return double_table
+end
+
+-- function get_double_table(table)
+--   local double_table = {}
+--   for k, v in pairs(table) do
+--     if k == 'c' then
+--       double_table[tostring[v]]
+--     else
+--       double_table[tostring(k)] = v * 2
+--     end
+--   end
+--   io.write("table\n")
+--   for k, v in pairs(table) do
+--       io.write(string.format("-- %s: %s", tostring(k), tostring(v)))
+--   end
+--   io.write("\ndouble table\n")
+--   for k, v in pairs(double_table) do
+--     io.write(string.format("-- %s: %s", tostring(k), tostring(v)))
+--   end
+--   io.write("\n")
+--   return double_table
+-- end
+
+function print_map()
+  map = sfml_get_map()
+  print(string.format("Map w: %d, h: %d", map['tile_width'], map['tile_height']))
+  print(string.format("Player x: %d, y: %d", map['player_tile_x'], map['player_tile_y']))
+  for index, character in pairs(map['characters']) do
+    print(string.format("character position x: %d, y: %d", index, character.tile_x, character.tile_y))
+  end
+end
 
 -- default character scripting
 
 function on_idle()
   -- 50% chance walk 1d4 blocks, 50% chance wait 1d4 turns
 
+  map = sfml_get_map()
+
   if math.random(100) > 50 then
     -- move
     --
     -- get map dimensions
-    map_w = sfml_get_map_width()
-    map_h = sfml_get_map_height()
+    map_w = map['tile_width']
+    map_h = map['tile_height']
 
     -- get current character position
-    tile_x = sfml_get_current_tile_position_x()
-    tile_y = sfml_get_current_tile_position_y()
+    tile_x = map['player_tile_x']
+    tile_y = map['player_tile_y']
 
     -- horizontal movement
     move_h = math.random(4)
