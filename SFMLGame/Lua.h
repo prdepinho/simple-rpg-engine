@@ -4,6 +4,7 @@
 #include <iostream>
 #include <map>
 #include "lua5.3.5/lua.hpp"
+#include "Character.h"
 
 class LuaException : public std::exception {
 public: 
@@ -37,6 +38,8 @@ public:
 	
 	void start_game();
 	
+
+	void on_idle(Character &character);
 
 private:
 	lua_State *state; 

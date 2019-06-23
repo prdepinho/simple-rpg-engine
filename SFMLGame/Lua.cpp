@@ -170,3 +170,13 @@ void Lua::execute_script(const char *filename)
 	}
 	lua_close(lua_state);
 }
+
+void Lua::on_idle(Character &character) {
+	lua_getglobal(state, "on_idle");
+	lua_pushnumber(state, character.get_id());
+	int result = lua_pcall(state, 1, 1, 0);
+	if (result != LUA_OK) {
+		throw LuaException(get_error(state));
+	}
+	// lua_pop(state, 1);
+}

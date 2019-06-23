@@ -43,3 +43,16 @@ protected:
 	int moved_pixels;
 };
 
+class WaitEffect : public Effect {
+public:
+	WaitEffect(Character *character=nullptr, float seconds=1.f)
+		: character(character),
+		seconds(seconds),
+		time_count(0)
+	{}
+	virtual void update(float elapsed_time) override;
+protected:
+	Character *character;
+	float seconds;
+	float time_count;
+};

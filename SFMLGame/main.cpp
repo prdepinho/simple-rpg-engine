@@ -108,6 +108,31 @@ public:
 		return 1;
 	}
 
+	static int sfml_move(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
+
+		int id = lua_tointeger(state, -3);
+		int x = lua_tointeger(state, -2);
+		int y = lua_tointeger(state, -1);
+		game.log("sfml_move (" + std::to_string(id) + ") x: " + std::to_string(x) + ", y: " + std::to_string(y));
+
+		Character *character = screen->get_character_by_id(id);
+		screen->schedule_character_movement(*character, x, y);
+		return 0;
+	}
+
+	static int sfml_wait(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
+
+		int id = lua_tointeger(state, -2);
+		int turns = lua_tointeger(state, -1);
+		game.log("sfml_wait (" + std::to_string(id) + ") turns: " + std::to_string(turns));
+
+		Character *character = screen->get_character_by_id(id);
+		screen->schedule_character_wait(*character, turns);
+		return 0;
+	}
+
 };
 
 void register_lua_accessible_functions()
@@ -117,4 +142,6 @@ void register_lua_accessible_functions()
 	lua_register(lua->get_state(), "sfml_get_map_width", LuaFunction::sfml_get_map_width);
 	lua_register(lua->get_state(), "sfml_get_map_height", LuaFunction::sfml_get_map_height);
 	lua_register(lua->get_state(), "sfml_get_map", LuaFunction::sfml_get_map);
+	lua_register(lua->get_state(), "sfml_move", LuaFunction::sfml_move);
+	lua_register(lua->get_state(), "sfml_wait", LuaFunction::sfml_wait);
 }

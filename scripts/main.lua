@@ -55,9 +55,16 @@ function print_map()
   end
 end
 
+function on_idle_test(id)
+  sfml_move(id, 1, 1)
+  sfml_wait(id, 1)
+  sfml_move(id, 3, 3)
+  sfml_wait(id, 1)
+end
+
 -- default character scripting
 
-function on_idle()
+function on_idle(id)
   -- 50% chance walk 1d4 blocks, 50% chance wait 1d4 turns
 
   map = sfml_get_map()
@@ -100,10 +107,10 @@ function on_idle()
       dst_y = map_h -1
     end
 
-    sfml_move(dst_x, dst_y)
+    sfml_move(id, dst_x, dst_y)
   else
     -- wait
-    sfml_wait(math.random(4))
+    sfml_wait(id, math.random(4))
   end
 end
 

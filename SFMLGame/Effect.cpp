@@ -29,3 +29,8 @@ void MoveEffect::update(float elapsed_time) {
 	}
 }
 
+void WaitEffect::update(float elapsed_time) {
+	if ((time_count += elapsed_time) >= seconds) {
+		stop_running();
+	}
+}

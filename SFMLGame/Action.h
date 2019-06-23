@@ -19,9 +19,22 @@ public:
 		: character(character), direction(direction)
 	{}
 
-	virtual void execute(GameScreen *screen);
+	virtual void execute(GameScreen *screen) override;
 
 private:
 	Direction direction;
+	Character *character;
+};
+
+
+class WaitAction : public Action {
+public:
+	WaitAction(Character *character=nullptr)
+		: character(character)
+	{}
+
+	virtual void execute(GameScreen *screen) override;
+
+private:
 	Character *character;
 };

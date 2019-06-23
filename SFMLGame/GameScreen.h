@@ -52,20 +52,23 @@ public:
 	virtual void handle_event(sf::Event &event, float elapsed_time) override;
 
 	Tilemap &get_map() { return map; }
-
-public:
-	void load_map(std::string filename);
 	Character *get_player_character() { return player_character; }
 	std::vector<Character> get_characters() { return characters; }
 
-	void put_character_on_tile(Character &character, int x, int y);
-	void move_player_character(Direction direction);
-	void schedule_player_character_movement(int tile_x, int tile_y);
+public:
+	void load_map(std::string filename);
+
+	void schedule_character_wait(Character &character, int turns);
+	void schedule_character_movement(Character &character, int tile_x, int tile_y);
+
 	void move_character(Character &character, Direction direction);
-	sf::Vector2i character_position(Character &character);
+	void wait_character(Character &character);
+
 	bool can_move(Character &character, Direction direction);
-
-
+	Character* get_character_on_tile(int tile_x, int tile_y);
+	Character* get_character_by_id(long id);
+	void put_character_on_tile(Character &character, int x, int y);
+	sf::Vector2i character_position(Character &character);
 
 private:
 

@@ -9,7 +9,10 @@
 class Entity : public sf::Drawable, public sf::Transformable
 {
 public:
-	Entity() : show_outline(false) {}
+	Entity() : show_outline(false) {
+		static long global_id = 0;
+		id = global_id++;
+	}
 	virtual ~Entity() {}
 
 	virtual void update(float elapsedTime) {}
@@ -20,6 +23,8 @@ public:
 		target.draw(vertices, states);
 		target.draw(outline, states);
 	}
+
+	long get_id() const { return id; }
 
 	sf::VertexArray get_vertices() const { return vertices; }
 	void set_vertices(sf::VertexArray vertices) { this->vertices = vertices; }
@@ -85,6 +90,9 @@ private:
 protected:
 	sf::VertexArray vertices;
 	sf::Texture *texture = nullptr;
+
+	long id;
+
 private:
 	sf::RectangleShape outline;
 	int height;
