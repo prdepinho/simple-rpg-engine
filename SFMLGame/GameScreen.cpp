@@ -114,7 +114,19 @@ bool GameScreen::update(float elapsed_time) {
 
 			// execute scheduled actions.
 			for (Character &character : characters) {
+				if (&character != player_character) {
+					get_game()->get_lua()->on_turn(character);
+				}
 				Action *action = character.next_action();
+
+				if (&character != player_character) {
+					if (action == nullptr) {  // character is idle.
+						get_game()->log("Character " + std::to_string(character.get_id()) + " is idle");
+						get_game()->get_lua()->on_idle(character);
+						action = character.next_action();
+					}
+				}
+
 				if (action != nullptr) {
 					action->execute(this);
 
@@ -126,12 +138,6 @@ bool GameScreen::update(float elapsed_time) {
 						}
 					}
 
-				}
-				else {  // character is idle.
-					if (&character != player_character) {
-						get_game()->log("Character " + std::to_string(character.get_id()) + " is idle");
-						get_game()->get_lua()->on_idle(character);
-					}
 				}
 			}
 		}

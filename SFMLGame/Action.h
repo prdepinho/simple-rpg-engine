@@ -10,6 +10,7 @@ public:
 	Action() {}
 	~Action() {}
 	virtual void execute(GameScreen *screen) = 0;
+	virtual std::string to_string() const { return "Action"; }
 };
 
 
@@ -20,6 +21,7 @@ public:
 	{}
 
 	virtual void execute(GameScreen *screen) override;
+	virtual std::string to_string() const override { return "MoveAction"; }
 
 private:
 	Direction direction;
@@ -34,6 +36,7 @@ public:
 	{}
 
 	virtual void execute(GameScreen *screen) override;
+	virtual std::string to_string() const override { return "WaitAction"; }
 
 private:
 	Character *character;

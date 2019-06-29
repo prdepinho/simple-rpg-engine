@@ -62,22 +62,12 @@ public:
 
 		lua_newtable(state);
 		{
-
-			lua_pushliteral(state, "tile_width");
+			lua_pushliteral(state, "width");
 			lua_pushnumber(state, screen->get_map().get_tile_width());
 			lua_settable(state, -3);
 
-			lua_pushliteral(state, "tile_height");
+			lua_pushliteral(state, "height");
 			lua_pushnumber(state, screen->get_map().get_tile_height());
-			lua_settable(state, -3);
-
-			sf::Vector2i player_position = screen->character_position(*screen->get_player_character());
-			lua_pushliteral(state, "player_tile_x");
-			lua_pushnumber(state, player_position.x);
-			lua_settable(state, -3);
-
-			lua_pushliteral(state, "player_tile_y");
-			lua_pushnumber(state, player_position.y);
 			lua_settable(state, -3);
 
 			lua_pushliteral(state, "characters"); 
@@ -91,13 +81,23 @@ public:
 					lua_pushnumber(state, ++i);
 					lua_newtable(state);
 					{
-						lua_pushliteral(state, "tile_x");
-						lua_pushnumber(state, position.x);
+						lua_pushliteral(state, "id");
+						lua_pushnumber(state, character.get_id());
 						lua_settable(state, -3);
 
-						lua_pushliteral(state, "tile_y");
-						lua_pushnumber(state, position.y);
+						lua_pushliteral(state, "position");
+						lua_newtable(state);
+						{
+							lua_pushliteral(state, "x");
+							lua_pushnumber(state, position.x);
+							lua_settable(state, -3);
+
+							lua_pushliteral(state, "y");
+							lua_pushnumber(state, position.y);
+							lua_settable(state, -3);
+						}
 						lua_settable(state, -3);
+
 					}
 					lua_settable(state, -3);
 				}
@@ -105,6 +105,41 @@ public:
 			lua_settable(state, -3);
 		}
 
+		return 1;
+	}
+
+	static int sfml_get_player_position(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
+		Character *character = screen->get_player_character();
+		sf::Vector2i position = screen->character_position(*character);
+		lua_newtable(state);
+		{
+			lua_pushliteral(state, "x");
+			lua_pushinteger(state, position.x);
+			lua_settable(state, -3);
+
+			lua_pushliteral(state, "y");
+			lua_pushinteger(state, position.y);
+			lua_settable(state, -3);
+		}
+		return 1;
+	}
+
+	static int sfml_get_character_position(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
+		int id = lua_tointeger(state, -1);
+		Character *character = screen->get_character_by_id(id);
+		sf::Vector2i position = screen->character_position(*character);
+		lua_newtable(state);
+		{
+			lua_pushliteral(state, "x");
+			lua_pushinteger(state, position.x);
+			lua_settable(state, -3);
+
+			lua_pushliteral(state, "y");
+			lua_pushinteger(state, position.y);
+			lua_settable(state, -3);
+		}
 		return 1;
 	}
 
@@ -133,6 +168,49 @@ public:
 		return 0;
 	}
 
+	static int sfml_clear_schedule(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
+
+		int id = lua_tointeger(state, -1);
+		Character *character = screen->get_character_by_id(id);
+		character->clear_schedule();
+		return 0;
+	}
+
+	static int sfml_get_tile(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
+		int x = lua_tointeger(state, -2);
+		int y = lua_tointeger(state, -1);
+		TileData tile = screen->get_map().get_tile(x, y);
+
+		lua_newtable(state);
+		{
+			lua_pushliteral(state, "obstacle");
+			lua_pushboolean(state, tile.obstacle);
+			lua_settable(state, -3);
+		}
+
+		return 1;
+	}
+
+	static int sfml_get_schedule(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
+		int id = lua_tointeger(state, -1);
+		Character *character = screen->get_character_by_id(id);
+		std::queue<Action*> schedule = character->get_schedule();
+
+		lua_newtable(state);
+		{
+			int i = 0;
+			for (Action *action : schedule._Get_container()) {
+				lua_pushnumber(state, ++i);
+				lua_pushstring(state, action->to_string().c_str());
+				lua_settable(state, -3);
+			}
+		}
+		return 1;
+	}
+
 };
 
 void register_lua_accessible_functions()
@@ -144,4 +222,9 @@ void register_lua_accessible_functions()
 	lua_register(lua->get_state(), "sfml_get_map", LuaFunction::sfml_get_map);
 	lua_register(lua->get_state(), "sfml_move", LuaFunction::sfml_move);
 	lua_register(lua->get_state(), "sfml_wait", LuaFunction::sfml_wait);
+	lua_register(lua->get_state(), "sfml_get_character_position", LuaFunction::sfml_get_character_position);
+	lua_register(lua->get_state(), "sfml_get_player_position", LuaFunction::sfml_get_player_position);
+	lua_register(lua->get_state(), "sfml_clear_schedule", LuaFunction::sfml_clear_schedule);
+	lua_register(lua->get_state(), "sfml_get_tile", LuaFunction::sfml_get_tile);
+	lua_register(lua->get_state(), "sfml_get_schedule", LuaFunction::sfml_get_schedule);
 }

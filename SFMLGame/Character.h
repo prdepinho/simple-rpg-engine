@@ -45,28 +45,11 @@ public:
 	void face_left();
 	void face_right();
 
-	int schedule_size() const {
-		return schedule.size();
-	}
-
-	void schedule_action(Action *action) {
-		schedule.push(action);
-	}
-
-	Action *next_action() {
-		if (!schedule.empty()) {
-			Action *action = schedule.front();
-			schedule.pop();
-			return action;
-		}
-		return nullptr;
-	}
-
-	void clear_schedule() {
-		while (!schedule.empty()) {
-			schedule.pop();
-		}
-	}
+	int schedule_size() const;
+	void schedule_action(Action *action);
+	Action *next_action();
+	void clear_schedule();
+	std::queue<Action*> get_schedule() { return schedule; }
 
 private:
 	std::queue<Action*> schedule;

@@ -40,6 +40,7 @@ public:
 	
 
 	void on_idle(Character &character);
+	void on_turn(Character &character);
 
 private:
 	lua_State *state; 

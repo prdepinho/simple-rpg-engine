@@ -62,3 +62,26 @@ void Character::face_right() {
 		scale(-1, 1);
 	}
 }
+
+int Character::schedule_size() const {
+	return schedule.size();
+}
+
+void Character::schedule_action(Action * action) {
+	schedule.push(action);
+}
+
+Action *Character::next_action() {
+	if (!schedule.empty()) {
+		Action *action = schedule.front();
+		schedule.pop();
+		return action;
+	}
+	return nullptr;
+}
+
+void Character::clear_schedule() {
+	while (!schedule.empty()) {
+		schedule.pop();
+	}
+}
