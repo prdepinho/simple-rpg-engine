@@ -12,7 +12,7 @@ void JsonParser::parse(Json &json_token) {
 
 int JsonParser::get_token(int index, Json & token) {
 	int i = index;
-	for (int i = index; i < json.size(); i++) {
+	for (unsigned int i = index; i < json.size(); i++) {
 		char c = json[i];
 
 		switch (c) {
@@ -80,7 +80,7 @@ int JsonParser::get_token(int index, Json & token) {
 }
 
 int JsonParser::get_primitive(int index, std::string & primitive) {
-	int i = index;
+	unsigned int i = index;
 	for (; i < json.length(); i++) {
 		switch (json[i]) {
 		case ' ': case '\t': case '\r': case '\n': case ',': case ':': case ']': case '}':
@@ -94,7 +94,7 @@ int JsonParser::get_primitive(int index, std::string & primitive) {
 }
 
 int JsonParser::get_string(int index, std::string & string) {
-	int i = index + 1;
+	unsigned int i = index + 1;
 	for (; i < json.length(); i++) {
 		if (json[i] == '"')
 			return i;
@@ -105,7 +105,7 @@ int JsonParser::get_string(int index, std::string & string) {
 }
 
 int JsonParser::get_number(int index, std::string & number) {
-	int i = index;
+	unsigned int i = index;
 	int dots = 0;
 	for (; i < json.length(); i++) {
 		switch (json[i]) {
@@ -128,7 +128,7 @@ int JsonParser::get_number(int index, std::string & number) {
 }
 
 int JsonParser::get_list(int index, std::vector<Json>& list) {
-	int i = index + 1;
+	unsigned int i = index + 1;
 	for (; i < json.length(); i++) {
 
 		Json token;
@@ -150,7 +150,7 @@ int JsonParser::get_list(int index, std::vector<Json>& list) {
 }
 
 int JsonParser::get_object(int index, std::map<std::string, Json>& object) {
-	int i = index + 1;
+	unsigned int i = index + 1;
 	for (; i < json.length(); i++) {
 		i = skip_spaces(i);
 
@@ -198,7 +198,7 @@ int JsonParser::get_object(int index, std::map<std::string, Json>& object) {
 }
 
 inline int JsonParser::skip_spaces(int index) {
-	int i = index;
+	unsigned int i = index;
 	for (; i < json.length(); i++) {
 		char c = json[i];
 		switch (c) {
@@ -248,7 +248,7 @@ Json * Json::get_token(std::string object_path) {
 	std::string split = "";
 	Json *token = this;
 
-	for (int i = 0; i < path.size(); i++) {
+	for (unsigned int i = 0; i < path.size(); i++) {
 		char c = path[i];
 		if (c == '/') {
 			token = token->get(split);

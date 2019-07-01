@@ -56,10 +56,10 @@ void GameScreen::create() {
 
 	select(container);
 
-	game_view.setSize(sf::Vector2f(game->get_resolution_width(), game->get_resolution_height()));
-	game_view.setCenter(sf::Vector2f(player_character->get_x(), player_character->get_y()));
-	gui_view.setSize(sf::Vector2f(game->get_resolution_width(), game->get_resolution_height()));
-	gui_view.setCenter(game->get_resolution_width() / 2, game->get_resolution_height() / 2);
+	game_view.setSize(sf::Vector2f((float) game->get_resolution_width(), (float) game->get_resolution_height()));
+	game_view.setCenter(sf::Vector2f((float) player_character->get_x(), (float) player_character->get_y()));
+	gui_view.setSize(sf::Vector2f((float) game->get_resolution_width(), (float) game->get_resolution_height()));
+	gui_view.setCenter((float)game->get_resolution_width() / 2.f, (float) game->get_resolution_height() / 2.f);
 }
 
 void GameScreen::destroy() {
@@ -196,8 +196,8 @@ void GameScreen::poll_events(float elapsed_time) {
 		if (selected_component == &container) {
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
 				auto mouse_position = get_mouse_game_position();
-				int x = mouse_position.x;
-				int y = mouse_position.y;
+				int x = (int) mouse_position.x;
+				int y = (int) mouse_position.y;
 
 				if (map.in_bounds(x, y)) {
 					auto tile_coord = map.get_tile_coord(x, y);
@@ -207,8 +207,8 @@ void GameScreen::poll_events(float elapsed_time) {
 			}
 			else if (holding_screen && sf::Mouse::isButtonPressed(sf::Mouse::Button::Middle)) {
 				auto mouse_game_position = get_mouse_game_position();
-				int dif_x = holding_start_position.x - mouse_game_position.x;
-				int dif_y = holding_start_position.y - mouse_game_position.y;
+				int dif_x = (int) (holding_start_position.x - mouse_game_position.x);
+				int dif_y = (int) (holding_start_position.y - mouse_game_position.y);
 
 				game_view.move(sf::Vector2f{ (float)dif_x, (float)dif_y });
 
@@ -230,8 +230,8 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		if (selected_component == &container) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				auto mouse_position = get_mouse_game_position();
-				int x = mouse_position.x;
-				int y = mouse_position.y;
+				int x = (int) mouse_position.x;
+				int y = (int) mouse_position.y;
 
 				if (map.in_bounds(x, y)) {
 					auto tile_coord = map.get_tile_coord(x, y);
@@ -310,7 +310,7 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			float delta = event.mouseWheelScroll.delta;
 			int mouse_position_x = event.mouseWheelScroll.x;
 			int mouse_position_y = event.mouseWheelScroll.y;
-			float zoom = 1 - (delta * 00.1); // proportion to screen size
+			float zoom = 1 - (delta * 00.1f); // proportion to screen size
 			game_view.zoom(zoom);
 			window->setView(game_view);
 		}
@@ -328,7 +328,7 @@ void GameScreen::load_map(std::string filename) {
 
 void GameScreen::put_character_on_tile(Character & character, int x, int y) {
 	auto tile_coords = map.get_tile_pix_coords(x, y);
-	character.set_position(map.get_x() + tile_coords.x + 8, map.get_y() + tile_coords.y + 8);
+	character.set_position(map.get_x() + (int) tile_coords.x + 8, map.get_y() + (int) tile_coords.y + 8);
 }
 
 void GameScreen::schedule_character_wait(Character &character, int turns) {

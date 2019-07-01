@@ -3,15 +3,15 @@
 
 inline void Font::DrawLetter(sf::Vertex *quad, int32_t x, int32_t y, int32_t ox, int32_t oy, int32_t w, int32_t h, sf::Color color)
 {
-	quad[0].position = sf::Vector2f(0+x, 0+y);
-	quad[1].position = sf::Vector2f(w+x, 0+y);
-	quad[2].position = sf::Vector2f(w+x, h+y);
-	quad[3].position = sf::Vector2f(0+x, h+y);
+	quad[0].position = sf::Vector2f((float) 0+x, (float) 0+y);
+	quad[1].position = sf::Vector2f((float) w+x, (float) 0+y);
+	quad[2].position = sf::Vector2f((float) w+x, (float) h+y);
+	quad[3].position = sf::Vector2f((float) 0+x, (float) h+y);
 
-	quad[0].texCoords = sf::Vector2f(0+ox, 0+oy);
-	quad[1].texCoords = sf::Vector2f(w+ox, 0+oy);
-	quad[2].texCoords = sf::Vector2f(w+ox, h+oy);
-	quad[3].texCoords = sf::Vector2f(0+ox, h+oy);
+	quad[0].texCoords = sf::Vector2f((float) 0+ox, (float) 0+oy);
+	quad[1].texCoords = sf::Vector2f((float) w+ox, (float) 0+oy);
+	quad[2].texCoords = sf::Vector2f((float) w+ox, (float) h+oy);
+	quad[3].texCoords = sf::Vector2f((float) 0+ox, (float) h+oy);
 
 	quad[0].color = color;
 	quad[1].color = color;
@@ -28,7 +28,7 @@ void Font::draw_line(int x, int y, std::string str, sf::Color color) {
 
 inline void Font::build_line(sf::VertexArray *varray, int x, int y, std::string str, sf::Color color) {
 	int forward = 0;
-	for (int i = 0; i < str.size(); i++) {
+	for (unsigned int i = 0; i < str.size(); i++) {
 		char c = str[i];
 		Font::LetterMapData data = char_data(c);
 		sf::Vertex *quad = &(*varray)[i * 4];
@@ -47,7 +47,7 @@ void Font::draw_text(int x, int y, int width, int height, std::string text, sf::
 	vertices.setPrimitiveType(sf::Quads);
 	vertices.resize(4 * text.size());
 
-	for (int i = 0; i < text.size(); i++) {
+	for (unsigned int i = 0; i < text.size(); i++) {
 		char c = text[i];
 		word += c;
 		Font::LetterMapData data = char_data(c);
@@ -65,7 +65,7 @@ void Font::draw_text(int x, int y, int width, int height, std::string text, sf::
 			varray.setPrimitiveType(sf::Quads);
 			varray.resize(4 * word.size());
 			Font::build_line(&varray, x + word_begin, y + downward, word, color);
-			for(int i = 0; i < varray.getVertexCount(); ++i)
+			for(unsigned int i = 0; i < varray.getVertexCount(); ++i)
 				vertices[vertex_index++] = varray[i];
 			word = "";
 			word_begin += word_end;
@@ -82,7 +82,7 @@ std::vector<std::string> Font::split_lines(std::string text, int width) {
 	std::vector<std::string> lines;
 	std::vector<std::string> words = Font::split_words(text);
 
-	for (int i = 0; i < words.size(); i++) {
+	for (unsigned int i = 0; i < words.size(); i++) {
 		std::string word = words[i];
 		int word_width = Font::line_width(word);
 		if (line_width + word_width > width) {
@@ -103,7 +103,7 @@ std::vector<std::string> Font::split_lines(std::string text, int width) {
 std::vector<std::string> Font::split_words(std::string text) {
 	std::vector<std::string> words;
 	std::string word = "";
-	for (int i = 0; i < text.size(); i++) {
+	for (unsigned int i = 0; i < text.size(); i++) {
 		char c = text[i];
 		word += c;
 		if (c == ' ' || c == '\n' || i == text.size() -1) {
@@ -117,7 +117,7 @@ std::vector<std::string> Font::split_words(std::string text) {
 
 int Font::line_width(std::string str) {
 	int forward = 0;
-	for (int i = 0; i < str.size(); i++) {
+	for (unsigned int i = 0; i < str.size(); i++) {
 		char c = str[i];
 		Font::LetterMapData data = char_data(c);
 		forward += data.forward + 1;

@@ -21,8 +21,8 @@ void TilemapDAO::save_map(std::string filename, Tilemap & map) {
 
 			for (int frame = 0; frame < 2; ++frame) {
 				auto tex_coords = map.get_texture_coords(frame, x, y);
-				int texX = tex_coords.x;
-				int texY = tex_coords.y;
+				int texX = (int) tex_coords.x;
+				int texY = (int) tex_coords.y;
 
 				outfile.write(reinterpret_cast<const char*>(&texX), sizeof(int));
 				outfile.write(reinterpret_cast<const char*>(&texY), sizeof(int));
@@ -65,7 +65,7 @@ void TilemapDAO::load_map(std::string filename, Tilemap & map) {
 				infile.read(reinterpret_cast<char*>(&texX), sizeof(int));
 				infile.read(reinterpret_cast<char*>(&texY), sizeof(int));
 
-				map.set_texture_coords(frame, x, y, texX, texY);
+				map.set_texture_coords(frame, x, y, (float) texX, (float) texY);
 			}
 
 		}

@@ -30,9 +30,9 @@ public:
 	static int howdy(lua_State *state)
 	{
 		int args = lua_gettop(state);
-		int i1 = lua_tointeger(state, 1);
-		int i2 = lua_tointeger(state, 2);
-		int i3 = lua_tointeger(state, 3);
+		int i1 = (int) lua_tointeger(state, 1);
+		int i2 = (int) lua_tointeger(state, 2);
+		int i3 = (int) lua_tointeger(state, 3);
 		lua_pushnumber(state, i1 * i2 * i3);
 		return 1;
 	}
@@ -127,7 +127,7 @@ public:
 
 	static int sfml_get_character_position(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
-		int id = lua_tointeger(state, -1);
+		int id = (int) lua_tointeger(state, -1);
 		Character *character = screen->get_character_by_id(id);
 		sf::Vector2i position = screen->character_position(*character);
 		lua_newtable(state);
@@ -146,9 +146,9 @@ public:
 	static int sfml_move(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
 
-		int id = lua_tointeger(state, -3);
-		int x = lua_tointeger(state, -2);
-		int y = lua_tointeger(state, -1);
+		int id = (int) lua_tointeger(state, -3);
+		int x = (int) lua_tointeger(state, -2);
+		int y = (int) lua_tointeger(state, -1);
 		game.log("sfml_move (" + std::to_string(id) + ") x: " + std::to_string(x) + ", y: " + std::to_string(y));
 
 		Character *character = screen->get_character_by_id(id);
@@ -159,8 +159,8 @@ public:
 	static int sfml_wait(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
 
-		int id = lua_tointeger(state, -2);
-		int turns = lua_tointeger(state, -1);
+		int id = (int) lua_tointeger(state, -2);
+		int turns = (int) lua_tointeger(state, -1);
 		game.log("sfml_wait (" + std::to_string(id) + ") turns: " + std::to_string(turns));
 
 		Character *character = screen->get_character_by_id(id);
@@ -171,7 +171,7 @@ public:
 	static int sfml_clear_schedule(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
 
-		int id = lua_tointeger(state, -1);
+		int id = (int) lua_tointeger(state, -1);
 		Character *character = screen->get_character_by_id(id);
 		character->clear_schedule();
 		return 0;
@@ -179,8 +179,8 @@ public:
 
 	static int sfml_get_tile(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
-		int x = lua_tointeger(state, -2);
-		int y = lua_tointeger(state, -1);
+		int x = (int) lua_tointeger(state, -2);
+		int y = (int) lua_tointeger(state, -1);
 		TileData tile = screen->get_map().get_tile(x, y);
 
 		lua_newtable(state);
@@ -195,7 +195,7 @@ public:
 
 	static int sfml_get_schedule(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
-		int id = lua_tointeger(state, -1);
+		int id = (int) lua_tointeger(state, -1);
 		Character *character = screen->get_character_by_id(id);
 		std::queue<Action*> schedule = character->get_schedule();
 

@@ -11,13 +11,13 @@ void CheckButton::create() {
 	float texY = json.get_vector("check_button/checked")[1].get_float();
 	pressed_vertices.setPrimitiveType(sf::Quads);
 	pressed_vertices.resize(4 * 1);
-	set_quad(&pressed_vertices[0], 0, 0, get_width(), get_height(), texX, texY, 8, 8);
+	set_quad(&pressed_vertices[0], 0.f, 0.f, (float) get_width(), (float) get_height(), (float) texX, (float) texY, 8.f, 8.f);
 
 	texX = json.get_vector("check_button/released")[0].get_float();
 	texY = json.get_vector("check_button/released")[1].get_float();
 	released_vertices.setPrimitiveType(sf::Quads);
 	released_vertices.resize(4 * 1);
-	set_quad(&released_vertices[0], 0, 0, get_width(), get_height(), texX, texY, 8, 8);
+	set_quad(&released_vertices[0], 0.f, 0.f, (float) get_width(), (float) get_height(), (float) texX, (float) texY, 8.f, 8.f);
 
 	vertices = released_vertices;
 }

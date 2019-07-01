@@ -94,7 +94,7 @@ void DebugConsole::hide_console() {
 }
 
 inline std::string DebugConsole::history_next() {
-	if (++history_cursor >= history.size()) {
+	if (++history_cursor >= (int) history.size()) {
 		history_cursor = history.size();
 		return "";
 	}

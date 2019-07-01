@@ -35,11 +35,13 @@ public:
 	unsigned int get_tile_height() const { return height; }
 
 	/// Return whether the tile coordinates are inside the map.
-	bool in_tile_bounds(int tile_x, int tile_y) const { return tile_x < width && tile_x >= 0 && tile_y < height && tile_y >= 0; }
+	bool in_tile_bounds(int tile_x, int tile_y) const {
+		return tile_x < width && tile_x >= 0 && tile_y < height && tile_y >= 0; 
+	}
 
 private:
-	unsigned int width;
-	unsigned int height;
+	int width;
+	int height;
 	std::vector<TileData> tiles;
 };
 

@@ -16,10 +16,10 @@ void CustomPanel::create() {
 	float vertical_position = json->get_float("position/vertical", -1.f);
 
 	int x = horizontal_position > -1 
-		? (screen->get_game()->get_resolution_width() * horizontal_position - get_width() / 2)
+		? (int) (screen->get_game()->get_resolution_width() * horizontal_position - get_width() / 2)
 		: get_x();
 	int y = vertical_position > -1 
-		? (screen->get_game()->get_resolution_height() * vertical_position - get_height() / 2)
+		? (int) (screen->get_game()->get_resolution_height() * vertical_position - get_height() / 2)
 		: get_y();
 	set_position(x, y);
 
@@ -84,20 +84,20 @@ void CustomPanel::create() {
 			component->create();
 
 			if (has_label) {
-				x = get_x() + get_width() * component_horizonta_position - (labels.back()->get_width() + component->get_width()) / 2;
-				y = get_y() + get_height() * component_vertical_position - labels.back()->get_height() / 2;
+				x = (int) (get_x() + get_width() * component_horizonta_position - (labels.back()->get_width() + component->get_width()) / 2);
+				y = (int) (get_y() + get_height() * component_vertical_position - labels.back()->get_height() / 2);
 				labels.back()->set_position(x, y);
 
 				x = x + labels.back()->get_width() + 2;
-				y = get_y() + get_height() * component_vertical_position - component->get_height() / 2;
+				y = (int) (get_y() + get_height() * component_vertical_position - component->get_height() / 2);
 				component->set_position(x, y);
 
 				labels.back()->create();
 				add_component(*labels.back());
 			}
 			else {
-				int x = get_x() + get_width() * component_horizonta_position - component->get_width() / 2;
-				int y = get_y() + get_height() * component_vertical_position - component->get_height() / 2;
+				int x = (int) (get_x() + get_width() * component_horizonta_position - component->get_width() / 2);
+				int y = (int) (get_y() + get_height() * component_vertical_position - component->get_height() / 2);
 				component->set_position(x, y);
 			}
 

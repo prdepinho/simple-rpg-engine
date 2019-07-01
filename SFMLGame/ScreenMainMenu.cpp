@@ -19,7 +19,7 @@ void ScreenMainMenu::create()
 	int x = (game->get_resolution_width() / 2) - (button_length / 2);
 
 	buttons = std::vector<Button>(tokens.size());
-	for (int i = 0; i < tokens.size(); i++) {
+	for (unsigned int i = 0; i < tokens.size(); i++) {
 		Json &token = tokens[i];
 		Button &button = buttons[i];
 
@@ -62,8 +62,8 @@ void ScreenMainMenu::create()
 	}
 	select(*container.get_component(0));
 
-	gui_view.setSize(sf::Vector2f(game->get_resolution_width(), game->get_resolution_height()));
-	gui_view.setCenter(game->get_resolution_width() / 2, game->get_resolution_height() / 2);
+	gui_view.setSize(sf::Vector2f((float) game->get_resolution_width(), (float) game->get_resolution_height()));
+	gui_view.setCenter((float) game->get_resolution_width() / 2.f, (float) game->get_resolution_height() / 2.f);
 }
 
 void ScreenMainMenu::destroy()

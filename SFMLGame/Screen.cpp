@@ -125,7 +125,7 @@ void Screen::handle_event(sf::Event &event, float elapsed_time)
 		{
 			// used for user text input. You have to filter out backspaces and other non printable characters.
 			if (selected_component != nullptr) {
-				wchar_t c = static_cast<char>(event.text.unicode);
+				char c = static_cast<char>(event.text.unicode);
 				Component *typed_gui = selected_component->on_text_input(c);
 			}
 		}

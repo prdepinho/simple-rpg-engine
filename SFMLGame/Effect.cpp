@@ -1,7 +1,7 @@
 #include "Effect.h"
 
 void MoveEffect::update(float elapsed_time) {
-	// TODO make it smoother.
+	// TODO make it smoother under 60 FPS.
 	if ((time_count += elapsed_time) >= seconds_per_pixel) {
 		time_count = 0;
 		if (character != nullptr) {

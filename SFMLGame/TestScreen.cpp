@@ -22,13 +22,13 @@ void TestScreen::create()
 
 	unsigned int totalCharacters = 0; // capable of 1000 chracters in 40 fps
 	characters = std::vector<Character>(totalCharacters);
-	for (int i = 0; i < totalCharacters; ++i) {
-		float x = std::rand() % mapSide * 16;
-		float y = std::rand() % mapSide * 16;
+	for (unsigned int i = 0; i < totalCharacters; ++i) {
+		float x = (float) (std::rand() % mapSide * 16);
+		float y = (float) (std::rand() % mapSide * 16);
 		characters[i] = Character();
 		characters[i].create("boy");
 		characters[i].set_animation(AnimationType::WALK);
-		characters[i].set_position(tilemap.get_x() + x, tilemap.get_y() + y);
+		characters[i].set_position(tilemap.get_x() + (int) x, tilemap.get_y() + (int) y);
 	}
 
 	log_font.set_texture(Textures::get("gui"));
@@ -75,13 +75,13 @@ void TestScreen::create()
 	panel1.create();
 
 
-	game_view.setSize(sf::Vector2f(game->get_resolution_width(), game->get_resolution_height()));
-	game_view.setCenter(sf::Vector2f(character.get_x() + 8, character.get_y() + 8));
+	game_view.setSize(sf::Vector2f((float) game->get_resolution_width(), (float) game->get_resolution_height()));
+	game_view.setCenter(sf::Vector2f((float) character.get_x() + 8.f, (float) character.get_y() + 8.f));
 	//game_view.setCenter(sf::Vector2f(game->get_resolution_width() / 2, game->get_resolution_height() / 2));
 
-	gui_view.setSize(sf::Vector2f(game->get_resolution_width(), game->get_resolution_height()));
+	gui_view.setSize(sf::Vector2f((float) game->get_resolution_width(), (float) game->get_resolution_height()));
 	//gui_view.setCenter(160, 100);
-	gui_view.setCenter(game->get_resolution_width() / 2, game->get_resolution_height() / 2);
+	gui_view.setCenter((float) game->get_resolution_width() / 2.f, (float) game->get_resolution_height() / 2.f);
 }
 
 void TestScreen::destroy()
@@ -190,7 +190,7 @@ void TestScreen::handle_event(sf::Event &event, float elapsed_time)
 			float delta = event.mouseWheelScroll.delta;
 			int mouse_position_x = event.mouseWheelScroll.x;
 			int mouse_position_y = event.mouseWheelScroll.y;
-			float zoom = 1 - (delta * 00.1); // proportion to screen size
+			float zoom = 1 - (delta * 00.1f); // proportion to screen size
 			game_view.zoom(zoom);
 			window->setView(game_view);
 		}

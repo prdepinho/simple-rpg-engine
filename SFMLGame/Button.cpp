@@ -18,30 +18,30 @@ void Button::create() {
 	float texY = json.get_vector("button/pressed")[1].get_float();
 	pressed_vertices.setPrimitiveType(sf::Quads);
 	pressed_vertices.resize(4 * 9);
-	set_quad(&pressed_vertices[0*4], 0,   0,   2,   2,   texX,    texY,    2,  2);
-	set_quad(&pressed_vertices[1*4], 2,   0,   w-4, 2,   texX+2,  texY,    12, 2);
-	set_quad(&pressed_vertices[2*4], w-2, 0,   2,   2,   texX+14, texY,    2,  2);
-	set_quad(&pressed_vertices[3*4], 0,   2,   2,   h-4, texX,    texY+2,  2,  8);
-	set_quad(&pressed_vertices[4*4], 2,   2,   w-4, h-4, texX+2,  texY+2,  12, 8);
-	set_quad(&pressed_vertices[5*4], w-2, 2,   2,   h-4, texX+14, texY+2,  2,  8);
-	set_quad(&pressed_vertices[6*4], 0,   h-2, 2,   2,   texX,    texY+10, 2,  2);
-	set_quad(&pressed_vertices[7*4], 2,   h-2, w-4, 2,   texX+2,  texY+10, 12, 2);
-	set_quad(&pressed_vertices[8*4], w-2, h-2, 2,   2,   texX+14, texY+10, 2,  2);
+	set_quad(&pressed_vertices[0*4], 0.f,   0.f,   2.f,   2.f,   texX,      texY,      2.f,  2.f);
+	set_quad(&pressed_vertices[1*4], 2.f,   0.f,   w-4.f, 2.f,   texX+2.f,  texY,      12.f, 2.f);
+	set_quad(&pressed_vertices[2*4], w-2.f, 0.f,   2.f,   2.f,   texX+14.f, texY,      2.f,  2.f);
+	set_quad(&pressed_vertices[3*4], 0.f,   2.f,   2.f,   h-4.f, texX,      texY+2.f,  2.f,  8.f);
+	set_quad(&pressed_vertices[4*4], 2.f,   2.f,   w-4.f, h-4.f, texX+2.f,  texY+2.f,  12.f, 8.f);
+	set_quad(&pressed_vertices[5*4], w-2.f, 2.f,   2.f,   h-4.f, texX+14.f, texY+2.f,  2.f,  8.f);
+	set_quad(&pressed_vertices[6*4], 0.f,   h-2.f, 2.f,   2.f,   texX,      texY+10.f, 2.f,  2.f);
+	set_quad(&pressed_vertices[7*4], 2.f,   h-2.f, w-4.f, 2.f,   texX+2.f,  texY+10.f, 12.f, 2.f);
+	set_quad(&pressed_vertices[8*4], w-2.f, h-2.f, 2.f,   2.f,   texX+14.f, texY+10.f, 2.f,  2.f);
 
 
 	texX = json.get_vector("button/released")[0].get_float();
 	texY = json.get_vector("button/released")[1].get_float();
 	released_vertices.setPrimitiveType(sf::Quads);
 	released_vertices.resize(4 * 9);
-	set_quad(&released_vertices[0*4], 0,   0,   2,   2,   texX,    texY,    2,  2);
-	set_quad(&released_vertices[1*4], 2,   0,   w-4, 2,   texX+2,  texY,    12, 2);
-	set_quad(&released_vertices[2*4], w-2, 0,   2,   2,   texX+14, texY,    2,  2);
-	set_quad(&released_vertices[3*4], 0,   2,   2,   h-4, texX,    texY+2,  2,  8);
-	set_quad(&released_vertices[4*4], 2,   2,   w-4, h-4, texX+2,  texY+2,  12, 8);
-	set_quad(&released_vertices[5*4], w-2, 2,   2,   h-4, texX+14, texY+2,  2,  8);
-	set_quad(&released_vertices[6*4], 0,   h-2, 2,   2,   texX,    texY+10, 2,  2);
-	set_quad(&released_vertices[7*4], 2,   h-2, w-4, 2,   texX+2,  texY+10, 12, 2);
-	set_quad(&released_vertices[8*4], w-2, h-2, 2,   2,   texX+14, texY+10, 2,  2);
+	set_quad(&released_vertices[0*4], 0.f,   0.f,   2.f,   2.f,   texX,      texY,      2.f,  2.f);
+	set_quad(&released_vertices[1*4], 2.f,   0.f,   w-4.f, 2.f,   texX+2.f,  texY,      12.f, 2.f);
+	set_quad(&released_vertices[2*4], w-2.f, 0.f,   2.f,   2.f,   texX+14.f, texY,      2.f,  2.f);
+	set_quad(&released_vertices[3*4], 0.f,   2.f,   2.f,   h-4.f, texX,      texY+2.f,  2.f,  8.f);
+	set_quad(&released_vertices[4*4], 2.f,   2.f,   w-4.f, h-4.f, texX+2.f,  texY+2.f,  12.f, 8.f);
+	set_quad(&released_vertices[5*4], w-2.f, 2.f,   2.f,   h-4.f, texX+14.f, texY+2.f,  2.f,  8.f);
+	set_quad(&released_vertices[6*4], 0.f,   h-2.f, 2.f,   2.f,   texX,      texY+10.f, 2.f,  2.f);
+	set_quad(&released_vertices[7*4], 2.f,   h-2.f, w-4.f, 2.f,   texX+2.f,  texY+10.f, 12.f, 2.f);
+	set_quad(&released_vertices[8*4], w-2.f, h-2.f, 2.f,   2.f,   texX+14.f, texY+10.f, 2.f,  2.f);
 
 	vertices = released_vertices;
 }

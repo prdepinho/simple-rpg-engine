@@ -34,7 +34,7 @@ public:
 
 	int get_x() const { return (int) getPosition().x; }
 	int get_y() const { return (int) getPosition().y; }
-	virtual void set_position(int x, int y) { setPosition(sf::Vector2f((int)x, (int)y)); on_moved(); }
+	virtual void set_position(int x, int y) { setPosition(sf::Vector2f((float)x, (float)y)); on_moved(); }
 
 	int get_height() const { return height; }
 	int get_width() const { return width; }
@@ -80,8 +80,8 @@ public:
 
 private:
 	void updateOutline() {
-		outline = sf::RectangleShape(sf::Vector2f(get_x(), get_y()));
-		outline.setSize(sf::Vector2f(get_width(), get_height()));
+		outline = sf::RectangleShape(sf::Vector2f((float) get_x(), (float) get_y()));
+		outline.setSize(sf::Vector2f((float) get_width(), (float) get_height()));
 		outline.setOutlineThickness(show_outline ? 1.f : 0.f);
 		outline.setFillColor(sf::Color::Transparent);
 		outline.setOutlineColor(sf::Color::White);

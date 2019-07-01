@@ -171,8 +171,8 @@ void Component::set_show_selection_outline(bool show) {
 }
 
 void Component::update_selection_outline() {
-	selection_outline.setPosition(sf::Vector2f(get_x(), get_y()));
-	selection_outline.setSize(sf::Vector2f(get_width(), get_height()));
+	selection_outline.setPosition(sf::Vector2f((float) get_x(), (float) get_y()));
+	selection_outline.setSize(sf::Vector2f((float) get_width(), (float) get_height()));
 	selection_outline.setOutlineThickness(show_selection_outline ? 1.f : 0.f);
 	selection_outline.setFillColor(sf::Color::Transparent);
 	selection_outline.setOutlineColor(sf::Color::Red);

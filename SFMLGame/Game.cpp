@@ -13,7 +13,7 @@ Game::~Game() {
 
 void Game::start() 
 {
-	std::srand(std::time(NULL));
+	std::srand((unsigned int) std::time(NULL));
 	lua.load();
 	configure_game();
 	load_textures();
@@ -88,9 +88,9 @@ void Game::configure_game()
 	Json json(Config::SETTINGS);
 	resolution_width =  json.get_int("screen/resolution/width", Default::RESOLUTION_WIDTH);
 	resolution_height = json.get_int("screen/resolution/height", Default::RESOLUTION_HEIGHT);
-	float modifier =    json.get_float("screen/size_modifier", Default::SCREEN_SIZE_MODIFIER);
-	screen_width =  resolution_width * modifier;
-	screen_height = resolution_height * modifier;
+	float modifier =    json.get_float("screen/size_modifier", (float) Default::SCREEN_SIZE_MODIFIER);
+	screen_width =  (int) (resolution_width * modifier);
+	screen_height = (int) (resolution_height * modifier);
 	fullscreen =        json.get_bool("screen/fullscreen", Default::FULLSCREEN);
 	use_vsync =         json.get_bool("framerate/use_vsync", Default::USE_VSYNC);
 	limit_framerate =   json.get_bool("framerate/limited", Default::LIMIT_FRAMERATE);
@@ -126,8 +126,8 @@ void Game::configure_game()
 void Game::change_resolution(int w, int h, float modifier) {
 	resolution_width = w;
 	resolution_height = h;
-	screen_width = w * modifier;
-	screen_height = h * modifier;
+	screen_width = (int) (w * modifier);
+	screen_height = (int) (h * modifier);
 	if (!fullscreen) {
 		window.setSize(sf::Vector2u(screen_width, screen_height));
 		int screen_position_x = sf::VideoMode::getDesktopMode().width / 2 - screen_width / 2;
@@ -141,9 +141,9 @@ void Game::revert_resolution() {
 	Json json(Config::SETTINGS);
 	resolution_width =  json.get_int("screen/resolution/width", Default::RESOLUTION_WIDTH);
 	resolution_height = json.get_int("screen/resolution/height", Default::RESOLUTION_HEIGHT);
-	float modifier =    json.get_float("screen/size_modifier", Default::SCREEN_SIZE_MODIFIER);
-	screen_width =  resolution_width * modifier;
-	screen_height = resolution_height * modifier;
+	float modifier =    json.get_float("screen/size_modifier", (float) Default::SCREEN_SIZE_MODIFIER);
+	screen_width =  (int) (resolution_width * modifier);
+	screen_height = (int) (resolution_height * modifier);
 	if (!fullscreen) {
 		window.setSize(sf::Vector2u(screen_width, screen_height));
 		int screen_position_x = sf::VideoMode::getDesktopMode().width / 2 - screen_width / 2;

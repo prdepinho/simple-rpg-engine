@@ -19,7 +19,7 @@ void Character::create(std::string type) {
 
 		std::vector<sf::VertexArray> frames(frame_indices.size());
 
-		for (int i = 0; i < frame_indices.size(); i++) {
+		for (unsigned int i = 0; i < frame_indices.size(); i++) {
 			int frame_index = frame_indices[i].get_int();
 
 			int texture_x = frame_index * sprite_width;
@@ -28,10 +28,10 @@ void Character::create(std::string type) {
 			sf::VertexArray vertices;
 			vertices.setPrimitiveType(sf::Quads);
 			vertices.resize(4 * 1);
-			set_quad(&vertices[0], 0, 0,
-				sprite_width, sprite_height,
-				texture_x, texture_y,
-				sprite_width, sprite_height
+			set_quad(&vertices[0], 0.f, 0.f,
+				(float) sprite_width, (float) sprite_height,
+				(float) texture_x, (float) texture_y,
+				(float) sprite_width, (float) sprite_height
 			);
 			frames[i] = vertices;
 		}
