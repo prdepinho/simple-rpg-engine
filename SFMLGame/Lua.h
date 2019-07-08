@@ -15,10 +15,11 @@ class Lua
 {
 public:
 	Lua();
+	Lua(std::string filename);
 	~Lua();
 
 	/// Load the main script.
-	void load();
+	void load(std::string filename="");
 
 	lua_State* get_state() { return state; }
 
@@ -42,9 +43,28 @@ public:
 	void on_idle(Character &character);
 	void on_turn(Character &character);
 
+
+
+
+	int get_int(std::string name, int default_value);
+	float get_float(std::string name, float default_value);
+	bool get_boolean(std::string name, bool default_value);
+	std::string get_string(std::string name, std::string default_value);
+
+	int get_int(std::string name);
+	float get_float(std::string name);
+	bool get_boolean(std::string name);
+	std::string get_string(std::string name);
+	// std::vector<LuaConfig> get_list(std::string name);
+	// std::map<std::string, LuaConfig> get_object(std::string name);
+
+	// int get_int();
+	// float get_float();
+	// bool get_boolean();
+	// std::string get_string();
+	// std::vector<LuaConfig> get_list();
+	// std::map<std::string, LuaConfig> get_object();
+
 private:
 	lua_State *state; 
 };
-
-
-

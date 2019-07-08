@@ -12,12 +12,39 @@ void register_lua_accessible_functions();
 int main() 
 {
 	register_lua_accessible_functions();
+	char a;
 	try {
+#if false
 		game.start();
+#else
+		Lua lua("../config.lua");
+
+		std::cout << lua.stack_dump() << std::endl;
+
+		std::cout << "i: " << lua.get_int("i", -1) << std::endl;
+		std::cout << "o: " << lua.get_int("o", -1) << std::endl;
+		std::cout << "f: " << lua.get_float("f", -1.5f) << std::endl;
+		std::cout << "g: " << lua.get_float("g", -1.5f) << std::endl;
+		std::cout << "b: " << (lua.get_boolean("b", false) ? "true": "false") << std::endl;
+		std::cout << "c: " << (lua.get_boolean("c", false) ? "true": "false") << std::endl;
+		std::cout << "d: " << (lua.get_boolean("d", false) ? "true": "false") << std::endl;
+		std::cout << "s: " << lua.get_string("s", "foo") << std::endl;
+		std::cout << "t: " << lua.get_string("t", "foo") << std::endl;
+		std::cout << "u: " << lua.get_string("u", "foo") << std::endl;
+
+		std::cout << "i: " << lua.get_int("i") << std::endl;
+		std::cout << "f: " << lua.get_float("f") << std::endl;
+		std::cout << "b: " << (lua.get_boolean("b") ? "true": "false") << std::endl;
+		std::cout << "s: " << lua.get_string("s") << std::endl;
+
+
+		std::cout << lua.stack_dump() << std::endl;
+
+		std::cin >> a;
+#endif
 	}
 	catch (std::exception &e) {
 		std::cout << e.what() << std::endl;
-		char a;
 		std::cin >> a;
 	}
 	return 0;

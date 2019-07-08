@@ -15,9 +15,15 @@ Lua::Lua()
 	*/
 }
 
-void Lua::load()
+Lua::Lua(std::string filename) {
+	state = luaL_newstate();
+	luaL_openlibs(state);
+	load(filename);
+}
+
+void Lua::load(std::string filename)
 {
-	int result = luaL_loadfile(state, Script::LUA_MAIN.c_str());
+	int result = luaL_loadfile(state, filename != "" ? filename.c_str() : Script::LUA_MAIN.c_str());
 	if (result != LUA_OK) {
 		throw LuaException(get_error(state));
 	}
@@ -189,3 +195,111 @@ void Lua::on_turn(Character &character) {
 		throw LuaException(get_error(state));
 	}
 }
+
+
+
+int Lua::get_int(std::string name, int default_value){
+	lua_getglobal(state, name.c_str());
+	int isnum;
+	int i = (int) lua_tointegerx(state, -1, &isnum);
+	lua_pop(state, 1);
+	return isnum ? i : default_value;
+}
+
+float Lua::get_float(std::string name, float default_value){
+	lua_getglobal(state, name.c_str());
+	int isnum;
+	float f = (float) lua_tonumberx(state, -1, &isnum);
+	lua_pop(state, 1);
+	return isnum ? f : default_value;
+}
+
+bool Lua::get_boolean(std::string name, bool default_value){
+	int rval = default_value;
+	lua_getglobal(state, name.c_str());
+	if (lua_isboolean(state, -1)) {
+		rval = lua_toboolean(state, -1);
+	}
+	lua_pop(state, 1);
+	return (bool)rval;
+}
+
+std::string Lua::get_string(std::string name, std::string default_value){
+	std::string rval = default_value;
+	lua_getglobal(state, name.c_str());
+	if (!lua_isnil(state, -1)) {
+		rval = std::string(lua_tostring(state, -1));
+	}
+	lua_pop(state, 1);
+	return rval;
+}
+
+int Lua::get_int(std::string name){
+	lua_getglobal(state, name.c_str());
+	int isnum;
+	int i = (int) lua_tointegerx(state, -1, &isnum);
+	lua_pop(state, 1);
+	if (!isnum)
+		throw LuaException(name + " is not an int");
+	return i;
+}
+
+float Lua::get_float(std::string name){
+	lua_getglobal(state, name.c_str());
+	int isnum;
+	float f = (float) lua_tonumberx(state, -1, &isnum);
+	lua_pop(state, 1);
+	if (!isnum)
+		throw LuaException(name + " is not a float");
+	return f;
+}
+
+bool Lua::get_boolean(std::string name){
+	int rval;
+	lua_getglobal(state, name.c_str());
+	if (lua_isboolean(state, -1)) {
+		rval = lua_toboolean(state, -1);
+	}
+	else {
+		lua_pop(state, 1);
+		throw LuaException(name + " is not a boolean");
+	}
+	lua_pop(state, 1);
+	return (bool)rval;
+}
+
+std::string Lua::get_string(std::string name){
+	std::string rval;
+	lua_getglobal(state, name.c_str());
+	if (!lua_isnil(state, -1)) {
+		rval = std::string(lua_tostring(state, -1));
+	}
+	else {
+		lua_pop(state, 1);
+		throw LuaException(name + " is not a string");
+	}
+	lua_pop(state, 1);
+	return rval;
+}
+
+// 	// for lists
+// 	lua_getglobal(state, "l");
+// 	lua_pushnil(state);
+// 	while (lua_next(state, -2)) {
+// 		int key = (int) lua_tointeger(state, -2);
+// 		// value = lua -1
+// 		lua_pop(state, 1);
+// 	}
+// 	lua_pop(state, 1);
+// 	std::cout << stack_dump() << std::endl;
+// 
+// 	// for tables
+// 	lua_getglobal(state, "t");
+// 	lua_pushnil(state);
+// 	while (lua_next(state, -2)) {
+// 		std::string key = std::string(lua_tostring(state, -2));
+// 		// value = lua -1
+// 		lua_pop(state, 1);
+// 	}
+// 	lua_pop(state, 1);
+// 	std::cout << stack_dump() << std::endl;
