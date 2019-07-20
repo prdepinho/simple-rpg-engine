@@ -29,7 +29,7 @@ int main()
 		std::cout << "c: " << (lua.get_boolean("c", false) ? "true": "false") << std::endl;
 		std::cout << "d: " << (lua.get_boolean("d", false) ? "true": "false") << std::endl;
 		std::cout << "s: " << lua.get_string("s", "foo") << std::endl;
-		std::cout << "t: " << lua.get_string("t", "foo") << std::endl;
+		std::cout << "st: " << lua.get_string("st", "foo") << std::endl;
 		std::cout << "u: " << lua.get_string("u", "foo") << std::endl;
 
 		std::cout << "i: " << lua.get_int("i") << std::endl;
@@ -37,10 +37,48 @@ int main()
 		std::cout << "b: " << (lua.get_boolean("b") ? "true": "false") << std::endl;
 		std::cout << "s: " << lua.get_string("s") << std::endl;
 
+		std::cout << lua.stack_dump() << std::endl;
+
+		LuaObject obj = lua.get_object("root");
+		std::cout << "" << std::endl;
+		std::cout << "obj.s: " << obj.get_string("s") << std::endl;
+		std::cout << "obj.i: " << obj.get_int("i") << std::endl;
+		std::cout << "obj.f: " << obj.get_float("f") << std::endl;
+		std::cout << "obj.b: " << (obj.get_boolean("b") ? "true": "false") << std::endl;
+
+		std::cout << "obj.branch.s: " << obj.get_string("branch.s") << std::endl;
+		std::cout << "obj.branch.i: " << obj.get_int("branch.i") << std::endl;
+		std::cout << "obj.branch.f: " << obj.get_float("branch.f") << std::endl;
+		std::cout << "obj.branch.b: " << (obj.get_boolean("branch.b") ? "true": "false") << std::endl;
+
+		auto list = obj.get_object("list");
+		std::cout << "list size: " << list.size() << std::endl;
+
+		for (auto it = list.begin(); it != list.end(); ++it) {
+			std::cout << "key: " << it->first << ", value: ";
+			LuaObject &elm = it->second;
+			switch (elm.get_type()) {
+			case LuaObject::Type::BOOLEAN:
+				std::cout << "boolean: " << elm.get_boolean() << std::endl;
+				break;
+			case LuaObject::Type::NUMBER:
+				std::cout << "number: " << elm.get_float() << std::endl;
+				break;
+			case LuaObject::Type::STRING:
+				std::cout << "string: " << elm.get_string() << std::endl;
+				break;
+			default:
+				std::cout << "unhandled type" << std::endl;
+				break;
+			}
+		}
+
 
 		std::cout << lua.stack_dump() << std::endl;
 
 		std::cin >> a;
+
+
 #endif
 	}
 	catch (std::exception &e) {

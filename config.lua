@@ -4,10 +4,22 @@ s = "stringing"
 b = true
 c = false
 t = 234
-t = {
+root = {
   s = "a",
   i = 20,
   f = 21.4,
-  t = true
+  b = true,
+  branch = {
+    s = "b",
+    i = 40,
+    f = 43.9,
+    b = false
+  },
+  list = {
+    1,
+    'foobar',
+    true,
+    4.5
+  }
 }
-l = { "a", 30, 35.7, true }
+l = {'a', 'b', 'c'}

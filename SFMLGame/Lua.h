@@ -11,6 +11,8 @@ public:
 	LuaException(std::string msg = "") : std::exception(msg.c_str()) { }
 };
 
+class LuaObject;
+
 class Lua
 {
 public:
@@ -55,16 +57,48 @@ public:
 	float get_float(std::string name);
 	bool get_boolean(std::string name);
 	std::string get_string(std::string name);
-	// std::vector<LuaConfig> get_list(std::string name);
-	// std::map<std::string, LuaConfig> get_object(std::string name);
 
-	// int get_int();
-	// float get_float();
-	// bool get_boolean();
-	// std::string get_string();
-	// std::vector<LuaConfig> get_list();
-	// std::map<std::string, LuaConfig> get_object();
+	LuaObject get_object(std::string name);
+
+private:
+	LuaObject get_object();
 
 private:
 	lua_State *state; 
+};
+
+class LuaObject {
+	friend class Lua;
+public:
+	enum Type { STRING, NUMBER, BOOLEAN, OBJECT, NULL_OBJECT };
+	LuaObject() {}
+
+	LuaObject *get_token(std::string object_path);
+
+	int get_int(std::string name, int default_value);
+	float get_float(std::string name, float default_value);
+	bool get_boolean(std::string name, bool default_value);
+	std::string get_string(std::string name, std::string default_value);
+
+	int get_int(std::string name);
+	float get_float(std::string name);
+	bool get_boolean(std::string name);
+	std::string get_string(std::string name);
+	std::map<std::string, LuaObject> get_object(std::string name);
+
+	int get_int() { return get_int(""); }
+	float get_float() { return get_float(""); }
+	bool get_boolean() { return get_boolean(""); }
+	std::string get_string() { return get_string(""); }
+	std::map<std::string, LuaObject> get_object() { return get_object(""); }
+
+	int size() const;
+	Type get_type() const { return type; }
+
+private:
+	Type type;
+	std::string string;
+	float number;
+	bool boolean;
+	std::map<std::string, LuaObject> object;
 };

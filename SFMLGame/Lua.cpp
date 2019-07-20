@@ -303,3 +303,147 @@ std::string Lua::get_string(std::string name){
 // 	}
 // 	lua_pop(state, 1);
 // 	std::cout << stack_dump() << std::endl;
+
+LuaObject * LuaObject::get_token(std::string object_path) {
+	if (object_path == "")
+		return this;
+	std::string path = object_path + ".";
+	std::string split = "";
+	LuaObject *token = this;
+
+	for (unsigned int i = 0; i < path.size(); i++) {
+		char c = path[i];
+		if (c == '.') {
+			token = &object[split];
+			if (token == nullptr) {
+				return nullptr;
+			}
+			split = "";
+		}
+		else {
+			split += c;
+		}
+	}
+	return token;
+}
+
+int LuaObject::get_int(std::string name, int default_value) {
+	LuaObject *token = get_token(name);
+	return (token != nullptr && token->type == NUMBER) ? (int)token->number : default_value;
+}
+
+float LuaObject::get_float(std::string name, float default_value) {
+	LuaObject *token = get_token(name);
+	return (token != nullptr && token->type == NUMBER) ? (float)token->number : default_value;
+}
+
+bool LuaObject::get_boolean(std::string name, bool default_value) {
+	LuaObject *token = get_token(name);
+	return (token != nullptr && token->type == BOOLEAN) ? token->boolean : default_value;
+}
+
+std::string LuaObject::get_string(std::string name, std::string default_value) {
+	LuaObject *token = get_token(name);
+	return (token != nullptr && token->type == STRING) ? token->string : default_value;
+}
+
+int LuaObject::get_int(std::string name) {
+	LuaObject *token = get_token(name);
+	if (token != nullptr && token->type == NUMBER)
+		return (int)token->number;
+	else
+		throw LuaException("token \"" + name + "\"is not int");
+}
+
+float LuaObject::get_float(std::string name) {
+	LuaObject *token = get_token(name);
+	if (token != nullptr && token->type == NUMBER)
+		return (float)token->number;
+	else
+		throw LuaException("token \"" + name + "\"is not float");
+}
+
+bool LuaObject::get_boolean(std::string name) {
+	LuaObject *token = get_token(name);
+	if (token != nullptr && token->type == BOOLEAN)
+		return token->boolean;
+	else
+		throw LuaException("token \"" + name + "\"is not boolean");
+}
+
+std::string LuaObject::get_string(std::string name) {
+	LuaObject *token = get_token(name);
+	if (token != nullptr && token->type == STRING)
+		return token->string;
+	else
+		throw LuaException("token \"" + name + "\"is not string");
+}
+
+std::map<std::string, LuaObject> LuaObject::get_object(std::string name) {
+	LuaObject *token = get_token(name);
+	if (token != nullptr && token->type == OBJECT)
+		return token->object;
+	else
+		throw LuaException("token \"" + name + "\"is not object");
+}
+
+int LuaObject::size() const {
+	if (type == OBJECT) {
+		return object.size();
+	}
+	return 0;
+}
+
+LuaObject Lua::get_object(std::string name) {
+	lua_getglobal(state, name.c_str());
+	LuaObject object = get_object();
+	lua_pop(state, 1);
+	return object;
+}
+
+LuaObject Lua::get_object() {
+	LuaObject obj;
+	obj.type = LuaObject::Type::OBJECT;
+	obj.object = std::map<std::string, LuaObject>();
+
+	lua_pushnil(state);
+	while (lua_next(state, -2)) {
+		std::string key = "";
+		LuaObject value;
+
+		if (lua_type(state, -2) == LUA_TNUMBER) {
+			int index = lua_tointeger(state, -2);
+			key = std::to_string(index);
+		}
+		else {
+			key = std::string(lua_tostring(state, -2));
+		}
+
+		int type = lua_type(state, -1);
+		switch (type) {
+		case LUA_TSTRING:
+			value.type = LuaObject::Type::STRING;
+			value.string = lua_tostring(state, -1);
+			break;
+		case LUA_TBOOLEAN:
+			value.type = LuaObject::Type::BOOLEAN;
+			value.boolean = lua_toboolean(state, -1) ? true : false;
+			break;
+		case LUA_TNUMBER:
+			value.type = LuaObject::Type::NUMBER;
+			value.number = (float)lua_tonumber(state, -1);
+			break;
+		case LUA_TTABLE:
+			value.type = LuaObject::Type::OBJECT;
+			value.object = get_object().object;
+			break;
+		case LUA_TNIL:
+			value.type = LuaObject::Type::NULL_OBJECT;
+			break;
+		}
+		obj.object[key] = value;
+		lua_pop(state, 1);
+	}
+
+	return obj;
+}
