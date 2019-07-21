@@ -15,6 +15,9 @@
 #include "GameScreen.h"
 #include "MapEditorScreen.h"
 
+void register_lua_accessible_functions(Lua &lua);
+
+
 class Game {
 public:
 	Game();
@@ -76,5 +79,9 @@ public:
 	void change_resolution(int w, int h, float modifier);
 	void revert_resolution();
 };
+
+// Game is visible to all files.
+extern Game game;
+
 
 

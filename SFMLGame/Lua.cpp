@@ -3,7 +3,7 @@
 #include <fstream>
 #include <cstdio>
 
-
+#include "Game.h"
 
 Lua::Lua()
 {
@@ -15,7 +15,8 @@ Lua::Lua()
 	*/
 }
 
-Lua::Lua(std::string filename) {
+Lua::Lua(std::string filename) 
+{
 	state = luaL_newstate();
 	luaL_openlibs(state);
 	load(filename);
@@ -31,6 +32,7 @@ void Lua::load(std::string filename)
 	if (result != LUA_OK) {
 		throw LuaException(get_error(state));
 	}
+	register_lua_accessible_functions(*this);
 }
 
 
@@ -282,28 +284,6 @@ std::string Lua::get_string(std::string name){
 	return rval;
 }
 
-// 	// for lists
-// 	lua_getglobal(state, "l");
-// 	lua_pushnil(state);
-// 	while (lua_next(state, -2)) {
-// 		int key = (int) lua_tointeger(state, -2);
-// 		// value = lua -1
-// 		lua_pop(state, 1);
-// 	}
-// 	lua_pop(state, 1);
-// 	std::cout << stack_dump() << std::endl;
-// 
-// 	// for tables
-// 	lua_getglobal(state, "t");
-// 	lua_pushnil(state);
-// 	while (lua_next(state, -2)) {
-// 		std::string key = std::string(lua_tostring(state, -2));
-// 		// value = lua -1
-// 		lua_pop(state, 1);
-// 	}
-// 	lua_pop(state, 1);
-// 	std::cout << stack_dump() << std::endl;
-
 LuaObject * LuaObject::get_token(std::string object_path) {
 	if (object_path == "")
 		return this;
@@ -412,7 +392,7 @@ LuaObject Lua::get_object() {
 		LuaObject value;
 
 		if (lua_type(state, -2) == LUA_TNUMBER) {
-			int index = lua_tointeger(state, -2);
+			int index = (int) lua_tointeger(state, -2);
 			key = std::to_string(index);
 		}
 		else {

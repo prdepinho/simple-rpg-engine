@@ -6,6 +6,8 @@
 #include "lua5.3.5/lua.hpp"
 #include "Character.h"
 
+class Game;
+
 class LuaException : public std::exception {
 public: 
 	LuaException(std::string msg = "") : std::exception(msg.c_str()) { }

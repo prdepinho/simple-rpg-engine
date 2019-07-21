@@ -29,7 +29,7 @@
 	const std::string Path::MAPS = "../maps/";
 
 	const std::string Config::TEXTURES = Path::CONFIG + "textures.json";
-	const std::string Config::SETTINGS = Path::CONFIG + "settings.json";
+	const std::string Config::SETTINGS = Path::CONFIG + "settings.lua";
 	const std::string Config::SCREENS = Path::CONFIG + "screens.json";
 	const std::string Config::COMPONENTS = Path::CONFIG + "components.json";
 	const std::string Config::CHARACTERS = Path::CONFIG + "characters.json";
