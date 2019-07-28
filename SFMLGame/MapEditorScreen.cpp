@@ -264,6 +264,23 @@ void MapEditorScreen::create() {
 
 	create_map(10, 10);
 
+	// coordinates
+	{
+		int x = palette.get_x() + palette.get_width() + 1;
+		int y = palette.get_y();
+
+		std::stringstream ss;
+		ss << "Coordinates: " << hover_x << ", " << hover_y;
+
+		coordinates = Font();
+		coordinates.set_texture(Textures::get("gui"));
+		coordinates_x = x;
+		coordinates_y = y;
+		coordinates.draw_line(coordinates_x, coordinates_y, ss.str(), sf::Color::White);
+		add_component(coordinates);
+
+	}
+
 	game_view.setSize(sf::Vector2f((float) game->get_resolution_width(), (float) game->get_resolution_height()));
 	game_view.setCenter(sf::Vector2f((float) game->get_resolution_width() / 2.f, (float) game->get_resolution_height() / 2.f));
 	gui_view.setSize(sf::Vector2f((float) game->get_resolution_width(), (float) game->get_resolution_height()));
@@ -423,6 +440,31 @@ void MapEditorScreen::handle_event(sf::Event &event, float elapsed_time) {
 			window->setView(game_view);
 		}
 		break;
+	case sf::Event::MouseMoved:
+	{
+		// int x = event.mouseMove.x;
+		// int y = event.mouseMove.y;
+
+		auto mouse_position = get_mouse_game_position();
+		int x = (int) mouse_position.x;
+		int y = (int) mouse_position.y;
+
+		if (map.in_bounds(x, y)) {
+			auto tile_coord = map.get_tile_coord(x, y);
+			int tile_x = tile_coord.x;
+			int tile_y = tile_coord.y;
+
+			if (tile_x != hover_x || tile_y != hover_y) {
+				hover_x = tile_x;
+				hover_y = tile_y;
+
+				std::stringstream ss;
+				ss << "Coordinates: " << hover_x << ", " << hover_y;
+				coordinates.draw_line(coordinates_x, coordinates_y, ss.str(), sf::Color::White);
+			}
+		}
+		break;
+	}
 	}
 }
 

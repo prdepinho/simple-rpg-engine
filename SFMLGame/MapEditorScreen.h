@@ -65,11 +65,12 @@ class MapEditorScreen : public Screen
 {
 public:
 
-	MapEditorScreen() 
-		: holding_screen(false), 
-		filename("unamed_map"), 
-		obstacle(false), 
-		highlight_obstacles(false) 
+	MapEditorScreen()
+		: holding_screen(false),
+		filename("unamed_map"),
+		obstacle(false),
+		highlight_obstacles(false),
+		hover_x(0), hover_y(0)
 	{ }
 
 
@@ -105,6 +106,12 @@ private:
 
 	TilePalette palette;
 	Tilemap map;
+
+	Font coordinates;
+	int coordinates_x;
+	int coordinates_y;
+	int hover_x;
+	int hover_y;
 
 	bool holding_screen;
 	sf::Vector2f holding_start_position;

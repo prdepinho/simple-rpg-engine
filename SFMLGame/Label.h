@@ -9,7 +9,7 @@ class Label : public Component
 public:
 	~Label();
 
-	Label(std::string text = "", int x = 0, int y = 0);
+	Label(std::string text = "", int x = 0, int y = 0, sf::Color text_color=sf::Color::Black);
 	void set_text(std::string text);
 	std::string get_text() const { return text; }
 
@@ -25,7 +25,10 @@ public:
 		font.draw_line(get_x(), get_y(), text, sf::Color::Black); 
 	}
 
+	void set_text_color(sf::Color) { this->text_color = text_color; }
+
 private:
+	sf::Color text_color;
 	std::string text;
 	Font font;
 };
