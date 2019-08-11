@@ -169,11 +169,27 @@ void GameScreen::poll_events(float elapsed_time) {
 					player_character->schedule_action(actions.back());
 					player_busy = true;
 				}
+				else {
+					auto pos = character_position(*player_character);
+					int dst_x = pos.x;
+					int dst_y = pos.y -1;
+					actions.push_back(new InteractionAction(player_character, dst_x, dst_y));
+					player_character->schedule_action(actions.back());
+					player_busy = true;
+				}
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 				if (can_move(*player_character, Direction::DOWN)) {
 					player_character->clear_schedule();
 					actions.push_back(new MoveAction(player_character, Direction::DOWN));
+					player_character->schedule_action(actions.back());
+					player_busy = true;
+				}
+				else {
+					auto pos = character_position(*player_character);
+					int dst_x = pos.x;
+					int dst_y = pos.y +1;
+					actions.push_back(new InteractionAction(player_character, dst_x, dst_y));
 					player_character->schedule_action(actions.back());
 					player_busy = true;
 				}
@@ -185,11 +201,27 @@ void GameScreen::poll_events(float elapsed_time) {
 					player_character->schedule_action(actions.back());
 					player_busy = true;
 				}
+				else {
+					auto pos = character_position(*player_character);
+					int dst_x = pos.x +1;
+					int dst_y = pos.y;
+					actions.push_back(new InteractionAction(player_character, dst_x, dst_y));
+					player_character->schedule_action(actions.back());
+					player_busy = true;
+				}
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
 				if (can_move(*player_character, Direction::LEFT)) {
 					player_character->clear_schedule();
 					actions.push_back(new MoveAction(player_character, Direction::LEFT));
+					player_character->schedule_action(actions.back());
+					player_busy = true;
+				}
+				else {
+					auto pos = character_position(*player_character);
+					int dst_x = pos.x -1;
+					int dst_y = pos.y;
+					actions.push_back(new InteractionAction(player_character, dst_x, dst_y));
 					player_character->schedule_action(actions.back());
 					player_busy = true;
 				}
