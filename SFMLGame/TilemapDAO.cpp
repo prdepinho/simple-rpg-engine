@@ -1,4 +1,5 @@
 #include "TilemapDAO.h"
+#include "Lua.h"
 
 void TilemapDAO::save_map(std::string filename, Tilemap & map) {
 	std::ofstream outfile(Path::MAPS + filename, std::ofstream::binary);
@@ -35,7 +36,7 @@ void TilemapDAO::save_map(std::string filename, Tilemap & map) {
 }
 
 void TilemapDAO::load_map(std::string filename, Tilemap & map) {
-	std::ifstream infile(Path::MAPS + filename, std::ifstream::binary);
+	std::ifstream infile(Path::MAPS + filename + ".map", std::ifstream::binary);
 	if (infile.fail()) {
 		throw TilemapDAOException("Could not open file [" + filename + "].");
 	}
@@ -72,6 +73,11 @@ void TilemapDAO::load_map(std::string filename, Tilemap & map) {
 	}
 
 	infile.close();
+
+
+	if (map.script != nullptr)
+		delete map.script;
+	map.script = new Lua(Path::MAPS + filename + ".lua");
 }
 
 bool TilemapDAO::backup(std::string filename) {

@@ -10,3 +10,9 @@ void WaitAction::execute(GameScreen *screen) {
 	if (character != nullptr)
 		screen->wait_character(*character);
 }
+
+void InteractionAction::execute(GameScreen *screen) {
+	if (character != nullptr && true) {
+		screen->interact_character(*character, tile_x, tile_y);
+	}
+}

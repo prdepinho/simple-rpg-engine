@@ -3,6 +3,9 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include "Entity.h"
+#include "Lua.h"
+
+class TilemapDAO;
 
 struct TileData {
 	bool obstacle = false;
@@ -10,9 +13,10 @@ struct TileData {
 
 class Tilemap : public AnimatedEntity
 {
+	friend class TilemapDAO;
 public:
 	Tilemap() {}
-	~Tilemap() {}
+	~Tilemap() { delete script; }
 
 	bool load(sf::Texture *tileset, sf::Vector2u tileSize, const int *tiles, unsigned int width, unsigned int height);
 
@@ -39,9 +43,12 @@ public:
 		return tile_x < width && tile_x >= 0 && tile_y < height && tile_y >= 0; 
 	}
 
+	Lua* get_script() { return script; }
+
 private:
 	int width;
 	int height;
 	std::vector<TileData> tiles;
+	Lua *script=nullptr;
 };
 

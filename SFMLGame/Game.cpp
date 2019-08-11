@@ -285,7 +285,9 @@ public:
 		int id = (int) lua_tointeger(state, -3);
 		int x = (int) lua_tointeger(state, -2);
 		int y = (int) lua_tointeger(state, -1);
+#if false
 		game.log("sfml_move (" + std::to_string(id) + ") x: " + std::to_string(x) + ", y: " + std::to_string(y));
+#endif
 
 		Character *character = screen->get_character_by_id(id);
 		screen->schedule_character_movement(*character, x, y);
@@ -297,7 +299,9 @@ public:
 
 		int id = (int) lua_tointeger(state, -2);
 		int turns = (int) lua_tointeger(state, -1);
+#if false
 		game.log("sfml_wait (" + std::to_string(id) + ") turns: " + std::to_string(turns));
+#endif
 
 		Character *character = screen->get_character_by_id(id);
 		screen->schedule_character_wait(*character, turns);
@@ -361,6 +365,21 @@ public:
 		return 1;
 	}
 
+	static int sfml_change_map(lua_State *state) {
+		int dst_tile_y = (int) lua_tointeger(state, -1);
+		int dst_tile_x = (int) lua_tointeger(state, -2);
+		std::string map_name = lua_tostring(state, -3);
+
+		std::stringstream ss;
+		ss << "Engine: sfml_change_map(" << map_name << ", " << dst_tile_x << ", " << dst_tile_y << ")";
+		game.log(ss.str());
+
+		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
+		screen->load_map(map_name);
+		screen->put_character_on_tile(*screen->get_player_character(), dst_tile_x, dst_tile_y);
+		screen->center_map_on_character(*screen->get_player_character());
+		return 1;
+	}
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -377,4 +396,5 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_get_tile", LuaFunction::sfml_get_tile);
 	lua_register(lua.get_state(), "sfml_get_schedule", LuaFunction::sfml_get_schedule);
 	lua_register(lua.get_state(), "sfml_get_window_dimensions", LuaFunction::sfml_get_window_dimensions);
+	lua_register(lua.get_state(), "sfml_change_map", LuaFunction::sfml_change_map);
 }

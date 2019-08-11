@@ -17,6 +17,7 @@
 #include "Effect.h"
 #include "Action.h"
 #include "DebugConsole.h"
+#include "Lua.h"
 
 
 class GameScreen : public Screen
@@ -57,12 +58,15 @@ public:
 
 public:
 	void load_map(std::string filename);
+	void center_map_on_character(Character &character);
 
 	void schedule_character_wait(Character &character, int turns);
 	void schedule_character_movement(Character &character, int tile_x, int tile_y);
+	void schedule_character_interaction(Character &character, int tile_x, int tile_y);
 
 	void move_character(Character &character, Direction direction);
 	void wait_character(Character &character);
+	void interact_character(Character &character, int tile_x, int tile_y);
 
 	bool can_move(Character &character, Direction direction);
 	Character* get_character_on_tile(int tile_x, int tile_y);

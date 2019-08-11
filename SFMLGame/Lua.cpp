@@ -198,6 +198,16 @@ void Lua::on_turn(Character &character) {
 	}
 }
 
+void Lua::on_interact(Character &character, int tile_x, int tile_y) {
+	lua_getglobal(state, "on_interact");
+	lua_pushnumber(state, tile_x);
+	lua_pushnumber(state, tile_y);
+	int result = lua_pcall(state, 2, 1, 0);
+	if (result != LUA_OK) {
+		throw LuaException(get_error(state));
+	}
+}
+
 
 
 int Lua::get_int(std::string name, int default_value){

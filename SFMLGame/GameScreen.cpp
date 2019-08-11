@@ -27,7 +27,7 @@ void GameScreen::create() {
 
 	// create characters
 	{
-		int total_characters = 2;
+		int total_characters = 1;
 		characters = std::vector<Character>(total_characters);
 		for (int i = 0; i < total_characters; ++i) {
 			characters[i] = Character();
@@ -121,13 +121,22 @@ bool GameScreen::update(float elapsed_time) {
 
 				if (&character != player_character) {
 					if (action == nullptr) {  // character is idle.
+#if false
 						get_game()->log("Character " + std::to_string(character.get_id()) + " is idle");
+#endif
 						get_game()->get_lua()->on_idle(character);
 						action = character.next_action();
 					}
 				}
 
 				if (action != nullptr) {
+
+					if (&character == player_character) {
+						std::stringstream ss;
+						ss << "Player action: " << action->to_string();
+						game->log(ss.str());
+					}
+
 					action->execute(this);
 
 					for (auto it = actions.begin(); it != actions.end(); ++it) {
@@ -247,6 +256,7 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 
 					player_character->clear_schedule();
 					schedule_character_movement(*player_character, tile_x, tile_y);
+					schedule_character_interaction(*player_character, tile_x, tile_y);
 				}
 			}
 			else if (event.mouseButton.button == sf::Mouse::Button::Middle) {
@@ -326,6 +336,10 @@ void GameScreen::load_map(std::string filename) {
 	map.set_show_outline(true);
 }
 
+void GameScreen::center_map_on_character(Character &character) {
+	game_view.setCenter(sf::Vector2f((float) character.get_x(), (float) character.get_y()));
+}
+
 void GameScreen::put_character_on_tile(Character & character, int x, int y) {
 	auto tile_coords = map.get_tile_pix_coords(x, y);
 	character.set_position(map.get_x() + (int) tile_coords.x + 8, map.get_y() + (int) tile_coords.y + 8);
@@ -351,13 +365,20 @@ void GameScreen::schedule_character_movement(Character &character, int tile_x, i
 			{Direction::RIGHT, "RIGHT"},
 			{Direction::LEFT, "LEFT"},
 		};
+#if false
 		game->log(direction_name[direction]);
+#endif
 
 		actions.push_back(new MoveAction(&character, direction));
 		character.schedule_action(actions.back());
 
 		path.pop();
 	}
+}
+
+void GameScreen::schedule_character_interaction(Character &character, int tile_x, int tile_y) {
+	actions.push_back(new InteractionAction(&character, tile_x, tile_y));
+	character.schedule_action(actions.back());
 }
 
 void GameScreen::move_character(Character &character, Direction direction) {
@@ -392,6 +413,26 @@ void GameScreen::wait_character(Character &character) {
 	else {
 		Effect *effect = new WaitEffect(&character, seconds_for_turn);
 		effects.push_back(effect);
+	}
+}
+
+void GameScreen::interact_character(Character &character, int tile_x, int tile_y) {
+
+	auto pos = character_position(character);
+	if (std::abs(pos.x - tile_x) <= 1 && std::abs(pos.y - tile_y) <= 1) {
+		map.get_script()->on_interact(character, tile_x, tile_y);
+		if (&character == player_character) {
+			Effect *effect = new WaitEffect(player_character, 0);
+			effect->set_on_end([&]() {
+				player_busy = false;
+			});
+			effects.push_back(effect);
+			player_busy = true;
+		}
+		else {
+			Effect *effect = new WaitEffect(&character, 0);
+			effects.push_back(effect);
+		}
 	}
 }
 
