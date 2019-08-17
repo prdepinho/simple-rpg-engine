@@ -2,7 +2,7 @@
 #include "Lua.h"
 
 void TilemapDAO::save_map(std::string filename, Tilemap & map) {
-	std::ofstream outfile(Path::MAPS + filename, std::ofstream::binary);
+	std::ofstream outfile(Path::MAPS + filename + ".map", std::ofstream::binary);
 	if (outfile.fail()) {
 		throw TilemapDAOException("Could not create file [" + filename + "].");
 	}

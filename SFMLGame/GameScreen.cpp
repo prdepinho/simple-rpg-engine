@@ -172,7 +172,7 @@ void GameScreen::poll_events(float elapsed_time) {
 				else {
 					auto pos = character_position(*player_character);
 					int dst_x = pos.x;
-					int dst_y = pos.y -1;
+					int dst_y = pos.y - 1;
 					actions.push_back(new InteractionAction(player_character, dst_x, dst_y));
 					player_character->schedule_action(actions.back());
 					player_busy = true;
@@ -300,14 +300,14 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	case sf::Event::KeyPressed:
 		if (selected_component == &container) {
 			switch (event.key.code) {
-			case sf::Keyboard::F: 
-				{
-					camera_follow = !camera_follow;
-					std::stringstream ss;
-					ss << "Camera follow: " << (camera_follow ? "True" : "False");
-					game->log(ss.str());
-				}
-				break;
+			case sf::Keyboard::F:
+			{
+				camera_follow = !camera_follow;
+				std::stringstream ss;
+				ss << "Camera follow: " << (camera_follow ? "True" : "False");
+				game->log(ss.str());
+			}
+			break;
 			case sf::Keyboard::O:
 				break;
 			case sf::Keyboard::Up:
@@ -454,7 +454,7 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 	if (std::abs(pos.x - tile_x) <= 1 && std::abs(pos.y - tile_y) <= 1) {
 		map.get_script()->on_interact(character, tile_x, tile_y);
 		if (&character == player_character) {
-			Effect *effect = new WaitEffect(player_character, 0);
+			Effect *effect = new WaitEffect(player_character, seconds_for_turn);
 			effect->set_on_end([&]() {
 				player_busy = false;
 			});
@@ -462,7 +462,7 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 			player_busy = true;
 		}
 		else {
-			Effect *effect = new WaitEffect(&character, 0);
+			Effect *effect = new WaitEffect(&character, seconds_for_turn);
 			effects.push_back(effect);
 		}
 	}
