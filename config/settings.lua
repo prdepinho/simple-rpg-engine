@@ -11,5 +11,5 @@ size_modifier = 3
 use_vsync = true
 limit_framerate = not use_vsync
 
--- This option takes effect if limit_framerate is true. The game does not run well under 60 fps.
+-- This option takes effect if limit_framerate is true.
 set_framerate = 30

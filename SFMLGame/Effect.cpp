@@ -1,31 +1,34 @@
 #include "Effect.h"
+#include <cstdlib>
 
 void MoveEffect::update(float elapsed_time) {
-	// TODO make it smoother under 60 FPS.
-	if ((time_count += elapsed_time) >= seconds_per_pixel) {
-		time_count = 0;
-		if (character != nullptr) {
-			switch (direction) {
-			case Direction::UP:
-				character->move(0.f, -1.f);
-				break;
-			case Direction::DOWN:
-				character->move(0.f, 1.f);
-				break;
-			case Direction::LEFT:
-				character->move(-1.f, 0.f);
-				character->face_left();
-				break;
-			case Direction::RIGHT:
-				character->move(1.f, 0.f);
-				character->face_right();
-				break;
-			}
+	long elapsed_ms = (long) (elapsed_time * 1000);
+
+	std::ldiv_t result = std::div(elapsed_ms + time_count, ms_per_pixel);
+	long pixels = result.quot;
+	time_count = result.rem;
+
+	if (character != nullptr) {
+		switch (direction) {
+		case Direction::UP:
+			character->move(0.f, (float) -pixels);
+			break;
+		case Direction::DOWN:
+			character->move(0.f, (float) pixels);
+			break;
+		case Direction::LEFT:
+			character->move((float) -pixels, 0.f);
+			character->face_left();
+			break;
+		case Direction::RIGHT:
+			character->move((float) pixels, 0.f);
+			character->face_right();
+			break;
 		}
-		on_update();
-		if (++moved_pixels == 16) {
-			stop_running();
-		}
+	}
+	on_update();
+	if ((moved_pixels += pixels) == 16) {
+		stop_running();
 	}
 }
 

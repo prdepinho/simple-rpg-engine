@@ -30,17 +30,17 @@ public:
 		: Effect(true),
 		character(character),
 		direction(direction),
-		seconds_per_pixel(seconds_for_pixel),
+		ms_per_pixel((long) (seconds_for_pixel * 1000)),
 		time_count(0),
 		moved_pixels(0)
-	{}
+	{ }
 	virtual void update(float elapsed_time) override;
 protected:
 	Character *character;
 	Direction direction;
-	float seconds_per_pixel;
-	float time_count;
-	int moved_pixels;
+	long ms_per_pixel;
+	long time_count;
+	long moved_pixels;
 };
 
 class WaitEffect : public Effect {
