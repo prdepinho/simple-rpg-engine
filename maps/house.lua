@@ -1,4 +1,6 @@
 
+characters = {}
+
 function enter()
   print('house.map: enter')
 end

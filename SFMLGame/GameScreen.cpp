@@ -366,6 +366,27 @@ void GameScreen::load_map(std::string filename) {
 	int y = game->get_resolution_height() / 2 -  map.get_height() / 2;
 	map.set_position(x, y);
 	map.set_show_outline(true);
+
+	auto character_list = map.get_script()->get_object("characters").get_map();
+	int total_characters = character_list.size();
+
+	for (auto it = character_list.begin(); it != character_list.end(); ++it) {
+		auto name = it->first;
+		LuaObject &coords = it->second;
+		int x = coords[0].get_int();
+		int y = coords[1].get_int();
+
+		std::stringstream ss;
+		ss << "character: " << it->first << " at (" << x << ", " << y <<")";
+		game->log(ss.str());
+
+		// characters.push_back(Character());
+		// Character &character = characters.back();
+		// character.create("boy");
+		// character.set_animation(AnimationType::WALK);
+		// put_character_on_tile(character, x, y);
+	}
+
 }
 
 void GameScreen::center_map_on_character(Character &character) {

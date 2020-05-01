@@ -1,4 +1,8 @@
 
+characters = {
+  peter={2, 2}
+}
+
 function enter()
   print('map.map: enter')
 end

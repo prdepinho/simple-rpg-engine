@@ -94,6 +94,13 @@ public:
 	bool get_boolean() { return get_boolean(""); }
 	std::string get_string() { return get_string(""); }
 	std::map<std::string, LuaObject> get_object() { return get_object(""); }
+	std::map<std::string, LuaObject> get_map() { return get_object(""); }
+
+	/// Get the token at index.
+	LuaObject &operator[](unsigned int index) { std::stringstream ss; ss << (index + 1); return object[ss.str()]; }
+	/// Get the token at key.
+	LuaObject &operator[](const std::string key) { return object[key]; }
+
 
 	int size() const;
 	Type get_type() const { return type; }
