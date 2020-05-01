@@ -31,6 +31,7 @@ public:
 
 	/// Logs a string out on the console.
 	void log(std::string msg);
+	void log(const char *msg);
 	void execute_method(std::string method);
 
 	std::map<std::string, std::string> get_table();

@@ -28,7 +28,7 @@ public:
 		player_character(nullptr),
 		turn(0),
 		turn_count(0.f),
-		seconds_for_turn(1.f),
+		turn_duration(1.f),
 		player_busy(false),
 		camera_follow(true),
 		player_input(sf::Keyboard::Pause)
@@ -87,7 +87,7 @@ private:
 	std::vector<Action*> actions;
 
 	int turn;
-	float seconds_for_turn;
+	float turn_duration;  // in seconds
 	float turn_count;
 
 	bool camera_follow;

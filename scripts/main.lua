@@ -4,7 +4,7 @@ function start_game()
 end
 
 function log(msg)
-  io.write(msg)
+  io.write(msg .. '\n')
 end
 
 function change_map()

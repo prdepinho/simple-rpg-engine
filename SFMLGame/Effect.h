@@ -26,21 +26,19 @@ private:
 
 class MoveEffect : public Effect {
 public:
-	MoveEffect(Character *character = nullptr, Direction direction = Direction::UP, float seconds_for_pixel = 1.f)
+	MoveEffect(Character *character = nullptr, Direction direction = Direction::UP, float speed = 1.f)
 		: Effect(true),
 		character(character),
 		direction(direction),
-		ms_per_pixel((long) (seconds_for_pixel * 1000)),
-		time_count(0),
+		speed(speed),
 		moved_pixels(0)
 	{ }
 	virtual void update(float elapsed_time) override;
 protected:
 	Character *character;
 	Direction direction;
-	long ms_per_pixel;
-	long time_count;
-	long moved_pixels;
+	float speed;  // pixels per second
+	float moved_pixels;
 };
 
 class WaitEffect : public Effect {

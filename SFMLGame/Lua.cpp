@@ -60,9 +60,19 @@ void Lua::start_game()
 
 void Lua::log(std::string msg)
 {
-	std::string _msg = msg + '\n';
 	lua_getglobal(state, "log");
-	lua_pushstring(state, _msg.c_str());
+	lua_pushstring(state, msg.c_str());
+	int result = lua_pcall(state, 1, 1, 0);
+	if (result != LUA_OK) {
+		throw LuaException(get_error(state));
+	}
+	lua_pop(state, 1);
+}
+
+void Lua::log(const char *msg)
+{
+	lua_getglobal(state, "log");
+	lua_pushstring(state, msg);
 	int result = lua_pcall(state, 1, 1, 0);
 	if (result != LUA_OK) {
 		throw LuaException(get_error(state));

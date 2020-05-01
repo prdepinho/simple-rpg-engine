@@ -16,7 +16,7 @@ void GameScreen::create() {
 	{
 		turn = 0;
 		turn_count = 0.f;
-		seconds_for_turn = 1 / json.get_float("turns_per_second", 1.f);
+		turn_duration = 1 / json.get_float("turns_per_second", 1.f);
 	}
 
 	// load map
@@ -103,7 +103,7 @@ bool GameScreen::update(float elapsed_time) {
 	}
 
 	// Turn handling. Wait player input to process the next turn.
-	if ((turn_count += elapsed_time) >= seconds_for_turn) {
+	if ((turn_count += elapsed_time) >= turn_duration) {
 		if (player_character->schedule_size() > 0){
 			++turn;
 			turn_count = 0.f;
@@ -418,7 +418,7 @@ void GameScreen::schedule_character_movement(Character &character, int tile_x, i
 			{Direction::RIGHT, "RIGHT"},
 			{Direction::LEFT, "LEFT"},
 		};
-#if false
+#if true
 		game->log(direction_name[direction]);
 #endif
 
@@ -436,7 +436,7 @@ void GameScreen::schedule_character_interaction(Character &character, int tile_x
 
 void GameScreen::move_character(Character &character, Direction direction) {
 	if (&character == player_character) {
-		Effect *effect = new MoveEffect(player_character, direction, seconds_for_turn / 16);
+		Effect *effect = new MoveEffect(player_character, direction, 16  / turn_duration);
 		effect->set_on_update([&]() {
 			if (camera_follow) {
 				game_view.setCenter(player_character->getPosition());
@@ -449,14 +449,14 @@ void GameScreen::move_character(Character &character, Direction direction) {
 		player_busy = true;
 	}
 	else {
-		Effect *effect = new MoveEffect(&character, direction, seconds_for_turn / 16);
+		Effect *effect = new MoveEffect(&character, direction, 16 / turn_duration);
 		effects.push_back(effect);
 	}
 }
 
 void GameScreen::wait_character(Character &character) {
 	if (&character == player_character) {
-		Effect *effect = new WaitEffect(player_character, seconds_for_turn);
+		Effect *effect = new WaitEffect(player_character, turn_duration);
 		effect->set_on_end([&]() {
 			player_busy = false;
 		});
@@ -464,7 +464,7 @@ void GameScreen::wait_character(Character &character) {
 		player_busy = true;
 	}
 	else {
-		Effect *effect = new WaitEffect(&character, seconds_for_turn);
+		Effect *effect = new WaitEffect(&character, turn_duration);
 		effects.push_back(effect);
 	}
 }
@@ -475,7 +475,7 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 	if (std::abs(pos.x - tile_x) <= 1 && std::abs(pos.y - tile_y) <= 1) {
 		map.get_script()->on_interact(character, tile_x, tile_y);
 		if (&character == player_character) {
-			Effect *effect = new WaitEffect(player_character, seconds_for_turn);
+			Effect *effect = new WaitEffect(player_character, turn_duration);
 			effect->set_on_end([&]() {
 				player_busy = false;
 			});
@@ -483,7 +483,7 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 			player_busy = true;
 		}
 		else {
-			Effect *effect = new WaitEffect(&character, seconds_for_turn);
+			Effect *effect = new WaitEffect(&character, turn_duration);
 			effects.push_back(effect);
 		}
 	}
