@@ -31,6 +31,7 @@ public:
 	/// Return the texture coordinates of a tile of the given tile coordinates.
 	sf::Vector2f get_texture_coords(int frame_index, int tile_x, int tile_y);
 
+	void set_texture_coords(int frame_index, int tile_x, int tile_y, int layer, float tex_x, float tex_y);
 	void set_texture_coords(int frame_index, int tile_x, int tile_y, float tex_x, float tex_y);
 	void set_texture_coords(int tile_x, int tile_y, float tex_x, float tex_y);
 	void paint_tile(int tile_x, int tile_y, sf::Color color);

@@ -127,8 +127,8 @@ void TiledTilemapDAO::load_map(std::string filename, Tilemap &map) {
 	tmx::TileLayer *furniture_layer = nullptr;
 	tmx::TileLayer *overfloor_layer = nullptr;
 	{
-		const auto& layers = tmx_map.getLayers();
-		for (const auto &layerptr : layers) {
+		const auto& map_layers = tmx_map.getLayers();
+		for (const auto &layerptr : map_layers) {
 			if (layerptr->getName() == "floor") {
 				floor_layer = &layerptr->getLayerAs<tmx::TileLayer>();
 			}
@@ -157,22 +157,28 @@ void TiledTilemapDAO::load_map(std::string filename, Tilemap &map) {
 	if (!overfloor_layer)
 		throw TilemapDAOException("Layer overfloor not found");
 
+	std::vector<tmx::TileLayer*> layer_ptrs = { floor_layer, overfloor_layer, furniture_layer };
+
 	unsigned width = tmx_map.getTileCount().x;
 	unsigned height = tmx_map.getTileCount().y;
+	unsigned layers = layer_ptrs.size();
 
-	std::vector<int> tiles(width * height, 0);
+	std::vector<int> tiles(width * height * layers, 0);
 	map = Tilemap();
-	map.load(Textures::get("tileset"), sf::Vector2u(16, 16), tiles.data(), width, height);
+	map.load(Textures::get("tileset"), sf::Vector2u(16, 16), tiles.data(), width, height, layers);
 
 	for (unsigned x = 0; x < width; x++) {
-		for (unsigned y = 0; y < height; y++) {
+		for (unsigned y = 0; y < height; y++) 
+			for (unsigned z = 0; z < layers; z++)
+		{
 
 			// obstacle
 			bool obstacle = false;
 			map.get_tile(x, y).obstacle = obstacle;
 
 			// tile
-			std::uint32_t tile_id = furniture_layer->getTiles()[y * width + x].ID;
+			tmx::TileLayer *layer = layer_ptrs[z];
+			std::uint32_t tile_id = layer->getTiles()[(y * width) + x].ID;
 			if (tile_id > 0) {
 				const auto *tile = tileset.getTile(tile_id);
 
@@ -185,7 +191,7 @@ void TiledTilemapDAO::load_map(std::string filename, Tilemap &map) {
 						const auto *frame_tile = tileset.getTile(frame.tileID);
 						unsigned texX = frame_tile->imagePosition.x;
 						unsigned texY = frame_tile->imagePosition.y;
-						map.set_texture_coords(frame_count, x, y, (float)texX, (float)texY);
+						map.set_texture_coords(frame_count, x, y, z, (float)texX, (float)texY);
 					}
 				}
 				// not animated tile
@@ -196,7 +202,7 @@ void TiledTilemapDAO::load_map(std::string filename, Tilemap &map) {
 					for (size_t frame_count = 0; frame_count < frames_limit; frame_count++) {
 						unsigned texX = tile->imagePosition.x;
 						unsigned texY = tile->imagePosition.y;
-						map.set_texture_coords(frame_count, x, y, (float)texX, (float)texY);
+						map.set_texture_coords(frame_count, x, y, z, (float)texX, (float)texY);
 					}
 				}
 			}
