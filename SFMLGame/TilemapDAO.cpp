@@ -1,5 +1,8 @@
 #include "TilemapDAO.h"
 #include "Lua.h"
+#include <tmxlite/Map.hpp>
+#include <tmxlite/TileLayer.hpp>
+#include <tmxlite/ObjectGroup.hpp>
 
 void TilemapDAO::save_map(std::string filename, Tilemap & map) {
 	std::ofstream outfile(Path::MAPS + filename + ".map", std::ofstream::binary);
@@ -101,4 +104,106 @@ bool TilemapDAO::backup(std::string filename) {
 	}
 	outfile.write(buffer.data(), size);
 	return true;
+}
+
+
+
+
+
+
+void TiledTilemapDAO::load_map(std::string filename, Tilemap &map) {
+	tmx::Map tmx_map;
+	if (!tmx_map.load(Path::MAPS + filename + ".tmx")) {
+		throw TilemapDAOException("Could not load map [" + filename + "].");
+	}
+
+	const tmx::Tileset &tileset = tmx_map.getTilesets()[0];
+	// std::string image_path = tileset.getImagePath();
+
+	// get layers
+	tmx::TileLayer *floor_layer = nullptr;
+	tmx::TileLayer *obstacle_layer = nullptr;
+	tmx::ObjectGroup *object_layer = nullptr;
+	tmx::TileLayer *furniture_layer = nullptr;
+	tmx::TileLayer *overfloor_layer = nullptr;
+	{
+		const auto& layers = tmx_map.getLayers();
+		for (const auto &layerptr : layers) {
+			if (layerptr->getName() == "floor") {
+				floor_layer = &layerptr->getLayerAs<tmx::TileLayer>();
+			}
+			else if (layerptr->getName() == "obstacle") {
+				obstacle_layer = &layerptr->getLayerAs<tmx::TileLayer>();
+			}
+			else if (layerptr->getName() == "objects") {
+				object_layer = &layerptr->getLayerAs<tmx::ObjectGroup>();
+			}
+			else if (layerptr->getName() == "furniture") {
+				furniture_layer = &layerptr->getLayerAs<tmx::TileLayer>();
+			}
+			else if (layerptr->getName() == "overfloor") {
+				overfloor_layer = &layerptr->getLayerAs<tmx::TileLayer>();
+			}
+		}
+	}
+	if (!floor_layer)
+		throw TilemapDAOException("Layer floor not found");
+	if (!obstacle_layer)
+		throw TilemapDAOException("Layer obstacle not found");
+	if (!object_layer)
+		throw TilemapDAOException("Layer objects not found");
+	if (!furniture_layer)
+		throw TilemapDAOException("Layer furniture not found");
+	if (!overfloor_layer)
+		throw TilemapDAOException("Layer overfloor not found");
+
+	unsigned width = tmx_map.getTileCount().x;
+	unsigned height = tmx_map.getTileCount().y;
+
+	std::vector<int> tiles(width * height, 0);
+	map = Tilemap();
+	map.load(Textures::get("tileset"), sf::Vector2u(16, 16), tiles.data(), width, height);
+
+	for (unsigned x = 0; x < width; x++) {
+		for (unsigned y = 0; y < height; y++) {
+
+			// obstacle
+			bool obstacle = false;
+			map.get_tile(x, y).obstacle = obstacle;
+
+			// tile
+			std::uint32_t tile_id = furniture_layer->getTiles()[y * width + x].ID;
+			if (tile_id > 0) {
+				const auto *tile = tileset.getTile(tile_id);
+
+#if true
+				// animated tile
+				if (tile->animation.frames.size() > 0) {
+					size_t frames_limit = std::min((size_t)2, tile->animation.frames.size());
+					for (size_t frame_count = 0; frame_count < frames_limit; frame_count++) {
+						const auto &frame = tile->animation.frames[frame_count];
+						const auto *frame_tile = tileset.getTile(frame.tileID);
+						unsigned texX = frame_tile->imagePosition.x;
+						unsigned texY = frame_tile->imagePosition.y;
+						map.set_texture_coords(frame_count, x, y, (float)texX, (float)texY);
+					}
+				}
+				// not animated tile
+				else
+#endif
+				{
+					size_t frames_limit = 2;
+					for (size_t frame_count = 0; frame_count < frames_limit; frame_count++) {
+						unsigned texX = tile->imagePosition.x;
+						unsigned texY = tile->imagePosition.y;
+						map.set_texture_coords(frame_count, x, y, (float)texX, (float)texY);
+					}
+				}
+			}
+		}
+	}
+
+	if (map.script != nullptr)
+		delete map.script;
+	map.script = new Lua(Path::MAPS + filename + ".lua");
 }

@@ -361,7 +361,7 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 }
 
 void GameScreen::load_map(std::string filename) {
-	TilemapDAO::load_map(filename, map);
+	TiledTilemapDAO::load_map(filename, map);
 	int x = game->get_resolution_width() / 2 - map.get_width() / 2;
 	int y = game->get_resolution_height() / 2 -  map.get_height() / 2;
 	map.set_position(x, y);

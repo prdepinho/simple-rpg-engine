@@ -21,3 +21,9 @@ public:
 	static bool backup(std::string filename);
 };
 
+
+class TiledTilemapDAO
+{
+public:
+	static void load_map(std::string map_filename, Tilemap &map);
+};

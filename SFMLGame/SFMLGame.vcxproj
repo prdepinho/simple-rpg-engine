@@ -76,7 +76,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\1513 MX5-7\Documents\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\1513 MX5-7\source\repos\SFMLGame\SFMLGame\tmxlite\include;C:\Users\1513 MX5-7\Documents\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -101,7 +101,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\1513 MX5-7\Documents\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\1513 MX5-7\source\repos\SFMLGame\SFMLGame\tmxlite\include;C:\Users\1513 MX5-7\Documents\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -137,6 +137,7 @@
     <ClCompile Include="CustomPanel.cpp" />
     <ClCompile Include="DebugConsole.cpp" />
     <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Json.cpp" />
@@ -185,6 +186,17 @@
     <ClCompile Include="TextField.cpp" />
     <ClCompile Include="Tilemap.cpp" />
     <ClCompile Include="TilemapDAO.cpp" />
+    <ClCompile Include="tmxlite\detail\pugixml.cpp" />
+    <ClCompile Include="tmxlite\FreeFuncs.cpp" />
+    <ClCompile Include="tmxlite\ImageLayer.cpp" />
+    <ClCompile Include="tmxlite\LayerGroup.cpp" />
+    <ClCompile Include="tmxlite\Map.cpp" />
+    <ClCompile Include="tmxlite\miniz.c" />
+    <ClCompile Include="tmxlite\Object.cpp" />
+    <ClCompile Include="tmxlite\ObjectGroup.cpp" />
+    <ClCompile Include="tmxlite\Property.cpp" />
+    <ClCompile Include="tmxlite\TileLayer.cpp" />
+    <ClCompile Include="tmxlite\Tileset.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Action.h" />
@@ -232,6 +244,7 @@
     <ClInclude Include="lua5.3.5\lzio.h" />
     <ClInclude Include="MapEditorScreen.h" />
     <ClInclude Include="Panel.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Resources.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="ScreenMainMenu.h" />
@@ -240,6 +253,18 @@
     <ClInclude Include="TextField.h" />
     <ClInclude Include="Tilemap.h" />
     <ClInclude Include="TilemapDAO.h" />
+    <ClInclude Include="tmxlite\detail\pugiconfig.hpp" />
+    <ClInclude Include="tmxlite\detail\pugixml.hpp" />
+    <ClInclude Include="tmxlite\miniz.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SFMLGame.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="tmxlite\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="tmxlite\detail\pugixml.LICENSE" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

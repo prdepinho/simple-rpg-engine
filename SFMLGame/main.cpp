@@ -3,15 +3,97 @@
 #include "Json.h"
 #include <sstream>
 
+#include "Tilemap.h"
+#include "TilemapDAO.h"
+#include <tmxlite/Map.hpp>
+#include <tmxlite/TileLayer.hpp>
+#include <tmxlite/ObjectGroup.hpp>
+
 Game game;  // game instantiation.
 
 int main() 
 {
-	char a;
 	try {
-#if true
+		game.init();
 		game.start();
-#else
+
+#if false
+
+		tmx::Map map;
+		map.load("../maps/room.tmx");
+
+		const auto& layers = map.getLayers();
+		Log("orientation: %s", (map.getOrientation() == tmx::Orientation::Orthogonal ? "Orthogonal" : "Not orthogonal"));
+		Log("layers size: %lu", layers.size());
+
+		// map
+		{
+			Log("  ++++  Map  ++++");
+			auto tile_size = map.getTileSize();
+			Log("tile size: %u, %u", tile_size.x, tile_size.y);
+
+			for (auto &prop : map.getProperties()) {
+				Log("Prop: %s: %s", prop.getName().c_str(), prop.getStringValue().c_str());
+			}
+
+			for (const auto& layer : layers) {
+				Log("Layer name: %s", layer.get()->getName().c_str());
+			}
+
+			for (auto &tileset : map.getTilesets()) {
+				Log("tileset: %s", tileset.getName().c_str());
+			}
+		}
+
+		// objects
+		{
+			Log("  ++++  Objects  ++++");
+			const auto &object_layer = layers[4]->getLayerAs<tmx::ObjectGroup>();
+			Log("object_layer: %s", object_layer.getName().c_str());
+
+			for (auto &object : object_layer.getObjects()) {
+				Log("object: %s", object.getName().c_str());
+				Log("  position: %f, %f", object.getPosition().x, object.getPosition().y);
+				Log("  shape: %s", (object.getShape() == tmx::Object::Shape::Rectangle ? "rectangle" : "not rectangle"));
+				for (auto &points : object.getPoints()) {
+					Log("  points: %f, %f", points.x, points.y);
+				}
+				Log("  associated tile: %d", object.getTileID());
+				for (auto &prop : object.getProperties()) {
+					Log("  prop: %s: %s", prop.getName().c_str(), prop.getStringValue().c_str());
+				}
+			}
+		}
+
+		// tile layer
+		{
+			Log("  ++++  Tiles  ++++");
+			auto &tileset = map.getTilesets()[0];
+			const auto &floor_layer = layers[0]->getLayerAs<tmx::TileLayer>();
+			for (const tmx::TileLayer::Tile &tile : floor_layer.getTiles()) {
+				std::uint32_t id = tile.ID;
+				Log("tile id: %d", id);
+
+				const tmx::Tileset::Tile *tilesettile = tileset.getTile(id);
+				Log("position: %d, %d", tilesettile->imagePosition.x, tilesettile->imagePosition.y);
+				Log("frames: %lu", tilesettile->animation.frames.size());
+				for (auto &frame : tilesettile->animation.frames) {
+					Log("    frame: %d, duration: %d", frame.tileID, frame.duration);
+				}
+			}
+
+			for (auto &prop : floor_layer.getProperties()) {
+				Log("prop: %s: %s", prop.getName().c_str(), prop.getStringValue().c_str());
+			}
+
+		}
+
+		Log("Done");
+		std::getchar();
+
+#endif
+
+#if false
 		Lua lua("../config.lua");
 
 		std::cout << lua.stack_dump() << std::endl;
@@ -71,14 +153,14 @@ int main()
 
 		std::cout << lua.stack_dump() << std::endl;
 
-		std::cin >> a;
+		std::getchar();
 
 
 #endif
 	}
 	catch (std::exception &e) {
 		std::cout << e.what() << std::endl;
-		std::cin >> a;
+		std::getchar();
 	}
 	return 0;
 }

@@ -1,6 +1,18 @@
 #include "Json.h"
+#include "Game.h"
+
+
+const char *JsonParseException::what() const {
+	std::string _msg = "File: " + filename + ", line: " + std::to_string(line_number) + ", column: " + std::to_string(index) + ", token: `" + token + "'. " + msg;
+	return _msg.c_str();
+}
+
+
+
 
 void JsonParser::parse(Json &json_token) {
+	line_count = 1;
+	char_count = 0;
 	if (parse_type == ParseType::STRICT) {
 		get_token(0, json_token);
 	}
@@ -14,6 +26,7 @@ int JsonParser::get_token(int index, Json & token) {
 	int i = index;
 	for (unsigned int i = index; i < json.size(); i++) {
 		char c = json[i];
+		char_count++;
 
 		switch (c) {
 		case '{': {
@@ -63,27 +76,38 @@ int JsonParser::get_token(int index, Json & token) {
 				token.boolean = false;
 			}
 			else
-				throw JsonParseException(i, primitive, "Expected null or true or false");
+				throw JsonParseException(filename, char_count, line_count, primitive, "Expected null or true or false");
 		}
 				  return skip_spaces(i + 1);
 				  return i;
 
-		case ' ': case '\t': case '\r': case '\n':
+		case ' ': case '\t': case '\r':
 			i = skip_spaces(i) - 1;
 			break;
 
+		case '\n':
+			i = skip_spaces(i) - 1;
+			line_count++;
+			char_count = 0;
+			break;
+
 		default:
-			throw JsonParseException(i, "" + json[i], "Unexpected character");
+			throw JsonParseException(filename, char_count, line_count, "" + json[i], "Unexpected character");
 		}
 	}
-	throw JsonParseException(i, "", "File ended unexpectetly");
+	throw JsonParseException(filename, char_count, line_count, "", "File ended unexpectetly");
 }
 
 int JsonParser::get_primitive(int index, std::string & primitive) {
 	unsigned int i = index;
 	for (; i < json.length(); i++) {
+		char_count++;
 		switch (json[i]) {
-		case ' ': case '\t': case '\r': case '\n': case ',': case ':': case ']': case '}':
+		case ' ': case '\t': case '\r': case ',': case ':': case ']': case '}':
+			return i - 1;
+		case '\n':
+			line_count++;
+			char_count = 0;
 			return i - 1;
 		default:
 			primitive += json[i];
@@ -95,33 +119,40 @@ int JsonParser::get_primitive(int index, std::string & primitive) {
 
 int JsonParser::get_string(int index, std::string & string) {
 	unsigned int i = index + 1;
+	char_count++;
 	for (; i < json.length(); i++) {
+		char_count++;
 		if (json[i] == '"')
 			return i;
 		else
 			string += json[i];
 	}
-	throw JsonParseException(i, string, "String does not close");
+	throw JsonParseException(filename, char_count, line_count, string, "String does not close");
 }
 
 int JsonParser::get_number(int index, std::string & number) {
 	unsigned int i = index;
 	int dots = 0;
 	for (; i < json.length(); i++) {
+		char_count++;
 		switch (json[i]) {
 		case '.':
 			number += json[i];
 			if (++dots > 1)
-				throw JsonParseException(i, number, "Number has too many dots");
+				throw JsonParseException(filename, char_count, line_count, number, "Number has too many dots");
 			break;
 		case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': case '0': {
 			number += json[i];
 			break;
 		}
-		case ' ': case '\t': case '\r': case '\n': case ',': case ']': case '}':
+		case ' ': case '\t': case '\r': case ',': case ']': case '}':
+			return i - 1;
+		case '\n':
+			line_count++;
+			char_count = 0;
 			return i - 1;
 		default:
-			throw JsonParseException(i, number, json[i] + " does not belong to a number");
+			throw JsonParseException(filename, char_count, line_count, number, json[i] + " does not belong to a number");
 		}
 	}
 	return i;
@@ -129,7 +160,9 @@ int JsonParser::get_number(int index, std::string & number) {
 
 int JsonParser::get_list(int index, std::vector<Json>& list) {
 	unsigned int i = index + 1;
+	char_count++;
 	for (; i < json.length(); i++) {
+		char_count++;
 
 		Json token;
 		i = get_token(i, token);
@@ -143,15 +176,17 @@ int JsonParser::get_list(int index, std::vector<Json>& list) {
 		case ']':
 			return i;
 		default:
-			throw JsonParseException(i, "" + c, "Unexpected character in list");
+			throw JsonParseException(filename, char_count, line_count, "" + c, "Unexpected character in list");
 		}
 	}
-	throw JsonParseException(i, "", "List does not close");
+	throw JsonParseException(filename, char_count, line_count, "", "List does not close");
 }
 
 int JsonParser::get_object(int index, std::map<std::string, Json>& object) {
 	unsigned int i = index + 1;
+	char_count++;
 	for (; i < json.length(); i++) {
+		char_count++;
 		i = skip_spaces(i);
 
 		std::string key;
@@ -161,7 +196,7 @@ int JsonParser::get_object(int index, std::map<std::string, Json>& object) {
 			break;
 		default:
 			if (parse_type == ParseType::STRICT)
-				throw JsonParseException(i, "", "Expected a string.");
+				throw JsonParseException(filename, char_count, line_count, "", "Expected a string.");
 			else
 				i = get_primitive(i, key);
 			break;
@@ -187,22 +222,27 @@ int JsonParser::get_object(int index, std::map<std::string, Json>& object) {
 			return i;
 		case '\0':
 			if (parse_type == ParseType::STRICT)
-				throw JsonParseException(i, "", "Object does not close");
+				throw JsonParseException(filename, char_count, line_count, "", "Object does not close");
 			else
 				return i;
 		default:
-			throw JsonParseException(i, "" + json[i], "Unexpected character in object");
+			throw JsonParseException(filename, char_count, line_count, "" + json[i], "Unexpected character in object");
 		}
 	}
-	throw JsonParseException(i, "", "Object does not close");
+	throw JsonParseException(filename, char_count, line_count, "", "Object does not close");
 }
 
 inline int JsonParser::skip_spaces(int index) {
 	unsigned int i = index;
 	for (; i < json.length(); i++) {
+		char_count++;
 		char c = json[i];
 		switch (c) {
-		case ' ': case '\t': case '\r': case '\n':
+		case ' ': case '\t': case '\r':
+			break;
+		case '\n':
+			line_count++;
+			char_count = 0;
 			break;
 		default:
 			return i;
@@ -212,6 +252,7 @@ inline int JsonParser::skip_spaces(int index) {
 }
 
 void JsonParser::load_json(std::string filename) {
+	this->filename = filename;
 	std::ifstream file(filename);
 	if (file.is_open()) {
 		std::stringstream stream;

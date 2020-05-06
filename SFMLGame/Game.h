@@ -26,6 +26,7 @@ public:
 	void log(std::string text) { lua.log(text); }
 	Lua* get_lua() { return &lua; }
 
+	void init();
 	void start();
 
 	void change_to_test_screen();

@@ -5,10 +5,11 @@ bool Tilemap::load(
 	sf::Vector2u tileSize, 
 	const int * tiles, 
 	unsigned int width, 
-	unsigned int height)
+	unsigned int height,
+	unsigned int layers)
 {
 	std::vector<sf::VertexArray> animation(2);
-	float fps = 1.f;
+	float fps = 0.0f;  // TODO: this doesn't do anything.
 
 	this->texture = tileset;
 	this->width = width;
@@ -22,13 +23,14 @@ bool Tilemap::load(
 
 		for (unsigned int x = 0; x < width; ++x) {
 			for (unsigned int y = 0; y < height; ++y)
+				for (unsigned int z = 0; z < layers; ++z)
 			{
 				int tileNumber = tiles[x + y * width];
 
 				int tx = tileNumber % (tileset->getSize().x / tileSize.x);
 				int ty = tileNumber / (tileset->getSize().x / tileSize.x);
 
-				sf::Vertex *quad = &frame[(x + y * width) * 4];
+				sf::Vertex *quad = &frame[(x + y * width + z * width * height) * 4];
 
 				quad[0].position = sf::Vector2f((float) (x * tileSize.x), (float) (y * tileSize.y));
 				quad[1].position = sf::Vector2f((float) ((x + 1) * tileSize.x), (float) (y * tileSize.y));
