@@ -1,6 +1,6 @@
 {
   "font": "font.png",
   "gui": "font.png",
-  "tileset": "tileset.png",
+  "tileset": "tiled_tileset.png",
   "sprites": "sprite_sheet.png"
 }

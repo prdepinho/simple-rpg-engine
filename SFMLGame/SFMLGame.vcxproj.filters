@@ -31,6 +31,12 @@
     <Filter Include="screens">
       <UniqueIdentifier>{964e114f-32b7-445c-be5f-2c056b0d88c3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="tmxlite">
+      <UniqueIdentifier>{dc1dbecf-ff40-4095-92cc-c0779868d032}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pugixml">
+      <UniqueIdentifier>{82f4b589-2e4b-4adc-8c4d-c46e914ba68b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -207,6 +213,42 @@
     <ClCompile Include="DebugConsole.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="tmxlite\FreeFuncs.cpp">
+      <Filter>tmxlite</Filter>
+    </ClCompile>
+    <ClCompile Include="tmxlite\ImageLayer.cpp">
+      <Filter>tmxlite</Filter>
+    </ClCompile>
+    <ClCompile Include="tmxlite\LayerGroup.cpp">
+      <Filter>tmxlite</Filter>
+    </ClCompile>
+    <ClCompile Include="tmxlite\Map.cpp">
+      <Filter>tmxlite</Filter>
+    </ClCompile>
+    <ClCompile Include="tmxlite\miniz.c">
+      <Filter>tmxlite</Filter>
+    </ClCompile>
+    <ClCompile Include="tmxlite\Object.cpp">
+      <Filter>tmxlite</Filter>
+    </ClCompile>
+    <ClCompile Include="tmxlite\ObjectGroup.cpp">
+      <Filter>tmxlite</Filter>
+    </ClCompile>
+    <ClCompile Include="tmxlite\Property.cpp">
+      <Filter>tmxlite</Filter>
+    </ClCompile>
+    <ClCompile Include="tmxlite\TileLayer.cpp">
+      <Filter>tmxlite</Filter>
+    </ClCompile>
+    <ClCompile Include="tmxlite\Tileset.cpp">
+      <Filter>tmxlite</Filter>
+    </ClCompile>
+    <ClCompile Include="tmxlite\detail\pugixml.cpp">
+      <Filter>pugixml</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tilemap.h">
@@ -368,5 +410,32 @@
     <ClInclude Include="DebugConsole.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tmxlite\miniz.h">
+      <Filter>tmxlite</Filter>
+    </ClInclude>
+    <ClInclude Include="tmxlite\detail\pugiconfig.hpp">
+      <Filter>pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="tmxlite\detail\pugixml.hpp">
+      <Filter>pugixml</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SFMLGame.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="tmxlite\CMakeLists.txt">
+      <Filter>tmxlite</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="tmxlite\detail\pugixml.LICENSE">
+      <Filter>pugixml</Filter>
+    </None>
   </ItemGroup>
 </Project>

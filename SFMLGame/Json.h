@@ -14,10 +14,15 @@ public:
 
 class JsonParseException : public JsonException { 
 public:
-	JsonParseException(int index, std::string token, std::string msg) 
-		: JsonException(std::string(index + ": " + token + ". " + msg).c_str()), index(index), token(token), msg(msg)
+	JsonParseException(std::string filename, int index, int line_number, std::string token, std::string msg) 
+		: JsonException(std::string(index + ": " + token + ". " + msg).c_str()), filename(filename), index(index), line_number(line_number), token(token), msg(msg)
 	{ }
+
+	const char *what() const;
+
+	std::string filename;
 	int index;
+	int line_number;
 	std::string token;
 	std::string msg;
 };
@@ -60,7 +65,10 @@ private:
 
 private:
 	std::string json;
+	std::string filename;
 	ParseType parse_type;
+	int line_count;
+	int char_count;
 
 };
 

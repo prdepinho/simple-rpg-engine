@@ -14,11 +14,12 @@ struct TileData {
 class Tilemap : public AnimatedEntity
 {
 	friend class TilemapDAO;
+	friend class TiledTilemapDAO;
 public:
 	Tilemap() {}
 	~Tilemap() { delete script; }
 
-	bool load(sf::Texture *tileset, sf::Vector2u tileSize, const int *tiles, unsigned int width, unsigned int height);
+	bool load(sf::Texture *tileset, sf::Vector2u tileSize, const int *tiles, unsigned int width, unsigned int height, unsigned int layers=1);
 
 	/// Return the tile data for a tile coordinate.
 	TileData &get_tile(int x, int y) { return tiles[y * width + x]; }
@@ -30,6 +31,7 @@ public:
 	/// Return the texture coordinates of a tile of the given tile coordinates.
 	sf::Vector2f get_texture_coords(int frame_index, int tile_x, int tile_y);
 
+	void set_texture_coords(int frame_index, int tile_x, int tile_y, int layer, float tex_x, float tex_y);
 	void set_texture_coords(int frame_index, int tile_x, int tile_y, float tex_x, float tex_y);
 	void set_texture_coords(int tile_x, int tile_y, float tex_x, float tex_y);
 	void paint_tile(int tile_x, int tile_y, sf::Color color);

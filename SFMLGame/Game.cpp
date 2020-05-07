@@ -3,7 +3,8 @@
 #include "Json.h"
 #include "Lua.h"
 
-Game::Game() : screen(nullptr), to_change_screen(nullptr) { }
+Game::Game() : screen(nullptr), to_change_screen(nullptr) {
+}
 
 Game::~Game() {
 	if (screen != nullptr) {
@@ -12,12 +13,15 @@ Game::~Game() {
 	}
 }
 
-void Game::start() 
+void Game::init()
 {
-	std::srand((unsigned int) std::time(NULL));
+	std::srand((unsigned int)std::time(NULL));
 	lua.load();
-	configure_game();
 	load_textures();
+}
+
+void Game::start() {
+	configure_game();
 	change_to_main_menu_screen();
 	loop();
 }

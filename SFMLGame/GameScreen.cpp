@@ -18,6 +18,19 @@ void GameScreen::create() {
 		turn_count = 0.f;
 		turn_duration = 1 / json.get_float("turns_per_second", 1.f);
 	}
+	
+	// create characters
+	int total_characters = 1;
+	{
+		characters = std::vector<Character>(total_characters);
+		for (int i = 0; i < total_characters; ++i) {
+			characters[i] = Character();
+			characters[i].create("boy");
+			characters[i].set_animation(AnimationType::WALK);
+		}
+
+		player_character = &characters.back();
+	}
 
 	// load map
 	{
@@ -25,21 +38,14 @@ void GameScreen::create() {
 		load_map(filename);
 	}
 
-	// create characters
 	{
-		int total_characters = 1;
-		characters = std::vector<Character>(total_characters);
+#if false
 		for (int i = 0; i < total_characters; ++i) {
-			characters[i] = Character();
-			characters[i].create("boy");
-			characters[i].set_animation(AnimationType::WALK);
-
 			int x = i;
 			int y = i;
 			put_character_on_tile(characters[i], x, y);
 		}
-
-		player_character = &characters.back();
+#endif
 	}
 
 	// debug console
@@ -108,9 +114,14 @@ bool GameScreen::update(float elapsed_time) {
 			++turn;
 			turn_count = 0.f;
 
-			std::stringstream ss;
-			ss << "turn: " << turn;
-			game->log(ss.str());
+			{
+				std::stringstream ss;
+				ss << "turn: " << turn;
+				game->log(ss.str());
+
+				auto tile_coords = map.get_tile_coord(player_character->getPosition().x, player_character->getPosition().y);
+				game->log("Character position: " + std::to_string(tile_coords.x) + ", " + std::to_string(tile_coords.y));
+			}
 
 			// execute scheduled actions.
 			for (Character &character : characters) {
@@ -361,7 +372,7 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 }
 
 void GameScreen::load_map(std::string filename) {
-	TilemapDAO::load_map(filename, map);
+	TiledTilemapDAO::load_map(filename, map);
 	int x = game->get_resolution_width() / 2 - map.get_width() / 2;
 	int y = game->get_resolution_height() / 2 -  map.get_height() / 2;
 	map.set_position(x, y);
@@ -379,6 +390,10 @@ void GameScreen::load_map(std::string filename) {
 		std::stringstream ss;
 		ss << "character: " << it->first << " at (" << x << ", " << y <<")";
 		game->log(ss.str());
+
+		if (it->first == "player") {
+			put_character_on_tile(*player_character, x, y);
+		}
 
 		// characters.push_back(Character());
 		// Character &character = characters.back();
@@ -408,6 +423,11 @@ void GameScreen::schedule_character_wait(Character &character, int turns) {
 void GameScreen::schedule_character_movement(Character &character, int tile_x, int tile_y) {
 	sf::Vector2i start(character_position(character));
 	sf::Vector2i end(tile_x, tile_y);
+
+	{
+		game->log("A*: start: ("+std::to_string(start.x)+", "+std::to_string(start.y)+"), end: ("+std::to_string(end.x)+", "+std::to_string(end.y)+")");
+	}
+
 	std::stack<Direction> path = AStar::search(map, start, end);
 
 	while (!path.empty()) {

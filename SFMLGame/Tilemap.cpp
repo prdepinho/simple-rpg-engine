@@ -5,10 +5,11 @@ bool Tilemap::load(
 	sf::Vector2u tileSize, 
 	const int * tiles, 
 	unsigned int width, 
-	unsigned int height)
+	unsigned int height,
+	unsigned int layers)
 {
 	std::vector<sf::VertexArray> animation(2);
-	float fps = 1.f;
+	float fps = 0.0f;  // TODO: this doesn't do anything.
 
 	this->texture = tileset;
 	this->width = width;
@@ -18,17 +19,18 @@ bool Tilemap::load(
 	for (sf::VertexArray &frame : animation) {
 
 		frame.setPrimitiveType(sf::Quads);
-		frame.resize(width * height * 4);
+		frame.resize(width * height * layers * 4);
 
 		for (unsigned int x = 0; x < width; ++x) {
 			for (unsigned int y = 0; y < height; ++y)
+				for (unsigned int z = 0; z < layers; ++z)
 			{
-				int tileNumber = tiles[x + y * width];
+				int tileNumber = tiles[x + (y * width) + (z * width * height)];
 
 				int tx = tileNumber % (tileset->getSize().x / tileSize.x);
 				int ty = tileNumber / (tileset->getSize().x / tileSize.x);
 
-				sf::Vertex *quad = &frame[(x + y * width) * 4];
+				sf::Vertex *quad = &frame[(x + (y * width) + (z * width * height)) * 4];
 
 				quad[0].position = sf::Vector2f((float) (x * tileSize.x), (float) (y * tileSize.y));
 				quad[1].position = sf::Vector2f((float) ((x + 1) * tileSize.x), (float) (y * tileSize.y));
@@ -65,6 +67,13 @@ sf::Vector2f Tilemap::get_texture_coords(int frame_index, int tile_x, int tile_y
 	sf::VertexArray &frame = frames[frame_index];
 	sf::Vertex *quad = &frame[(tile_y * width + tile_x) * 4];
 	return quad[0].texCoords;
+}
+
+void Tilemap::set_texture_coords(int frame_index, int tile_x, int tile_y, int layer, float tex_x, float tex_y) {
+	sf::VertexArray &frame = frames[frame_index];
+	sf::Vertex *quad = &frame[((layer * width * height) + (tile_y * width) + tile_x) * 4];
+	set_quad_tex_coords(quad, tex_x, tex_y, 16.f, 16.f);
+	set_animation(frames, 1.f);
 }
 
 void Tilemap::set_texture_coords(int frame_index, int tile_x, int tile_y, float tex_x, float tex_y) {
