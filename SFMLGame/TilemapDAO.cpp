@@ -168,41 +168,40 @@ void TiledTilemapDAO::load_map(std::string filename, Tilemap &map) {
 	map.load(Textures::get("tileset"), sf::Vector2u(16, 16), tiles.data(), width, height, layers);
 
 	for (unsigned x = 0; x < width; x++) {
-		for (unsigned y = 0; y < height; y++) 
-			for (unsigned z = 0; z < layers; z++)
-		{
+		for (unsigned y = 0; y < height; y++) {
 
 			// obstacle
-			bool obstacle = false;
+			bool obstacle = obstacle_layer->getTiles()[y * width + x].ID > 0;
 			map.get_tile(x, y).obstacle = obstacle;
 
-			// tile
-			tmx::TileLayer *layer = layer_ptrs[z];
-			std::uint32_t tile_id = layer->getTiles()[(y * width) + x].ID;
-			if (tile_id > 0) {
-				const auto *tile = tileset.getTile(tile_id);
+			for (unsigned z = 0; z < layers; z++) {
 
-#if true
-				// animated tile
-				if (tile->animation.frames.size() > 0) {
-					size_t frames_limit = std::min((size_t)2, tile->animation.frames.size());
-					for (size_t frame_count = 0; frame_count < frames_limit; frame_count++) {
-						const auto &frame = tile->animation.frames[frame_count];
-						const auto *frame_tile = tileset.getTile(frame.tileID);
-						unsigned texX = frame_tile->imagePosition.x;
-						unsigned texY = frame_tile->imagePosition.y;
-						map.set_texture_coords(frame_count, x, y, z, (float)texX, (float)texY);
+				// tile
+				tmx::TileLayer *layer = layer_ptrs[z];
+				std::uint32_t tile_id = layer->getTiles()[(y * width) + x].ID;
+				if (tile_id > 0) {
+					const auto *tile = tileset.getTile(tile_id);
+
+					// animated tile
+					if (tile->animation.frames.size() > 0) {
+						size_t frames_limit = std::min((size_t)2, tile->animation.frames.size());
+						for (size_t frame_count = 0; frame_count < frames_limit; frame_count++) {
+							const auto &frame = tile->animation.frames[frame_count];
+							const auto *frame_tile = tileset.getTile(frame.tileID);
+							unsigned texX = frame_tile->imagePosition.x;
+							unsigned texY = frame_tile->imagePosition.y;
+							map.set_texture_coords(frame_count, x, y, z, (float)texX, (float)texY);
+						}
 					}
-				}
-				// not animated tile
-				else
-#endif
-				{
-					size_t frames_limit = 2;
-					for (size_t frame_count = 0; frame_count < frames_limit; frame_count++) {
-						unsigned texX = tile->imagePosition.x;
-						unsigned texY = tile->imagePosition.y;
-						map.set_texture_coords(frame_count, x, y, z, (float)texX, (float)texY);
+					// not animated tile
+					else
+					{
+						size_t frames_limit = 2;
+						for (size_t frame_count = 0; frame_count < frames_limit; frame_count++) {
+							unsigned texX = tile->imagePosition.x;
+							unsigned texY = tile->imagePosition.y;
+							map.set_texture_coords(frame_count, x, y, z, (float)texX, (float)texY);
+						}
 					}
 				}
 			}

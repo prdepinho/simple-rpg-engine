@@ -18,6 +18,19 @@ void GameScreen::create() {
 		turn_count = 0.f;
 		turn_duration = 1 / json.get_float("turns_per_second", 1.f);
 	}
+	
+	// create characters
+	int total_characters = 1;
+	{
+		characters = std::vector<Character>(total_characters);
+		for (int i = 0; i < total_characters; ++i) {
+			characters[i] = Character();
+			characters[i].create("boy");
+			characters[i].set_animation(AnimationType::WALK);
+		}
+
+		player_character = &characters.back();
+	}
 
 	// load map
 	{
@@ -25,21 +38,14 @@ void GameScreen::create() {
 		load_map(filename);
 	}
 
-	// create characters
 	{
-		int total_characters = 1;
-		characters = std::vector<Character>(total_characters);
+#if false
 		for (int i = 0; i < total_characters; ++i) {
-			characters[i] = Character();
-			characters[i].create("boy");
-			characters[i].set_animation(AnimationType::WALK);
-
 			int x = i;
 			int y = i;
 			put_character_on_tile(characters[i], x, y);
 		}
-
-		player_character = &characters.back();
+#endif
 	}
 
 	// debug console
@@ -379,6 +385,10 @@ void GameScreen::load_map(std::string filename) {
 		std::stringstream ss;
 		ss << "character: " << it->first << " at (" << x << ", " << y <<")";
 		game->log(ss.str());
+
+		if (it->first == "player") {
+			put_character_on_tile(*player_character, x, y);
+		}
 
 		// characters.push_back(Character());
 		// Character &character = characters.back();

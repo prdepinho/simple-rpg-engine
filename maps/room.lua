@@ -1,6 +1,6 @@
 
 characters = {
-  peter={2, 2}
+  player={2, 2}
 }
 
 function enter()
