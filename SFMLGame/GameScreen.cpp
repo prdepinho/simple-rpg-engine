@@ -114,9 +114,14 @@ bool GameScreen::update(float elapsed_time) {
 			++turn;
 			turn_count = 0.f;
 
-			std::stringstream ss;
-			ss << "turn: " << turn;
-			game->log(ss.str());
+			{
+				std::stringstream ss;
+				ss << "turn: " << turn;
+				game->log(ss.str());
+
+				auto tile_coords = map.get_tile_coord(player_character->getPosition().x, player_character->getPosition().y);
+				game->log("Character position: " + std::to_string(tile_coords.x) + ", " + std::to_string(tile_coords.y));
+			}
 
 			// execute scheduled actions.
 			for (Character &character : characters) {
@@ -418,6 +423,11 @@ void GameScreen::schedule_character_wait(Character &character, int turns) {
 void GameScreen::schedule_character_movement(Character &character, int tile_x, int tile_y) {
 	sf::Vector2i start(character_position(character));
 	sf::Vector2i end(tile_x, tile_y);
+
+	{
+		game->log("A*: start: ("+std::to_string(start.x)+", "+std::to_string(start.y)+"), end: ("+std::to_string(end.x)+", "+std::to_string(end.y)+")");
+	}
+
 	std::stack<Direction> path = AStar::search(map, start, end);
 
 	while (!path.empty()) {

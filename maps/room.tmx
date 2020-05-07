@@ -4,7 +4,7 @@
   <property name="script" value="room.lua"/>
  </properties>
  <tileset firstgid="1" source="tiled_tileset.tsx"/>
- <layer id="1" name="floor" width="8" height="8" visible="0">
+ <layer id="1" name="floor" width="8" height="8">
   <properties>
    <property name="script" value="floor.lua"/>
   </properties>
@@ -19,7 +19,7 @@
 81,81,81,81,81,81,81,81
 </data>
  </layer>
- <layer id="2" name="overfloor" width="8" height="8" visible="0">
+ <layer id="2" name="overfloor" width="8" height="8">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,
 0,0,0,0,147,0,0,0,
@@ -43,19 +43,19 @@
 0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="4" name="obstacle" width="8" height="8" visible="0">
+ <layer id="4" name="obstacle" width="8" height="8">
   <data encoding="csv">
-1,1,1,1,1,1,1,1,
-1,1,1,1,1,1,1,1,
-1,1,0,0,0,0,1,1,
-1,0,0,1,0,0,0,1,
-1,0,0,0,0,0,0,1,
-1,1,0,0,0,0,1,1,
-1,1,1,1,1,1,1,1,
-1,1,1,1,1,1,1,1
+2,2,2,2,2,2,2,2,
+2,2,2,2,0,2,2,2,
+2,2,0,0,0,0,2,2,
+0,0,0,2,0,0,0,2,
+2,0,0,0,0,0,0,0,
+2,2,0,0,0,0,2,2,
+2,2,2,2,0,2,2,2,
+2,2,2,2,0,2,2,2
 </data>
  </layer>
- <objectgroup id="5" name="objects" visible="0">
+ <objectgroup id="5" name="objects">
   <object id="10" name="South door" x="65" y="97.25" width="12.75" height="28.25">
    <properties>
     <property name="interact" value="Use door"/>

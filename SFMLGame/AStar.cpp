@@ -1,4 +1,5 @@
 #include "AStar.h"
+#include "Game.h"
 
 std::stack<Direction> AStar::search(Tilemap & map, sf::Vector2i start, sf::Vector2i end, unsigned int limit)
 {
@@ -62,11 +63,8 @@ std::stack<Direction> AStar::search(Tilemap & map, sf::Vector2i start, sf::Vecto
 
 	// return a stack of directions to follow.
 	std::stack<Direction> path;
-	if (dst_node != nullptr) {
-		Node *a_star_node = dst_node;
-		do {
-			path.push(a_star_node->direction);
-		} while ((a_star_node = a_star_node->parent) != nullptr);
+	for (Node *node = dst_node; node->parent != nullptr; node = node->parent) {
+		path.push(node->direction);
 	}
 
 	return path;
