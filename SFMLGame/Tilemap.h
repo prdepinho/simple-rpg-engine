@@ -9,6 +9,7 @@ class TilemapDAO;
 
 struct TileData {
 	bool obstacle = false;
+	std::vector<std::string> calls;
 };
 
 class Tilemap : public AnimatedEntity

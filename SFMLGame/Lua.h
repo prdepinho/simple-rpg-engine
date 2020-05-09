@@ -48,6 +48,7 @@ public:
 	void on_idle(Character &character);
 	void on_turn(Character &character);
 	void on_interact(Character &character, int tile_x, int tile_y);
+	void call(std::string function, int tile_x, int tile_y);
 
 
 

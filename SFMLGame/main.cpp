@@ -9,13 +9,13 @@
 #include <tmxlite/TileLayer.hpp>
 #include <tmxlite/ObjectGroup.hpp>
 
-Game game;  // game instantiation.
+Game _game;  // game instantiation.
 
 int main() 
 {
 	try {
-		game.init();
-		game.start();
+		_game.init();
+		_game.start();
 
 #if false
 

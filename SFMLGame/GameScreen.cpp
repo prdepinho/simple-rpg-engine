@@ -114,14 +114,7 @@ bool GameScreen::update(float elapsed_time) {
 			++turn;
 			turn_count = 0.f;
 
-			{
-				std::stringstream ss;
-				ss << "turn: " << turn;
-				game->log(ss.str());
-
-				auto tile_coords = map.get_tile_coord(player_character->getPosition().x, player_character->getPosition().y);
-				game->log("Character position: " + std::to_string(tile_coords.x) + ", " + std::to_string(tile_coords.y));
-			}
+			Log("turn: %d", turn);
 
 			// execute scheduled actions.
 			for (Character &character : characters) {
@@ -143,9 +136,7 @@ bool GameScreen::update(float elapsed_time) {
 				if (action != nullptr) {
 
 					if (&character == player_character) {
-						std::stringstream ss;
-						ss << "Player action: " << action->to_string();
-						game->log(ss.str());
+						Log("Player action: %s", action->to_string().c_str());
 					}
 
 					action->execute(this);
@@ -292,10 +283,7 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 
 					Character* character = get_character_on_tile(tile_x, tile_y);
 
-					std::stringstream ss;
-					ss << "CLick: " << "(x: " << x << ", y: " << y << "); Tile: (" << tile_x << ", " << tile_y << ")";
-					if (character != nullptr) ss << " Character: " << character->get_id();
-					game->log(ss.str());
+					// Log("Click: (x: %d, y: %d), Tile: (x: %d, y: %d), Character: %d", x, y, tile_x, tile_y, (character ? character->get_id() : 0l));
 
 					player_character->clear_schedule();
 					schedule_character_movement(*player_character, tile_x, tile_y);
@@ -306,6 +294,23 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				holding_screen = true;
 				holding_start_position = get_mouse_game_position();
 			}
+			else if (event.mouseButton.button == sf::Mouse::Button::Right) {
+				auto mouse_position = get_mouse_game_position();
+				int x = (int) mouse_position.x;
+				int y = (int) mouse_position.y;
+
+				if (map.in_bounds(x, y)) {
+					auto tile_coord = map.get_tile_coord(x, y);
+					int tile_x = tile_coord.x;
+					int tile_y = tile_coord.y;
+
+					TileData tile = map.get_tile(tile_x, tile_y);
+					for (std::string &call : tile.calls) {
+						Log("Call: %s", call.c_str());
+					}
+				}
+
+			}
 		}
 		break;
 	case sf::Event::KeyPressed:
@@ -314,9 +319,7 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			case sf::Keyboard::F:
 			{
 				camera_follow = !camera_follow;
-				std::stringstream ss;
-				ss << "Camera follow: " << (camera_follow ? "True" : "False");
-				game->log(ss.str());
+				Log("Camera follow: %s", (camera_follow ? "true" : "false"));
 			}
 			break;
 			case sf::Keyboard::O:
@@ -387,9 +390,7 @@ void GameScreen::load_map(std::string filename) {
 		int x = coords[0].get_int();
 		int y = coords[1].get_int();
 
-		std::stringstream ss;
-		ss << "character: " << it->first << " at (" << x << ", " << y <<")";
-		game->log(ss.str());
+		Log("character: %s at (%d, %d)", it->first.c_str(), x, y);
 
 		if (it->first == "player") {
 			put_character_on_tile(*player_character, x, y);
@@ -424,10 +425,6 @@ void GameScreen::schedule_character_movement(Character &character, int tile_x, i
 	sf::Vector2i start(character_position(character));
 	sf::Vector2i end(tile_x, tile_y);
 
-	{
-		game->log("A*: start: ("+std::to_string(start.x)+", "+std::to_string(start.y)+"), end: ("+std::to_string(end.x)+", "+std::to_string(end.y)+")");
-	}
-
 	std::stack<Direction> path = AStar::search(map, start, end);
 
 	while (!path.empty()) {
@@ -438,9 +435,6 @@ void GameScreen::schedule_character_movement(Character &character, int tile_x, i
 			{Direction::RIGHT, "RIGHT"},
 			{Direction::LEFT, "LEFT"},
 		};
-#if true
-		game->log(direction_name[direction]);
-#endif
 
 		actions.push_back(new MoveAction(&character, direction));
 		character.schedule_action(actions.back());
@@ -493,7 +487,18 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 
 	auto pos = character_position(character);
 	if (std::abs(pos.x - tile_x) <= 1 && std::abs(pos.y - tile_y) <= 1) {
-		map.get_script()->on_interact(character, tile_x, tile_y);
+		// map.get_script()->on_interact(character, tile_x, tile_y);
+
+		try {
+			TileData tile = map.get_tile(tile_x, tile_y);
+			for (std::string &call : tile.calls) {
+				map.get_script()->call(call, tile_x, tile_y);
+			}
+		}
+		catch (LuaException &e) {
+			Log("Lua Error: %s", e.what());
+		}
+
 		if (&character == player_character) {
 			Effect *effect = new WaitEffect(player_character, turn_duration);
 			effect->set_on_end([&]() {

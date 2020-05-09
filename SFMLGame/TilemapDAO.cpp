@@ -1,5 +1,6 @@
 #include "TilemapDAO.h"
 #include "Lua.h"
+#include "Game.h"
 #include <tmxlite/Map.hpp>
 #include <tmxlite/TileLayer.hpp>
 #include <tmxlite/ObjectGroup.hpp>
@@ -207,6 +208,28 @@ void TiledTilemapDAO::load_map(std::string filename, Tilemap &map) {
 			}
 		}
 	}
+
+	// objects
+#if true
+	for (auto &object : object_layer->getObjects()) {
+		int left = (int)std::floor(object.getAABB().left / 16);
+		int top = (int)std::floor(object.getAABB().top / 16);
+		int height = (int)std::ceil(object.getAABB().height / 16);
+		int width = (int)std::ceil(object.getAABB().width / 16);
+
+		for (int x = left; x < left + width; x++) {
+			for (int y = top; y < top + height; y++) {
+				for (auto &prop : object.getProperties()) {
+					if (prop.getName() == "interact") {
+						map.get_tile(x, y).calls.push_back(prop.getStringValue());
+					}
+				}
+
+			}
+		}
+	}
+#endif
+
 
 	if (map.script != nullptr)
 		delete map.script;

@@ -180,25 +180,25 @@ public:
 	static int sfml_game_start(lua_State *state)
 	{
 		std::cout << ("game start") << std::endl;
-		Lua *lua = game.get_lua();
+		Lua *lua = _game.get_lua();
 		lua->log("Game start");
 		return 1;
 	}
 
 	static int sfml_get_map_width(lua_State *state) {
-		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		lua_pushnumber(state, screen->get_map().get_tile_width());
 		return 1;
 	}
 
 	static int sfml_get_map_height(lua_State *state) {
-		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		lua_pushnumber(state, screen->get_map().get_tile_height());
 		return 1;
 	}
 
 	static int sfml_get_map(lua_State *state) {
-		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 
 		lua_newtable(state);
 		{
@@ -249,7 +249,7 @@ public:
 	}
 
 	static int sfml_get_player_position(lua_State *state) {
-		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		Character *character = screen->get_player_character();
 		sf::Vector2i position = screen->character_position(*character);
 		lua_newtable(state);
@@ -266,7 +266,7 @@ public:
 	}
 
 	static int sfml_get_character_position(lua_State *state) {
-		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		int id = (int) lua_tointeger(state, -1);
 		Character *character = screen->get_character_by_id(id);
 		sf::Vector2i position = screen->character_position(*character);
@@ -284,13 +284,13 @@ public:
 	}
 
 	static int sfml_move(lua_State *state) {
-		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 
 		int id = (int) lua_tointeger(state, -3);
 		int x = (int) lua_tointeger(state, -2);
 		int y = (int) lua_tointeger(state, -1);
 #if false
-		game.log("sfml_move (" + std::to_string(id) + ") x: " + std::to_string(x) + ", y: " + std::to_string(y));
+		_game.log("sfml_move (" + std::to_string(id) + ") x: " + std::to_string(x) + ", y: " + std::to_string(y));
 #endif
 
 		Character *character = screen->get_character_by_id(id);
@@ -299,12 +299,12 @@ public:
 	}
 
 	static int sfml_wait(lua_State *state) {
-		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 
 		int id = (int) lua_tointeger(state, -2);
 		int turns = (int) lua_tointeger(state, -1);
 #if false
-		game.log("sfml_wait (" + std::to_string(id) + ") turns: " + std::to_string(turns));
+		_game.log("sfml_wait (" + std::to_string(id) + ") turns: " + std::to_string(turns));
 #endif
 
 		Character *character = screen->get_character_by_id(id);
@@ -313,7 +313,7 @@ public:
 	}
 
 	static int sfml_clear_schedule(lua_State *state) {
-		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 
 		int id = (int) lua_tointeger(state, -1);
 		Character *character = screen->get_character_by_id(id);
@@ -322,7 +322,7 @@ public:
 	}
 
 	static int sfml_get_tile(lua_State *state) {
-		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		int x = (int) lua_tointeger(state, -2);
 		int y = (int) lua_tointeger(state, -1);
 		TileData tile = screen->get_map().get_tile(x, y);
@@ -338,7 +338,7 @@ public:
 	}
 
 	static int sfml_get_schedule(lua_State *state) {
-		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		int id = (int) lua_tointeger(state, -1);
 		Character *character = screen->get_character_by_id(id);
 		std::queue<Action*> schedule = character->get_schedule();
@@ -359,11 +359,11 @@ public:
 		lua_newtable(state);
 		{
 			lua_pushliteral(state, "width");
-			lua_pushnumber(state, game.get_screen_width());
+			lua_pushnumber(state, _game.get_screen_width());
 			lua_settable(state, -3);
 
 			lua_pushliteral(state, "height");
-			lua_pushnumber(state, game.get_screen_height());
+			lua_pushnumber(state, _game.get_screen_height());
 			lua_settable(state, -3);
 		}
 		return 1;
@@ -376,9 +376,9 @@ public:
 
 		std::stringstream ss;
 		ss << "Engine: sfml_change_map(" << map_name << ", " << dst_tile_x << ", " << dst_tile_y << ")";
-		game.log(ss.str());
+		_game.log(ss.str());
 
-		GameScreen *screen = dynamic_cast<GameScreen*>(game.get_screen());
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		screen->load_map(map_name);
 		screen->put_character_on_tile(*screen->get_player_character(), dst_tile_x, dst_tile_y);
 		screen->center_map_on_character(*screen->get_player_character());

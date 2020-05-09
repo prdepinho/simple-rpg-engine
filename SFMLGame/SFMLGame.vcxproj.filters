@@ -247,7 +247,7 @@
       <Filter>pugixml</Filter>
     </ClCompile>
     <ClCompile Include="Entity.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

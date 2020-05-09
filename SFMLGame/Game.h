@@ -82,8 +82,8 @@ public:
 };
 
 // Game is visible to all files.
-extern Game game;
+extern Game _game;
 
-#define Log(...) { char _log_buffer[1024]; std::sprintf(_log_buffer, __VA_ARGS__); game.log(std::string(_log_buffer)); }
+#define Log(...) { char _log_buffer[1024]; std::sprintf(_log_buffer, __VA_ARGS__); _game.log(std::string(_log_buffer)); }
 
 

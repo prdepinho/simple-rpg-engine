@@ -43,50 +43,51 @@
 0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="4" name="obstacle" width="8" height="8">
+ <layer id="4" name="obstacle" width="8" height="8" visible="0">
   <data encoding="csv">
 2,2,2,2,2,2,2,2,
-2,2,2,2,0,2,2,2,
+2,2,2,2,2,2,2,2,
 2,2,0,0,0,0,2,2,
-0,0,0,2,0,0,0,2,
-2,0,0,0,0,0,0,0,
+2,0,0,2,0,0,0,2,
+2,0,0,0,0,0,0,2,
 2,2,0,0,0,0,2,2,
-2,2,2,2,0,2,2,2,
-2,2,2,2,0,2,2,2
+2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2
 </data>
  </layer>
  <objectgroup id="5" name="objects">
   <object id="10" name="South door" x="65" y="97.25" width="12.75" height="28.25">
    <properties>
-    <property name="interact" value="Use door"/>
+    <property name="interact" value="south_door"/>
     <property name="type" value="door"/>
    </properties>
   </object>
-  <object id="11" name="West door" x="2" y="49.5" width="11" height="12">
+  <object id="11" name="West door" x="1.75" y="50.25" width="11" height="12">
    <properties>
-    <property name="interact" value="Use door"/>
+    <property name="interact" value="west_door"/>
     <property name="type" value="door"/>
    </properties>
   </object>
   <object id="12" name="North door" x="66.25" y="18.25" width="11.25" height="11.75">
    <properties>
-    <property name="interact" value="Use door"/>
+    <property name="interact" value="north_door"/>
     <property name="type" value="door"/>
    </properties>
   </object>
   <object id="13" name="East door" x="113.5" y="65.5" width="12.25" height="12">
    <properties>
-    <property name="interact" value="Use door"/>
+    <property name="interact" value="east_door"/>
     <property name="type" value="door"/>
    </properties>
   </object>
   <object id="14" name="Empty chest" x="98.25" y="33.5" width="12" height="12">
    <properties>
-    <property name="interact" value="The chest is empty."/>
+    <property name="interact" value="empty_chest"/>
    </properties>
   </object>
-  <object id="15" name="Step on trigger" x="20" y="65.25" width="88.25" height="13.75">
+  <object id="15" name="Step on trigger" x="18.25" y="67.5" width="90" height="11.5">
    <properties>
+    <property name="interact" value="floor"/>
     <property name="step" value="The room is tidy."/>
    </properties>
   </object>
