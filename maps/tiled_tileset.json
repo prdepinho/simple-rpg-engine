@@ -1,4 +1,12 @@
 { "columns":16,
+ "editorsettings":
+    {
+     "export":
+        {
+         "format":"",
+         "target":"."
+        }
+    },
  "image":"..\/assets\/tiled_tileset.png",
  "imageheight":256,
  "imagewidth":256,

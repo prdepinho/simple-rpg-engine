@@ -210,7 +210,6 @@ void TiledTilemapDAO::load_map(std::string filename, Tilemap &map) {
 	}
 
 	// objects
-#if true
 	for (auto &object : object_layer->getObjects()) {
 		int left = (int)std::floor(object.getAABB().left / 16);
 		int top = (int)std::floor(object.getAABB().top / 16);
@@ -228,7 +227,6 @@ void TiledTilemapDAO::load_map(std::string filename, Tilemap &map) {
 			}
 		}
 	}
-#endif
 
 
 	if (map.script != nullptr)

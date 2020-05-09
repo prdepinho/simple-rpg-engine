@@ -307,6 +307,15 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 					TileData tile = map.get_tile(tile_x, tile_y);
 					for (std::string &call : tile.calls) {
 						Log("Call: %s", call.c_str());
+						
+						{
+							unsigned texX = 16;
+							unsigned texY = 9 * 16;
+							unsigned layer = 1;
+							map.set_texture_coords(0, tile_x, tile_y, layer, (float)texX, (float)texY);
+							map.set_texture_coords(1, tile_x, tile_y, layer, (float)texX, (float)texY);
+						}
+
 					}
 				}
 
