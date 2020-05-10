@@ -307,7 +307,7 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 					int tile_y = tile_coord.y;
 
 					TileData tile = map.get_tile(tile_x, tile_y);
-					for (std::string &call : tile.calls) {
+					for (std::string &call : tile.interact_calls) {
 						Log("Call: %s", call.c_str());
 						
 						{
@@ -468,6 +468,19 @@ void GameScreen::move_character(Character &character, Direction direction) {
 			}
 		});
 		effect->set_on_end([&]() {
+
+			sf::Vector2i position = character_position(*player_character);
+			TileData tile = map.get_tile(position.x, position.y);
+			switch (tile.type) {
+			case TileType::DOOR:
+				map.change_floor_texture(position.x, position.y, 1, tile.open_coords.x, tile.open_coords.y);
+				tile.open = true;
+				break;
+			}
+			for (std::string &call : tile.step_calls) {
+				map.get_script()->call(call, position.x, position.y);
+			}
+
 			player_busy = false;
 		});
 		effects.push_back(effect);
@@ -504,7 +517,13 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 		if (map.in_tile_bounds(tile_x, tile_y)) {
 			try {
 				TileData tile = map.get_tile(tile_x, tile_y);
-				for (std::string &call : tile.calls) {
+				switch (tile.type) {
+				case TileType::CHEST:
+					map.change_floor_texture(tile_x, tile_y, 2, tile.open_coords.x, tile.open_coords.y);
+					tile.open = true;
+					break;
+				}
+				for (std::string &call : tile.interact_calls) {
 					map.get_script()->call(call, tile_x, tile_y);
 				}
 			}

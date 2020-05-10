@@ -384,6 +384,16 @@ public:
 		screen->center_map_on_character(*screen->get_player_character());
 		return 1;
 	}
+
+	static int sfml_set_obstacle(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		bool obstacle = (bool) lua_toboolean(state, -3);
+		int x = (int) lua_tointeger(state, -2);
+		int y = (int) lua_tointeger(state, -1);
+		screen->get_map().get_tile(x, y).obstacle = obstacle;
+		Log("Set obstacle (%d, %d): %s", x, y, (obstacle ? "true" : "false"));
+		return 1;
+	}
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -401,4 +411,5 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_get_schedule", LuaFunction::sfml_get_schedule);
 	lua_register(lua.get_state(), "sfml_get_window_dimensions", LuaFunction::sfml_get_window_dimensions);
 	lua_register(lua.get_state(), "sfml_change_map", LuaFunction::sfml_change_map);
+	lua_register(lua.get_state(), "sfml_set_obstacle", LuaFunction::sfml_set_obstacle);
 }

@@ -3,6 +3,9 @@ characters = {
   player={2, 2}
 }
 
+has_key = false
+
+
 function enter()
   print('room.map: enter')
 end
@@ -22,11 +25,22 @@ end
 
 
 function empty_chest(x, y)
-  print(string.format("The chest is empty. (%d, %d)", x, y))
+  print(string.format("Got key. (%d, %d)", x, y))
+  has_key = true
+end
+
+function unlock_north_door(x, y)
+  if not has_key then
+    print('North door is locked')
+  else
+    print('North door unlocked')
+    sfml_set_obstacle(false, x, y)
+  end
 end
 
 function north_door(x, y)
-  print(string.format("North door is locked: (%d, %d)", x, y))
+  print("North door opens")
+  sfml_change_map("room2", 8, 1)
 end
 
 function south_door(x, y)
@@ -41,7 +55,7 @@ function east_door(x, y)
   print(string.format("East door is locked: (%d, %d)", x, y))
 end
 
-function floor(x, y)
+function step_on_floor(x, y)
   print(string.format("The floor creacks: (%d, %d)", x, y))
 end
 

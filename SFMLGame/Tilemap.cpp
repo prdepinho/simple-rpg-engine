@@ -142,3 +142,16 @@ void TilemapLayer::clear_tile_color(int tile_x, int tile_y) {
 	}
 }
 
+void Tilemap::change_floor_texture(int tile_x, int tile_y, int layer, int texture_tile_x, int texture_tile_y) {
+	unsigned texX = texture_tile_x * 16;
+	unsigned texY = texture_tile_y * 16;
+	floor_layer.set_texture_coords(0, tile_x, tile_y, layer, (float)texX, (float)texY);
+	floor_layer.set_texture_coords(1, tile_x, tile_y, layer, (float)texX, (float)texY);
+}
+
+void Tilemap::change_ceiling_texture(int tile_x, int tile_y, int layer, int texture_tile_x, int texture_tile_y) {
+	unsigned texX = texture_tile_x * 16;
+	unsigned texY = texture_tile_y * 16;
+	ceiling_layer.set_texture_coords(0, tile_x, tile_y, layer, (float)texX, (float)texY);
+	ceiling_layer.set_texture_coords(1, tile_x, tile_y, layer, (float)texX, (float)texY);
+}

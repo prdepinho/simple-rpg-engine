@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="1">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="7">
  <tileset firstgid="1" source="tiled_tileset.tsx"/>
  <layer id="1" name="floor" width="16" height="16">
   <data encoding="csv">
@@ -24,7 +24,7 @@
  <layer id="2" name="overfloor" width="16" height="16">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,195,0,0,0,0,0,194,0,0,0,0,
+0,0,0,0,0,195,0,0,145,0,0,194,0,0,0,0,
 0,0,0,0,0,164,0,0,0,0,0,0,0,0,0,0,
 0,195,0,194,0,195,194,0,145,194,0,196,0,195,194,0,
 0,164,0,0,0,164,0,0,164,0,0,180,0,164,0,0,
@@ -101,4 +101,62 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <layer id="6" name="obstacle" width="16" height="16" visible="0">
+  <data encoding="csv">
+0,0,0,0,2,2,2,2,2,2,2,2,2,0,0,0,
+0,0,0,0,2,2,2,2,0,2,2,2,2,0,0,0,
+2,2,2,2,2,0,0,0,0,0,0,0,2,2,2,2,
+2,2,2,2,2,2,2,2,0,2,2,2,2,2,2,2,
+2,0,0,0,2,2,0,2,0,0,2,2,2,0,0,2,
+2,2,2,2,2,0,0,2,0,0,0,0,2,0,0,2,
+2,0,0,0,2,2,0,2,0,0,2,2,2,0,0,2,
+2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+2,0,0,0,2,0,0,0,0,0,0,0,2,2,0,2,
+2,0,0,0,2,2,2,2,0,2,2,2,2,0,2,2,
+2,0,0,0,2,0,0,0,0,0,0,0,2,0,0,2,
+2,2,2,2,2,2,2,2,0,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,0,2,2,2,2,2,2,2,
+0,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,
+0,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="7" name="objects">
+  <object id="1" x="131.667" y="51" width="8.66667" height="9">
+   <properties>
+    <property name="open_x" type="int" value="1"/>
+    <property name="open_y" type="int" value="9"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="3" x="67.3333" y="116.5" width="8.66667" height="9">
+   <properties>
+    <property name="open_x" type="int" value="1"/>
+    <property name="open_y" type="int" value="9"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="4" x="195.333" y="116.833" width="8.66667" height="9">
+   <properties>
+    <property name="open_x" type="int" value="1"/>
+    <property name="open_y" type="int" value="9"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="5" x="132" y="195.833" width="8.66667" height="9">
+   <properties>
+    <property name="open_x" type="int" value="1"/>
+    <property name="open_y" type="int" value="9"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="6" x="132.333" y="19.5" width="8.66667" height="9">
+   <properties>
+    <property name="open_x" type="int" value="1"/>
+    <property name="open_y" type="int" value="9"/>
+    <property name="step" value="north_door"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

@@ -9,7 +9,7 @@
    <property name="script" value="floor.lua"/>
   </properties>
   <data encoding="csv">
-69,0,0,0,0,0,0,69,
+69,68,68,68,68,68,68,69,
 69,70,70,70,70,70,70,69,
 69,68,68,68,68,68,68,69,
 69,68,68,68,68,68,68,69,
@@ -35,10 +35,10 @@
   <data encoding="csv">
 0,0,0,0,0,0,0,0,
 0,130,0,0,0,0,130,0,
-0,115,0,117,0,0,101,0,
+0,115,0,117,0,0,100,0,
 0,0,117,116,117,0,0,0,
 0,0,0,117,0,0,0,0,
-0,100,0,0,0,0,100,0,
+0,115,0,0,0,0,116,0,
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0
 </data>
@@ -70,7 +70,7 @@
  <layer id="4" name="obstacle" width="8" height="8" visible="0">
   <data encoding="csv">
 2,2,2,2,2,2,2,2,
-2,2,2,2,0,2,2,2,
+2,2,2,2,2,2,2,2,
 2,2,0,0,0,0,2,2,
 0,0,0,2,0,0,0,2,
 2,0,0,0,0,0,0,0,
@@ -79,39 +79,50 @@
 2,2,2,2,0,2,2,2
 </data>
  </layer>
- <objectgroup id="5" name="objects" visible="0">
+ <objectgroup id="5" name="objects">
   <object id="10" name="South door" x="65" y="113.917" width="12.75" height="11.5833">
    <properties>
-    <property name="interact" value="south_door"/>
+    <property name="open_x" type="int" value="1"/>
+    <property name="open_y" type="int" value="9"/>
+    <property name="step" value="south_door"/>
     <property name="type" value="door"/>
    </properties>
   </object>
   <object id="11" name="West door" x="1.75" y="50.25" width="11" height="12">
    <properties>
-    <property name="interact" value="west_door"/>
+    <property name="open_x" type="int" value="1"/>
+    <property name="open_y" type="int" value="9"/>
+    <property name="step" value="west_door"/>
     <property name="type" value="door"/>
    </properties>
   </object>
   <object id="12" name="North door" x="66.25" y="18.25" width="11.25" height="11.75">
    <properties>
-    <property name="interact" value="north_door"/>
+    <property name="interact" value="unlock_north_door"/>
+    <property name="open_x" type="int" value="1"/>
+    <property name="open_y" type="int" value="9"/>
+    <property name="step" value="north_door"/>
     <property name="type" value="door"/>
    </properties>
   </object>
   <object id="13" name="East door" x="113.5" y="65.5" width="12.25" height="12">
    <properties>
-    <property name="interact" value="east_door"/>
+    <property name="open_x" type="int" value="1"/>
+    <property name="open_y" type="int" value="9"/>
+    <property name="step" value="east_door"/>
     <property name="type" value="door"/>
    </properties>
   </object>
   <object id="14" name="Empty chest" x="98.25" y="33.5" width="12" height="12">
    <properties>
     <property name="interact" value="empty_chest"/>
+    <property name="open_x" type="int" value="4"/>
+    <property name="open_y" type="int" value="6"/>
+    <property name="type" value="chest"/>
    </properties>
   </object>
   <object id="15" name="Step on trigger" x="18.25" y="67.5" width="90" height="11.5">
    <properties>
-    <property name="interact" value="floor"/>
     <property name="step" value="step_on_floor"/>
    </properties>
   </object>

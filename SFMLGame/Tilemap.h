@@ -7,10 +7,19 @@
 
 class TilemapDAO;
 
+enum class TileType {
+	NONE,
+	DOOR,
+	CHEST
+};
 
 struct TileData {
 	bool obstacle = false;
-	std::vector<std::string> calls;
+	std::vector<std::string> interact_calls;
+	std::vector<std::string> step_calls;
+	TileType type = TileType::NONE;
+	sf::Vector2i open_coords = { 0, 0 };
+	bool open = false;
 };
 
 class TilemapLayer : public AnimatedEntity {
@@ -70,6 +79,8 @@ public:
 	int get_x() const { return floor_layer.get_x(); }
 	int get_y() const { return floor_layer.get_y(); }
 
+	void change_floor_texture(int tile_x, int tile_y, int layer, int texture_tile_x, int texture_tile_y);
+	void change_ceiling_texture(int tile_x, int tile_y, int layer, int texture_tile_x, int texture_tile_y);
 
 	Lua* get_script() { return script; }
 
