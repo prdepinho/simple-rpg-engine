@@ -497,17 +497,20 @@ void GameScreen::wait_character(Character &character) {
 void GameScreen::interact_character(Character &character, int tile_x, int tile_y) {
 
 	auto pos = character_position(character);
+
 	if (std::abs(pos.x - tile_x) <= 1 && std::abs(pos.y - tile_y) <= 1) {
 		// map.get_script()->on_interact(character, tile_x, tile_y);
 
-		try {
-			TileData tile = map.get_tile(tile_x, tile_y);
-			for (std::string &call : tile.calls) {
-				map.get_script()->call(call, tile_x, tile_y);
+		if (map.in_tile_bounds(tile_x, tile_y)) {
+			try {
+				TileData tile = map.get_tile(tile_x, tile_y);
+				for (std::string &call : tile.calls) {
+					map.get_script()->call(call, tile_x, tile_y);
+				}
 			}
-		}
-		catch (LuaException &e) {
-			Log("Lua Error: %s", e.what());
+			catch (LuaException &e) {
+				Log("Lua Error: %s", e.what());
+			}
 		}
 
 		if (&character == player_character) {
@@ -523,6 +526,7 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 			effects.push_back(effect);
 		}
 	}
+
 }
 
 inline sf::Vector2i GameScreen::character_position(Character &character) {
