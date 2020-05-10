@@ -5,7 +5,7 @@ void CheckButton::create() {
 
 	int w = get_width();
 	int h = get_height();
-	set_texture(Textures::get(json.get_string("check_button/file")));
+	set_texture(Resources::get_texture(json.get_string("check_button/file")));
 
 	float texX = json.get_vector("check_button/checked")[0].get_float();
 	float texY = json.get_vector("check_button/checked")[1].get_float();

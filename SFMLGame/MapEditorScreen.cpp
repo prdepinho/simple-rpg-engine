@@ -8,7 +8,7 @@
 
 
 void TilePalette::create() {
-	set_texture(Textures::get("tileset"));
+	set_texture(Resources::get_texture("tileset"));
 	vertices.setPrimitiveType(sf::Quads);
 	vertices.resize(4 * 1);
 	set_quad(&vertices[0], 0.f, 0.f,
@@ -227,7 +227,7 @@ void MapEditorScreen::create() {
 	{
 		int tile_width = json.get_int("palette/tile_width", 3);
 		int tile_height = json.get_int("palette/tile_height", 10);
-		palette = TilePalette(tile_width, tile_height, Textures::get("tileset"));
+		palette = TilePalette(tile_width, tile_height, Resources::get_texture("tileset"));
 		palette.set_position(0, exit_button.get_height());
 		palette.set_show_outline(true);
 		add_component(palette);
@@ -273,7 +273,7 @@ void MapEditorScreen::create() {
 		ss << "Coordinates: " << hover_x << ", " << hover_y;
 
 		coordinates = Font();
-		coordinates.set_texture(Textures::get("gui"));
+		coordinates.set_texture(Resources::get_texture("gui"));
 		coordinates_x = x;
 		coordinates_y = y;
 		coordinates.draw_line(coordinates_x, coordinates_y, ss.str(), sf::Color::White);
@@ -471,7 +471,7 @@ void MapEditorScreen::handle_event(sf::Event &event, float elapsed_time) {
 void MapEditorScreen::create_map(int w, int h) {
 	map = Tilemap();
 	std::vector<int> tiles(w * h, 0);
-	map.load_floor_layer(Textures::get("tileset"), sf::Vector2u(16, 16), tiles.data(), w, h);
+	map.load_floor_layer(Resources::get_texture("tileset"), sf::Vector2u(16, 16), tiles.data(), w, h);
 	int x = game->get_resolution_width() / 2 - map.get_width() / 2;
 	int y = game->get_resolution_height() / 2 -  map.get_height() / 2;
 	map.set_position(x, y);

@@ -10,7 +10,7 @@ void TestScreen::create()
 	for (int i = 0; i < mapSide * mapSide; ++i) {
 		tiles[i] = i % 3;
 	}
-	tilemap.load_floor_layer(Textures::get("tileset"), sf::Vector2u(16, 16), tiles, mapSide, mapSide);
+	tilemap.load_floor_layer(Resources::get_texture("tileset"), sf::Vector2u(16, 16), tiles, mapSide, mapSide);
 	tilemap.set_position(100, 100);
 
 	std::string character_type = "girl";
@@ -31,7 +31,7 @@ void TestScreen::create()
 		characters[i].set_position(tilemap.get_x() + (int) x, tilemap.get_y() + (int) y);
 	}
 
-	log_font.set_texture(Textures::get("gui"));
+	log_font.set_texture(Resources::get_texture("gui"));
 	log_font.draw_line(50, 50, "Hello, world!", sf::Color::Blue);
 	add_component(log_font);
 

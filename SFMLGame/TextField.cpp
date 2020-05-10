@@ -2,10 +2,10 @@
 
 void TextField::create() {
 	Json json(Config::COMPONENTS);
-	font.set_texture(Textures::get("gui"));
+	font.set_texture(Resources::get_texture("gui"));
 	add_component(font);
 
-	set_texture(Textures::get(json.get_string("text_area/file")));
+	set_texture(Resources::get_texture(json.get_string("text_area/file")));
 
 	int w = get_width();
 	int h = get_height();

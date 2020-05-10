@@ -9,10 +9,10 @@ void Button::create() {
 
 	int w = get_width();
 	int h = get_height();
-	font.set_texture(Textures::get("gui"));
+	font.set_texture(Resources::get_texture("gui"));
 	add_component(font);
 
-	set_texture(Textures::get(json.get_string("button/file")));
+	set_texture(Resources::get_texture(json.get_string("button/file")));
 
 	float texX = json.get_vector("button/pressed")[0].get_float();
 	float texY = json.get_vector("button/pressed")[1].get_float();

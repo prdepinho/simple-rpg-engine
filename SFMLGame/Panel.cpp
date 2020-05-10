@@ -7,7 +7,7 @@
 
 void Panel::create() {
 	Json json(Config::COMPONENTS);
-	set_texture(Textures::get(json.get_string("panel/file")));
+	set_texture(Resources::get_texture(json.get_string("panel/file")));
 	int w = get_width();
 	int h = get_height();
 	float texX = json.get_vector("panel/coords")[0].get_float();
@@ -29,7 +29,7 @@ void Panel::create() {
 
 void MessagePanel::create() {
 
-	font.set_texture(Textures::get("gui"));
+	font.set_texture(Resources::get_texture("gui"));
 
 	int message_length = font.line_width(message);
 	if (message_length > get_width()) {
@@ -73,7 +73,7 @@ void MessagePanel::show( std::string msg, Screen &screen) {
 
 
 void ChoicePanel::create() {
-	font.set_texture(Textures::get("gui"));
+	font.set_texture(Resources::get_texture("gui"));
 
 	int message_length = font.line_width(message);
 	if (message_length > get_width()) {

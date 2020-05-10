@@ -84,8 +84,11 @@ void Game::change_screen() {
 }
 
 void Game::load_textures() {
-	Json json(Config::TEXTURES);
-	Textures::load(json);
+	Json textures_json(Config::TEXTURES);
+	Resources::load_textures(textures_json);
+
+	Json sounds_json(Config::SOUNDS);
+	Resources::load_sounds(sounds_json);
 }
 
 void Game::configure_game()

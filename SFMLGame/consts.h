@@ -32,6 +32,8 @@ public:
 class Path {
 public:
 	static const std::string ASSETS;
+	static const std::string SOUNDS;
+	static const std::string MUSIC;
 	static const std::string CONFIG;
 	static const std::string SCRIPTS;
 	static const std::string SCREENS;
@@ -46,6 +48,8 @@ public:
 	static const std::string SCREENS;
 	static const std::string COMPONENTS;
 	static const std::string CHARACTERS;
+	static const std::string SOUNDS;
+	static const std::string MUSIC;
 };
 
 class Script {

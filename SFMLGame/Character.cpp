@@ -10,7 +10,7 @@ void Character::create(std::string type) {
 	int sprite_width = json.get_int("animation_types/" + animation_type + "/size/width");
 	std::map<std::string, Json> animations_map = json.get_map("animation_types/" + animation_type + "/animations");
 
-	set_texture(Textures::get(animation_file));
+	set_texture(Resources::get_texture(animation_file));
 
 	for (auto &pair : animations_map) {
 		std::string name = pair.first;

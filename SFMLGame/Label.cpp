@@ -15,7 +15,7 @@ Label::Label(std::string text, int x, int y, sf::Color text_color)
 }
 
 void Label::create() {
-	font.set_texture(Textures::get("gui"));
+	font.set_texture(Resources::get_texture("gui"));
 	add_component(font);
 }
 

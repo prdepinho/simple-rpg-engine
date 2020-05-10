@@ -23,6 +23,8 @@
 	sf::Color Color::RASPBERRY = sf::Color(255, 0, 125);
 
 	const std::string Path::ASSETS = "../assets/";
+	const std::string Path::SOUNDS = Path::ASSETS + "sounds/";
+	const std::string Path::MUSIC = Path::ASSETS + "music/";
 	const std::string Path::CONFIG = "../config/";
 	const std::string Path::SCRIPTS = "../scripts/";
 	const std::string Path::SCREENS = Path::CONFIG + "screens/";
@@ -33,6 +35,8 @@
 	const std::string Config::SCREENS = Path::CONFIG + "screens.json";
 	const std::string Config::COMPONENTS = Path::CONFIG + "components.json";
 	const std::string Config::CHARACTERS = Path::CONFIG + "characters.json";
+	const std::string Config::SOUNDS = Path::CONFIG + "sounds.json";
+	const std::string Config::MUSIC = Path::CONFIG + "music.json";
 
 	const std::string Script::LUA_MAIN = Path::SCRIPTS + "main.lua";
 

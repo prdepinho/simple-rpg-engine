@@ -53,7 +53,7 @@ void TilemapDAO::load_map(std::string filename, Tilemap & map) {
 
 	std::vector<int> tiles(width * height, 0);
 	map = Tilemap();
-	map.load_floor_layer(Textures::get("tileset"), sf::Vector2u(16, 16), tiles.data(), width, height);
+	map.load_floor_layer(Resources::get_texture("tileset"), sf::Vector2u(16, 16), tiles.data(), width, height);
 
 	for (int x = 0; x < width; x++) {
 		for (int y = 0; y < height; y++) {
@@ -180,8 +180,8 @@ void TiledTilemapDAO::load_map(std::string filename, Tilemap &map) {
 
 	std::vector<int> tiles(width * height * floor_layers, 0);
 	map = Tilemap();
-	map.load_floor_layer(Textures::get("tileset"), sf::Vector2u(16, 16), tiles.data(), width, height, floor_layers);
-	map.load_ceiling_layer(Textures::get("tileset"), sf::Vector2u(16, 16), tiles.data(), width, height, ceiling_layers);
+	map.load_floor_layer(Resources::get_texture("tileset"), sf::Vector2u(16, 16), tiles.data(), width, height, floor_layers);
+	map.load_ceiling_layer(Resources::get_texture("tileset"), sf::Vector2u(16, 16), tiles.data(), width, height, ceiling_layers);
 	
 	auto &floor_map = map.get_floor_layer();
 	auto &ceiling_map = map.get_ceiling_layer();

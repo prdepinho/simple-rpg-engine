@@ -9,13 +9,62 @@
 #include <tmxlite/TileLayer.hpp>
 #include <tmxlite/ObjectGroup.hpp>
 
+#include <SFML/Audio.hpp>
+
 Game _game;  // game instantiation.
 
 int main() 
 {
 	try {
 		_game.init();
+#if true
 		_game.start();
+#else
+		Resources::get_sound("beep.wav")->play();
+		std::getchar();
+#if false
+		{
+			// std::string sound_file = "C:/Users/1513 MX5-7/Downloads/sound.ogg";
+			std::string sound_file = "../assets/sounds/beep.wav";
+			std::string music_file = "C:/Users/1513 MX5-7/Downloads/music/02 - BWV 1007 - Prelude.ogg";
+
+			sf::SoundBuffer sound_buffer;
+			if (sound_buffer.loadFromFile(sound_file)) {
+				Log("%s: loaded", sound_file.c_str());
+			}
+			sf::Sound sound(sound_buffer);
+
+			
+			sf::Music music;
+			if (music.openFromFile(music_file)) {
+				Log("%s: loaded", music_file.c_str());
+				music.setLoop(true);
+				music.play();
+			}
+
+			bool loop = true;
+			while (loop) {
+				char c = std::getchar();
+				switch (c) {
+				case 's':
+					music.stop();
+					break;
+				case 'q':
+					loop = false;
+					break;
+				case 'p':
+					{
+						sound.play();
+					}
+					break;
+				}
+			}
+			music.stop();
+
+			std::getchar();
+		}
+#endif
+#endif
 
 #if false
 		Lua lua("../config.lua");
