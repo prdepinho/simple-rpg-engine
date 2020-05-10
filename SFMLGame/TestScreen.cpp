@@ -10,7 +10,7 @@ void TestScreen::create()
 	for (int i = 0; i < mapSide * mapSide; ++i) {
 		tiles[i] = i % 3;
 	}
-	tilemap.load(Textures::get("tileset"), sf::Vector2u(16, 16), tiles, mapSide, mapSide);
+	tilemap.load_floor_layer(Textures::get("tileset"), sf::Vector2u(16, 16), tiles, mapSide, mapSide);
 	tilemap.set_position(100, 100);
 
 	std::string character_type = "girl";
@@ -92,7 +92,7 @@ void TestScreen::draw()
 {
 	// Draw game
 	window->setView(game_view);
-	window->draw(tilemap);
+	window->draw(tilemap.get_floor_layer());
 	window->draw(character);
 	for (Character &character : characters)
 		window->draw(character);

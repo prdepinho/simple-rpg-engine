@@ -73,10 +73,11 @@ void GameScreen::destroy() {
 
 void GameScreen::draw() {
 	window->setView(game_view);
-	window->draw(map);
+	window->draw(map.get_floor_layer());
 	for (Character &character : characters) {
 		window->draw(character);
 	}
+	window->draw(map.get_ceiling_layer());
 	window->setView(gui_view);
 	Screen::draw();
 
@@ -87,7 +88,8 @@ bool GameScreen::update(float elapsed_time) {
 
 	// entity handling
 	{
-		map.update(elapsed_time);
+		map.get_floor_layer().update(elapsed_time);
+		map.get_ceiling_layer().update(elapsed_time);
 		for (Character &character : characters) {
 			character.update(elapsed_time);
 		}
@@ -312,8 +314,8 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 							unsigned texX = 16;
 							unsigned texY = 9 * 16;
 							unsigned layer = 1;
-							map.set_texture_coords(0, tile_x, tile_y, layer, (float)texX, (float)texY);
-							map.set_texture_coords(1, tile_x, tile_y, layer, (float)texX, (float)texY);
+							map.get_floor_layer().set_texture_coords(0, tile_x, tile_y, layer, (float)texX, (float)texY);
+							map.get_floor_layer().set_texture_coords(1, tile_x, tile_y, layer, (float)texX, (float)texY);
 						}
 
 					}

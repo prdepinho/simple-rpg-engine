@@ -292,14 +292,14 @@ void MapEditorScreen::destroy() {
 
 void MapEditorScreen::draw() {
 	window->setView(game_view);
-	window->draw(map);
+	window->draw(map.get_floor_layer());
 	window->setView(gui_view);
 	Screen::draw();
 }
 
 bool MapEditorScreen::update(float elapsed_time) {
 	Screen::update(elapsed_time);
-	map.update(elapsed_time);
+	map.get_floor_layer().update(elapsed_time);
 	return true;
 }
 
@@ -327,8 +327,8 @@ void MapEditorScreen::poll_events(float elapsed_time) {
 				int x = (int) mouse_position.x;
 				int y = (int) mouse_position.y;
 
-				if (map.in_bounds(x, y)) {
-					auto tile_coord = map.get_tile_coord(x, y);
+				if (map.get_floor_layer().in_bounds(x, y)) {
+					auto tile_coord = map.get_floor_layer().get_tile_coord(x, y);
 					int tile_x = tile_coord.x;
 					int tile_y = tile_coord.y;
 
@@ -340,14 +340,14 @@ void MapEditorScreen::poll_events(float elapsed_time) {
 						float tex_y = (float) selection_coords.y;
 
 						if (map.in_tile_bounds(tile_x, tile_y)) {
-							map.set_texture_coords(i, tile_x, tile_y, tex_x, tex_y);
+							map.get_floor_layer().set_texture_coords(i, tile_x, tile_y, tex_x, tex_y);
 							map.get_tile(tile_x, tile_y).obstacle = obstacle;
 							if(highlight_obstacles)
 								if (obstacle) {
-									map.paint_tile(tile_x, tile_y, sf::Color::Red);
+									map.get_floor_layer().paint_tile(tile_x, tile_y, sf::Color::Red);
 								}
 								else {
-									map.clear_tile_color(tile_x, tile_y);
+									map.get_floor_layer().clear_tile_color(tile_x, tile_y);
 								}
 						}
 					}
@@ -471,7 +471,7 @@ void MapEditorScreen::handle_event(sf::Event &event, float elapsed_time) {
 void MapEditorScreen::create_map(int w, int h) {
 	map = Tilemap();
 	std::vector<int> tiles(w * h, 0);
-	map.load(Textures::get("tileset"), sf::Vector2u(16, 16), tiles.data(), w, h);
+	map.load_floor_layer(Textures::get("tileset"), sf::Vector2u(16, 16), tiles.data(), w, h);
 	int x = game->get_resolution_width() / 2 - map.get_width() / 2;
 	int y = game->get_resolution_height() / 2 -  map.get_height() / 2;
 	map.set_position(x, y);
@@ -494,10 +494,10 @@ void MapEditorScreen::set_highlight_obstacles(bool highlight) {
 		for (unsigned int tile_y = 0; tile_y < map.get_tile_height(); ++tile_y) {
 			if (highlight) {
 				if (map.get_tile(tile_x, tile_y).obstacle)
-					map.paint_tile(tile_x, tile_y, sf::Color::Red);
+					map.get_floor_layer().paint_tile(tile_x, tile_y, sf::Color::Red);
 			}
 			else {
-				map.clear_tile_color(tile_x, tile_y);
+				map.get_floor_layer().clear_tile_color(tile_x, tile_y);
 			}
 		}
 	}

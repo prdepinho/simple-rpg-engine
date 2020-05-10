@@ -5,6 +5,9 @@
 #include "consts.h"
 #include "Resources.h"
 #include "Tilemap.h"
+#include <tmxlite/Map.hpp>
+#include <tmxlite/TileLayer.hpp>
+#include <tmxlite/ObjectGroup.hpp>
 
 class TilemapDAOException : public std::exception {
 public:
