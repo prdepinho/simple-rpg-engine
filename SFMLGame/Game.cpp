@@ -17,7 +17,8 @@ void Game::init()
 {
 	std::srand((unsigned int)std::time(NULL));
 	lua.load();
-	load_textures();
+	Resources::load_textures();
+	Resources::load_sounds();
 }
 
 void Game::start() {
@@ -81,14 +82,6 @@ void Game::change_screen() {
 	screen->set_game(this);
 	screen->create();
 	to_change_screen = nullptr;
-}
-
-void Game::load_textures() {
-	Json textures_json(Config::TEXTURES);
-	Resources::load_textures(textures_json);
-
-	Json sounds_json(Config::SOUNDS);
-	Resources::load_sounds(sounds_json);
 }
 
 void Game::configure_game()
@@ -397,6 +390,13 @@ public:
 		Log("Set obstacle (%d, %d): %s", x, y, (obstacle ? "true" : "false"));
 		return 1;
 	}
+
+	static int sfml_play_sound(lua_State *state) {
+		std::string filename = lua_tostring(state, -1);
+		Resources::get_sound(filename)->play();
+		Log("Playing sound: %s", filename.c_str());
+		return 1;
+	}
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -415,4 +415,5 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_get_window_dimensions", LuaFunction::sfml_get_window_dimensions);
 	lua_register(lua.get_state(), "sfml_change_map", LuaFunction::sfml_change_map);
 	lua_register(lua.get_state(), "sfml_set_obstacle", LuaFunction::sfml_set_obstacle);
+	lua_register(lua.get_state(), "sfml_play_sound", LuaFunction::sfml_play_sound);
 }

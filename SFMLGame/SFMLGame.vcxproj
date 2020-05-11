@@ -179,6 +179,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapEditorScreen.cpp" />
     <ClCompile Include="Panel.cpp" />
+    <ClCompile Include="Resources.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="ScreenMainMenu.cpp" />
     <ClCompile Include="GameScreen.cpp" />

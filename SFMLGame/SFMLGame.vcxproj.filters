@@ -249,6 +249,9 @@
     <ClCompile Include="Entity.cpp">
       <Filter>base</Filter>
     </ClCompile>
+    <ClCompile Include="Resources.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tilemap.h">

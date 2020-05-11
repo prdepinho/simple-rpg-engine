@@ -40,7 +40,6 @@ public:
 
 private:
 	void change_screen();
-	void load_textures();
 	void configure_game();
 	void loop();
 

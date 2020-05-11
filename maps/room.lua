@@ -35,6 +35,7 @@ function unlock_north_door(x, y)
   else
     print('North door unlocked')
     sfml_set_obstacle(false, x, y)
+    sfml_play_sound("open_door.wav")
   end
 end
 
