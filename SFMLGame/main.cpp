@@ -21,29 +21,6 @@ int main()
 		_game.start();
 #else
 
-		// std::string beep_file = "../assets/sounds/beep.wav";
-		// std::string door_file = "../assets/sounds/open_door.wav";
-
-		// sf::SoundBuffer beep_buffer;
-		// sf::SoundBuffer door_buffer;
-
-		// beep_buffer.loadFromFile(beep_file);
-		// door_buffer.loadFromFile(door_file);
-
-		// sf::Sound beep_sound(beep_buffer);
-		// sf::Sound door_sound(door_buffer);
-
-		// beep_sound.play();
-		// std::getchar();
-
-		// door_sound.play();
-		// std::getchar();
-
-		Resources::get_sound("beep.wav")->play();
-		std::getchar();
-
-		Resources::get_sound("open_door.wav")->play();
-		std::getchar();
 #if false
 		{
 			// std::string sound_file = "C:/Users/1513 MX5-7/Downloads/sound.ogg";

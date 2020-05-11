@@ -35,10 +35,5 @@ void Resources::load_sounds() {
 
 		sf::Sound *sound = new sf::Sound(*buffer);
 		get().sound_map[name] = sound;
-
-		// get().sound_buffers.push_back(sf::SoundBuffer());
-		// get().sound_buffers.back().loadFromFile(Path::SOUNDS + name);
-		// get().sound_map[name] = sf::Sound(get().sound_buffers.back());
-		Log("Loaded sound: %s", name.c_str());
 	}
 }

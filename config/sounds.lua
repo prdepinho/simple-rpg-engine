@@ -1,4 +1,8 @@
 sounds = {
-  "open_door.wav",
+  "tcsh.wav",
   "beep.wav",
+  "bleep.wav",
+  "boop.wav",
+  "vwuuu.wav",
+  "crrreee.wav",
 }

@@ -84,12 +84,31 @@ bool ScreenMainMenu::update(float elapsed_time)
 
 void ScreenMainMenu::handle_event(sf::Event &event, float elapsed_time)
 {
+	static int button_index = 0;
+
 	Screen::handle_event(event, elapsed_time);
 	switch (event.type) {
 	case sf::Event::Closed:
 		window->close();
 		break;
 	case sf::Event::KeyPressed:
+		switch (event.key.code) {
+		case sf::Keyboard::Up:
+			if (button_index > 0)
+				button_index--;
+			select(buttons[button_index]);
+			Resources::get_sound("vwuuu.wav")->play();
+			break;
+		case sf::Keyboard::Down:
+			if (button_index < buttons.size() -1)
+				button_index++;
+			select(buttons[button_index]);
+			Resources::get_sound("vwuuu.wav")->play();
+			break;
+		case sf::Keyboard::Enter:
+			Resources::get_sound("crrreee.wav")->play();
+			break;
+		}
 		break;
 	case sf::Event::KeyReleased:
 		switch (event.key.code) {
