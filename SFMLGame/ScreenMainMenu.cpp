@@ -62,12 +62,15 @@ void ScreenMainMenu::create()
 	}
 	select(*container.get_component(0));
 
+	Resources::get_music("theme.wav")->play();
+
 	gui_view.setSize(sf::Vector2f((float) game->get_resolution_width(), (float) game->get_resolution_height()));
 	gui_view.setCenter((float) game->get_resolution_width() / 2.f, (float) game->get_resolution_height() / 2.f);
 }
 
 void ScreenMainMenu::destroy()
 {
+	Resources::get_music("theme.wav")->stop();
 }
 
 void ScreenMainMenu::draw()

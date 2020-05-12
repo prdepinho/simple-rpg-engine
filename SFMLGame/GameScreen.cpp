@@ -519,9 +519,6 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 				TileData tile = map.get_tile(tile_x, tile_y);
 				switch (tile.type) {
 				case TileType::CHEST:
-					auto *sound = Resources::get_sound("bleep.wav");
-					sound->play();
-
 					map.change_floor_texture(tile_x, tile_y, 2, tile.open_coords.x, tile.open_coords.y);
 					tile.open = true;
 					break;

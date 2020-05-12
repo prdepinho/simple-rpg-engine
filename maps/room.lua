@@ -25,8 +25,13 @@ end
 
 
 function empty_chest(x, y)
-  print(string.format("Got key. (%d, %d)", x, y))
-  has_key = true
+  if not has_key then
+    print(string.format("Got key. (%d, %d)", x, y))
+    sfml_play_sound("plim.wav")
+    has_key = true
+  else
+    sfml_play_sound("boop.wav")
+  end
 end
 
 function unlock_north_door(x, y)

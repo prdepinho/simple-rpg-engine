@@ -19,8 +19,13 @@ public:
 		return get().sound_map[filename];
 	}
 
+	static sf::Music* get_music(std::string filename) {
+		return get().music_map[filename];
+	}
+
 	static void load_textures();
 	static void load_sounds();
+	static void load_music();
 
 	static Resources& get() { 
 		static Resources textures;
@@ -34,6 +39,7 @@ private:
 	Resources();
 	~Resources();
 	std::map<std::string, sf::Texture> texture_map;
+	std::map<std::string, sf::Music*> music_map;
 	std::map<std::string, sf::Sound*> sound_map;
 	std::vector<sf::SoundBuffer*> sound_buffers;
 };

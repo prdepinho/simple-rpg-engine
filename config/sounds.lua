@@ -5,4 +5,5 @@ sounds = {
   "boop.wav",
   "vwuuu.wav",
   "crrreee.wav",
+  "plim.wav",
 }

@@ -19,6 +19,7 @@ void Game::init()
 	lua.load();
 	Resources::load_textures();
 	Resources::load_sounds();
+	Resources::load_music();
 }
 
 void Game::start() {

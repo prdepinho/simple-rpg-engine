@@ -37,3 +37,17 @@ void Resources::load_sounds() {
 		get().sound_map[name] = sound;
 	}
 }
+
+void Resources::load_music() {
+	Lua lua(Config::MUSIC);
+	LuaObject music_obj = lua.get_object("music");
+	for (int i = 0; i < music_obj.size(); ++i) {
+		std::string name = music_obj[i].get_string();
+
+		sf::Music *music = new sf::Music();
+		music->openFromFile(Path::MUSIC + name);
+		music->setLoop(true);
+		get().music_map[name] = music;
+		Log("music: %s", name.c_str());
+	}
+}

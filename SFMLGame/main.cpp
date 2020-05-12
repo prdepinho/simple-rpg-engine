@@ -21,6 +21,11 @@ int main()
 		_game.start();
 #else
 
+		auto *music = Resources::get_music("happy.wav");
+		music->play();
+		std::getchar();
+		music->stop();
+
 #if false
 		{
 			// std::string sound_file = "C:/Users/1513 MX5-7/Downloads/sound.ogg";
