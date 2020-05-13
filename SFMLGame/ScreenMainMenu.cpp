@@ -103,7 +103,7 @@ void ScreenMainMenu::handle_event(sf::Event &event, float elapsed_time)
 			Resources::get_sound("vwuuu.wav")->play();
 			break;
 		case sf::Keyboard::Down:
-			if (button_index < buttons.size() -1)
+			if ((size_t) button_index < buttons.size() -1)
 				button_index++;
 			select(buttons[button_index]);
 			Resources::get_sound("vwuuu.wav")->play();

@@ -66,6 +66,7 @@ public:
 	static const bool USE_VSYNC; // don't mix limit_framerate with use_vsync
 	static const bool LIMIT_FRAMERATE;
 	static const int FRAMERATE;
+	static const std::string SOUND;  // default sound effect.
 };
 
 enum class Direction {

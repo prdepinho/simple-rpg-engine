@@ -102,6 +102,10 @@
 </data>
  </layer>
  <layer id="6" name="obstacle" width="16" height="16" visible="0">
+  <properties>
+   <property name="locked_sound" value="boop.wav"/>
+   <property name="open_sound" value="tcsh.wav"/>
+  </properties>
   <data encoding="csv">
 0,0,0,0,2,2,2,2,2,2,2,2,2,0,0,0,
 0,0,0,0,2,2,2,2,0,2,2,2,2,0,0,0,
@@ -122,41 +126,10 @@
 </data>
  </layer>
  <objectgroup id="7" name="objects">
-  <object id="1" x="131.667" y="51" width="8.66667" height="9">
-   <properties>
-    <property name="open_x" type="int" value="1"/>
-    <property name="open_y" type="int" value="9"/>
-    <property name="type" value="door"/>
-   </properties>
-  </object>
-  <object id="3" x="67.3333" y="116.5" width="8.66667" height="9">
-   <properties>
-    <property name="open_x" type="int" value="1"/>
-    <property name="open_y" type="int" value="9"/>
-    <property name="type" value="door"/>
-   </properties>
-  </object>
-  <object id="4" x="195.333" y="116.833" width="8.66667" height="9">
-   <properties>
-    <property name="open_x" type="int" value="1"/>
-    <property name="open_y" type="int" value="9"/>
-    <property name="type" value="door"/>
-   </properties>
-  </object>
-  <object id="5" x="132" y="195.833" width="8.66667" height="9">
-   <properties>
-    <property name="open_x" type="int" value="1"/>
-    <property name="open_y" type="int" value="9"/>
-    <property name="type" value="door"/>
-   </properties>
-  </object>
-  <object id="6" x="132.333" y="19.5" width="8.66667" height="9">
-   <properties>
-    <property name="open_x" type="int" value="1"/>
-    <property name="open_y" type="int" value="9"/>
-    <property name="step" value="north_door"/>
-    <property name="type" value="door"/>
-   </properties>
-  </object>
+  <object id="1" x="131.667" y="51" width="8.66667" height="9"/>
+  <object id="3" x="67.3333" y="116.5" width="8.66667" height="9"/>
+  <object id="4" x="195.333" y="116.833" width="8.66667" height="9"/>
+  <object id="5" x="132" y="195.833" width="8.66667" height="9"/>
+  <object id="6" name="north_door" x="132.333" y="19.5" width="8.66667" height="9"/>
  </objectgroup>
 </map>

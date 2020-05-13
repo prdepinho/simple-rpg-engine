@@ -230,6 +230,19 @@ void Lua::call(std::string function, int tile_x, int tile_y) {
 	}
 }
 
+void Lua::call_event(std::string function, std::string event, int tile_x, int tile_y) {
+	lua_getglobal(state, function.c_str());
+	lua_pushstring(state, event.c_str());
+	lua_pushnumber(state, tile_x);
+	lua_pushnumber(state, tile_y);
+	int result = lua_pcall(state, 3, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << function << ": " << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+}
+
 
 
 int Lua::get_int(std::string name, int default_value){

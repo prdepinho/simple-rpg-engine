@@ -274,29 +274,7 @@ void TiledTilemapDAO::load_map(std::string filename, Tilemap &map) {
 
 		for (int x = left; x < left + width; x++) {
 			for (int y = top; y < top + height; y++) {
-				for (auto &prop : object.getProperties()) {
-					if (prop.getName() == "interact") {
-						map.get_tile(x, y).interact_calls.push_back(prop.getStringValue());
-					}
-					else if (prop.getName() == "step") {
-						map.get_tile(x, y).step_calls.push_back(prop.getStringValue());
-					}
-					else if (prop.getName() == "type") {
-						if (prop.getStringValue() == "door") {
-							map.get_tile(x, y).type = TileType::DOOR;
-						}
-						else if (prop.getStringValue() == "chest") {
-							map.get_tile(x, y).type = TileType::CHEST;
-						}
-					}
-					else if (prop.getName() == "open_x") {
-						map.get_tile(x, y).open_coords.x = prop.getIntValue();
-					}
-					else if (prop.getName() == "open_y") {
-						map.get_tile(x, y).open_coords.y = prop.getIntValue();
-					}
-				}
-
+				map.get_tile(x, y).object_name = object.getName();
 			}
 		}
 	}

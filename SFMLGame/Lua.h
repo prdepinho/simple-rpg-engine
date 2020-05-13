@@ -49,6 +49,7 @@ public:
 	void on_turn(Character &character);
 	void on_interact(Character &character, int tile_x, int tile_y);
 	void call(std::string function, int tile_x, int tile_y);
+	void call_event(std::string function, std::string event, int tile_x, int tile_y);
 
 
 

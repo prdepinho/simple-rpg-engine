@@ -305,20 +305,7 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 					auto tile_coord = map.get_tile_coord(x, y);
 					int tile_x = tile_coord.x;
 					int tile_y = tile_coord.y;
-
-					TileData tile = map.get_tile(tile_x, tile_y);
-					for (std::string &call : tile.interact_calls) {
-						Log("Call: %s", call.c_str());
-						
-						{
-							unsigned texX = 16;
-							unsigned texY = 9 * 16;
-							unsigned layer = 1;
-							map.get_floor_layer().set_texture_coords(0, tile_x, tile_y, layer, (float)texX, (float)texY);
-							map.get_floor_layer().set_texture_coords(1, tile_x, tile_y, layer, (float)texX, (float)texY);
-						}
-
-					}
+					// do something here
 				}
 
 			}
@@ -460,6 +447,22 @@ void GameScreen::schedule_character_interaction(Character &character, int tile_x
 }
 
 void GameScreen::move_character(Character &character, Direction direction) {
+	try {
+		sf::Vector2i position = character_position(*player_character);
+		switch (direction) {
+		case Direction::UP: position.y--; break;
+		case Direction::DOWN: position.y++; break;
+		case Direction::LEFT: position.x--; break;
+		case Direction::RIGHT: position.x++; break;
+		}
+		TileData tile = map.get_tile(position.x, position.y);
+		map.get_script()->call_event(tile.object_name, "enter_tile", position.x, position.y);
+	}
+	catch (LuaException &e) {
+		Log("Lua Error: %s", e.what());
+	}
+
+	// player character
 	if (&character == player_character) {
 		Effect *effect = new MoveEffect(player_character, direction, 16  / turn_duration);
 		effect->set_on_update([&]() {
@@ -468,24 +471,21 @@ void GameScreen::move_character(Character &character, Direction direction) {
 			}
 		});
 		effect->set_on_end([&]() {
-
-			sf::Vector2i position = character_position(*player_character);
-			TileData tile = map.get_tile(position.x, position.y);
-			switch (tile.type) {
-			case TileType::DOOR:
-				map.change_floor_texture(position.x, position.y, 1, tile.open_coords.x, tile.open_coords.y);
-				tile.open = true;
-				break;
+			try {
+				sf::Vector2i position = character_position(*player_character);
+				TileData tile = map.get_tile(position.x, position.y);
+				map.get_script()->call_event(tile.object_name, "step_on", position.x, position.y);
 			}
-			for (std::string &call : tile.step_calls) {
-				map.get_script()->call(call, position.x, position.y);
+			catch (LuaException &e) {
+				Log("Lua Error: %s", e.what());
 			}
-
 			player_busy = false;
 		});
 		effects.push_back(effect);
 		player_busy = true;
 	}
+
+	// non-player character
 	else {
 		Effect *effect = new MoveEffect(&character, direction, 16 / turn_duration);
 		effects.push_back(effect);
@@ -515,17 +515,9 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 		// map.get_script()->on_interact(character, tile_x, tile_y);
 
 		if (map.in_tile_bounds(tile_x, tile_y)) {
+			TileData tile = map.get_tile(tile_x, tile_y);
 			try {
-				TileData tile = map.get_tile(tile_x, tile_y);
-				switch (tile.type) {
-				case TileType::CHEST:
-					map.change_floor_texture(tile_x, tile_y, 2, tile.open_coords.x, tile.open_coords.y);
-					tile.open = true;
-					break;
-				}
-				for (std::string &call : tile.interact_calls) {
-					map.get_script()->call(call, tile_x, tile_y);
-				}
+				map.get_script()->call_event(tile.object_name, "interact", tile_x, tile_y);
 			}
 			catch (LuaException &e) {
 				Log("Lua Error: %s", e.what());

@@ -7,19 +7,9 @@
 
 class TilemapDAO;
 
-enum class TileType {
-	NONE,
-	DOOR,
-	CHEST
-};
-
 struct TileData {
 	bool obstacle = false;
-	std::vector<std::string> interact_calls;
-	std::vector<std::string> step_calls;
-	TileType type = TileType::NONE;
-	sf::Vector2i open_coords = { 0, 0 };
-	bool open = false;
+	std::string object_name;
 };
 
 class TilemapLayer : public AnimatedEntity {

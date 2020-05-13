@@ -80,56 +80,12 @@
 </data>
  </layer>
  <objectgroup id="5" name="objects">
-  <object id="10" name="South door" x="65" y="113.917" width="12.75" height="11.5833">
-   <properties>
-    <property name="open_x" type="int" value="1"/>
-    <property name="open_y" type="int" value="9"/>
-    <property name="step" value="south_door"/>
-    <property name="type" value="door"/>
-   </properties>
-  </object>
-  <object id="11" name="West door" x="1.75" y="50.25" width="11" height="12">
-   <properties>
-    <property name="open_x" type="int" value="1"/>
-    <property name="open_y" type="int" value="9"/>
-    <property name="step" value="west_door"/>
-    <property name="type" value="door"/>
-   </properties>
-  </object>
-  <object id="12" name="North door" x="66.25" y="18.25" width="11.25" height="11.75">
-   <properties>
-    <property name="interact" value="unlock_north_door"/>
-    <property name="open_x" type="int" value="1"/>
-    <property name="open_y" type="int" value="9"/>
-    <property name="step" value="north_door"/>
-    <property name="type" value="door"/>
-   </properties>
-  </object>
-  <object id="13" name="East door" x="113.5" y="65.5" width="12.25" height="12">
-   <properties>
-    <property name="open_x" type="int" value="1"/>
-    <property name="open_y" type="int" value="9"/>
-    <property name="step" value="east_door"/>
-    <property name="type" value="door"/>
-   </properties>
-  </object>
-  <object id="14" name="Empty chest" x="98.25" y="33.5" width="12" height="12">
-   <properties>
-    <property name="interact" value="empty_chest"/>
-    <property name="open_x" type="int" value="4"/>
-    <property name="open_y" type="int" value="6"/>
-    <property name="type" value="chest"/>
-   </properties>
-  </object>
-  <object id="15" name="Step on trigger" x="18.25" y="67.5" width="90" height="11.5">
-   <properties>
-    <property name="step" value="step_on_floor"/>
-   </properties>
-  </object>
-  <object id="16" name="Player position" x="65" y="82" width="13" height="11.5">
-   <properties>
-    <property name="type" value="player_position"/>
-   </properties>
-  </object>
+  <object id="10" name="south_door" x="65" y="113.917" width="12.75" height="11.5833"/>
+  <object id="11" name="west_door" x="1.75" y="50.25" width="11" height="12"/>
+  <object id="12" name="north_door" x="66.25" y="18.25" width="11.25" height="11.75"/>
+  <object id="13" name="east_door" x="113.5" y="65.5" width="12.25" height="12"/>
+  <object id="14" name="empty_chest" x="98.25" y="33.5" width="12" height="12"/>
+  <object id="15" name="step_floor" x="18.25" y="67.5" width="90" height="11.5"/>
+  <object id="16" name="player_position" x="65" y="82" width="13" height="11.5"/>
  </objectgroup>
 </map>

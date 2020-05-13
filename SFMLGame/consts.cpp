@@ -47,3 +47,4 @@
 	const bool Default::USE_VSYNC = false;
 	const bool Default::LIMIT_FRAMERATE = false;
 	const int Default::FRAMERATE = 30;
+	const std::string Default::SOUND = "beep.wav";

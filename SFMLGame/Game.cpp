@@ -398,6 +398,33 @@ public:
 		Log("Playing sound: %s", filename.c_str());
 		return 1;
 	}
+
+	static int sfml_change_floor_texture(lua_State *state) {
+		// map.change_floor_texture(tile_x, tile_y, 2, tile.open_coords.x, tile.open_coords.y);
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		int x = (int)lua_tointeger(state, -5);
+		int y = (int)lua_tointeger(state, -4);
+		int layer = (int)lua_tointeger(state, -3);
+		int coords_x = (int)lua_tointeger(state, -2);
+		int coords_y = (int)lua_tointeger(state, -1);
+		screen->get_map().change_floor_texture(x, y, layer, coords_x, coords_y);
+		Log("Change floor tile texture from layer %d: (%d, %d) to (%d, %d)", layer, x, y, coords_x, coords_y);
+		return 1;
+	}
+
+	static int sfml_change_ceiling_texture(lua_State *state) {
+		// map.change_floor_texture(tile_x, tile_y, 2, tile.open_coords.x, tile.open_coords.y);
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		int x = (int)lua_tointeger(state, -5);
+		int y = (int)lua_tointeger(state, -4);
+		int layer = (int)lua_tointeger(state, -3);
+		int coords_x = (int)lua_tointeger(state, -2);
+		int coords_y = (int)lua_tointeger(state, -1);
+		screen->get_map().change_ceiling_texture(x, y, layer, coords_x, coords_y);
+		Log("Change ceiling tile texture from layer %d: (%d, %d) to (%d, %d)", layer, x, y, coords_x, coords_y);
+		return 1;
+	}
+
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -417,4 +444,6 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_change_map", LuaFunction::sfml_change_map);
 	lua_register(lua.get_state(), "sfml_set_obstacle", LuaFunction::sfml_set_obstacle);
 	lua_register(lua.get_state(), "sfml_play_sound", LuaFunction::sfml_play_sound);
+	lua_register(lua.get_state(), "sfml_change_floor_texture", LuaFunction::sfml_change_floor_texture);
+	lua_register(lua.get_state(), "sfml_change_ceiling_texture", LuaFunction::sfml_change_ceiling_texture);
 }
