@@ -329,6 +329,10 @@ public:
 			lua_pushliteral(state, "obstacle");
 			lua_pushboolean(state, tile.obstacle);
 			lua_settable(state, -3);
+
+			lua_pushliteral(state, "open");
+			lua_pushboolean(state, tile.open);
+			lua_settable(state, -3);
 		}
 
 		return 1;
@@ -392,6 +396,16 @@ public:
 		return 1;
 	}
 
+	static int sfml_set_open_tile(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		bool open = (bool)lua_toboolean(state, -3);
+		int x = (int)lua_tointeger(state, -2);
+		int y = (int)lua_tointeger(state, -1);
+		screen->get_map().get_tile(x, y).open = open;
+		Log("Open tile (%d, %d): %s", x, y, (open ? "true" : "false"));
+		return 1;
+	}
+
 	static int sfml_play_sound(lua_State *state) {
 		std::string filename = lua_tostring(state, -1);
 		Resources::get_sound(filename)->play();
@@ -443,6 +457,7 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_get_window_dimensions", LuaFunction::sfml_get_window_dimensions);
 	lua_register(lua.get_state(), "sfml_change_map", LuaFunction::sfml_change_map);
 	lua_register(lua.get_state(), "sfml_set_obstacle", LuaFunction::sfml_set_obstacle);
+	lua_register(lua.get_state(), "sfml_set_open_tile", LuaFunction::sfml_set_open_tile);
 	lua_register(lua.get_state(), "sfml_play_sound", LuaFunction::sfml_play_sound);
 	lua_register(lua.get_state(), "sfml_change_floor_texture", LuaFunction::sfml_change_floor_texture);
 	lua_register(lua.get_state(), "sfml_change_ceiling_texture", LuaFunction::sfml_change_ceiling_texture);

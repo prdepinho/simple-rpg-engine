@@ -412,6 +412,9 @@ void GameScreen::put_character_on_tile(Character & character, int x, int y) {
 	character.set_position(map.get_x() + (int) tile_coords.x + 8, map.get_y() + (int) tile_coords.y + 8);
 }
 
+
+// scheduling 
+
 void GameScreen::schedule_character_wait(Character &character, int turns) {
 	for (int i = 0; i < turns; ++i) {
 		actions.push_back(new WaitAction());
@@ -427,16 +430,8 @@ void GameScreen::schedule_character_movement(Character &character, int tile_x, i
 
 	while (!path.empty()) {
 		Direction direction = path.top();
-		std::map<Direction, std::string> direction_name = {
-			{Direction::UP, "UP"},
-			{Direction::DOWN, "DOWN"},
-			{Direction::RIGHT, "RIGHT"},
-			{Direction::LEFT, "LEFT"},
-		};
-
 		actions.push_back(new MoveAction(&character, direction));
 		character.schedule_action(actions.back());
-
 		path.pop();
 	}
 }
@@ -445,6 +440,9 @@ void GameScreen::schedule_character_interaction(Character &character, int tile_x
 	actions.push_back(new InteractionAction(&character, tile_x, tile_y));
 	character.schedule_action(actions.back());
 }
+
+
+// actions
 
 void GameScreen::move_character(Character &character, Direction direction) {
 	try {

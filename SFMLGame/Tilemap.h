@@ -10,6 +10,7 @@ class TilemapDAO;
 struct TileData {
 	bool obstacle = false;
 	std::string object_name;
+	bool open = false;
 };
 
 class TilemapLayer : public AnimatedEntity {

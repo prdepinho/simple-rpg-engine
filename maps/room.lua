@@ -1,9 +1,9 @@
 
+
 characters = {
   player={2, 2}
 }
 
-door_open = false
 door_locked = true
 has_key = false
 
@@ -44,7 +44,21 @@ function empty_chest(event, x, y)
 end
 
 
+
+function door(event, x, y)
+  if event == "enter_tile" then
+    tile = sfml_get_tile(x, y)
+    if not tile.open then
+      sfml_change_floor_texture(x, y, 1, 1, 9)
+      sfml_play_sound("tcsh.wav")
+      sfml_set_open_tile(true, x, y)
+    end
+  end
+end
+
+
 function north_door(event, x, y)
+  door(event, x, y)
   if event == 'interact' then
     if door_locked then
       if has_key then
@@ -58,13 +72,6 @@ function north_door(event, x, y)
       end
     else
       print("Door is unloked.")
-    end
-
-  elseif event == 'enter_tile' then
-    if not door_open then
-      sfml_change_floor_texture(x, y, 1, 1, 9)
-      sfml_play_sound("tcsh.wav")
-      door_open = true
     end
 
   elseif event == 'step_on' then

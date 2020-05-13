@@ -17,10 +17,11 @@ function on_interact(x, y) end
 
 function north_door(event, x, y)
   if event == "enter_tile" then
-    print('north door enter_tile')
+    sfml_change_floor_texture(x, y, 1, 1, 9)
+    sfml_play_sound("tcsh.wav")
+    door_open = true
 
   elseif event == "step_on" then
-    print(string.format("North door opens: (%d, %d)", x, y))
     sfml_change_map("room", 4, 1)
   end
 end
