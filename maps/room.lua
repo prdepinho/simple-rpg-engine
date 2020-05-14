@@ -1,4 +1,6 @@
 
+package.path = package.path .. ";../maps/?.lua"
+require "common"
 
 characters = {
   player={2, 2}
@@ -45,17 +47,6 @@ end
 
 
 
-function door(event, x, y)
-  if event == "enter_tile" then
-    tile = sfml_get_tile(x, y)
-    if not tile.open then
-      sfml_change_floor_texture(x, y, 1, 1, 9)
-      sfml_play_sound("tcsh.wav")
-      sfml_set_open_tile(true, x, y)
-    end
-  end
-end
-
 
 function north_door(event, x, y)
   door(event, x, y)
@@ -81,18 +72,10 @@ end
 
 
 function step_floor(event, x, y)
-  print('+++++++++ event: "' .. event .. '" for the floor +++++++++++++++++')
   if event == "enter_tile" then
-    print('++++++++ enter_tile')
-
   elseif event == "exit_tile" then
-    print('++++++++ exit_tile')
-
   elseif event == "interact" then
-    print('++++++++ interact')
-
   elseif event == "step_on" then
-    print('++++++++ step_onf')
   end
 end
 

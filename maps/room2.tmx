@@ -126,10 +126,10 @@
 </data>
  </layer>
  <objectgroup id="7" name="objects">
-  <object id="1" x="131.667" y="51" width="8.66667" height="9"/>
-  <object id="3" x="67.3333" y="116.5" width="8.66667" height="9"/>
-  <object id="4" x="195.333" y="116.833" width="8.66667" height="9"/>
-  <object id="5" x="132" y="195.833" width="8.66667" height="9"/>
+  <object id="1" name="door" x="131.667" y="51" width="8.66667" height="9"/>
+  <object id="3" name="door" x="67.3333" y="116.5" width="8.66667" height="9"/>
+  <object id="4" name="door" x="195.333" y="116.833" width="8.66667" height="9"/>
+  <object id="5" name="door" x="132" y="195.833" width="8.66667" height="9"/>
   <object id="6" name="north_door" x="132.333" y="19.5" width="8.66667" height="9"/>
  </objectgroup>
 </map>
