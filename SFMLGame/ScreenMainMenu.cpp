@@ -64,18 +64,27 @@ void ScreenMainMenu::create()
 
 	Resources::get_music("theme.wav")->play();
 
+	texture.loadFromFile(Path::ASSETS + "main_screen_art.png");
+	sprite = sf::Sprite(texture);
+
 	gui_view.setSize(sf::Vector2f((float) game->get_resolution_width(), (float) game->get_resolution_height()));
 	gui_view.setCenter((float) game->get_resolution_width() / 2.f, (float) game->get_resolution_height() / 2.f);
 }
 
 void ScreenMainMenu::destroy()
 {
-	Resources::get_music("theme.wav")->stop();
+	try {
+		Resources::get_music("theme.wav")->stop();
+	}
+	catch (ResourcesException &e) {
+		Log(e.what());
+	}
 }
 
 void ScreenMainMenu::draw()
 {
 	window->setView(gui_view);
+	window->draw(sprite);
 	Screen::draw();
 }
 

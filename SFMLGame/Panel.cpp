@@ -55,7 +55,7 @@ void MessagePanel::create() {
 	get_screen()->select(ok_button);
  }
 
-void MessagePanel::show( std::string msg, Screen &screen) {
+void MessagePanel::show(std::string msg, Screen &screen) {
 	static MessagePanel message_panel;
 	int h = 60;
 	int w = 100;

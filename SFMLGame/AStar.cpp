@@ -64,8 +64,9 @@ std::stack<Direction> AStar::search(Tilemap & map, sf::Vector2i start, sf::Vecto
 	// return a stack of directions to follow.
 	std::stack<Direction> path;
 	for (Node *node = dst_node; node != nullptr; node = node->parent) {
-		if (node->parent != nullptr)
+		if (node->parent != nullptr) {
 			path.push(node->direction);
+		}
 	}
 
 	return path;

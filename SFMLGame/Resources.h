@@ -7,6 +7,11 @@
 #include "consts.h"
 #include "Json.h"
 
+class ResourcesException : public std::exception {
+public: 
+	ResourcesException(std::string msg = "") : std::exception(msg.c_str()) { }
+};
+
 class Resources
 {
 public:
@@ -16,12 +21,20 @@ public:
 	}
 
 	static sf::Sound* get_sound(std::string filename) {
-		return get().sound_map[filename];
+		sf::Sound *sound = get().sound_map[filename];
+		if (!sound)
+			throw ResourcesException("Sound not found: " + filename);
+		return sound;
 	}
 
 	static sf::Music* get_music(std::string filename) {
-		return get().music_map[filename];
+		 sf::Music *music = get().music_map[filename];
+		 if (!music)
+			 throw ResourcesException("Music not found: " + filename);
+		 return music;
 	}
+
+	static void play_sound(std::string filename);
 
 	static void load_textures();
 	static void load_sounds();
@@ -42,4 +55,9 @@ private:
 	std::map<std::string, sf::Music*> music_map;
 	std::map<std::string, sf::Sound*> sound_map;
 	std::vector<sf::SoundBuffer*> sound_buffers;
+
+	// play a set number of cycling sounds simultaneously.
+	std::vector<sf::Sound*> sounds;
+	int max_sounds;
+	int sounds_inedx;
 };

@@ -8,6 +8,10 @@
     "file": "gui",
     "coords": [58, 24]
   },
+  "text_box": {
+    "file": "gui",
+    "coords": [58, 24]
+  },
   "text_area": {
     "file": "gui",
     "coords": [76, 24]

@@ -407,9 +407,14 @@ public:
 	}
 
 	static int sfml_play_sound(lua_State *state) {
-		std::string filename = lua_tostring(state, -1);
-		Resources::get_sound(filename)->play();
-		Log("Playing sound: %s", filename.c_str());
+		try {
+			std::string filename = lua_tostring(state, -1);
+			Resources::play_sound(filename);
+		}
+		catch (ResourcesException &e) {
+			Log(e.what());
+			Resources::play_sound(Default::SOUND);
+		}
 		return 1;
 	}
 

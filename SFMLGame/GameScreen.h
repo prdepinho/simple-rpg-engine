@@ -14,6 +14,7 @@
 #include "TextField.h"
 #include "CustomPanel.h"
 #include "CheckButton.h"
+#include "TextBox.h"
 #include "Effect.h"
 #include "Action.h"
 #include "DebugConsole.h"
@@ -75,6 +76,8 @@ public:
 	sf::Vector2i character_position(Character &character);
 
 private:
+
+	TextBox text_box;
 
 	Tilemap map;
 

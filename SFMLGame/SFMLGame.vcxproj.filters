@@ -252,6 +252,9 @@
     <ClCompile Include="Resources.cpp">
       <Filter>base</Filter>
     </ClCompile>
+    <ClCompile Include="TextBox.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tilemap.h">
@@ -424,6 +427,9 @@
     </ClInclude>
     <ClInclude Include="tmxlite\detail\pugixml.hpp">
       <Filter>pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="TextBox.h">
+      <Filter>gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

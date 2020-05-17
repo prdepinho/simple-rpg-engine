@@ -20,6 +20,8 @@ public:
 
 private:
 	std::vector<Button> buttons;
+	sf::Texture texture;
+	sf::Sprite sprite;
 
 };
 

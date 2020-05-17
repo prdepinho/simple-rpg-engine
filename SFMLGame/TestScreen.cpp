@@ -75,6 +75,11 @@ void TestScreen::create()
 	panel1.create();
 
 
+	text_box = TextBox("Foobar", 10, 10, 30, 20);
+	text_box.create();
+	add_component(text_box);
+
+
 	game_view.setSize(sf::Vector2f((float) game->get_resolution_width(), (float) game->get_resolution_height()));
 	game_view.setCenter(sf::Vector2f((float) character.get_x() + 8.f, (float) character.get_y() + 8.f));
 	//game_view.setCenter(sf::Vector2f(game->get_resolution_width() / 2, game->get_resolution_height() / 2));

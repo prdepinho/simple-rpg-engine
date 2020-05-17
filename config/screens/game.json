@@ -1,4 +1,6 @@
 {
+  "_map": "level",
+  "_map": "first_floor",
   "map": "room",
   "turns_per_second": 5
 }

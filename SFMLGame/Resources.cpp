@@ -4,7 +4,9 @@
 #include "Game.h"
 
 Resources::Resources() {
-
+	max_sounds = 8;
+	sounds = std::vector<sf::Sound*>(max_sounds, nullptr);
+	sounds_inedx = 0;
 }
 
 Resources::~Resources() {
@@ -12,6 +14,9 @@ Resources::~Resources() {
 		delete it->second;
 	for (sf::SoundBuffer *buffer : sound_buffers)
 		delete buffer;
+	for (auto it = sounds.begin(); it != sounds.end(); ++it)
+		if (*it != nullptr)
+			delete *it;
 }
 
 void Resources::load_textures() {
@@ -36,6 +41,17 @@ void Resources::load_sounds() {
 		sf::Sound *sound = new sf::Sound(*buffer);
 		get().sound_map[name] = sound;
 	}
+}
+
+void Resources::play_sound(std::string filename) {
+	sf::Sound *loaded_sound = Resources::get_sound(filename);
+	sf::Sound *sound = new sf::Sound(*loaded_sound);
+	get().sounds_inedx = (get().sounds_inedx + 1) % get().max_sounds;
+	
+	sound->play();
+	if (get().sounds[get().sounds_inedx] != nullptr)
+		delete get().sounds[get().sounds_inedx];
+	get().sounds[get().sounds_inedx] = sound;
 }
 
 void Resources::load_music() {

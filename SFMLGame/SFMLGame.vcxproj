@@ -184,6 +184,7 @@
     <ClCompile Include="ScreenMainMenu.cpp" />
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="TestScreen.cpp" />
+    <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="TextField.cpp" />
     <ClCompile Include="Tilemap.cpp" />
     <ClCompile Include="TilemapDAO.cpp" />
@@ -251,6 +252,7 @@
     <ClInclude Include="ScreenMainMenu.h" />
     <ClInclude Include="GameScreen.h" />
     <ClInclude Include="TestScreen.h" />
+    <ClInclude Include="TextBox.h" />
     <ClInclude Include="TextField.h" />
     <ClInclude Include="Tilemap.h" />
     <ClInclude Include="TilemapDAO.h" />

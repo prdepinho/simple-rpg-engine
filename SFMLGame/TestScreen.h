@@ -10,6 +10,7 @@
 #include "Button.h"
 #include "Resources.h"
 #include "Panel.h"
+#include "TextBox.h"
 
 
 class TestScreen : public Screen
@@ -41,6 +42,8 @@ private:
 
 	Button button1;
 	Button button2;
+
+	TextBox text_box;
 
 	// game configuration
 	float move_speed = 100.f; //px / s

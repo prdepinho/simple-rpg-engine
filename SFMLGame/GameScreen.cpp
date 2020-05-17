@@ -60,6 +60,20 @@ void GameScreen::create() {
 		debug_console.hide();
 	}
 
+	// text box
+#if false
+	{
+		int width = game->get_resolution_width() * 8/9;
+		int height = 7;
+		int x = (game->get_resolution_width() / 2) - (width / 2);
+		int y = x;
+		text_box = TextBox("Foobar", x, y, width, height);
+		text_box.create();
+		text_box.set_visible(false);
+		add_component(text_box);
+	}
+#endif
+
 	select(container);
 
 	game_view.setSize(sf::Vector2f((float) game->get_resolution_width(), (float) game->get_resolution_height()));
@@ -116,7 +130,7 @@ bool GameScreen::update(float elapsed_time) {
 			++turn;
 			turn_count = 0.f;
 
-			Log("turn: %d", turn);
+			// Log("turn: %d", turn);
 
 			// execute scheduled actions.
 			for (Character &character : characters) {
@@ -138,7 +152,7 @@ bool GameScreen::update(float elapsed_time) {
 				if (action != nullptr) {
 
 					if (&character == player_character) {
-						Log("Player action: %s", action->to_string().c_str());
+						// Log("Player action: %s", action->to_string().c_str());
 					}
 
 					action->execute(this);
@@ -305,6 +319,7 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 					auto tile_coord = map.get_tile_coord(x, y);
 					int tile_x = tile_coord.x;
 					int tile_y = tile_coord.y;
+					Log("Coordinates: (%d, %d)", tile_x, tile_y);
 					// do something here
 				}
 
@@ -320,6 +335,16 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				Log("Camera follow: %s", (camera_follow ? "true" : "false"));
 			}
 			break;
+			case sf::Keyboard::Insert:
+			case sf::Keyboard::T:
+				{
+					// text_box.set_visible(!text_box.is_visible());
+					std::string str = "Quo usque tandem abutere, Catilina, patientia nostra? quam diu etiam furor iste tuus nos eludet? quem ad finem sese effrenata iactabit audacia? Nihilne te nocturnum praesidium Palati, nihil urbis vigiliae, nihil timor populi, nihil concursus bonorum omnium, nihil hic munitissimus habendi senatus locus, nihil horum ora voltusque moverunt? Patere tua consilia non sentis, constrictam iam horum omnium scientia teneri coniurationem tuam non vides? Quid proxima, quid superiore nocte egeris, ubi fueris, quos convocaveris, quid consilii ceperis, quem nostrum ignorare arbitraris? [2] O tempora, o mores! Senatus haec intellegit. Consul videt; hic tamen vivit. Vivit? immo vero etiam in senatum venit, fit publici consilii particeps, notat et designat oculis ad caedem unum quemque nostrum. Nos autem fortes viri satis facere rei publicae videmur, si istius furorem ac tela vitemus. Ad mortem te, Catilina, duci iussu consulis iam pridem oportebat, in te conferri pestem, quam tu in nos [omnes iam diu] machinaris.";
+					TextBox::show(str, *this);
+				}
+				break;
+			case sf::Keyboard::I:
+				break;
 			case sf::Keyboard::O:
 				break;
 			case sf::Keyboard::Up:
@@ -457,7 +482,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 		map.get_script()->call_event(tile.object_name, "enter_tile", position.x, position.y);
 	}
 	catch (LuaException &e) {
-		Log("Lua Error: %s", e.what());
+		// Log("Lua Error: %s", e.what());
 	}
 
 	// player character
@@ -475,7 +500,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 				map.get_script()->call_event(tile.object_name, "step_on", position.x, position.y);
 			}
 			catch (LuaException &e) {
-				Log("Lua Error: %s", e.what());
+				// Log("Lua Error: %s", e.what());
 			}
 			player_busy = false;
 		});
@@ -518,7 +543,7 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 				map.get_script()->call_event(tile.object_name, "interact", tile_x, tile_y);
 			}
 			catch (LuaException &e) {
-				Log("Lua Error: %s", e.what());
+				// Log("Lua Error: %s", e.what());
 			}
 		}
 

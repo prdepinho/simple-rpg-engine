@@ -1,8 +1,6 @@
 screen_resolution = {
-  --width = 320,
-  -- height = 200
   width = 256,
-  height = 240
+  height = 240,
 }
 
 fullscreen = false
