@@ -444,6 +444,13 @@ public:
 		return 1;
 	}
 
+	static int sfml_text_box(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		std::string text = lua_tostring(state, -1);
+		screen->show_text_box(text);
+		return 1;
+	}
+
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -466,4 +473,5 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_play_sound", LuaFunction::sfml_play_sound);
 	lua_register(lua.get_state(), "sfml_change_floor_texture", LuaFunction::sfml_change_floor_texture);
 	lua_register(lua.get_state(), "sfml_change_ceiling_texture", LuaFunction::sfml_change_ceiling_texture);
+	lua_register(lua.get_state(), "sfml_text_box", LuaFunction::sfml_text_box);
 }

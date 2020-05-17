@@ -15,3 +15,7 @@ limit_framerate = not use_vsync
 
 -- This option takes effect if limit_framerate is true.
 set_framerate = 30
+
+text_box_speed = 50  -- letters per seconds
+text_box_lines = 3   -- lines per text box
+text_box_width = screen_resolution.width * 2/3  -- width of text box

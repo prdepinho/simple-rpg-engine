@@ -1,10 +1,11 @@
 #pragma once
 #include "Panel.h"
+#include "Callback.h"
 
-class TextBox : public Panel
+class TextBox : public Panel, public CallbackCaller
 {
 public:
-	TextBox(std::string text="", int x=0, int y=0, int width=0, int height=0);
+	TextBox(std::string text="", int x=0, int y=0, int width=0, int height=0, float speed=0.0f);
 	~TextBox();
 
 	virtual void create() override;
@@ -13,7 +14,7 @@ public:
 	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
 	virtual Component *on_pressed(int x, int y) override;
 
-	static void show(std::string msg, Screen &screen);
+	static void show(std::string msg, Screen &screen, Callback callback=Callback());
 
 protected:
 	virtual void update_view();

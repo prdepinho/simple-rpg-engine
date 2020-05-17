@@ -6,7 +6,9 @@
 
 
 
-TextBox::TextBox(std::string text, int x, int y, int width, int height) {
+TextBox::TextBox(std::string text, int x, int y, int width, int height, float speed) {
+	writing_speed = speed;
+
 	vertical_margin = 10;
 	horizontal_margin = 10;
 
@@ -18,7 +20,6 @@ TextBox::TextBox(std::string text, int x, int y, int width, int height) {
 
 	this->text = text;
 	completely_written = false;
-	writing_speed = 0.05f;
 
 
 	text_lines = font.split_lines(text, width);
@@ -91,7 +92,7 @@ void TextBox::update(float elapsed_time) {
 			static float write_count = 0;
 			write_count += elapsed_time;
 
-			if (write_count >= writing_speed) {
+			if (write_count >= 1 / writing_speed) {
 				write_count = 0.f;
 				for (size_t i = start_line; i < end_line; i++) {
 					if (visible_lines[i] != text_lines[i]) {
@@ -119,6 +120,7 @@ Component *TextBox::on_key_pressed(sf::Keyboard::Key key) {
 			if (end_line == text_lines.size()) {
 				get_screen()->remove_component(*this);
 				get_screen()->select_container();
+				call_functions(this);
 			}
 			else {
 				start_line = end_line;
@@ -165,14 +167,21 @@ Component *TextBox::on_key_pressed(sf::Keyboard::Key key) {
 Component *TextBox::on_pressed(int x, int y) {
 	get_screen()->remove_component(*this);
 	get_screen()->select_container();
+	call_functions(this);
 	return this;
 }
 
-void TextBox::show(std::string text, Screen &screen) {
+void TextBox::show(std::string text, Screen &screen, Callback callback) {
 	static TextBox text_box;
-	int width = _game.get_resolution_width() * 4 / 5;
-	int height = 7;
-	text_box = TextBox(text, 0, 0, width, height);
+
+	Lua lua(Config::SETTINGS);
+	int height = lua.get_float("text_box_lines");
+	int width = lua.get_float("text_box_width");
+	float speed = lua.get_float("text_box_speed");
+
+	// int width = _game.get_resolution_width() * 4 / 5;
+	text_box = TextBox(text, 0, 0, width, height, speed);
+	text_box.add_function(callback);
 	text_box.create();
 	int x = (_game.get_resolution_width() / 2) - (text_box.get_width() / 2);
 	int y = x;

@@ -11,6 +11,10 @@ public:
 	void add_function(Callback func) { functions.push_back(func); }
 	void set_function(Callback func) { functions.clear(); add_function(func); }
 	void clear_functions() { functions.clear(); }
+	void call_functions(Component *component) {
+		for (auto &function : functions)
+			function(component);
+	}
 protected:
 	std::vector<Callback> functions;
 };

@@ -32,7 +32,8 @@ public:
 		turn_duration(1.f),
 		player_busy(false),
 		camera_follow(true),
-		player_input(sf::Keyboard::Pause)
+		player_input(sf::Keyboard::Pause),
+		block_input(false)
 	{ }
 
 
@@ -75,9 +76,13 @@ public:
 	void put_character_on_tile(Character &character, int x, int y);
 	sf::Vector2i character_position(Character &character);
 
-private:
+	bool is_block_input() const { return block_input; }
+	void set_block_input(bool block) { block_input = block; }
 
-	TextBox text_box;
+	void show_text_box(std::string text);
+
+private:
+	bool block_input;
 
 	Tilemap map;
 

@@ -60,20 +60,6 @@ void GameScreen::create() {
 		debug_console.hide();
 	}
 
-	// text box
-#if false
-	{
-		int width = game->get_resolution_width() * 8/9;
-		int height = 7;
-		int x = (game->get_resolution_width() / 2) - (width / 2);
-		int y = x;
-		text_box = TextBox("Foobar", x, y, width, height);
-		text_box.create();
-		text_box.set_visible(false);
-		add_component(text_box);
-	}
-#endif
-
 	select(container);
 
 	game_view.setSize(sf::Vector2f((float) game->get_resolution_width(), (float) game->get_resolution_height()));
@@ -176,6 +162,8 @@ bool GameScreen::update(float elapsed_time) {
 
 void GameScreen::poll_events(float elapsed_time) {
 	Screen::poll_events(elapsed_time);
+	if (block_input)
+		return;
 	try {
 		// constant input handler
 
@@ -284,6 +272,8 @@ void GameScreen::poll_events(float elapsed_time) {
 
 void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	Screen::handle_event(event, elapsed_time);
+	if (block_input)
+		return;
 	switch (event.type) {
 	case sf::Event::MouseButtonPressed:
 		if (selected_component == &container) {
@@ -340,7 +330,7 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				{
 					// text_box.set_visible(!text_box.is_visible());
 					std::string str = "Quo usque tandem abutere, Catilina, patientia nostra? quam diu etiam furor iste tuus nos eludet? quem ad finem sese effrenata iactabit audacia? Nihilne te nocturnum praesidium Palati, nihil urbis vigiliae, nihil timor populi, nihil concursus bonorum omnium, nihil hic munitissimus habendi senatus locus, nihil horum ora voltusque moverunt? Patere tua consilia non sentis, constrictam iam horum omnium scientia teneri coniurationem tuam non vides? Quid proxima, quid superiore nocte egeris, ubi fueris, quos convocaveris, quid consilii ceperis, quem nostrum ignorare arbitraris? [2] O tempora, o mores! Senatus haec intellegit. Consul videt; hic tamen vivit. Vivit? immo vero etiam in senatum venit, fit publici consilii particeps, notat et designat oculis ad caedem unum quemque nostrum. Nos autem fortes viri satis facere rei publicae videmur, si istius furorem ac tela vitemus. Ad mortem te, Catilina, duci iussu consulis iam pridem oportebat, in te conferri pestem, quam tu in nos [omnes iam diu] machinaris.";
-					TextBox::show(str, *this);
+					show_text_box(str);
 				}
 				break;
 			case sf::Keyboard::I:
@@ -605,4 +595,12 @@ Character *GameScreen::get_character_by_id(long id) {
 		}
 	}
 	return nullptr;
+}
+
+void GameScreen::show_text_box(std::string text) {
+	block_input = true;
+	TextBox::show(text, *this, [&](Component *c) {
+		block_input = false;
+		return true;
+	});
 }
