@@ -329,6 +329,34 @@ std::string Lua::get_string(std::string name){
 	return rval;
 }
 
+static std::vector<std::string> splitstr(std::string str, char separator) {
+	std::vector<std::string> parts;
+	std::string part = "";
+	for (char c : str) {
+		if (c == separator) {
+			parts.push_back(part);
+			part = "";
+		}
+		else {
+			part += c;
+		}
+	}
+	parts.push_back(part);
+	return parts;
+}
+
+#if true
+LuaObject * LuaObject::get_token(std::string object_path) {
+	if (object_path == "")
+		return this;
+	std::vector<std::string> parts = splitstr(object_path, '.');
+	LuaObject *token = this;
+	for (std::string part : parts) {
+		token = &token->object[part];
+	}
+	return token;
+}
+#else
 LuaObject * LuaObject::get_token(std::string object_path) {
 	if (object_path == "")
 		return this;
@@ -351,6 +379,7 @@ LuaObject * LuaObject::get_token(std::string object_path) {
 	}
 	return token;
 }
+#endif
 
 int LuaObject::get_int(std::string name, int default_value) {
 	LuaObject *token = get_token(name);

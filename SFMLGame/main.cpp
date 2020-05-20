@@ -17,45 +17,17 @@ int main()
 {
 	try {
 		_game.init();
-#if true
+#if false
 		_game.start();
 #else
 
 	Lua lua(Path::CHARACTERS + "peter.lua");
-	LuaObject animation = lua.get_object("animation");
-
-	try {
-		std::string sprite_sheet = animation["basic"]["file"].get_string();
-		Log(sprite_sheet.c_str());
-	}
-	catch (LuaException &e) {
-		Log(e.what());
-	}
-
-	try {
-		auto *token = animation.get_token("basic");
-		std::string sprite_sheet = token->get_string("file");
-		Log(sprite_sheet.c_str());
-	}
-	catch (LuaException &e) {
-		Log(e.what());
-	}
-
-	try {
-		std::string sprite_sheet = animation.get_token("basic.file")->get_string();
-		Log(sprite_sheet.c_str());
-	}
-	catch (LuaException &e) {
-		Log(e.what());
-	}
-
-	try {
-		std::string sprite_sheet = animation.get_string("basic.file");
-		Log(sprite_sheet.c_str());
-	}
-	catch (LuaException &e) {
-		Log(e.what());
-	}
+	LuaObject object = lua.get_object("animation");
+	std::string sprite_sheet = object["basic"]["file"].get_string();
+	std::string sprite_sheet = object.get_token("basic")->get_string("file");
+	std::string sprite_sheet = object.get_token("basic")->get_token("file")->get_string();
+	std::string sprite_sheet = object.get_token("basic.file")->get_string();
+	std::string sprite_sheet = object.get_string("basic.file");
 
 	std::getchar();
 
