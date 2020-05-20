@@ -377,7 +377,7 @@ int LuaObject::get_int(std::string name) {
 	if (token != nullptr && token->type == NUMBER)
 		return (int)token->number;
 	else
-		throw LuaException("token \"" + name + "\"is not int");
+		throw LuaException("token \"" + name + "\" is not int");
 }
 
 float LuaObject::get_float(std::string name) {
@@ -385,7 +385,7 @@ float LuaObject::get_float(std::string name) {
 	if (token != nullptr && token->type == NUMBER)
 		return (float)token->number;
 	else
-		throw LuaException("token \"" + name + "\"is not float");
+		throw LuaException("token \"" + name + "\" is not float");
 }
 
 bool LuaObject::get_boolean(std::string name) {
@@ -393,7 +393,7 @@ bool LuaObject::get_boolean(std::string name) {
 	if (token != nullptr && token->type == BOOLEAN)
 		return token->boolean;
 	else
-		throw LuaException("token \"" + name + "\"is not boolean");
+		throw LuaException("token \"" + name + "\" is not boolean");
 }
 
 std::string LuaObject::get_string(std::string name) {
@@ -401,7 +401,7 @@ std::string LuaObject::get_string(std::string name) {
 	if (token != nullptr && token->type == STRING)
 		return token->string;
 	else
-		throw LuaException("token \"" + name + "\"is not string");
+		throw LuaException("token \"" + name + "\" is not string");
 }
 
 std::map<std::string, LuaObject> LuaObject::get_object(std::string name) {
@@ -409,7 +409,7 @@ std::map<std::string, LuaObject> LuaObject::get_object(std::string name) {
 	if (token != nullptr && token->type == OBJECT)
 		return token->object;
 	else
-		throw LuaException("token \"" + name + "\"is not object");
+		throw LuaException("token \"" + name + "\" is not object");
 }
 
 int LuaObject::size() const {

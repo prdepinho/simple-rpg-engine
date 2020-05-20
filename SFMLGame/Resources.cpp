@@ -64,6 +64,6 @@ void Resources::load_music() {
 		music->openFromFile(Path::MUSIC + name);
 		music->setLoop(true);
 		get().music_map[name] = music;
-		Log("music: %s", name.c_str());
+		// Log("music: %s", name.c_str());
 	}
 }

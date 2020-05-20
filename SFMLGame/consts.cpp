@@ -29,6 +29,7 @@
 	const std::string Path::SCRIPTS = "../scripts/";
 	const std::string Path::SCREENS = Path::CONFIG + "screens/";
 	const std::string Path::MAPS = "../maps/";
+	const std::string Path::CHARACTERS = "../character/";
 
 	const std::string Config::TEXTURES = Path::CONFIG + "textures.lua";
 	const std::string Config::SETTINGS = Path::CONFIG + "settings.lua";

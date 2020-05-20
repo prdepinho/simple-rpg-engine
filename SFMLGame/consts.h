@@ -38,6 +38,7 @@ public:
 	static const std::string SCRIPTS;
 	static const std::string SCREENS;
 	static const std::string MAPS;
+	static const std::string CHARACTERS;
 
 };
 

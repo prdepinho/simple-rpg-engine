@@ -21,10 +21,43 @@ int main()
 		_game.start();
 #else
 
-		auto *music = Resources::get_music("happy.wav");
-		music->play();
-		std::getchar();
-		music->stop();
+	Lua lua(Path::CHARACTERS + "peter.lua");
+	LuaObject animation = lua.get_object("animation");
+
+	try {
+		std::string sprite_sheet = animation["basic"]["file"].get_string();
+		Log(sprite_sheet.c_str());
+	}
+	catch (LuaException &e) {
+		Log(e.what());
+	}
+
+	try {
+		auto *token = animation.get_token("basic");
+		std::string sprite_sheet = token->get_string("file");
+		Log(sprite_sheet.c_str());
+	}
+	catch (LuaException &e) {
+		Log(e.what());
+	}
+
+	try {
+		std::string sprite_sheet = animation.get_token("basic.file")->get_string();
+		Log(sprite_sheet.c_str());
+	}
+	catch (LuaException &e) {
+		Log(e.what());
+	}
+
+	try {
+		std::string sprite_sheet = animation.get_string("basic.file");
+		Log(sprite_sheet.c_str());
+	}
+	catch (LuaException &e) {
+		Log(e.what());
+	}
+
+	std::getchar();
 
 #if false
 		{

@@ -35,7 +35,7 @@ public:
 	Character() : facing_left(true) {}
 	~Character() { }
 
-	void create(std::string type);
+	void create(std::string filename);
 	void set_animation(AnimationType type);
 
 	virtual void update(float elapsedTime) override {
