@@ -25,7 +25,7 @@ void GameScreen::create() {
 		characters = std::vector<Character>(total_characters);
 		for (int i = 0; i < total_characters; ++i) {
 			characters[i] = Character();
-			characters[i].create("boy");
+			characters[i].create("peter");
 			characters[i].set_animation(AnimationType::WALK);
 		}
 

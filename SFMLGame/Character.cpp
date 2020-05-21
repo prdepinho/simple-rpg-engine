@@ -1,82 +1,32 @@
 #include "Character.h"
 #include "Lua.h"
 
-#if true
-void Character::create(std::string type) {
-	Json json(Config::CHARACTERS);
-
-	int animation_index = json.get_int("characters/" + type + "/animation/index");
-	std::string animation_type = json.get_string("characters/" + type + "/animation/type");
-	std::string animation_file = json.get_string("animation_types/" + animation_type + "/file");
-	int sprite_height = json.get_int("animation_types/" + animation_type + "/size/height");
-	int sprite_width = json.get_int("animation_types/" + animation_type + "/size/width");
-	std::map<std::string, Json> animations_map = json.get_map("animation_types/" + animation_type + "/animations");
-
-	set_texture(Resources::get_texture(animation_file));
-
-	for (auto &pair : animations_map) {
-		std::string name = pair.first;
-		float fps = pair.second.get_float("fps");
-		std::vector<Json> frame_indices = pair.second.get_vector("frames");
-
-		std::vector<sf::VertexArray> frames(frame_indices.size());
-
-		for (unsigned int i = 0; i < frame_indices.size(); i++) {
-			int frame_index = frame_indices[i].get_int();
-
-			int texture_x = frame_index * sprite_width;
-			int texture_y = animation_index * sprite_height;
-
-			sf::VertexArray vertices;
-			vertices.setPrimitiveType(sf::Quads);
-			vertices.resize(4 * 1);
-			set_quad(&vertices[0], 0.f, 0.f,
-				(float) sprite_width, (float) sprite_height,
-				(float) texture_x, (float) texture_y,
-				(float) sprite_width, (float) sprite_height
-			);
-			frames[i] = vertices;
-		}
-
-		AnimationType type = animation_type_map[name];
-		animations[type] = Animation{ type, frames, fps };
-	}
-
-	set_dimensions(16, 16);
-	setOrigin(sf::Vector2f(8.f, 8.f));
-}
-#else 
-
 void Character::create(std::string filename) {
-	Lua lua(Path::CHARACTERS + filename);
+	Lua lua(Path::CHARACTERS + filename + ".lua");
 	LuaObject animation = lua.get_object("animation");
 
-	std::string sprite_sheet = animation["basic"]["file"].get_string();
-	// std::string sprite_sheet = animation.get_string("basic.file");
+	std::string sprite_sheet = animation.get_string("basic.file");
+	int sprite_height = animation.get_int("basic.size.height");
+	int sprite_width = animation.get_int("basic.size.width");
+	int origin_x = animation.get_int("coordinates.x");
+	int origin_y = animation.get_int("coordinates.y");
+	std::map<std::string, LuaObject> animation_map = animation.get_map("animations");
 
+	set_texture(Resources::get_texture(sprite_sheet));
 
-#if false
-	int animation_index = json.get_int("characters/" + type + "/animation/index");
-	std::string animation_type = json.get_string("characters/" + type + "/animation/type");
-	std::string animation_file = json.get_string("animation_types/" + animation_type + "/file");
-	int sprite_height = json.get_int("animation_types/" + animation_type + "/size/height");
-	int sprite_width = json.get_int("animation_types/" + animation_type + "/size/width");
-	std::map<std::string, Json> animations_map = json.get_map("animation_types/" + animation_type + "/animations");
-
-	set_texture(Resources::get_texture(animation_file));
-
-	for (auto &pair : animations_map) {
+	for (auto &pair : animation_map) {
 		std::string name = pair.first;
 		float fps = pair.second.get_float("fps");
-		std::vector<Json> frame_indices = pair.second.get_vector("frames");
+		LuaObject *frame_indices = pair.second.get_object("frames");
 
-		std::vector<sf::VertexArray> frames(frame_indices.size());
+		std::vector<sf::VertexArray> frames(frame_indices->size());
 
-		for (unsigned int i = 0; i < frame_indices.size(); i++) {
-			int frame_index = frame_indices[i].get_int();
+		int i = 0;
+		for (auto it = frame_indices->begin(); it != frame_indices->end(); ++it) {
+			int frame_index = it->second.get_int();
 
-			int texture_x = frame_index * sprite_width;
-			int texture_y = animation_index * sprite_height;
+			int texture_x = origin_x + sprite_width * frame_index;
+			int texture_y = origin_y;
 
 			sf::VertexArray vertices;
 			vertices.setPrimitiveType(sf::Quads);
@@ -86,18 +36,16 @@ void Character::create(std::string filename) {
 				(float) texture_x, (float) texture_y,
 				(float) sprite_width, (float) sprite_height
 			);
-			frames[i] = vertices;
+			frames[i++] = vertices;
 		}
 
 		AnimationType type = animation_type_map[name];
 		animations[type] = Animation{ type, frames, fps };
 	}
 
-	set_dimensions(16, 16);
-	setOrigin(sf::Vector2f(8.f, 8.f));
-#endif
+	set_dimensions(sprite_height, sprite_width);
+	setOrigin(sf::Vector2f((float) sprite_height / 2, (float) sprite_width / 2));
 }
-#endif
 
 void Character::set_animation(AnimationType type) {
 	Animation &animation = animations[type];

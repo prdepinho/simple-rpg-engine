@@ -21,7 +21,6 @@ int main()
 		_game.start();
 #else
 
-
 	std::getchar();
 
 #if false

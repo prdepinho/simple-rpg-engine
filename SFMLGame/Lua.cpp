@@ -408,7 +408,7 @@ std::string LuaObject::get_string(std::string name) {
 		throw LuaException("token \"" + name + "\" is not string");
 }
 
-std::map<std::string, LuaObject> LuaObject::get_object(std::string name) {
+std::map<std::string, LuaObject> LuaObject::get_map(std::string name) {
 	LuaObject *token = get_token(name);
 	if (token != nullptr && token->type == OBJECT)
 		return token->object;
@@ -416,7 +416,7 @@ std::map<std::string, LuaObject> LuaObject::get_object(std::string name) {
 		throw LuaException("token \"" + name + "\" is not object");
 }
 
-int LuaObject::size() const {
+size_t LuaObject::size() const {
 	if (type == OBJECT) {
 		return object.size();
 	}

@@ -12,7 +12,7 @@ local defaults = {
 animations.types = {
   human_male = {
     basic = defaults,
-    index = {
+    coordinates = {
       x = 0,
       y = 0
     },
