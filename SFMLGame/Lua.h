@@ -81,8 +81,8 @@ the root of a Lua file by calling get_object from the Lua class. This will
 parse the lua file and create the object. Then, you may obtain its value by
 calling get_* function, like get_int, get_float, get_boolean, get_string or
 get_map. The function get_map returns an std::map and represents a Lua map or
-array. The mapping is between a string key and a LuaObject object. You can move
-in the map tree in a number of ways illustrated below.
+array. The mapping is between a string key and a Lua object. You can navigate
+in the map tree in a number of ways illustrated in the following example.
 
 Suppose you have a peter.lua file which constains the map below and you want to
 obtain the value human_male.basic.file:
@@ -103,26 +103,41 @@ obtain the value human_male.basic.file:
 }
 ```
 
-First create a Lua file and get the object for human_male.
+First open the Lua file and get the Lua object for human_male.
 
 ```
 Lua lua(Path::CHARACTERS + "peter.lua");
 LuaObject object = lua.get_object("human_male");
 ```
 
-Then you may obtain the value by using any of the following methods:
+Then you may obtain the desired value by using any of the following methods:
+
+```
+std::string file = object.get_token("basic")->get_string("file");
+std::string file = object.get_token("basic")->get_token("file")->get_string();
+```
+
+If the Lua object is a map or an array, as a shortcut you can use the index
+operator ([]) to access its elements, so the folowing line can be used as
+well.
 
 ```
 std::string file = object["basic"]["file"].get_string();
-std::string file = object.get_token("basic")->get_string("file");
-std::string file = object.get_token("basic")->get_token("file")->get_string();
-std::string file = object.get_token("basic.file")->get_string();
-std::string file = object.get_string("basic.file");
 ```
 
-This works similarly for other data types.
+Another shortcut is to write the path in the map umtil you reach the point you
+want, separating nodes with a dot, as illustrated by the following lines.
+
+```
+std::string file = object.get_string("basic.file");
+std::string file = object.get_token("basic.file")->get_string();
+```
+
+These functions show how to retreave a string from a Lua object. Mutatis
+mutandis they work the same for other data types.
 
 */
+
 class LuaObject {
 	friend class Lua;
 public:

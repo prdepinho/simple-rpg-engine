@@ -17,17 +17,10 @@ int main()
 {
 	try {
 		_game.init();
-#if false
+#if true
 		_game.start();
 #else
 
-	Lua lua(Path::CHARACTERS + "peter.lua");
-	LuaObject object = lua.get_object("animation");
-	std::string sprite_sheet = object["basic"]["file"].get_string();
-	std::string sprite_sheet = object.get_token("basic")->get_string("file");
-	std::string sprite_sheet = object.get_token("basic")->get_token("file")->get_string();
-	std::string sprite_sheet = object.get_token("basic.file")->get_string();
-	std::string sprite_sheet = object.get_string("basic.file");
 
 	std::getchar();
 

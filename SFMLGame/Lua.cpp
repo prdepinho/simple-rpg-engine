@@ -345,7 +345,6 @@ static std::vector<std::string> splitstr(std::string str, char separator) {
 	return parts;
 }
 
-#if true
 LuaObject * LuaObject::get_token(std::string object_path) {
 	if (object_path == "")
 		return this;
@@ -356,30 +355,6 @@ LuaObject * LuaObject::get_token(std::string object_path) {
 	}
 	return token;
 }
-#else
-LuaObject * LuaObject::get_token(std::string object_path) {
-	if (object_path == "")
-		return this;
-	std::string path = object_path + ".";
-	std::string split = "";
-	LuaObject *token = this;
-
-	for (unsigned int i = 0; i < path.size(); i++) {
-		char c = path[i];
-		if (c == '.') {
-			token = &object[split];
-			if (token == nullptr) {
-				return nullptr;
-			}
-			split = "";
-		}
-		else {
-			split += c;
-		}
-	}
-	return token;
-}
-#endif
 
 int LuaObject::get_int(std::string name, int default_value) {
 	LuaObject *token = get_token(name);
