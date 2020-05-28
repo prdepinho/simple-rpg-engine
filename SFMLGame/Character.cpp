@@ -1,9 +1,14 @@
 #include "Character.h"
 #include "Lua.h"
 
+Character::~Character() {
+	if (script != nullptr)
+		delete script;
+}
+
 void Character::create(std::string filename) {
-	Lua lua(Path::CHARACTERS + filename + ".lua");
-	LuaObject animation = lua.get_object("animation");
+	script = new Lua(Path::CHARACTERS + filename + ".lua");
+	LuaObject animation = script->get_object("animation");
 
 	std::string sprite_sheet = animation.get_string("basic.file");
 	int sprite_height = animation.get_int("basic.size.height");

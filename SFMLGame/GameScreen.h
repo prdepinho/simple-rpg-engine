@@ -37,15 +37,7 @@ public:
 	{ }
 
 
-	~GameScreen() { 
-		for (Effect *effect : effects)
-			delete effect;
-		effects.clear();
-
-		for (Action *action : actions)
-			delete action;
-		actions.clear();
-	}
+	~GameScreen();
 
 	virtual void create() override;
 	virtual void destroy() override;
@@ -56,7 +48,7 @@ public:
 
 	Tilemap &get_map() { return map; }
 	Character *get_player_character() { return player_character; }
-	std::vector<Character> get_characters() { return characters; }
+	std::vector<Character*> get_characters() { return characters; }
 
 public:
 	void load_map(std::string filename);
@@ -81,15 +73,18 @@ public:
 
 	void show_text_box(std::string text);
 
+	void clean_temporary_characters();
+	void add_character(Character *character, int tile_x, int tile_y);
+
 private:
 	bool block_input;
 
 	Tilemap map;
 
+	std::vector<Character*> characters;
 	Character *player_character;
 	bool player_busy;
 	sf::Keyboard::Key player_input;
-	std::vector<Character> characters;
 
 	std::vector<Effect*> effects;
 	std::vector<Action*> actions;

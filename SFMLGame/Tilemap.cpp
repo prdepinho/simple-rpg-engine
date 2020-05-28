@@ -50,6 +50,11 @@ bool TilemapLayer::load(
 	return true;
 }
 
+
+Tilemap::~Tilemap() {
+	delete script;
+}
+
 bool Tilemap::load_floor_layer (
 	sf::Texture * tileset, 
 	sf::Vector2u tileSize, 
@@ -78,15 +83,16 @@ bool Tilemap::load_ceiling_layer (
 	return ceiling_layer.load(tileset, tileSize, tiles, width, height, layers);
 }
 
+sf::Vector2i Tilemap::get_tile_abs_coord(int pix_x, int pix_y) const {
+	return sf::Vector2i{ (int) (pix_x / 16), (int) (pix_y / 16) };
+}
+
 sf::Vector2i Tilemap::get_tile_coord(int pix_x, int pix_y) const {
 	return floor_layer.get_tile_coord(pix_x, pix_y);
 }
 
 sf::Vector2i TilemapLayer::get_tile_coord(int pix_x, int pix_y) const {
-	sf::Vector2i coord;
-	coord.x = (pix_x - get_x()) / 16;
-	coord.y = (pix_y - get_y()) / 16;
-	return coord;
+	return sf::Vector2i{ (int) ((pix_x - get_x()) / 16), (int) ((pix_y - get_y()) / 16) };
 }
 
 sf::Vector2f Tilemap::get_tile_pix_coords(int tile_x, int tile_y) {

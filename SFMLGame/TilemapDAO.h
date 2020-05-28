@@ -9,6 +9,8 @@
 #include <tmxlite/TileLayer.hpp>
 #include <tmxlite/ObjectGroup.hpp>
 
+class GameScreen;
+
 class TilemapDAOException : public std::exception {
 public:
 	TilemapDAOException(std::string msg) : std::exception(msg.c_str()) {}
@@ -28,5 +30,6 @@ public:
 class TiledTilemapDAO
 {
 public:
-	static void load_map(std::string map_filename, Tilemap &map);
+	static void load_map(GameScreen *game_screen, std::string map_filename, Tilemap &map);
+	static void load_characters(GameScreen *game_screen, std::string map_filename, Tilemap &map);
 };

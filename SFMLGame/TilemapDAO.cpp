@@ -112,7 +112,7 @@ bool TilemapDAO::backup(std::string filename) {
 
 
 
-void TiledTilemapDAO::load_map(std::string filename, Tilemap &map) {
+void TiledTilemapDAO::load_map(GameScreen *game_screen, std::string filename, Tilemap &map) {
 	tmx::Map tmx_map;
 	if (!tmx_map.load(Path::MAPS + filename + ".tmx")) {
 		throw TilemapDAOException("Could not load map [" + filename + "].");
@@ -267,15 +267,19 @@ void TiledTilemapDAO::load_map(std::string filename, Tilemap &map) {
 
 	// objects
 	for (auto &object : object_layer->getObjects()) {
-		int left = (int)std::floor(object.getAABB().left / 16);
-		int top = (int)std::floor(object.getAABB().top / 16);
-		int height = (int)std::ceil(object.getAABB().height / 16);
-		int width = (int)std::ceil(object.getAABB().width / 16);
-
-		for (int x = left; x < left + width; x++) {
-			for (int y = top; y < top + height; y++) {
-				map.get_tile(x, y).object_name = object.getName();
+		switch (object.getShape()) {
+		case tmx::Object::Shape::Rectangle: {
+				int left = (int)std::floor(object.getAABB().left / 16);
+				int top = (int)std::floor(object.getAABB().top / 16);
+				int height = (int)std::ceil(object.getAABB().height / 16);
+				int width = (int)std::ceil(object.getAABB().width / 16);
+				for (int x = left; x < left + width; x++) {
+					for (int y = top; y < top + height; y++) {
+						map.get_tile(x, y).object_name = object.getName();
+					}
+				}
 			}
+			break;
 		}
 	}
 
@@ -283,4 +287,54 @@ void TiledTilemapDAO::load_map(std::string filename, Tilemap &map) {
 	if (map.script != nullptr)
 		delete map.script;
 	map.script = new Lua(Path::MAPS + filename + ".lua");
+}
+
+void TiledTilemapDAO::load_characters(GameScreen *game_screen, std::string filename, Tilemap &map) {
+	tmx::Map tmx_map;
+	if (!tmx_map.load(Path::MAPS + filename + ".tmx")) {
+		throw TilemapDAOException("Could not load map [" + filename + "].");
+	}
+
+	const tmx::Tileset &tileset = tmx_map.getTilesets()[0];
+	tmx::ObjectGroup *object_layer = nullptr;
+	{
+		const auto& map_layers = tmx_map.getLayers();
+		for (const auto &layerptr : map_layers) {
+			if (layerptr->getName() == "objects") {
+				object_layer = &layerptr->getLayerAs<tmx::ObjectGroup>();
+			}
+		}
+		if (!object_layer)
+			throw TilemapDAOException("Layer objects not found");
+	}
+
+	// objects
+	for (auto &object : object_layer->getObjects()) {
+		switch (object.getShape()) {
+		case tmx::Object::Shape::Point: {
+
+				int x = object.getPosition().x;
+				int y = object.getPosition().y;
+				sf::Vector2i tile_coords = map.get_tile_abs_coord(x, y);
+				x = tile_coords.x;
+				y = tile_coords.y;
+
+				Log("Character: %s (%d, %d)",  object.getName().c_str(), x, y);
+
+				Character *character = new Character();
+				character->create(object.getName());
+				character->set_animation(AnimationType::WALK);
+				game_screen->add_character(character, x, y);
+
+		// characters.push_back(Character());
+		// Character &character = characters.back();
+		// character.create("boy");
+		// character.set_animation(AnimationType::WALK);
+		// put_character_on_tile(character, x, y);
+			}
+			break;
+		}
+		
+
+	}
 }

@@ -3,10 +3,11 @@
 #include <exception>
 #include <iostream>
 #include <map>
+#include <sstream>
 #include "lua5.3.5/lua.hpp"
-#include "Character.h"
 
 class Game;
+class Character;
 
 class LuaException : public std::exception {
 public: 

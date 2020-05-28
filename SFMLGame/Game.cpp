@@ -211,15 +211,15 @@ public:
 			lua_newtable(state);
 			{
 				int i = 0;
-				std::vector<Character> characters = screen->get_characters();
-				for (Character &character : characters) {
-					sf::Vector2i position = screen->character_position(character);
+				std::vector<Character*> characters = screen->get_characters();
+				for (Character *character : characters) {
+					sf::Vector2i position = screen->character_position(*character);
 
 					lua_pushnumber(state, ++i);
 					lua_newtable(state);
 					{
 						lua_pushliteral(state, "id");
-						lua_pushnumber(state, character.get_id());
+						lua_pushnumber(state, character->get_id());
 						lua_settable(state, -3);
 
 						lua_pushliteral(state, "position");

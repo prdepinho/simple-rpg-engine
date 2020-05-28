@@ -7,6 +7,7 @@
 #include "Json.h"
 #include "consts.h"
 #include "Resources.h"
+#include "Lua.h"
 
 
 class Action;
@@ -32,8 +33,8 @@ static std::map<std::string, AnimationType> animation_type_map = {
 
 class Character : public AnimatedEntity {
 public:
-	Character() : facing_left(true) {}
-	~Character() { }
+	Character(bool permanent=false) : facing_left(true), permanent(permanent) {}
+	~Character();
 
 	void create(std::string filename);
 	void set_animation(AnimationType type);
@@ -45,16 +46,24 @@ public:
 	void face_left();
 	void face_right();
 
+	bool is_permanent() const { return permanent; }
+	void set_permanent(bool permanent) { this->permanent = permanent; }
+
 	int schedule_size() const;
 	void schedule_action(Action *action);
 	Action *next_action();
 	void clear_schedule();
 	std::queue<Action*> get_schedule() { return schedule; }
 
+	Lua *get_script() { return script; }
+
 private:
 	std::queue<Action*> schedule;
 
 	std::map<AnimationType, Animation> animations;
 	bool facing_left;
+	Lua *script=nullptr;
+
+	bool permanent;
 
 };

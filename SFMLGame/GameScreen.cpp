@@ -6,6 +6,19 @@
 #include "Game.h"
 #include <stack>
 
+GameScreen::~GameScreen() {
+	for (Effect *effect : effects)
+		delete effect;
+	effects.clear();
+
+	for (Action *action : actions)
+		delete action;
+	actions.clear();
+
+	for (Character *character : characters)
+		delete character;
+	characters.clear();
+}
 
 void GameScreen::create() {
 	Screen::create();
@@ -20,6 +33,7 @@ void GameScreen::create() {
 	}
 	
 	// create characters
+#if false
 	int total_characters = 1;
 	{
 		characters = std::vector<Character>(total_characters);
@@ -28,8 +42,16 @@ void GameScreen::create() {
 			characters[i].create("peter");
 			characters[i].set_animation(AnimationType::WALK);
 		}
+	}
+#endif
 
-		player_character = &characters.back();
+	// create player character
+	{
+		player_character = new Character();
+		player_character->create("peter");
+		player_character->set_animation(AnimationType::WALK);
+		player_character->set_permanent(true);
+		characters.push_back(player_character);
 	}
 
 	// load map
@@ -74,8 +96,8 @@ void GameScreen::destroy() {
 void GameScreen::draw() {
 	window->setView(game_view);
 	window->draw(map.get_floor_layer());
-	for (Character &character : characters) {
-		window->draw(character);
+	for (Character *character : characters) {
+		window->draw(*character);
 	}
 	window->draw(map.get_ceiling_layer());
 	window->setView(gui_view);
@@ -90,8 +112,8 @@ bool GameScreen::update(float elapsed_time) {
 	{
 		map.get_floor_layer().update(elapsed_time);
 		map.get_ceiling_layer().update(elapsed_time);
-		for (Character &character : characters) {
-			character.update(elapsed_time);
+		for (Character *character : characters) {
+			character->update(elapsed_time);
 		}
 	}
 
@@ -119,27 +141,39 @@ bool GameScreen::update(float elapsed_time) {
 			// Log("turn: %d", turn);
 
 			// execute scheduled actions.
-			for (Character &character : characters) {
-				if (&character != player_character) {
-					get_game()->get_lua()->on_turn(character);
+			for (Character *character : characters) {
+				if (character != player_character) {
+					try {
+						// get_game()->get_lua()->on_turn(character);
+						character->get_script()->on_turn(*character);
+					}
+					catch (LuaException &e) {
+						Log("Lua Error: %s", e.what());
+					}
 				}
-				Action *action = character.next_action();
+				Action *action = character->next_action();
 
-				if (&character != player_character) {
+				if (character != player_character) {
 					if (action == nullptr) {  // character is idle.
 #if false
 						get_game()->log("Character " + std::to_string(character.get_id()) + " is idle");
 #endif
-						get_game()->get_lua()->on_idle(character);
-						action = character.next_action();
+						try {
+							// get_game()->get_lua()->on_idle(character);
+							character->get_script()->on_idle(*character);
+						}
+						catch (LuaException &e) {
+							Log("ua Error: %s", e.what());
+						}
+						action = character->next_action();
 					}
 				}
 
 				if (action != nullptr) {
 
-					if (&character == player_character) {
-						// Log("Player action: %s", action->to_string().c_str());
-					}
+					// if (&character == player_character) {
+					// 	Log("Player action: %s", action->to_string().c_str());
+					// }
 
 					action->execute(this);
 
@@ -387,8 +421,27 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	}
 }
 
+void GameScreen::add_character(Character *character, int tile_x, int tile_y) {
+	characters.push_back(character);
+	put_character_on_tile(*character, tile_x, tile_y);
+}
+
+void GameScreen::clean_temporary_characters() {
+	for (auto it = characters.begin(); it != characters.end();) {
+		Character *character = *it;
+		if (!character->is_permanent()) {
+			it = characters.erase(it);
+			delete character;
+		}
+		else
+			++it;
+	}
+}
+
 void GameScreen::load_map(std::string filename) {
-	TiledTilemapDAO::load_map(filename, map);
+	clean_temporary_characters();
+	TiledTilemapDAO::load_map(this, filename, map);
+
 	int x = game->get_resolution_width() / 2 - map.get_width() / 2;
 	int y = game->get_resolution_height() / 2 -  map.get_height() / 2;
 	map.set_position(x, y);
@@ -415,6 +468,8 @@ void GameScreen::load_map(std::string filename) {
 		// character.set_animation(AnimationType::WALK);
 		// put_character_on_tile(character, x, y);
 	}
+
+	TiledTilemapDAO::load_characters(this, filename, map);
 
 }
 
@@ -579,19 +634,19 @@ bool GameScreen::can_move(Character &character, Direction direction) {
 }
 
 Character* GameScreen::get_character_on_tile(int tile_x, int tile_y) {
-	for (Character &character : characters) {
-		sf::Vector2i position = character_position(character);
+	for (Character *character : characters) {
+		sf::Vector2i position = character_position(*character);
 		if (position.x == tile_x && position.y == tile_y) {
-			return &character;
+			return character;
 		}
 	}
 	return nullptr;
 }
 
 Character *GameScreen::get_character_by_id(long id) {
-	for (Character &character : characters) {
-		if (character.get_id() == id) {
-			return &character;
+	for (Character *character : characters) {
+		if (character->get_id() == id) {
+			return character;
 		}
 	}
 	return nullptr;

@@ -4,6 +4,7 @@
 #include <string>
 #include "Entity.h"
 #include "Lua.h"
+#include "Character.h"
 
 class TilemapDAO;
 
@@ -41,7 +42,7 @@ class Tilemap {
 	friend class TiledTilemapDAO;
 public:
 	Tilemap() {}
-	~Tilemap() { delete script; }
+	~Tilemap();
 
 	bool load_floor_layer(sf::Texture *tileset, sf::Vector2u tileSize, const int *tiles, unsigned int width, unsigned int height, unsigned int layers=1);
 	bool load_ceiling_layer(sf::Texture *tileset, sf::Vector2u tileSize, const int *tiles, unsigned int width, unsigned int height, unsigned int layers=1);
@@ -49,8 +50,10 @@ public:
 	/// Return the tile data for a tile coordinate.
 	TileData &get_tile(int x, int y) { return tiles[y * width + x]; }
 
-	/// Return the tile coordinates based on pixel coordinates.
+	/// Return the tile coordinates based on pixel coordinates (from the mouse cursor, for example, since it accounts for the position of the screen).
 	sf::Vector2i get_tile_coord(int pix_x, int pix_y) const;
+	/// Return the tile coordinates based on pixel coordinates based on the absolute position of the point, taken the point (0, 0) as the top left corner of the map (from the Tiled map point, for example, that disregards screen position).
+	sf::Vector2i get_tile_abs_coord(int pix_x, int pixy) const;
 	/// Return the pixel coordinate of the tile of the given tile coordinates.
 	sf::Vector2f get_tile_pix_coords(int tile_x, int tile_y);
 
