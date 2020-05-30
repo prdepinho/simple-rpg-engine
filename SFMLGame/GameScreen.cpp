@@ -32,23 +32,10 @@ void GameScreen::create() {
 		turn_duration = 1 / json.get_float("turns_per_second", 1.f);
 	}
 	
-	// create characters
-#if false
-	int total_characters = 1;
-	{
-		characters = std::vector<Character>(total_characters);
-		for (int i = 0; i < total_characters; ++i) {
-			characters[i] = Character();
-			characters[i].create("peter");
-			characters[i].set_animation(AnimationType::WALK);
-		}
-	}
-#endif
-
 	// create player character
 	{
 		player_character = new Character();
-		player_character->create("peter");
+		player_character->create("witch");
 		player_character->set_animation(AnimationType::WALK);
 		player_character->set_permanent(true);
 		characters.push_back(player_character);
@@ -58,16 +45,6 @@ void GameScreen::create() {
 	{
 		std::string filename = json.get_string("map");
 		load_map(filename);
-	}
-
-	{
-#if false
-		for (int i = 0; i < total_characters; ++i) {
-			int x = i;
-			int y = i;
-			put_character_on_tile(characters[i], x, y);
-		}
-#endif
 	}
 
 	// debug console
@@ -461,12 +438,6 @@ void GameScreen::load_map(std::string filename) {
 		if (it->first == "player") {
 			put_character_on_tile(*player_character, x, y);
 		}
-
-		// characters.push_back(Character());
-		// Character &character = characters.back();
-		// character.create("boy");
-		// character.set_animation(AnimationType::WALK);
-		// put_character_on_tile(character, x, y);
 	}
 
 	TiledTilemapDAO::load_characters(this, filename, map);
