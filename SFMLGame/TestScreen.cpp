@@ -16,7 +16,7 @@ void TestScreen::create()
 	std::string character_type = "girl";
 	character = Character();
 	character.create(character_type);
-	character.set_animation(AnimationType::WALK);
+	character.loop_animation("walk");
 	character.set_position(tilemap.get_x() + 0, tilemap.get_y() + 60);
 	character.set_show_outline(true);
 
@@ -27,7 +27,7 @@ void TestScreen::create()
 		float y = (float) (std::rand() % mapSide * 16);
 		characters[i] = Character();
 		characters[i].create("boy");
-		characters[i].set_animation(AnimationType::WALK);
+		characters[i].loop_animation("walk");
 		characters[i].set_position(tilemap.get_x() + (int) x, tilemap.get_y() + (int) y);
 	}
 

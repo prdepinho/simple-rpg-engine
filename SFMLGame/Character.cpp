@@ -1,5 +1,8 @@
 #include "Character.h"
 #include "Lua.h"
+#include "Game.h"
+
+Character::Character(bool permanent) : facing_left(true), permanent(permanent), current_animation(""), looping_animation("") {}
 
 Character::~Character() {
 	if (script != nullptr)
@@ -44,17 +47,31 @@ void Character::create(std::string filename) {
 			frames[i++] = vertices;
 		}
 
-		AnimationType type = animation_type_map[name];
-		animations[type] = Animation{ type, frames, fps };
+		animations[name] = Animation{ name, frames, fps };
 	}
 
 	set_dimensions(sprite_height, sprite_width);
 	setOrigin(sf::Vector2f((float) sprite_height / 2, (float) sprite_width / 2));
 }
 
-void Character::set_animation(AnimationType type) {
+void Character::set_animation(std::string type, bool loop) {
+	current_animation = type;
+	if (loop) {
+		looping_animation = type;
+		set_cycle_callback([](AnimatedEntity*) {});
+	}
+	else {
+		set_cycle_callback([&](AnimatedEntity*) {
+			loop_animation(looping_animation);
+			Log("Cycle");
+		});
+	}
 	Animation &animation = animations[type];
 	AnimatedEntity::set_animation(animation.frames, animation.fps);
+}
+
+void Character::update(float elapsedTime) {
+	AnimatedEntity::update(elapsedTime);
 }
 
 void Character::face_left() {

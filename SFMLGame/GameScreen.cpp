@@ -36,7 +36,7 @@ void GameScreen::create() {
 	{
 		player_character = new Character();
 		player_character->create("witch");
-		player_character->set_animation(AnimationType::WALK);
+		player_character->loop_animation("walk");
 		player_character->set_permanent(true);
 		characters.push_back(player_character);
 	}
@@ -363,9 +363,34 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	case sf::Event::KeyReleased: 
 		switch (event.key.code) {
 		case sf::Keyboard::Num1:
-			schedule_character_wait(*player_character, 1);
+			player_character->loop_animation("stand");
 			break;
 		case sf::Keyboard::Num2:
+			player_character->loop_animation("walk");
+			break;
+		case sf::Keyboard::Num3:
+			player_character->start_animation("attack");
+			break;
+		case sf::Keyboard::Num4:
+			player_character->start_animation("use");
+			break;
+		case sf::Keyboard::Num5:
+			player_character->start_animation("cast");
+			break;
+		case sf::Keyboard::Num6:
+			player_character->start_animation("hurt");
+			break;
+		case sf::Keyboard::Num7:
+			player_character->loop_animation("down");
+			break;
+		case sf::Keyboard::Num8:
+			player_character->loop_animation("dead");
+			break;
+
+		case sf::Keyboard::Num9:
+			schedule_character_wait(*player_character, 1);
+			break;
+		case sf::Keyboard::Num0:
 			schedule_character_wait(*player_character, 2);
 			break;
 		case sf::Keyboard::Tilde:

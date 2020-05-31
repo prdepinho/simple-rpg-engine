@@ -13,35 +13,24 @@
 class Action;
 
 
-enum class AnimationType {
-	STAND,
-	WALK
-};
-
 class Animation {
 public:
-	AnimationType type;
+	std::string type;
 	std::vector<sf::VertexArray> frames;
 	float fps;
 };
 
-static std::map<std::string, AnimationType> animation_type_map = {
-	{"stand", AnimationType::STAND},
-	{"walk", AnimationType::WALK}
-};
-
-
 class Character : public AnimatedEntity {
 public:
-	Character(bool permanent=false) : facing_left(true), permanent(permanent) {}
+	Character(bool permanent=false);
 	~Character();
 
 	void create(std::string filename);
-	void set_animation(AnimationType type);
+	virtual void update(float elapsedTime) override;
 
-	virtual void update(float elapsedTime) override {
-		AnimatedEntity::update(elapsedTime);
-	}
+	void set_animation(std::string type, bool loop);
+	void start_animation(std::string type) { set_animation(type, false); }
+	void loop_animation(std::string type) { set_animation(type, true); }
 
 	void face_left();
 	void face_right();
@@ -60,7 +49,10 @@ public:
 private:
 	std::queue<Action*> schedule;
 
-	std::map<AnimationType, Animation> animations;
+	std::string current_animation;
+	std::string looping_animation;
+
+	std::map<std::string, Animation> animations;
 	bool facing_left;
 	Lua *script=nullptr;
 

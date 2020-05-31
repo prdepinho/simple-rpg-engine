@@ -362,9 +362,6 @@
     <ClInclude Include="Label.h">
       <Filter>gui</Filter>
     </ClInclude>
-    <ClInclude Include="Callback.h">
-      <Filter>gui</Filter>
-    </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>gui</Filter>
     </ClInclude>
@@ -429,6 +426,9 @@
       <Filter>pugixml</Filter>
     </ClInclude>
     <ClInclude Include="TextBox.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="Callback.h">
       <Filter>gui</Filter>
     </ClInclude>
   </ItemGroup>

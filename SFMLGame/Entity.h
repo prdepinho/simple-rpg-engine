@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <functional>
 
 /// Base class for all printable and updatable objects.
 /// The child class should define its vertices and its texture.
@@ -75,10 +76,14 @@ public:
 	virtual void update(float elapsedTime);
 	void set_animation(std::vector<sf::VertexArray> animation, float fps);
 
+	void set_cycle_callback(std::function<void(AnimatedEntity*)> callback) { this->callback = callback; }
+
 protected:
 	std::vector<sf::VertexArray> frames;
 	unsigned int frame;
 	float seconds_per_frame;
+
+	std::function<void(AnimatedEntity*)> callback;
 
 private:
 	float count;

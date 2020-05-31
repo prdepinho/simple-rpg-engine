@@ -61,12 +61,14 @@ void Entity::updateOutline() {
 
 
 
-AnimatedEntity::AnimatedEntity() : Entity(), count(0), frame(0) {}
+AnimatedEntity::AnimatedEntity() : Entity(), count(0), frame(0), callback([](AnimatedEntity*) {}) {}
 
 void AnimatedEntity::update(float elapsedTime) {
 	if ((count += elapsedTime) >= seconds_per_frame) {
 		count = 0.f;
-		(++frame) %= frames.size();
+		++frame %= frames.size();
+		if (frame == 0)
+			callback(this);
 		vertices = frames[frame];
 	}
 }
@@ -75,6 +77,7 @@ void AnimatedEntity::set_animation(std::vector<sf::VertexArray> animation, float
 	frames = animation;
 	vertices = animation[0];
 	frame = 0;
+	count = 0.f;
 	seconds_per_frame = 1 / fps;
 }
 

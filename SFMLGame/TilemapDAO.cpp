@@ -323,14 +323,8 @@ void TiledTilemapDAO::load_characters(GameScreen *game_screen, std::string filen
 
 				Character *character = new Character();
 				character->create(object.getName());
-				character->set_animation(AnimationType::WALK);
+				character->loop_animation("walk");
 				game_screen->add_character(character, x, y);
-
-		// characters.push_back(Character());
-		// Character &character = characters.back();
-		// character.create("boy");
-		// character.set_animation(AnimationType::WALK);
-		// put_character_on_tile(character, x, y);
 			}
 			break;
 		}
