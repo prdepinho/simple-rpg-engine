@@ -35,7 +35,7 @@ void GameScreen::create() {
 	// create player character
 	{
 		player_character = new Character();
-		player_character->create("witch");
+		player_character->create("ranger");
 		player_character->loop_animation("walk");
 		player_character->set_permanent(true);
 		characters.push_back(player_character);

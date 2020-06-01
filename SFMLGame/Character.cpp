@@ -63,7 +63,6 @@ void Character::set_animation(std::string type, bool loop) {
 	else {
 		set_cycle_callback([&](AnimatedEntity*) {
 			loop_animation(looping_animation);
-			Log("Cycle");
 		});
 	}
 	Animation &animation = animations[type];

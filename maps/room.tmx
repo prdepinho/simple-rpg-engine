@@ -79,7 +79,7 @@
 2,2,2,2,0,2,2,2
 </data>
  </layer>
- <objectgroup id="5" name="objects" visible="0">
+ <objectgroup id="5" name="objects">
   <object id="10" name="door" x="65" y="113.917" width="12.75" height="11.5833"/>
   <object id="11" name="door" x="1.75" y="50.25" width="11" height="12"/>
   <object id="12" name="north_door" x="66.25" y="18.25" width="11.25" height="11.75"/>
@@ -87,10 +87,10 @@
   <object id="14" name="empty_chest" x="98.25" y="33.5" width="12" height="12"/>
   <object id="15" name="step_floor" x="18.25" y="67.5" width="90" height="11.5"/>
   <object id="16" name="player_position" x="65" y="82" width="13" height="11.5"/>
-  <object id="22" name="peter" x="36.75" y="89.5">
+  <object id="22" name="ranger" x="36.75" y="89.5">
    <point/>
   </object>
-  <object id="23" name="mary" x="86" y="61.75">
+  <object id="23" name="witch" x="86" y="61.75">
    <point/>
   </object>
  </objectgroup>

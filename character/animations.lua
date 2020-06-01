@@ -68,6 +68,14 @@ animations.types = {
       y = 16 * 2
     },
     animations = basic_animation
+  },
+  ranger = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 3
+    },
+    animations = basic_animation
   }
 }
 
