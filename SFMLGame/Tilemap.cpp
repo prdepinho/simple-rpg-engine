@@ -1,5 +1,54 @@
 #include "Tilemap.h"
 
+void FogOfWar::setup(
+	sf::Vector2u tileSize, 
+	unsigned int width,
+	unsigned int height
+) {
+	this->width = width;
+	this->height = height;
+
+	vertices = sf::VertexArray();
+	vertices.setPrimitiveType(sf::Quads);
+	vertices.resize(width * height * 4);
+
+	for (unsigned int x = 0; x < width; ++x) {
+		for (unsigned int y = 0; y < height; ++y) {
+			sf::Vertex *quad = &vertices[(x + (y * width)) * 4];
+			quad[0].position = sf::Vector2f((float)(x * tileSize.x), (float)(y * tileSize.y));
+			quad[1].position = sf::Vector2f((float)((x + 1) * tileSize.x), (float)(y * tileSize.y));
+			quad[2].position = sf::Vector2f((float)((x + 1) * tileSize.x), (float)((y + 1) * tileSize.y));
+			quad[3].position = sf::Vector2f((float)(x * tileSize.x), (float)((y + 1) * tileSize.y));
+
+			quad[0].color = sf::Color::Black;
+			quad[1].color = sf::Color::Black;
+			quad[2].color = sf::Color::Black;
+			quad[3].color = sf::Color::Black;
+		}
+	}
+
+	set_dimensions(width * 16, height * 16);
+}
+
+void FogOfWar::update_fog(std::vector<sf::Vector2i> clear_tiles) {
+	for (unsigned int x = 0; x < width; ++x) {
+		for (unsigned int y = 0; y < height; ++y) {
+			sf::Vertex *quad = &vertices[(x + (y * width)) * 4];
+			quad[0].color = sf::Color::Black;
+			quad[1].color = sf::Color::Black;
+			quad[2].color = sf::Color::Black;
+			quad[3].color = sf::Color::Black;
+		}
+	}
+	for (sf::Vector2i tile : clear_tiles) {
+		sf::Vertex *quad = &vertices[(tile.x + (tile.y * width)) * 4];
+		quad[0].color = sf::Color::Transparent;
+		quad[1].color = sf::Color::Transparent;
+		quad[2].color = sf::Color::Transparent;
+		quad[3].color = sf::Color::Transparent;
+	}
+}
+
 bool TilemapLayer::load(
 	sf::Texture * tileset, 
 	sf::Vector2u tileSize, 
@@ -81,6 +130,10 @@ bool Tilemap::load_ceiling_layer (
 	this->height = height;
 	this->tiles = std::vector<TileData>(width * height);
 	return ceiling_layer.load(tileset, tileSize, tiles, width, height, layers);
+}
+
+void Tilemap::setup_fog_of_war(sf::Vector2u tile_size, unsigned int width, unsigned int height) {
+	fog_of_war.setup(tile_size, width, height);
 }
 
 sf::Vector2i Tilemap::get_tile_abs_coord(int pix_x, int pix_y) const {

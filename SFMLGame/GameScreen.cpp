@@ -77,6 +77,7 @@ void GameScreen::draw() {
 		window->draw(*character);
 	}
 	window->draw(map.get_ceiling_layer());
+	window->draw(map.get_fog_of_war());
 	window->setView(gui_view);
 	Screen::draw();
 
@@ -91,7 +92,10 @@ bool GameScreen::update(float elapsed_time) {
 		map.get_ceiling_layer().update(elapsed_time);
 		for (Character *character : characters) {
 			character->update(elapsed_time);
+			update_field_of_vision(character);
 		}
+		map.get_fog_of_war().update(elapsed_time);
+		map.get_fog_of_war().update_fog(player_character->get_field_of_vision());
 	}
 
 	// effect handling
@@ -111,7 +115,7 @@ bool GameScreen::update(float elapsed_time) {
 
 	// Turn handling. Wait player input to process the next turn.
 	if ((turn_count += elapsed_time) >= turn_duration) {
-		if (player_character->schedule_size() > 0){
+		if (player_character->schedule_size() > 0) {
 			++turn;
 			turn_count = 0.f;
 
@@ -179,6 +183,22 @@ void GameScreen::poll_events(float elapsed_time) {
 		// constant input handler
 
 		if (!player_busy) {
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)) {
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+					game_view.move(sf::Vector2f{0.f, -2.f});
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+					game_view.move(sf::Vector2f{0.f, +2.f});
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+					game_view.move(sf::Vector2f{-2.f, 0.f});
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+					game_view.move(sf::Vector2f{+2.f, 0.f});
+				} 
+			}
+			else  // yeah 
+
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
 				if (can_move(*player_character, Direction::UP)) {
 					player_character->clear_schedule();
@@ -448,6 +468,8 @@ void GameScreen::load_map(std::string filename) {
 	int y = game->get_resolution_height() / 2 -  map.get_height() / 2;
 	map.set_position(x, y);
 	map.set_show_outline(true);
+	map.get_fog_of_war().set_position(x, y);
+	map.get_fog_of_war().set_show_outline(true);
 
 	auto character_list = map.get_script()->get_object("characters").get_map();
 	int total_characters = character_list.size();
@@ -512,7 +534,8 @@ void GameScreen::schedule_character_interaction(Character &character, int tile_x
 
 void GameScreen::move_character(Character &character, Direction direction) {
 	try {
-		sf::Vector2i position = character_position(*player_character);
+		sf::Vector2i position = character_position(character);
+		Log("move_character: %d (%d, %d)", character.get_id(), position.x, position.y);
 		switch (direction) {
 		case Direction::UP: position.y--; break;
 		case Direction::DOWN: position.y++; break;
@@ -552,6 +575,16 @@ void GameScreen::move_character(Character &character, Direction direction) {
 	// non-player character
 	else {
 		Effect *effect = new MoveEffect(&character, direction, 16 / turn_duration);
+		effect->set_on_end([&]() {
+			try {
+				sf::Vector2i position = character_position(character);
+				TileData tile = map.get_tile(position.x, position.y);
+				map.get_script()->call_event(tile.object_name, "step_on", position.x, position.y);
+			}
+			catch (LuaException &e) {
+				// Log("Lua Error: %s", e.what());
+			}
+		});
 		effects.push_back(effect);
 	}
 }
@@ -576,8 +609,6 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 	auto pos = character_position(character);
 
 	if (std::abs(pos.x - tile_x) <= 1 && std::abs(pos.y - tile_y) <= 1) {
-		// map.get_script()->on_interact(character, tile_x, tile_y);
-
 		if (map.in_tile_bounds(tile_x, tile_y)) {
 			TileData tile = map.get_tile(tile_x, tile_y);
 			try {
@@ -654,4 +685,10 @@ void GameScreen::show_text_box(std::string text) {
 		block_input = false;
 		return true;
 	});
+}
+
+void GameScreen::update_field_of_vision(Character *character) {
+	std::vector<sf::Vector2i> fov;
+	fov.push_back(character_position(*character));
+	character->set_field_of_vision(fov);
 }

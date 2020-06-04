@@ -451,6 +451,14 @@ public:
 		return 1;
 	}
 
+	static int sfml_start_animation(lua_State *state) {
+
+	}
+
+	static int sfml_loop_animation(lua_State *state) {
+
+	}
+
 };
 
 void register_lua_accessible_functions(Lua &lua)

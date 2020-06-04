@@ -8,10 +8,10 @@ animation = animations.types.ranger
 
 
 function on_turn(id)
-  print("Ranger: on_turn()")
+  local position = sfml_get_character_position(id)
+  print('ranger position: x: ' .. tostring(position.x) .. ', y: ' .. tostring(position.y))
 end
 
 function on_idle(id)
-  print("Ranger: on_idle()")
   common.idle_walk(id)
 end

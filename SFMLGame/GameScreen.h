@@ -75,6 +75,7 @@ public:
 
 	void clean_temporary_characters();
 	void add_character(Character *character, int tile_x, int tile_y);
+	void update_field_of_vision(Character *character);
 
 private:
 	bool block_input;

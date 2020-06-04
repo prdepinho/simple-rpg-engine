@@ -182,6 +182,7 @@ void TiledTilemapDAO::load_map(GameScreen *game_screen, std::string filename, Ti
 	map = Tilemap();
 	map.load_floor_layer(Resources::get_texture("tileset"), sf::Vector2u(16, 16), tiles.data(), width, height, floor_layers);
 	map.load_ceiling_layer(Resources::get_texture("tileset"), sf::Vector2u(16, 16), tiles.data(), width, height, ceiling_layers);
+	map.setup_fog_of_war(sf::Vector2u(16, 16), width, height);
 	
 	auto &floor_map = map.get_floor_layer();
 	auto &ceiling_map = map.get_ceiling_layer();

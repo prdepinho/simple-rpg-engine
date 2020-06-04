@@ -37,6 +37,20 @@ private:
 	int height;
 };
 
+class FogOfWar : public Entity {
+public:
+	void setup(
+		sf::Vector2u tileSize, 
+		unsigned int width,
+		unsigned int height
+	);
+	void update_fog(std::vector<sf::Vector2i> clear_tiles);
+
+private:
+	int width;
+	int height;
+};
+
 class Tilemap {
 	friend class TilemapDAO;
 	friend class TiledTilemapDAO;
@@ -46,6 +60,7 @@ public:
 
 	bool load_floor_layer(sf::Texture *tileset, sf::Vector2u tileSize, const int *tiles, unsigned int width, unsigned int height, unsigned int layers=1);
 	bool load_ceiling_layer(sf::Texture *tileset, sf::Vector2u tileSize, const int *tiles, unsigned int width, unsigned int height, unsigned int layers=1);
+	void setup_fog_of_war(sf::Vector2u tile_size, unsigned int width, unsigned int height);
 
 	/// Return the tile data for a tile coordinate.
 	TileData &get_tile(int x, int y) { return tiles[y * width + x]; }
@@ -80,6 +95,7 @@ public:
 
 	TilemapLayer &get_floor_layer() { return floor_layer; }
 	TilemapLayer &get_ceiling_layer() { return ceiling_layer; }
+	FogOfWar &get_fog_of_war() { return fog_of_war; }
 
 private:
 	int width;
@@ -88,5 +104,6 @@ private:
 	Lua *script=nullptr;
 	TilemapLayer floor_layer;
 	TilemapLayer ceiling_layer;
+	FogOfWar fog_of_war;
 };
 

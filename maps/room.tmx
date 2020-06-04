@@ -90,8 +90,5 @@
   <object id="22" name="ranger" x="36.75" y="89.5">
    <point/>
   </object>
-  <object id="23" name="witch" x="86" y="61.75">
-   <point/>
-  </object>
  </objectgroup>
 </map>
