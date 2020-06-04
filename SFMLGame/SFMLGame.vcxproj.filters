@@ -255,6 +255,9 @@
     <ClCompile Include="TextBox.cpp">
       <Filter>gui</Filter>
     </ClCompile>
+    <ClCompile Include="FieldOfVision.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tilemap.h">
@@ -430,6 +433,9 @@
     </ClInclude>
     <ClInclude Include="Callback.h">
       <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="FieldOfVision.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

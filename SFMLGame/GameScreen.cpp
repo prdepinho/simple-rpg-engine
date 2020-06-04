@@ -5,6 +5,7 @@
 #include "AStar.h"
 #include "Game.h"
 #include <stack>
+#include "FieldOfVision.h"
 
 GameScreen::~GameScreen() {
 	for (Effect *effect : effects)
@@ -59,6 +60,9 @@ void GameScreen::create() {
 		debug_console.hide();
 	}
 
+	// update fog of war
+	map.get_fog_of_war().update_fog(player_character->get_field_of_vision()); // doesn't have to be here. It only update once a turn.
+
 	select(container);
 
 	game_view.setSize(sf::Vector2f((float) game->get_resolution_width(), (float) game->get_resolution_height()));
@@ -92,10 +96,8 @@ bool GameScreen::update(float elapsed_time) {
 		map.get_ceiling_layer().update(elapsed_time);
 		for (Character *character : characters) {
 			character->update(elapsed_time);
-			update_field_of_vision(character);
 		}
 		map.get_fog_of_war().update(elapsed_time);
-		map.get_fog_of_war().update_fog(player_character->get_field_of_vision());
 	}
 
 	// effect handling
@@ -168,6 +170,7 @@ bool GameScreen::update(float elapsed_time) {
 
 				}
 			}
+
 		}
 
 	}
@@ -498,6 +501,16 @@ void GameScreen::center_map_on_character(Character &character) {
 void GameScreen::put_character_on_tile(Character & character, int x, int y) {
 	auto tile_coords = map.get_tile_pix_coords(x, y);
 	character.set_position(map.get_x() + (int) tile_coords.x + 8, map.get_y() + (int) tile_coords.y + 8);
+
+	if (&character == player_character) {
+		// update camera
+		if (camera_follow) {
+			game_view.setCenter(player_character->getPosition());
+		}
+		update_field_of_vision(&character);
+		// update fog of war
+		map.get_fog_of_war().update_fog(player_character->get_field_of_vision());
+	}
 }
 
 
@@ -553,9 +566,11 @@ void GameScreen::move_character(Character &character, Direction direction) {
 	if (&character == player_character) {
 		Effect *effect = new MoveEffect(player_character, direction, 16  / turn_duration);
 		effect->set_on_update([&]() {
+			// update camera
 			if (camera_follow) {
 				game_view.setCenter(player_character->getPosition());
 			}
+
 		});
 		effect->set_on_end([&]() {
 			try {
@@ -567,6 +582,9 @@ void GameScreen::move_character(Character &character, Direction direction) {
 				// Log("Lua Error: %s", e.what());
 			}
 			player_busy = false;
+			update_field_of_vision(player_character);
+			// update fog of war
+			map.get_fog_of_war().update_fog(player_character->get_field_of_vision()); 
 		});
 		effects.push_back(effect);
 		player_busy = true;
@@ -584,6 +602,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 			catch (LuaException &e) {
 				// Log("Lua Error: %s", e.what());
 			}
+			update_field_of_vision(&character);
 		});
 		effects.push_back(effect);
 	}
@@ -689,6 +708,6 @@ void GameScreen::show_text_box(std::string text) {
 
 void GameScreen::update_field_of_vision(Character *character) {
 	std::vector<sf::Vector2i> fov;
-	fov.push_back(character_position(*character));
+	fov = generate_field_of_vision(map, character_position(*character), 7);
 	character->set_field_of_vision(fov);
 }
