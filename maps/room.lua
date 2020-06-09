@@ -32,13 +32,14 @@ function step_on_floor(x, y) end
 
 
 
-function empty_chest(event, x, y)
+function empty_chest(event, x, y, id)
   if event == 'interact' then
     if not has_key then
       sfml_text_box("Got key.");
       sfml_play_sound("plim.wav")
       sfml_change_floor_texture(x, y, 2, 4, 6)
       has_key = true
+      sfml_start_animation(id, "use")
     else
       sfml_play_sound("boop.wav")
     end
@@ -48,7 +49,7 @@ end
 
 
 
-function north_door(event, x, y)
+function north_door(event, x, y, id)
   door(event, x, y)
   if event == 'interact' then
     if door_locked then
@@ -57,6 +58,7 @@ function north_door(event, x, y)
         sfml_play_sound("plim.wav")
         door_locked = false
         sfml_set_obstacle(false, x, y)
+        sfml_start_animation(id, "use")
       else
         sfml_text_box("The door is loked.")
         sfml_play_sound("boop.wav")

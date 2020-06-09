@@ -2,6 +2,7 @@
 #include "Resources.h"
 #include "Json.h"
 #include "Lua.h"
+#include "FieldOfVision.h"
 
 Game::Game() : screen(nullptr), to_change_screen(nullptr) {
 }
@@ -452,17 +453,137 @@ public:
 	}
 
 	static int sfml_start_animation(lua_State *state) {
-
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		int id = (int)lua_tointeger(state, -2);
+		std::string type = lua_tostring(state, -1);
+		Character *character = screen->get_character_by_id(id);
+		character->start_animation(type);
+		return 1;
 	}
 
 	static int sfml_loop_animation(lua_State *state) {
-
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		int id = (int)lua_tointeger(state, -2);
+		std::string type = lua_tostring(state, -1);
+		Character *character = screen->get_character_by_id(id);
+		character->loop_animation(type);
+		return 1;
 	}
 
+	static int sfml_get_field_of_vision(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		int id = (int) lua_tointeger(state, -1);
+		Character *character = screen->get_character_by_id(id);
+		auto fov = generate_field_of_vision(screen->get_map(), screen->character_position(*character), 5);
+
+
+		lua_newtable(state);
+		for (int i = 0; i < fov.size(); i++)
+		{
+			auto point = fov[i];
+			lua_newtable(state);
+			{
+				lua_pushliteral(state, "x");
+				lua_pushnumber(state, point.x);
+				lua_settable(state, -3);
+
+				lua_pushliteral(state, "y");
+				lua_pushnumber(state, point.y);
+				lua_settable(state, -3);
+			}
+			lua_rawseti(state, -2, i + 1);
+		}
+		return 1;
+	}
+
+	static int sfml_test(lua_State *state) {
+
+		// two ways of sending an array of points.
+#if false
+
+		// send as a map
+
+		std::vector<sf::Vector2i> points = {
+			{2, 3}, {5, 5}, {5, 7}, {4, 9}
+		};
+		lua_newtable(state);
+		{
+			for (int i = 0; i < points.size(); i++) {
+				sf::Vector2i &point = points[i];
+
+				lua_pushinteger(state, i + 1);
+				lua_newtable(state);
+				{
+					lua_pushliteral(state, "x");
+					lua_pushnumber(state, point.x);
+					lua_settable(state, -3);
+
+					lua_pushliteral(state, "y");
+					lua_pushnumber(state, point.y);
+					lua_settable(state, -3);
+				}
+				lua_settable(state, -3);
+				// lua_rawseti(state, -2, i + 1);
+			}
+		}
+
+#else
+
+		// send as an array
+
+		std::vector<sf::Vector2i> points = {
+			{2, 3}, {5, 5}, {5, 7}, {4, 9}
+		};
+		lua_newtable(state);
+		{
+			for (int i = 0; i < points.size(); i++) {
+				sf::Vector2i &point = points[i];
+
+				// lua_pushinteger(state, i + 1);
+				lua_newtable(state);
+				{
+					lua_pushliteral(state, "x");
+					lua_pushnumber(state, point.x);
+					lua_settable(state, -3);
+
+					lua_pushliteral(state, "y");
+					lua_pushnumber(state, point.y);
+					lua_settable(state, -3);
+				}
+				// lua_settable(state, -3);
+				lua_rawseti(state, -2, i + 1);
+			}
+		}
+#endif
+
+		return 1;
+	}
+
+	static int sfml_get_idle_walk_destination(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		int id = (int) lua_tointeger(state, -3);
+		Character *character = screen->get_character_by_id(id);
+		auto fov = generate_field_of_vision(screen->get_map(), screen->character_position(*character), 5);
+		auto point = fov[std::rand() % fov.size()];
+
+		lua_newtable(state);
+		{
+			lua_pushliteral(state, "x");
+			lua_pushnumber(state, point.x);
+			lua_settable(state, -3);
+
+			lua_pushliteral(state, "y");
+			lua_pushnumber(state, point.y);
+			lua_settable(state, -3);
+		}
+		return 1;
+	}
 };
 
 void register_lua_accessible_functions(Lua &lua)
 {
+	lua_register(lua.get_state(), "sfml_test", LuaFunction::sfml_test);
+
 	lua_register(lua.get_state(), "sfml_game_start", LuaFunction::sfml_game_start);
 	lua_register(lua.get_state(), "sfml_get_map_width", LuaFunction::sfml_get_map_width);
 	lua_register(lua.get_state(), "sfml_get_map_height", LuaFunction::sfml_get_map_height);
@@ -482,4 +603,8 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_change_floor_texture", LuaFunction::sfml_change_floor_texture);
 	lua_register(lua.get_state(), "sfml_change_ceiling_texture", LuaFunction::sfml_change_ceiling_texture);
 	lua_register(lua.get_state(), "sfml_text_box", LuaFunction::sfml_text_box);
+	lua_register(lua.get_state(), "sfml_get_field_of_vision", LuaFunction::sfml_get_field_of_vision);
+	lua_register(lua.get_state(), "sfml_get_idle_walk_destination", LuaFunction::sfml_get_idle_walk_destination);
+	lua_register(lua.get_state(), "sfml_loop_animation", LuaFunction::sfml_loop_animation);
+	lua_register(lua.get_state(), "sfml_start_animation", LuaFunction::sfml_start_animation);
 }

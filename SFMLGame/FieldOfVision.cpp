@@ -1,10 +1,19 @@
 #include "FieldOfVision.h"
+#include <set>
+
 
 
 std::vector<sf::Vector2i> midpoint_circle (unsigned int x0, unsigned int y0, unsigned int radius);
 std::vector<sf::Vector2i> bresenham_line (int x0, int y0, int x1, int y1);
 
 void strip_out_of_bounds_tiles(Tilemap &map, std::vector<sf::Vector2i> &points);
+
+struct Vector2iCompare {
+	bool operator() (const sf::Vector2i &a, const sf::Vector2i &b) const {
+		return (a.x + a.y * 1000) < (b.x + b.y * 1000);
+	}
+};
+
 
 // Gathers all tiles in the field of vision of an observer centered on a point.
 // This uses the midpoint circle algorithm to determine the limit of vision,
@@ -56,8 +65,13 @@ std::vector<sf::Vector2i> generate_field_of_vision(Tilemap &map, sf::Vector2i ce
 		}
 	}
 
-	auto it = std::unique(field.begin(), field.end());
+#if false
+	auto it = std::unique(field.begin(), field.end(), vector_compare);
 	field.resize(std::distance(field.begin(), it));
+#else
+	std::set<sf::Vector2i, Vector2iCompare> s(field.begin(), field.end());
+	field.assign(s.begin(), s.end());
+#endif
 	return field;
 }
 
@@ -100,8 +114,6 @@ std::vector<sf::Vector2i> midpoint_circle (unsigned int x0, unsigned int y0, uns
         points.push_back({(int)(x0 + y), (int)(y0 - x)});
         points.push_back({(int)(x0 - y), (int)(y0 - x)});
     }
-	auto it = std::unique(points.begin(), points.end());
-	points.resize(std::distance(points.begin(), it));
 	return points;
 }
 

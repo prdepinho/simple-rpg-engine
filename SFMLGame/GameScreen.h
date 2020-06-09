@@ -77,9 +77,11 @@ public:
 	void add_character(Character *character, int tile_x, int tile_y);
 	void update_field_of_vision(Character *character);
 
+
 private:
 	bool block_input;
 
+	Tilemap preloaded_map;
 	Tilemap map;
 
 	std::vector<Character*> characters;
@@ -99,5 +101,8 @@ private:
 	sf::Vector2f holding_start_position;
 
 	DebugConsole debug_console;
+
+	int vision_radius = 5;
+	bool show_fog_of_war = true;
 };
 

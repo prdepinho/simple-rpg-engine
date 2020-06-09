@@ -21,7 +21,10 @@ int main()
 		_game.start();
 #else
 
-	std::getchar();
+		Lua lua("");
+
+
+		std::getchar();
 
 #if false
 		{

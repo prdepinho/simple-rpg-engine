@@ -7,6 +7,8 @@ local common = require "common"
 animation = animations.types.witch
 
 function on_turn(id)
+  -- is player character in vision
+  -- -- attack
 end
 
 function on_idle(id)

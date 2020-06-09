@@ -13,11 +13,11 @@ function exit()
   print('room2.map: exit')
 end
 
-function on_enter_tile(x, y) end
-function on_interact(x, y) end
+function on_enter_tile(x, y, id) end
+function on_interact(x, y, id) end
 
 
-function north_door(event, x, y)
+function north_door(event, x, y, id)
   if event == "enter_tile" then
     sfml_change_floor_texture(x, y, 1, 1, 9)
     sfml_play_sound("tcsh.wav")

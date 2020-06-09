@@ -81,7 +81,8 @@ void GameScreen::draw() {
 		window->draw(*character);
 	}
 	window->draw(map.get_ceiling_layer());
-	window->draw(map.get_fog_of_war());
+	if (show_fog_of_war)
+		window->draw(map.get_fog_of_war());
 	window->setView(gui_view);
 	Screen::draw();
 
@@ -379,6 +380,33 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				break;
 			case sf::Keyboard::Right:
 				break;
+			case sf::Keyboard::V:
+				show_fog_of_war = !show_fog_of_war;
+				break;
+			case sf::Keyboard::Equal:
+				vision_radius++;
+				update_field_of_vision(player_character);
+				// update camera
+				if (camera_follow) {
+					game_view.setCenter(player_character->getPosition());
+				}
+				update_field_of_vision(player_character);
+				// update fog of war
+				map.get_fog_of_war().update_fog(player_character->get_field_of_vision());
+				Log("Vision radius: %d", vision_radius);
+				break;
+			case sf::Keyboard::Dash:
+				vision_radius--;
+				update_field_of_vision(player_character);
+				// update camera
+				if (camera_follow) {
+					game_view.setCenter(player_character->getPosition());
+				}
+				update_field_of_vision(player_character);
+				// update fog of war
+				map.get_fog_of_war().update_fog(player_character->get_field_of_vision());
+				Log("Vision radius: %d", vision_radius);
+				break;
 
 		}
 		}
@@ -491,7 +519,6 @@ void GameScreen::load_map(std::string filename) {
 	}
 
 	TiledTilemapDAO::load_characters(this, filename, map);
-
 }
 
 void GameScreen::center_map_on_character(Character &character) {
@@ -556,7 +583,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 		case Direction::RIGHT: position.x++; break;
 		}
 		TileData tile = map.get_tile(position.x, position.y);
-		map.get_script()->call_event(tile.object_name, "enter_tile", position.x, position.y);
+		map.get_script()->call_event(tile.object_name, "enter_tile", position.x, position.y, character.get_id());
 	}
 	catch (LuaException &e) {
 		// Log("Lua Error: %s", e.what());
@@ -576,7 +603,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 			try {
 				sf::Vector2i position = character_position(*player_character);
 				TileData tile = map.get_tile(position.x, position.y);
-				map.get_script()->call_event(tile.object_name, "step_on", position.x, position.y);
+				map.get_script()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_id());
 			}
 			catch (LuaException &e) {
 				// Log("Lua Error: %s", e.what());
@@ -597,7 +624,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 			try {
 				sf::Vector2i position = character_position(character);
 				TileData tile = map.get_tile(position.x, position.y);
-				map.get_script()->call_event(tile.object_name, "step_on", position.x, position.y);
+				map.get_script()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_id());
 			}
 			catch (LuaException &e) {
 				// Log("Lua Error: %s", e.what());
@@ -631,7 +658,7 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 		if (map.in_tile_bounds(tile_x, tile_y)) {
 			TileData tile = map.get_tile(tile_x, tile_y);
 			try {
-				map.get_script()->call_event(tile.object_name, "interact", tile_x, tile_y);
+				map.get_script()->call_event(tile.object_name, "interact", tile_x, tile_y, character.get_id());
 			}
 			catch (LuaException &e) {
 				// Log("Lua Error: %s", e.what());
@@ -708,6 +735,7 @@ void GameScreen::show_text_box(std::string text) {
 
 void GameScreen::update_field_of_vision(Character *character) {
 	std::vector<sf::Vector2i> fov;
-	fov = generate_field_of_vision(map, character_position(*character), 7);
+	// fov.push_back(character_position(*character));
+	fov = generate_field_of_vision(map, character_position(*character), vision_radius);
 	character->set_field_of_vision(fov);
 }
