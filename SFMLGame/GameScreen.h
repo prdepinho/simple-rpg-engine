@@ -81,7 +81,6 @@ public:
 private:
 	bool block_input;
 
-	Tilemap preloaded_map;
 	Tilemap map;
 
 	std::vector<Character*> characters;
