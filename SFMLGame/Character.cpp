@@ -7,6 +7,7 @@ Character::Character(bool permanent) : facing_left(true), permanent(permanent), 
 Character::~Character() {
 	if (script != nullptr)
 		delete script;
+	clear_schedule();
 }
 
 void Character::create(std::string filename) {
@@ -106,6 +107,8 @@ Action *Character::next_action() {
 
 void Character::clear_schedule() {
 	while (!schedule.empty()) {
+		Action *action = schedule.front();
+		delete action;
 		schedule.pop();
 	}
 }

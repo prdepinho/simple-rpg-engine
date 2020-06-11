@@ -52,6 +52,7 @@ public:
 
 public:
 	void load_map(std::string filename);
+	void change_map();
 	void center_map_on_character(Character &character);
 
 	void schedule_character_wait(Character &character, int turns);
@@ -81,6 +82,7 @@ public:
 private:
 	bool block_input;
 
+	std::string next_map;
 	Tilemap map;
 
 	std::vector<Character*> characters;
@@ -89,7 +91,6 @@ private:
 	sf::Keyboard::Key player_input;
 
 	std::vector<Effect*> effects;
-	std::vector<Action*> actions;
 
 	int turn;
 	float turn_duration;  // in seconds

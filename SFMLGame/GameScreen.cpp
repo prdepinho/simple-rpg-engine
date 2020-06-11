@@ -12,10 +12,6 @@ GameScreen::~GameScreen() {
 		delete effect;
 	effects.clear();
 
-	for (Action *action : actions)
-		delete action;
-	actions.clear();
-
 	for (Character *character : characters)
 		delete character;
 	characters.clear();
@@ -160,14 +156,8 @@ bool GameScreen::update(float elapsed_time) {
 					// }
 
 					action->execute(this);
+					delete action;
 
-					for (auto it = actions.begin(); it != actions.end(); ++it) {
-						if (action == *it) {
-							delete action;
-							actions.erase(it);
-							break;
-						}
-					}
 
 				}
 			}
@@ -206,71 +196,71 @@ void GameScreen::poll_events(float elapsed_time) {
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
 				if (can_move(*player_character, Direction::UP)) {
 					player_character->clear_schedule();
-					actions.push_back(new MoveAction(player_character, Direction::UP));
-					player_character->schedule_action(actions.back());
+					auto *action = new MoveAction(player_character, Direction::UP);
+					player_character->schedule_action(action);
 					player_busy = true;
 				}
 				else {
 					auto pos = character_position(*player_character);
 					int dst_x = pos.x;
 					int dst_y = pos.y - 1;
-					actions.push_back(new InteractionAction(player_character, dst_x, dst_y));
-					player_character->schedule_action(actions.back());
+					auto *action = new InteractionAction(player_character, dst_x, dst_y);
+					player_character->schedule_action(action);
 					player_busy = true;
 				}
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 				if (can_move(*player_character, Direction::DOWN)) {
 					player_character->clear_schedule();
-					actions.push_back(new MoveAction(player_character, Direction::DOWN));
-					player_character->schedule_action(actions.back());
+					auto *action = new MoveAction(player_character, Direction::DOWN);
+					player_character->schedule_action(action);
 					player_busy = true;
 				}
 				else {
 					auto pos = character_position(*player_character);
 					int dst_x = pos.x;
 					int dst_y = pos.y +1;
-					actions.push_back(new InteractionAction(player_character, dst_x, dst_y));
-					player_character->schedule_action(actions.back());
+					auto *action = new InteractionAction(player_character, dst_x, dst_y);
+					player_character->schedule_action(action);
 					player_busy = true;
 				}
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 				if (can_move(*player_character, Direction::RIGHT)) {
 					player_character->clear_schedule();
-					actions.push_back(new MoveAction(player_character, Direction::RIGHT));
-					player_character->schedule_action(actions.back());
+					auto *action = new MoveAction(player_character, Direction::RIGHT);
+					player_character->schedule_action(action);
 					player_busy = true;
 				}
 				else {
 					auto pos = character_position(*player_character);
 					int dst_x = pos.x +1;
 					int dst_y = pos.y;
-					actions.push_back(new InteractionAction(player_character, dst_x, dst_y));
-					player_character->schedule_action(actions.back());
+					auto *action = new InteractionAction(player_character, dst_x, dst_y);
+					player_character->schedule_action(action);
 					player_busy = true;
 				}
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
 				if (can_move(*player_character, Direction::LEFT)) {
 					player_character->clear_schedule();
-					actions.push_back(new MoveAction(player_character, Direction::LEFT));
-					player_character->schedule_action(actions.back());
+					auto *action = new MoveAction(player_character, Direction::LEFT);
+					player_character->schedule_action(action);
 					player_busy = true;
 				}
 				else {
 					auto pos = character_position(*player_character);
 					int dst_x = pos.x -1;
 					int dst_y = pos.y;
-					actions.push_back(new InteractionAction(player_character, dst_x, dst_y));
-					player_character->schedule_action(actions.back());
+					auto *action = new InteractionAction(player_character, dst_x, dst_y);
+					player_character->schedule_action(action);
 					player_busy = true;
 				}
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 				player_character->clear_schedule();
-				actions.push_back(new WaitAction(player_character));
-				player_character->schedule_action(actions.back());
+				auto *action = new WaitAction(player_character);
+				player_character->schedule_action(action);
 				player_busy = true;
 			}
 		}
@@ -492,8 +482,13 @@ void GameScreen::clean_temporary_characters() {
 }
 
 void GameScreen::load_map(std::string filename) {
+	next_map = filename;
+	change_map();
+}
+
+void GameScreen::change_map() {
 	clean_temporary_characters();
-	TiledTilemapDAO::load_map(this, filename, map);
+	TiledTilemapDAO::load_map(this, next_map, map);
 
 	int x = game->get_resolution_width() / 2 - map.get_width() / 2;
 	int y = game->get_resolution_height() / 2 -  map.get_height() / 2;
@@ -518,7 +513,8 @@ void GameScreen::load_map(std::string filename) {
 		}
 	}
 
-	TiledTilemapDAO::load_characters(this, filename, map);
+	TiledTilemapDAO::load_characters(this, next_map, map);
+	next_map = "";
 }
 
 void GameScreen::center_map_on_character(Character &character) {
@@ -545,8 +541,8 @@ void GameScreen::put_character_on_tile(Character & character, int x, int y) {
 
 void GameScreen::schedule_character_wait(Character &character, int turns) {
 	for (int i = 0; i < turns; ++i) {
-		actions.push_back(new WaitAction());
-		character.schedule_action(actions.back());
+		auto *action = new WaitAction();
+		character.schedule_action(action);
 	}
 }
 
@@ -558,15 +554,15 @@ void GameScreen::schedule_character_movement(Character &character, int tile_x, i
 
 	while (!path.empty()) {
 		Direction direction = path.top();
-		actions.push_back(new MoveAction(&character, direction));
-		character.schedule_action(actions.back());
+		auto *action = new MoveAction(&character, direction);
+		character.schedule_action(action);
 		path.pop();
 	}
 }
 
 void GameScreen::schedule_character_interaction(Character &character, int tile_x, int tile_y) {
-	actions.push_back(new InteractionAction(&character, tile_x, tile_y));
-	character.schedule_action(actions.back());
+	auto *action = new InteractionAction(&character, tile_x, tile_y);
+	character.schedule_action(action);
 }
 
 
