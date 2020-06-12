@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="50" height="90" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="54">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="50" height="90" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="55">
  <tileset firstgid="1" source="tiled_tileset.tsx"/>
  <layer id="1" name="floor" width="50" height="90">
   <data encoding="csv">
@@ -565,7 +565,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="8" name="objects" visible="0">
+ <objectgroup id="8" name="objects">
   <object id="2" name="door" x="324.333" y="405" width="8.33333" height="9"/>
   <object id="4" name="door" x="325.5" y="420.833" width="8.33333" height="9"/>
   <object id="5" name="door" x="467.833" y="436.5" width="8.33333" height="9"/>
@@ -615,5 +615,8 @@
   <object id="51" name="door" x="564.333" y="1269.25" width="8.33333" height="9"/>
   <object id="52" name="door" x="385.667" y="484.835" width="8.33333" height="9"/>
   <object id="53" name="door" x="403" y="485.165" width="8.33333" height="9"/>
+  <object id="54" name="player" x="412.75" y="462.75">
+   <point/>
+  </object>
  </objectgroup>
 </map>

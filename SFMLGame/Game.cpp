@@ -381,9 +381,7 @@ public:
 		_game.log(ss.str());
 
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
-		screen->load_map(map_name);
-		screen->put_character_on_tile(*screen->get_player_character(), dst_tile_x, dst_tile_y);
-		screen->center_map_on_character(*screen->get_player_character());
+		screen->change_map(map_name, dst_tile_x, dst_tile_y);
 		return 1;
 	}
 

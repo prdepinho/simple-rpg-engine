@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="50" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="42">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="50" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="44">
  <tileset firstgid="1" source="tiled_tileset.tsx"/>
  <layer id="1" name="floor" width="50" height="32">
   <data encoding="csv">
@@ -232,7 +232,7 @@
   <object id="12" name="door" x="274.982" y="340.28" width="8.33333" height="9"/>
   <object id="13" name="door" x="195.982" y="404.28" width="8.33333" height="9"/>
   <object id="14" name="door" x="84.9816" y="340.28" width="8.33333" height="9"/>
-  <object id="15" name="door" x="84.9816" y="276.28" width="8.33333" height="9"/>
+  <object id="15" name="door" x="85.9816" y="293.28" width="8.33333" height="9"/>
   <object id="16" name="door" x="147.982" y="228.28" width="8.33333" height="9"/>
   <object id="17" name="door" x="179.982" y="245.947" width="8.33333" height="9"/>
   <object id="18" name="door" x="84.9816" y="164.947" width="8.33333" height="9"/>
@@ -295,6 +295,12 @@
    <point/>
   </object>
   <object id="41" name="witch" x="716.5" y="266">
+   <point/>
+  </object>
+  <object id="42" name="witch" x="322.667" y="139.667">
+   <point/>
+  </object>
+  <object id="43" name="player" x="409.5" y="449.5">
    <point/>
   </object>
  </objectgroup>

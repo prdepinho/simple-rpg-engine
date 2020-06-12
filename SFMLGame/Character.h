@@ -50,7 +50,7 @@ public:
 	void set_field_of_vision(std::vector<sf::Vector2i> fov) { field_of_vision = fov; }
 
 private:
-	std::queue<Action*> schedule;
+	std::queue<Action*> schedule;  // actions are created and deleted by GameScreen class, unless all schedule is discarted or character deleted.
 
 	std::string current_animation;
 	std::string looping_animation;

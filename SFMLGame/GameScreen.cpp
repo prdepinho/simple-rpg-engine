@@ -41,7 +41,8 @@ void GameScreen::create() {
 	// load map
 	{
 		std::string filename = json.get_string("map");
-		load_map(filename);
+		next_map = filename;
+		load_map();
 	}
 
 	// debug console
@@ -111,6 +112,10 @@ bool GameScreen::update(float elapsed_time) {
 			}
 		}
 	}
+
+	// change map here
+	if (next_map != "")
+		load_map();
 
 	// Turn handling. Wait player input to process the next turn.
 	if ((turn_count += elapsed_time) >= turn_duration) {
@@ -481,12 +486,19 @@ void GameScreen::clean_temporary_characters() {
 	}
 }
 
-void GameScreen::load_map(std::string filename) {
+// Change to a new map and put the player character to tile_x and tile_y
+void GameScreen::change_map(std::string filename, int tile_x, int tile_y) {
 	next_map = filename;
-	change_map();
+	for (Character *character : characters) {
+		character->clear_schedule();
+	}
+	for (Effect *effect : effects) {
+		effect->interrupt();
+	}
+	new_tile_position = { tile_x, tile_y };
 }
 
-void GameScreen::change_map() {
+void GameScreen::load_map() {
 	clean_temporary_characters();
 	TiledTilemapDAO::load_map(this, next_map, map);
 
@@ -500,21 +512,24 @@ void GameScreen::change_map() {
 	auto character_list = map.get_script()->get_object("characters").get_map();
 	int total_characters = character_list.size();
 
-	for (auto it = character_list.begin(); it != character_list.end(); ++it) {
-		auto name = it->first;
-		LuaObject &coords = it->second;
-		int x = coords[0].get_int();
-		int y = coords[1].get_int();
+	// for (auto it = character_list.begin(); it != character_list.end(); ++it) {
+	// 	auto name = it->first;
+	// 	LuaObject &coords = it->second;
+	// 	int x = coords[0].get_int();
+	// 	int y = coords[1].get_int();
 
-		Log("character: %s at (%d, %d)", it->first.c_str(), x, y);
+	// 	Log("character: %s at (%d, %d)", it->first.c_str(), x, y);
 
-		if (it->first == "player") {
-			put_character_on_tile(*player_character, x, y);
-		}
-	}
+	// 	if (it->first == "player") {
+	// 		put_character_on_tile(*player_character, x, y);
+	// 	}
+	// }
 
 	TiledTilemapDAO::load_characters(this, next_map, map);
 	next_map = "";
+
+	put_character_on_tile(*player_character, new_tile_position.x, new_tile_position.y);
+	center_map_on_character(*player_character);
 }
 
 void GameScreen::center_map_on_character(Character &character) {

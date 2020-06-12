@@ -15,6 +15,7 @@ public:
 
 	bool is_running() const { return running; }
 	void stop_running() { running = false; on_end(); }
+	void interrupt() { running = false; }
 	void set_on_update(std::function<void()> callback) { on_update = callback; }
 	void set_on_end(std::function<void()> callback) { on_end = callback; }
 protected:

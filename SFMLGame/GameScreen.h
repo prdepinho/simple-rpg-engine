@@ -50,9 +50,11 @@ public:
 	Character *get_player_character() { return player_character; }
 	std::vector<Character*> get_characters() { return characters; }
 
+private:
+	void load_map();
+
 public:
-	void load_map(std::string filename);
-	void change_map();
+	void change_map(std::string filename, int tile_x, int tile_y);
 	void center_map_on_character(Character &character);
 
 	void schedule_character_wait(Character &character, int turns);
@@ -78,11 +80,15 @@ public:
 	void add_character(Character *character, int tile_x, int tile_y);
 	void update_field_of_vision(Character *character);
 
+	void set_player_new_tile_position(int x, int y) { new_tile_position = { x, y }; }
 
 private:
 	bool block_input;
 
-	std::string next_map;
+	// these variables are for the screen to change the map and put the player character in its position in the loop, after effects have been cleared.
+	std::string next_map = "";
+	sf::Vector2i new_tile_position = { 0, 0 };
+
 	Tilemap map;
 
 	std::vector<Character*> characters;

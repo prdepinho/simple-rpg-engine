@@ -321,11 +321,16 @@ void TiledTilemapDAO::load_characters(GameScreen *game_screen, std::string filen
 				y = tile_coords.y;
 
 				Log("Character: %s (%d, %d)",  object.getName().c_str(), x, y);
-
-				Character *character = new Character();
-				character->create(object.getName());
-				character->loop_animation("walk");
-				game_screen->add_character(character, x, y);
+				if (object.getName() == "player") {
+					// game_screen->put_character_on_tile(*game_screen->get_player_character(), x, y);
+					game_screen->set_player_new_tile_position(x, y);
+				}
+				else {
+					Character *character = new Character();
+					character->create(object.getName());
+					character->loop_animation("walk");
+					game_screen->add_character(character, x, y);
+				}
 			}
 			break;
 		}

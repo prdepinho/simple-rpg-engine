@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="8" height="8" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="24">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="8" height="8" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="25">
  <properties>
   <property name="script" value="room.lua"/>
  </properties>
@@ -88,6 +88,9 @@
   <object id="15" name="step_floor" x="18.25" y="67.5" width="90" height="11.5"/>
   <object id="16" name="player_position" x="65" y="82" width="13" height="11.5"/>
   <object id="22" name="ranger" x="36.75" y="89.5">
+   <point/>
+  </object>
+  <object id="24" name="player" x="40.75" y="40.25">
    <point/>
   </object>
  </objectgroup>
