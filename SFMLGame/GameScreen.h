@@ -80,7 +80,7 @@ public:
 	void add_character(Character *character, int tile_x, int tile_y);
 	void update_field_of_vision(Character *character);
 
-	void set_player_new_tile_position(int x, int y) { new_tile_position = { x, y }; }
+	void set_player_new_tile_position(int x, int y) { if (new_tile_position.x == 0  && new_tile_position.y == 0) new_tile_position = { x, y }; }
 
 private:
 	bool block_input;
