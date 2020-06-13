@@ -14,6 +14,11 @@ std::stack<Direction> AStar::search(Tilemap & map, sf::Vector2i start, sf::Vecto
 		Direction::UP, Direction::DOWN, Direction::RIGHT, Direction::LEFT
 	};
 
+	// treat the dst tile as not obstacle for the algorithm.
+	bool is_end_obstacle = map.get_tile(end.x, end.y).obstacle;
+	if (is_end_obstacle)
+		map.get_tile(end.x, end.y).obstacle = false;
+
 	int map_height = map.get_tile_height();
 	int map_width = map.get_tile_width();
 
@@ -59,6 +64,13 @@ std::stack<Direction> AStar::search(Tilemap & map, sf::Vector2i start, sf::Vecto
 		}
 		current->visited = true;
 		search_queue.pop();
+	}
+
+	// set back the dst tile as obstacle.
+	if (is_end_obstacle) {
+		map.get_tile(end.x, end.y).obstacle = true;
+		if (dst_node)
+			dst_node = dst_node->parent;
 	}
 
 	// return a stack of directions to follow.
