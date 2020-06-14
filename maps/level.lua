@@ -2,10 +2,6 @@
 package.path = package.path .. ";../maps/?.lua"
 require "common"
 
-characters = {
-  player={25, 28}
-}
-
 function enter()
   print('level.map: enter')
 end

@@ -2,10 +2,6 @@
 package.path = package.path .. ";../maps/?.lua"
 require "common"
 
-characters = {
-  player={2, 2}
-}
-
 door_locked = true
 has_key = false
 

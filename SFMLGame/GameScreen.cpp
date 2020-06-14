@@ -509,22 +509,6 @@ void GameScreen::load_map() {
 	map.get_fog_of_war().set_position(x, y);
 	map.get_fog_of_war().set_show_outline(true);
 
-	auto character_list = map.get_script()->get_object("characters").get_map();
-	int total_characters = character_list.size();
-
-	// for (auto it = character_list.begin(); it != character_list.end(); ++it) {
-	// 	auto name = it->first;
-	// 	LuaObject &coords = it->second;
-	// 	int x = coords[0].get_int();
-	// 	int y = coords[1].get_int();
-
-	// 	Log("character: %s at (%d, %d)", it->first.c_str(), x, y);
-
-	// 	if (it->first == "player") {
-	// 		put_character_on_tile(*player_character, x, y);
-	// 	}
-	// }
-
 	TiledTilemapDAO::load_characters(this, next_map, map);
 	next_map = "";
 

@@ -2,9 +2,6 @@
 package.path = package.path .. ";../maps/?.lua"
 require "common"
 
-characters = {
-}
-
 function enter()
   print('room2.map: enter')
 end
