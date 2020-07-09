@@ -15,10 +15,15 @@ GameScreen::~GameScreen() {
 	for (Character *character : characters)
 		delete character;
 	characters.clear();
+
+	if (rules)
+		delete rules;
 }
 
 void GameScreen::create() {
 	Screen::create();
+
+	rules = new Lua(Path::SCRIPTS + "rules.lua");
 
 	Json json(Path::SCREENS + "game.json");
 

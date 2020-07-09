@@ -67,11 +67,11 @@
 0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="4" name="obstacle" width="8" height="8" visible="0">
+ <layer id="4" name="obstacle" width="8" height="8">
   <data encoding="csv">
 2,2,2,2,2,2,2,2,
 2,2,2,2,2,2,2,2,
-2,2,0,0,0,2,2,2,
+2,2,0,0,0,0,2,2,
 0,0,0,2,0,0,0,2,
 2,0,0,0,0,0,0,0,
 2,2,0,0,0,0,2,2,

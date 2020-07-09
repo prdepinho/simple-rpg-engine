@@ -107,6 +107,7 @@ rules.stats = {
   weapon = rules.weapon.unarmed,
   armor = rules.armor.unarmored,
   shield = rules.shield.no_shield,
+  status = { hold = false, poison = false, invisible = false, fear = false, charm = false },
 }
 
 
@@ -146,7 +147,6 @@ function rules.attack_to_hit(attacker, defender)
     to_hit = to_hit + rules.ability_modifier[2][attacker.str]
   end
 
-  print(to_hit)
   return to_hit
 end
 
@@ -157,60 +157,128 @@ function rules.to_hit(attacker, defender)
 end
 
 function rules.roll_attack(attacker, defender)
+  -- possible results
+  local hit_result = {
+    critical_hit = false,
+    critical_miss = false,
+    cut_throat = false,
+    hit = false,
+    miss = false,
+    weapon_effective = false,
+  }
+
+  -- to hit result
   local hit_bonus = rules.attack_to_hit(attacker, defender)
   local die = rules.roll_dice("d20")
   local result = die + hit_bonus
 
 
+  -- armor class calculation
   local ac_dex = 10 + rules.ability_modifier[2][defender.dex]
   local ac_weapon = ac_dex + defender.weapon.ac_bonus
   if defender.weapon.weight < attacker.weapon.weight then
     ac_weapon = ac_weapon + 1
+    hit_result.weapon_effective = true
   end
   if defender.weapon.size > attacker.weapon.size then
     ac_weapon = ac_weapon + 1
+    hit_result.weapon_effective = true
   end
   local ac_shield = ac_weapon + defender.shield.ac_bonus
   local ac_armor = ac_shield + defender.armor.ac - 10
 
 
-  local hit_str = ""
-  local hit = false
-
-  if die  == 20 then
-    hit_str = "critial hit!"
-    hit = true
-  elseif die == 1 then
-    hit_str = "critical miss!"
-  elseif result < 10 then
-    hit_str = "miss!"
-  elseif result < ac_dex then
-    hit_str = "dodged!"
-  elseif result < ac_weapon then
-    hit_str = "parried with weapon!"
-  elseif result < ac_shield  then
-    hit_str = "parried with shield!"
-  elseif result < ac_armor then
-    hit_str = "hit armor!"
-  else
-    hit_str = "hit!"
-    hit = true
+  -- a held character receives no ac bonus for dex, shield or weapon
+  if defender.status.hold then
+    ac_dex = 10
+    ac_shield = 10
+    ac_weapon = 10
+    ac_armor = defender.armor.ac
   end
 
-  local ac = ac_armor
-  -- local ac = rules.attack_armor_class(attacker, defender)
+  -- guns ignore weapon, shield or armor ac modifiers
+  if attacker.weapon.gun then
+    ac_weapon = ac_dex
+    ac_shield = ac_dex
+    ac_armor = ac_dex
+  end
 
-  local str = string.format("Attack roll: %d + %d = %d vs AC %d: %s", die, hit_bonus, result, ac, hit_str)
-  print(str)
 
-  return hit
+  local hit_str = ""
+
+  if defender.status.hold and attacker.weapon.cutthroat then
+    hit_result.cut_throat = true
+    print(string.format("Attacker: cut throat!"))
+
+  else
+    if die  == 20 then
+      hit_str = "critial hit!"
+      hit_result.critical_hit = true
+
+    elseif die == 1 then
+      hit_str = "critical miss!"
+      hit_result.critical_miss = true
+
+    elseif result < 10 then
+      hit_str = "miss!"
+      hit_result.miss = true
+
+    elseif result < ac_dex then
+      hit_str = "dodged!"
+      hit_result.miss = true
+
+    elseif result < ac_weapon then
+      hit_str = "parried with weapon!"
+      hit_result.miss = true
+
+    elseif result < ac_shield  then
+      hit_str = "parried with shield!"
+      hit_result.miss = true
+
+    elseif result < ac_armor then
+      hit_str = "hit armor!"
+      hit_result.miss = true
+
+    else
+      hit_str = "hit!"
+      hit_result.hit = true
+    end
+
+    local ac = ac_armor
+    -- local ac = rules.attack_armor_class(attacker, defender)
+
+    print(string.format("Attack roll: %d + %d = %d vs AC %d: %s", die, hit_bonus, result, ac, hit_str))
+  end
+
+  return hit_result
 end
 
-function rules.roll_damage(attacker, defender)
+function rules.roll_damage(attacker, defender, hit_result)
   local damage_bonus = rules.ability_modifier[1][attacker.str]
-  local result = rules.roll_dice(attacker.weapon.damage) + damage_bonus
-  local str = string.format("Defender receives %d damage from Attacker.", result)
-  print(str)
+  local result = 0
+
+  if hit_result.critical_hit then
+    result = result + rules.roll_dice(attacker.weapon.damage)
+    result = result + rules.roll_dice(attacker.weapon.damage)
+    result = result + damage_bonus
+    print(string.format("Defender receives %d damage from Attacker.", result))
+
+  elseif hit_result.cut_throat then
+    print(string.format("Defender: dead."))
+
+  elseif hit_result.hit then
+    result = result + rules.roll_dice(attacker.weapon.damage)
+    result = result + damage_bonus
+    print(string.format("Defender receives %d damage from Attacker.", result))
+
+  elseif hit_result.miss then
+
+  elseif hit_result.critical_miss then
+
+  else
+    print('oops')
+  end
+
   return result
 end
 

@@ -474,7 +474,6 @@ public:
 		Character *character = screen->get_character_by_id(id);
 		auto fov = generate_field_of_vision(screen->get_map(), screen->character_position(*character), 5);
 
-
 		lua_newtable(state);
 		for (int i = 0; i < fov.size(); i++)
 		{

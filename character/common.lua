@@ -7,7 +7,7 @@ function common.idle_walk(id)
 
   if math.random(100) > 50 then
     -- move
-    local fov = sfml_get_field_of_vision(id)
+    local fov = sfml_get_field_of_vision(id) -- exponential complexity (very slow)
     local dst = fov[math.random(#fov)]
     sfml_move(id, dst.x, dst.y)
 

@@ -85,6 +85,8 @@ public:
 private:
 	bool block_input;
 
+	Lua *rules = nullptr;
+
 	// these variables are for the screen to change the map and put the player character in its position in the loop, after effects have been cleared.
 	std::string next_map = "";
 	sf::Vector2i new_tile_position = { 0, 0 };

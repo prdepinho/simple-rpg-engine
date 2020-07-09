@@ -12,5 +12,7 @@ function on_turn(id)
 end
 
 function on_idle(id)
-  common.idle_walk(id)
+  -- local fov = sfml_get_field_of_vision(id)
+  -- sfml_wait(id, 1);
+  -- common.idle_walk(id)
 end

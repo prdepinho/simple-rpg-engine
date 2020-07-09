@@ -13,5 +13,5 @@ function on_turn(id)
 end
 
 function on_idle(id)
-  common.idle_walk(id)
+  -- common.idle_walk(id)
 end

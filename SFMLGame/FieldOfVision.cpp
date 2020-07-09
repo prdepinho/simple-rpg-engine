@@ -75,6 +75,7 @@ std::vector<sf::Vector2i> generate_field_of_vision(Tilemap &map, sf::Vector2i ce
 	return field;
 }
 
+
 void strip_out_of_bounds_tiles(Tilemap &map, std::vector<sf::Vector2i> &points) {
 	for (auto it = points.begin(); it != points.end();) {
 		auto point = *it;
