@@ -21,7 +21,16 @@ int main()
 		_game.start();
 #else
 
-		Lua lua("");
+		// Load the save lua file in /save folder. This will copy it to /scripts folder.
+		// Start the lua scripts. They will read other scripts in /scripts folder.
+		// When saving, copy the script in /scripts folder to /save folder.
+
+		Lua lua(Path::SCRIPTS + "test/main.lua");
+
+		lua.execute_method("print_data");
+		std::getchar();
+
+		lua.execute_method("print_data");
 
 
 		std::getchar();

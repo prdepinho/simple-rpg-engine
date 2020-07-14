@@ -67,3 +67,25 @@ void Resources::load_music() {
 		// Log("music: %s", name.c_str());
 	}
 }
+
+void Resources::play_music(std::string filename) {
+	stop_music();
+	sf::Music *music = get_music(filename);
+	music->play();
+	music->setLoop(false);
+	get().playing_music = music;
+}
+
+void Resources::loop_music(std::string filename) {
+	stop_music();
+	sf::Music *music = get_music(filename);
+	music->setLoop(true);
+	get().playing_music = music;
+}
+
+void Resources::stop_music() {
+	if (get().playing_music) {
+		get().playing_music->stop();
+		get().playing_music = nullptr;
+	}
+}

@@ -34,7 +34,10 @@ public:
 	void change_to_map_editor_screen();
 	void change_to_game_screen();
 
-	void exit() { run = false; }
+	void exit() { 
+		Resources::stop_music();
+		run = false; 
+	}
 
 	Screen *get_screen() { return screen; }
 

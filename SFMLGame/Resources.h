@@ -34,6 +34,10 @@ public:
 		 return music;
 	}
 
+	static void play_music(std::string filename);
+	static void loop_music(std::string filename);
+	static void stop_music();
+
 	static void play_sound(std::string filename);
 
 	static void load_textures();
@@ -55,6 +59,8 @@ private:
 	std::map<std::string, sf::Music*> music_map;
 	std::map<std::string, sf::Sound*> sound_map;
 	std::vector<sf::SoundBuffer*> sound_buffers;
+
+	sf::Music *playing_music = nullptr;
 
 	// play a set number of cycling sounds simultaneously.
 	std::vector<sf::Sound*> sounds;

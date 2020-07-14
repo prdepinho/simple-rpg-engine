@@ -9,60 +9,89 @@ ScreenMainMenu::ScreenMainMenu()
 
 void ScreenMainMenu::create()
 {
-	Json json(config_filename);
-
-	std::string title_text = json.get_string("menu/title_screen", "SFML Game");
-	std::vector<Json> &tokens = json.get_vector("menu/buttons");
-
 	int button_height = 1;
 	int button_length = 100;
 	int x = (game->get_resolution_width() / 2) - (button_length / 2);
+	int i = 0;
 
-	buttons = std::vector<Button>(tokens.size());
-	for (unsigned int i = 0; i < tokens.size(); i++) {
-		Json &token = tokens[i];
+	buttons = std::vector<Button>(5);
+
+	{
 		Button &button = buttons[i];
-
 		int y = (10 + i * (button.get_height() + 1));
-		std::string label = token.get_string("label", "no label");
-		std::string function = token.get_string("function", "");
-		button = Button(label, x, y, button_length, button_height); 
-		if (function == "exit") {
-			button.set_function([&](Component*) {
-				game->exit();
-				return true;
-			});
-		}
-		else if (function == "test"){
-			button.set_function([&](Component* c) {
-				std::string label = dynamic_cast<Button*>(c)->get_label();
-				game->log(label);
-				game->change_to_test_screen();
-				return true;
-			});
-		}
-		else if (function == "map_editor") {
-			button.set_function([&](Component* c) {
-				std::string label = dynamic_cast<Button*>(c)->get_label();
-				game->log(label);
-				game->change_to_map_editor_screen();
-				return true;
-			});
-		}
-		else if (function == "game") {
-			button.set_function([&](Component* c) {
-				std::string label = dynamic_cast<Button*>(c)->get_label();
-				game->log(label);
-				game->change_to_game_screen();
-				return true;
-			});
-		}
+		button = Button("New Game", x, y, button_length, button_height);
+		button.set_function([&](Component* c) {
+			std::string label = dynamic_cast<Button*>(c)->get_label();
+			game->log(label);
+			game->change_to_game_screen();
+			return true;
+		});
 		add_component(button);
 		button.create();
+		i++;
 	}
+
+	{
+		Button &button = buttons[i];
+		int y = (10 + i * (button.get_height() + 1));
+		button = Button("Load Game", x, y, button_length, button_height);
+		button.set_function([&](Component* c) {
+			std::string label = dynamic_cast<Button*>(c)->get_label();
+			game->log(label);
+			game->change_to_game_screen();
+			return true;
+		});
+		add_component(button);
+		button.create();
+		i++;
+	}
+
+	{
+		Button &button = buttons[i];
+		int y = (10 + i * (button.get_height() + 1));
+		button = Button("Test", x, y, button_length, button_height);
+		button.set_function([&](Component* c) {
+			std::string label = dynamic_cast<Button*>(c)->get_label();
+			game->log(label);
+			game->change_to_test_screen();
+			return true;
+		});
+		add_component(button);
+		button.create();
+		i++;
+	}
+
+	{
+		Button &button = buttons[i];
+		int y = (10 + i * (button.get_height() + 1));
+		button = Button("Map Editor", x, y, button_length, button_height);
+		button.set_function([&](Component* c) {
+			std::string label = dynamic_cast<Button*>(c)->get_label();
+			game->log(label);
+			game->change_to_map_editor_screen();
+			return true;
+		});
+		add_component(button);
+		button.create();
+		i++;
+	}
+
+	{
+		Button &button = buttons[i];
+		int y = (10 + i * (button.get_height() + 1));
+		button = Button("Exit", x, y, button_length, button_height);
+		button.set_function([&](Component*) {
+			game->exit();
+			return true;
+		});
+		add_component(button);
+		button.create();
+		i++;
+	}
+	
 	select(*container.get_component(0));
 
-	Resources::get_music("theme.wav")->play();
+	Resources::play_music("theme.wav");
 
 	texture.loadFromFile(Path::ASSETS + "main_screen_art.png");
 	sprite = sf::Sprite(texture);
@@ -71,15 +100,7 @@ void ScreenMainMenu::create()
 	gui_view.setCenter((float) game->get_resolution_width() / 2.f, (float) game->get_resolution_height() / 2.f);
 }
 
-void ScreenMainMenu::destroy()
-{
-	try {
-		Resources::get_music("theme.wav")->stop();
-	}
-	catch (ResourcesException &e) {
-		Log(e.what());
-	}
-}
+void ScreenMainMenu::destroy() { }
 
 void ScreenMainMenu::draw()
 {
