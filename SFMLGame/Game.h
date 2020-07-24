@@ -14,6 +14,7 @@
 #include "TestScreen.h"
 #include "GameScreen.h"
 #include "MapEditorScreen.h"
+#include "LoadGameScreen.h"
 
 void register_lua_accessible_functions(Lua &lua);
 
@@ -33,6 +34,7 @@ public:
 	void change_to_main_menu_screen();
 	void change_to_map_editor_screen();
 	void change_to_game_screen();
+	void change_to_load_game_screen();
 
 	void exit() { 
 		Resources::stop_music();

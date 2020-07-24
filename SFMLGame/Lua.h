@@ -1,6 +1,7 @@
 #pragma once
 
 #include <exception>
+#include <vector>
 #include <iostream>
 #include <map>
 #include <sstream>
@@ -67,8 +68,13 @@ public:
 
 	LuaObject get_object(std::string name);
 
+	// int call_function(std::string name);
+	void call_function(LuaObject *token, std::string function_name);
+	void call_function(LuaObject *token);
+
 private:
-	LuaObject get_object();
+	void call_function_recursive(std::vector<std::string> path, std::string function_name, int level);
+	LuaObject get_child_object(std::string parent_path);
 
 private:
 	lua_State *state; 
@@ -162,12 +168,42 @@ An example of how to itarate a list follows.
 LuaObject is not in iterable container though. If you need more control, use
 get_map() to retrieve the underlying map.
 
+
+To execute a function:
+
+If a member of the object is a function, you can execute it using the Lua
+object that handles the script and calling call_function with the LuaObject of
+the function. These function don't take any argument and don't return any
+value.
+
+For example, suppose the script is the following:
+
+```
+obj = {
+  test = {
+    counter = 10,
+    increment = function () obj.test.counter = obj.test.counter + 1 end,
+    show_counter = function () print(obj.test.counter) end
+  }
+}
+```
+
+The following code shall increment obj.counter to 11 and print the
+new value afterwards.
+
+```
+LuaObject obj = lua.get_object("obj");
+lua.call_function(obj.get_object("test.increment"));
+lua.call_function(obj.get_object("test.show_counter"));
+```
+
+
 */
 
 class LuaObject {
 	friend class Lua;
 public:
-	enum Type { STRING, NUMBER, BOOLEAN, OBJECT, NULL_OBJECT };
+	enum Type { STRING, NUMBER, BOOLEAN, OBJECT, FUNCTION, NULL_OBJECT };
 	LuaObject() {}
 
 	LuaObject *get_token(std::string object_path);
@@ -204,11 +240,15 @@ public:
 
 	size_t size() const;
 	Type get_type() const { return type; }
+	std::string get_path() const { return path; }
+	std::string get_function_name() const { return function_name; }
 
 private:
 	Type type;
 	std::string string;
 	float number;
 	bool boolean;
+	std::string path;
+	std::string function_name;
 	std::map<std::string, LuaObject> object;
 };

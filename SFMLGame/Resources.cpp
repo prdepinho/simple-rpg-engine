@@ -89,3 +89,28 @@ void Resources::stop_music() {
 		get().playing_music = nullptr;
 	}
 }
+
+std::vector<std::string> Resources::get_save_files() {
+	std::vector<std::string> files;
+
+	for (int i = 0; i < 256; i++) {
+		std::string name = "save_" + std::to_string(i) + ".lua";
+		std::ifstream file(Path::SAVES + name);
+		if (file.is_open()) {
+			files.push_back(name);
+			file.close();
+		}
+		else {
+			break;
+		}
+	}
+
+	return files;
+}
+
+void Resources::load_game(std::string filename) {
+}
+
+void Resources::save_game(std::string filename) {
+}
+

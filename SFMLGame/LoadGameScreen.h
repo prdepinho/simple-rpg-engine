@@ -1,16 +1,13 @@
 #pragma once
 
-#include <string>
 #include "Screen.h"
-#include "font.h"
-#include "Label.h"
 #include "Button.h"
 
-
-class ScreenMainMenu : public Screen
+class LoadGameScreen : public Screen
 {
 public:
-	ScreenMainMenu();
+	LoadGameScreen();
+	~LoadGameScreen();
 
 	virtual void create() override;
 	virtual void destroy() override;
@@ -20,9 +17,6 @@ public:
 
 private:
 	std::vector<Button> buttons;
-	sf::Texture texture;
-	sf::Sprite sprite;
 	int button_index = 0;
-
 };
 

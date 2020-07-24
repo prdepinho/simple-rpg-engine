@@ -96,6 +96,9 @@ std::string Lua::stack_dump() {
 		case LUA_TNUMBER:
 			ss << "  " << i << ": (number) " << lua_tonumber(state, i) << std::endl;
 			break;
+		case LUA_TFUNCTION:
+			ss << "  " << i << ": (func) " << std::endl;
+			break;
 		default:
 			ss << "  " << i << ": (" << lua_typename(state, t) << ")" << std::endl;
 			break;
@@ -417,6 +420,114 @@ std::map<std::string, LuaObject> LuaObject::get_map(std::string name) {
 		throw LuaException("token \"" + name + "\" is not object");
 }
 
+#if false
+int Lua::call_function(std::string path) {
+	lua_getglobal(state, path.c_str());
+	lua_pushnil(state);
+	while (lua_next(state, -2)) {
+		std::string key = lua_tostring(state, -2);
+		if (key == "inside") {
+			lua_pushnil(state);
+			while (lua_next(state, -2)) {
+				std::string key = lua_tostring(state, -2);
+				if (key == "callback") {
+					int callback_reference = luaL_ref(state, LUA_REGISTRYINDEX);
+					lua_rawgeti(state, LUA_REGISTRYINDEX, callback_reference);
+					if (lua_pcall(state, 0, 0, 0) != 0) {
+						printf("Failed to call the callback!\n %s\n", lua_tostring(state, -1));
+					}
+					luaL_unref(state, LUA_REGISTRYINDEX, callback_reference);
+				}
+				else {
+					lua_pop(state, 1);
+				}
+			}
+			// lua_pop(state, 1);
+		}
+		if (key == "callback") {
+			std::cout << stack_dump() << std::endl;
+			int callback_reference = luaL_ref(state, LUA_REGISTRYINDEX);
+			std::cout << "reference: " << callback_reference << std::endl;
+			lua_rawgeti(state, LUA_REGISTRYINDEX, callback_reference);
+			if (lua_pcall(state, 0, 0, 0) != 0) {
+				printf("Failed to call the callback!\n %s\n", lua_tostring(state, -1));
+			}
+			luaL_unref(state, LUA_REGISTRYINDEX, callback_reference);
+			std::cout << stack_dump() << std::endl;
+		}
+		else {
+			lua_pop(state, 1);
+		}
+	}
+	lua_pop(state, 1);
+
+	return 0;
+}
+#endif
+
+void Lua::call_function(LuaObject *token, std::string function_name) {
+	std::vector<std::string> path = splitstr(token->get_path(), '.');
+	lua_getglobal(state, "obj");
+	call_function_recursive(std::vector<std::string>(path.begin() + 1, path.end()), function_name, 0);
+	lua_pop(state, 1);
+}
+
+void Lua::call_function(LuaObject *token) {
+	std::vector<std::string> path = splitstr(token->get_path(), '.');
+	lua_getglobal(state, "obj");
+	call_function_recursive(std::vector<std::string>(path.begin() + 1, path.end() -1), token->get_function_name(), 0);
+	lua_pop(state, 1);
+}
+
+void Lua::call_function_recursive(std::vector<std::string> path, std::string function_name, int level) {
+	lua_pushnil(state);
+	while (lua_next(state, -2)) {
+		std::string key = "";
+
+		if (lua_type(state, -2) == LUA_TNUMBER) {
+			int index = (int) lua_tointeger(state, -2);
+			key = std::to_string(index);
+		}
+		else {
+			key = std::string(lua_tostring(state, -2));
+		}
+		// for (int i = 0; i < level; i++)
+		// 	std::cout << "  ";
+		// std::cout << key << ": ";
+
+		int type = lua_type(state, -1);
+		switch (type) {
+		case LUA_TTABLE:
+			if (path.size() > 0 && key == path[0]) {
+				// std::cout << key << "..." << std::endl;
+				call_function_recursive(std::vector<std::string>(path.begin() + 1, path.end()), function_name, level + 1);
+			}
+			lua_pop(state, 1);
+			break;
+		case LUA_TFUNCTION:
+			if (path.size() == 0 && key == function_name) {
+				// std::cout << "-- execute " + key + " -- " << std::endl;
+				{
+					int callback_reference = luaL_ref(state, LUA_REGISTRYINDEX);
+					lua_rawgeti(state, LUA_REGISTRYINDEX, callback_reference);
+					if (lua_pcall(state, 0, 0, 0) != 0) {
+						Log("Failed to call the callback!\n %s\n", lua_tostring(state, -1));
+					}
+					luaL_unref(state, LUA_REGISTRYINDEX, callback_reference);
+				}
+			}
+			else {
+				lua_pop(state, 1);
+			}
+			break;
+		default:
+			lua_pop(state, 1);
+			break;
+		}
+	}
+}
+
+
 size_t LuaObject::size() const {
 	if (type == OBJECT) {
 		return object.size();
@@ -426,12 +537,13 @@ size_t LuaObject::size() const {
 
 LuaObject Lua::get_object(std::string name) {
 	lua_getglobal(state, name.c_str());
-	LuaObject object = get_object();
+	LuaObject object = get_child_object(name);
+	object.path = name;
 	lua_pop(state, 1);
 	return object;
 }
 
-LuaObject Lua::get_object() {
+LuaObject Lua::get_child_object(std::string parent_path) {
 	LuaObject obj;
 	obj.type = LuaObject::Type::OBJECT;
 	obj.object = std::map<std::string, LuaObject>();
@@ -448,6 +560,7 @@ LuaObject Lua::get_object() {
 		else {
 			key = std::string(lua_tostring(state, -2));
 		}
+		value.path += parent_path + "." + key;
 
 		int type = lua_type(state, -1);
 		switch (type) {
@@ -465,7 +578,11 @@ LuaObject Lua::get_object() {
 			break;
 		case LUA_TTABLE:
 			value.type = LuaObject::Type::OBJECT;
-			value.object = get_object().object;
+			value.object = get_child_object(value.path).object;
+			break;
+		case LUA_TFUNCTION:
+			value.type = LuaObject::Type::FUNCTION;
+			value.function_name = key;
 			break;
 		case LUA_TNIL:
 			value.type = LuaObject::Type::NULL_OBJECT;

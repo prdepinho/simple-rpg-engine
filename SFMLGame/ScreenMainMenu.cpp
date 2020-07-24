@@ -38,7 +38,7 @@ void ScreenMainMenu::create()
 		button.set_function([&](Component* c) {
 			std::string label = dynamic_cast<Button*>(c)->get_label();
 			game->log(label);
-			game->change_to_game_screen();
+			game->change_to_load_game_screen();
 			return true;
 		});
 		add_component(button);
@@ -91,10 +91,9 @@ void ScreenMainMenu::create()
 	
 	select(*container.get_component(0));
 
-	Resources::play_music("theme.wav");
-
 	texture.loadFromFile(Path::ASSETS + "main_screen_art.png");
 	sprite = sf::Sprite(texture);
+	button_index = 0;
 
 	gui_view.setSize(sf::Vector2f((float) game->get_resolution_width(), (float) game->get_resolution_height()));
 	gui_view.setCenter((float) game->get_resolution_width() / 2.f, (float) game->get_resolution_height() / 2.f);
@@ -117,8 +116,6 @@ bool ScreenMainMenu::update(float elapsed_time)
 
 void ScreenMainMenu::handle_event(sf::Event &event, float elapsed_time)
 {
-	static int button_index = 0;
-
 	Screen::handle_event(event, elapsed_time);
 	switch (event.type) {
 	case sf::Event::Closed:
@@ -129,12 +126,16 @@ void ScreenMainMenu::handle_event(sf::Event &event, float elapsed_time)
 		case sf::Keyboard::Up:
 			if (button_index > 0)
 				button_index--;
+			else
+				button_index = buttons.size() - 1;
 			select(buttons[button_index]);
 			Resources::get_sound("vwuuu.wav")->play();
 			break;
 		case sf::Keyboard::Down:
-			if ((size_t) button_index < buttons.size() -1)
+			if ((size_t)button_index < buttons.size() - 1)
 				button_index++;
+			else
+				button_index = 0;
 			select(buttons[button_index]);
 			Resources::get_sound("vwuuu.wav")->play();
 			break;

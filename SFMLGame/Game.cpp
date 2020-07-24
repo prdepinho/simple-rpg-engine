@@ -30,6 +30,7 @@ void Game::start() {
 }
 
  void Game::loop(){
+	Resources::play_music("theme.wav");
 	run = true;
 	while (window.isOpen()) {
 		float elapsed_time = clock.restart().asSeconds();
@@ -62,7 +63,6 @@ void Game::change_to_test_screen() {
 
 void Game::change_to_main_menu_screen() { 
 	to_change_screen = new ScreenMainMenu();
-	to_change_screen->config_filename = Path::SCREENS + "main_menu.json";
 }
 
 void Game::change_to_map_editor_screen() {
@@ -70,8 +70,13 @@ void Game::change_to_map_editor_screen() {
 }
 
 void Game::change_to_game_screen() {
+	Resources::stop_music();
 	to_change_screen = new GameScreen();
 	to_change_screen->config_filename = Path::SCREENS + "game.json";
+}
+
+void Game::change_to_load_game_screen() {
+	to_change_screen = new LoadGameScreen();
 }
 
 void Game::change_screen() {
@@ -494,7 +499,15 @@ public:
 	}
 
 	static int sfml_test(lua_State *state) {
+		std::string str = lua_tostring(state, -2);
+		Log("sfml_test: %s", str.c_str());
+		lua_CFunction func = lua_tocfunction(state, -1);
+		Log("func: %d", func);
+		lua_pushnumber(state, 1);
+		return 1;
+	}
 
+#if false
 		// two ways of sending an array of points.
 #if false
 
@@ -552,9 +565,7 @@ public:
 			}
 		}
 #endif
-
-		return 1;
-	}
+#endif
 
 	static int sfml_get_idle_walk_destination(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());

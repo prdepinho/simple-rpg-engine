@@ -44,6 +44,11 @@ public:
 	static void load_sounds();
 	static void load_music();
 
+	static std::vector<std::string> get_save_files();
+	static void load_game(std::string filename);
+	static void save_game(std::string filename);
+
+
 	static Resources& get() { 
 		static Resources textures;
 		return textures; 

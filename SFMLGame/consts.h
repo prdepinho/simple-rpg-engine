@@ -39,6 +39,7 @@ public:
 	static const std::string SCREENS;
 	static const std::string MAPS;
 	static const std::string CHARACTERS;
+	static const std::string SAVES;
 
 };
 

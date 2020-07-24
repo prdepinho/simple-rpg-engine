@@ -1,6 +1,6 @@
 {
+  "map": "room",
+  "_map": "first_floor",
   "_map": "level",
-  "map": "first_floor",
-  "_map": "room",
   "turns_per_second": 5
 }

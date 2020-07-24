@@ -368,6 +368,10 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 					show_text_box(str);
 				}
 				break;
+			case sf::Keyboard::D:
+				break;
+			case sf::Keyboard::S:
+				break;
 			case sf::Keyboard::I:
 				break;
 			case sf::Keyboard::O:

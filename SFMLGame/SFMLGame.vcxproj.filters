@@ -254,6 +254,9 @@
     <ClCompile Include="FieldOfVision.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LoadGameScreen.cpp">
+      <Filter>screens</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lua5.3.5\lapi.h">
@@ -432,6 +435,9 @@
     </ClInclude>
     <ClInclude Include="TilemapDAO.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadGameScreen.h">
+      <Filter>screens</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

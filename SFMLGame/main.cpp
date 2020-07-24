@@ -11,28 +11,71 @@
 
 #include <SFML/Audio.hpp>
 
+
 Game _game;  // game instantiation.
 
 int main() 
 {
 	try {
 		_game.init();
-#if true
+#if false
 		_game.start();
 #else
 
-		// Load the save lua file in /save folder. This will copy it to /scripts folder.
-		// Start the lua scripts. They will read other scripts in /scripts folder.
-		// When saving, copy the script in /scripts folder to /save folder.
-
 		Lua lua(Path::SCRIPTS + "test/main.lua");
+		LuaObject obj = lua.get_object("obj");
+		// lua.call_function("obj");
+		// lua.call_function(obj, "function");
 
-		lua.execute_method("print_data");
-		std::getchar();
+		// lua.call_function(obj.get_object("inside.internal"), "callback");
+		// lua.print_object(obj, "callback");
 
-		lua.execute_method("print_data");
+		// lua.call_function(obj.get_object("test"), "increment");
+		// lua.call_function(obj.get_object("test"), "show_counter");
+
+		lua.call_function(obj.get_object("test.show_counter"));
+
+#if false
+		try {
+			Lua lua(Path::SCRIPTS + "test/main.lua");
+			LuaObject dialogue = lua.get_object("dialogue");
+
+			std::string go_to = "start";
+
+			while (go_to != "end") {
+				LuaObject *block = dialogue.get_object(go_to);
+				std::cout << block->get_string("text") << std::endl;
+
+				LuaObject *options = block->get_object("options");
+				if (options->size() > 0) {
+					for (auto it = options->begin(); it != options->end(); ++it) {
+						std::cout << it->first << ": ";
+						std::cout << it->second.get_string("text");
+						std::cout << " [" << it->second.get_string("go_to") << "]";
+						std::cout << std::endl;
+					}
+					std::string i;
+					std::cin >> i;
+
+					go_to = options->get_object(i)->get_string("go_to");
+
+				}
+				else {
+					go_to = block->get_string("go_to");
+				}
+				std::getchar();
+			}
+
+		}
+		catch (std::exception &e) {
+			std::cout << e.what() << std::endl;
+			std::getchar();
+		}
+
+#endif
 
 
+		std::cout << "Press enter" << std::endl;
 		std::getchar();
 
 #if false
