@@ -67,6 +67,7 @@ public:
 	std::string get_string(std::string name);
 
 	LuaObject get_object(std::string name);
+	LuaObject get_object_param();
 
 	// int call_function(std::string name);
 	void call_function(LuaObject *token, std::string function_name);

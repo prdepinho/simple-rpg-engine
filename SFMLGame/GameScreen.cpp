@@ -369,6 +369,9 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				}
 				break;
 			case sf::Keyboard::D:
+				{
+					// show_dialogue_box();
+				}
 				break;
 			case sf::Keyboard::S:
 				break;
@@ -665,7 +668,7 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 				map.get_script()->call_event(tile.object_name, "interact", tile_x, tile_y, character.get_id());
 			}
 			catch (LuaException &e) {
-				// Log("Lua Error: %s", e.what());
+				Log("Lua Error: %s", e.what());
 			}
 		}
 

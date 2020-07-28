@@ -33,7 +33,7 @@ std::vector<sf::Vector2i> generate_field_of_vision(Tilemap &map, sf::Vector2i ce
 		std::vector<sf::Vector2i> line = bresenham_line(center.x, center.y, border_point.x, border_point.y);
 		strip_out_of_bounds_tiles(map, line);
 
-		for (int i = 0; i < line.size() -1; i++) {
+		for (size_t i = 0; i < line.size() -1; i++) {
 			sf::Vector2i line_point = line[i];
 			field.push_back(line_point);
 			if (map.get_tile(line_point.x, line_point.y).obstacle)
@@ -45,7 +45,7 @@ std::vector<sf::Vector2i> generate_field_of_vision(Tilemap &map, sf::Vector2i ce
 		std::vector<sf::Vector2i> line = bresenham_line(center.x, center.y, border_point.x, border_point.y);
 		strip_out_of_bounds_tiles(map, line);
 
-		for (int i = 0; i < line.size(); i++) {
+		for (size_t i = 0; i < line.size(); i++) {
 			sf::Vector2i line_point = line[i];
 			field.push_back(line_point);
 			if (map.get_tile(line_point.x, line_point.y).obstacle)
@@ -57,7 +57,7 @@ std::vector<sf::Vector2i> generate_field_of_vision(Tilemap &map, sf::Vector2i ce
 		std::vector<sf::Vector2i> line = bresenham_line(center.x, center.y, border_point.x, border_point.y);
 		strip_out_of_bounds_tiles(map, line);
 
-		for (int i = 0; i < line.size(); i++) {
+		for (size_t i = 0; i < line.size(); i++) {
 			sf::Vector2i line_point = line[i];
 			field.push_back(line_point);
 			if (map.get_tile(line_point.x, line_point.y).obstacle)

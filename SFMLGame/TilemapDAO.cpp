@@ -314,8 +314,8 @@ void TiledTilemapDAO::load_characters(GameScreen *game_screen, std::string filen
 		switch (object.getShape()) {
 		case tmx::Object::Shape::Point: {
 
-				int x = object.getPosition().x;
-				int y = object.getPosition().y;
+				int x = (int) object.getPosition().x;
+				int y = (int) object.getPosition().y;
 				sf::Vector2i tile_coords = map.get_tile_abs_coord(x, y);
 				x = tile_coords.x;
 				y = tile_coords.y;

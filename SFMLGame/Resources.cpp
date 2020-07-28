@@ -31,7 +31,7 @@ void Resources::load_textures() {
 void Resources::load_sounds() {
 	Lua lua(Config::SOUNDS);
 	LuaObject sounds = lua.get_object("sounds");
-	for (int i = 0; i < sounds.size(); ++i) {
+	for (size_t i = 0; i < sounds.size(); ++i) {
 		std::string name = sounds[i].get_string();
 
 		sf::SoundBuffer *buffer = new sf::SoundBuffer();
@@ -57,7 +57,7 @@ void Resources::play_sound(std::string filename) {
 void Resources::load_music() {
 	Lua lua(Config::MUSIC);
 	LuaObject music_obj = lua.get_object("music");
-	for (int i = 0; i < music_obj.size(); ++i) {
+	for (size_t i = 0; i < music_obj.size(); ++i) {
 		std::string name = music_obj[i].get_string();
 
 		sf::Music *music = new sf::Music();

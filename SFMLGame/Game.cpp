@@ -480,7 +480,7 @@ public:
 		auto fov = generate_field_of_vision(screen->get_map(), screen->character_position(*character), 5);
 
 		lua_newtable(state);
-		for (int i = 0; i < fov.size(); i++)
+		for (size_t i = 0; i < fov.size(); i++)
 		{
 			auto point = fov[i];
 			lua_newtable(state);
@@ -502,7 +502,6 @@ public:
 		std::string str = lua_tostring(state, -2);
 		Log("sfml_test: %s", str.c_str());
 		lua_CFunction func = lua_tocfunction(state, -1);
-		Log("func: %d", func);
 		lua_pushnumber(state, 1);
 		return 1;
 	}
@@ -586,6 +585,12 @@ public:
 		}
 		return 1;
 	}
+
+	static int sfml_dialogue(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		// lua.get_object_param();
+		return 1;
+	}
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -615,4 +620,5 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_get_idle_walk_destination", LuaFunction::sfml_get_idle_walk_destination);
 	lua_register(lua.get_state(), "sfml_loop_animation", LuaFunction::sfml_loop_animation);
 	lua_register(lua.get_state(), "sfml_start_animation", LuaFunction::sfml_start_animation);
+	lua_register(lua.get_state(), "sfml_dialogue", LuaFunction::sfml_dialogue);
 }

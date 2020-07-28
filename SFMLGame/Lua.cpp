@@ -543,6 +543,12 @@ LuaObject Lua::get_object(std::string name) {
 	return object;
 }
 
+LuaObject Lua::get_object_param() {
+	LuaObject object = get_child_object("");
+	object.path = "";
+	return object;
+}
+
 LuaObject Lua::get_child_object(std::string parent_path) {
 	LuaObject obj;
 	obj.type = LuaObject::Type::OBJECT;

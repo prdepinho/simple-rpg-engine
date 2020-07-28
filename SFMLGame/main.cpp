@@ -18,7 +18,7 @@ int main()
 {
 	try {
 		_game.init();
-#if false
+#if true
 		_game.start();
 #else
 

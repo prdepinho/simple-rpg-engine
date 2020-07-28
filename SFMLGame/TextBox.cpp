@@ -175,8 +175,8 @@ void TextBox::show(std::string text, Screen &screen, Callback callback) {
 	static TextBox text_box;
 
 	Lua lua(Config::SETTINGS);
-	int height = lua.get_float("text_box_lines");
-	int width = lua.get_float("text_box_width");
+	int height = (int) lua.get_float("text_box_lines");
+	int width  = (int) lua.get_float("text_box_width");
 	float speed = lua.get_float("text_box_speed");
 
 	// int width = _game.get_resolution_width() * 4 / 5;
@@ -201,4 +201,48 @@ void TextBox::update_view() {
 		font_lines[line].draw_line(get_x() + text_x, get_y() + text_y, visible_lines[i], sf::Color::Black);
 		line++;
 	}
+}
+
+
+
+
+
+
+DialogueBox::DialogueBox(std::string text, int x, int y, int width, int height, float speed) 
+	: TextBox(text, x, y, width, height, speed)
+{
+}
+
+DialogueBox::~DialogueBox() {
+	TextBox::~TextBox();
+}
+
+void DialogueBox::create() {
+	TextBox::create();
+}
+
+void DialogueBox::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+	TextBox::draw(target, states);
+}
+
+void DialogueBox::update(float elapsed_time) {
+	TextBox::update(elapsed_time);
+}
+
+Component *DialogueBox::on_key_pressed(sf::Keyboard::Key key) {
+	TextBox::on_key_pressed(key);
+	return this;
+}
+
+Component *DialogueBox::on_pressed(int x, int y) {
+	TextBox::on_pressed(x, y);
+	return this;
+}
+
+void DialogueBox::show(Lua &lua, LuaObject *dialogue_object, Screen &screen, Callback callback) {
+	// TextBox::show("Hello world", screen, callback);
+}
+
+void DialogueBox::update_view() {
+	TextBox::update_view();
 }

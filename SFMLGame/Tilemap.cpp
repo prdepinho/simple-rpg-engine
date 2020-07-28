@@ -31,8 +31,8 @@ void FogOfWar::setup(
 }
 
 void FogOfWar::update_fog(std::vector<sf::Vector2i> clear_tiles) {
-	for (unsigned int x = 0; x < width; ++x) {
-		for (unsigned int y = 0; y < height; ++y) {
+	for (int x = 0; x < width; ++x) {
+		for (int y = 0; y < height; ++y) {
 			sf::Vertex *quad = &vertices[(x + (y * width)) * 4];
 			quad[0].color = sf::Color::Black;
 			quad[1].color = sf::Color::Black;
