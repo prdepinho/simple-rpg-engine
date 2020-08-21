@@ -233,6 +233,7 @@ void Lua::call(std::string function, int tile_x, int tile_y) {
 	}
 }
 
+#if false
 void Lua::call_event(std::string function, std::string event, int tile_x, int tile_y, int character_id) {
 	lua_getglobal(state, function.c_str());
 	lua_pushstring(state, event.c_str());
@@ -246,7 +247,33 @@ void Lua::call_event(std::string function, std::string event, int tile_x, int ti
 		throw LuaException(ss.str().c_str());
 	}
 }
+#else
+void Lua::call_event(std::string function, std::string event, int tile_x, int tile_y, int character_id) {
+	lua_getglobal(state, "map_event");
+	lua_pushstring(state, function.c_str());
+	lua_pushstring(state, event.c_str());
+	lua_pushnumber(state, tile_x);
+	lua_pushnumber(state, tile_y);
+	lua_pushnumber(state, character_id);
+	int result = lua_pcall(state, 5, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << function << ": " << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+}
+#endif
 
+void Lua::change_map(std::string new_map) {
+	lua_getglobal(state, "change_map");
+	lua_pushstring(state, new_map.c_str());
+	int result = lua_pcall(state, 1, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << new_map << ": " << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+}
 
 
 int Lua::get_int(std::string name, int default_value){

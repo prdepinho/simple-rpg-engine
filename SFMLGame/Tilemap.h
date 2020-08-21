@@ -91,8 +91,6 @@ public:
 	void change_floor_texture(int tile_x, int tile_y, int layer, int texture_tile_x, int texture_tile_y);
 	void change_ceiling_texture(int tile_x, int tile_y, int layer, int texture_tile_x, int texture_tile_y);
 
-	Lua* get_script() { return script; }
-
 	TilemapLayer &get_floor_layer() { return floor_layer; }
 	TilemapLayer &get_ceiling_layer() { return ceiling_layer; }
 	FogOfWar &get_fog_of_war() { return fog_of_war; }
@@ -101,7 +99,6 @@ private:
 	int width;
 	int height;
 	std::vector<TileData> tiles;
-	Lua *script=nullptr;
 	TilemapLayer floor_layer;
 	TilemapLayer ceiling_layer;
 	FogOfWar fog_of_war;

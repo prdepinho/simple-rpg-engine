@@ -14,4 +14,6 @@ door = function(event, x, y, id)
   end
 end
 
+M.door = door
+
 return M

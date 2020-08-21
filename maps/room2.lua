@@ -2,19 +2,21 @@
 package.path = package.path .. ";../maps/?.lua"
 require "common"
 
-function enter()
+M = {}
+
+M.door = door
+
+function M.enter()
   print('room2.map: enter')
 end
 
-function exit()
+function M.exit()
   print('room2.map: exit')
 end
 
-function on_enter_tile(x, y, id) end
-function on_interact(x, y, id) end
 
 
-function north_door(event, x, y, id)
+function M.north_door(event, x, y, id)
   if event == "enter_tile" then
     sfml_change_floor_texture(x, y, 1, 1, 9)
     sfml_play_sound("tcsh.wav")
@@ -25,3 +27,4 @@ function north_door(event, x, y, id)
   end
 end
 
+return M

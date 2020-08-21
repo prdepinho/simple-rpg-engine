@@ -500,6 +500,8 @@ void GameScreen::clean_temporary_characters() {
 
 // Change to a new map and put the player character to tile_x and tile_y
 void GameScreen::change_map(std::string filename, int tile_x, int tile_y) {
+	_game.get_lua()->execute_method("map_exit");
+
 	next_map = filename;
 	for (Character *character : characters) {
 		character->clear_schedule();
@@ -511,6 +513,8 @@ void GameScreen::change_map(std::string filename, int tile_x, int tile_y) {
 }
 
 void GameScreen::load_map() {
+	_game.get_lua()->change_map(next_map);
+
 	clean_temporary_characters();
 	TiledTilemapDAO::load_map(this, next_map, map);
 
@@ -526,6 +530,8 @@ void GameScreen::load_map() {
 
 	put_character_on_tile(*player_character, new_tile_position.x, new_tile_position.y);
 	center_map_on_character(*player_character);
+
+	_game.get_lua()->execute_method("map_enter");
 }
 
 void GameScreen::center_map_on_character(Character &character) {
@@ -590,7 +596,8 @@ void GameScreen::move_character(Character &character, Direction direction) {
 		case Direction::RIGHT: position.x++; break;
 		}
 		TileData tile = map.get_tile(position.x, position.y);
-		map.get_script()->call_event(tile.object_name, "enter_tile", position.x, position.y, character.get_id());
+		// map.get_script()->call_event(tile.object_name, "enter_tile", position.x, position.y, character.get_id());
+		_game.get_lua()->call_event(tile.object_name, "enter_tile", position.x, position.y, character.get_id());
 	}
 	catch (LuaException &e) {
 		// Log("Lua Error: %s", e.what());
@@ -610,7 +617,8 @@ void GameScreen::move_character(Character &character, Direction direction) {
 			try {
 				sf::Vector2i position = character_position(*player_character);
 				TileData tile = map.get_tile(position.x, position.y);
-				map.get_script()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_id());
+				// map.get_script()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_id());
+				_game.get_lua()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_id());
 			}
 			catch (LuaException &e) {
 				// Log("Lua Error: %s", e.what());
@@ -631,7 +639,8 @@ void GameScreen::move_character(Character &character, Direction direction) {
 			try {
 				sf::Vector2i position = character_position(character);
 				TileData tile = map.get_tile(position.x, position.y);
-				map.get_script()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_id());
+				// map.get_script()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_id());
+				_game.get_lua()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_id());
 			}
 			catch (LuaException &e) {
 				// Log("Lua Error: %s", e.what());
@@ -665,7 +674,8 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 		if (map.in_tile_bounds(tile_x, tile_y)) {
 			TileData tile = map.get_tile(tile_x, tile_y);
 			try {
-				map.get_script()->call_event(tile.object_name, "interact", tile_x, tile_y, character.get_id());
+				// map.get_script()->call_event(tile.object_name, "interact", tile_x, tile_y, character.get_id());
+				_game.get_lua()->call_event(tile.object_name, "interact", tile_x, tile_y, character.get_id());
 			}
 			catch (LuaException &e) {
 				Log("Lua Error: %s", e.what());

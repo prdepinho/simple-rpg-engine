@@ -2,16 +2,18 @@
 package.path = package.path .. ";../maps/?.lua"
 require "common"
 
-function enter()
+M = {}
+
+M.door = door
+
+function M.enter()
   print('level.map: enter')
 end
 
-function exit()
+function M.exit()
   print('level.map: exit')
 end
 
-function on_enter_tile(x, y, id) end
-function on_interact(x, y, id) end
-
+return M
 
 

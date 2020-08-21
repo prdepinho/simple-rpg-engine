@@ -4,6 +4,20 @@ local rules = require "rules"
 local data = require "data"
 
 
+
+variables = {
+  a = 0
+}
+
+
+function data_update()
+  print(variables.a)
+  data.update(variables)
+  print(variables.a)
+end
+
+
+
 spam = {
   foo = "bar"
 }

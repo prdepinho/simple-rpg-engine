@@ -1,3 +1,32 @@
+
+package.path = package.path .. ";../maps/?.lua"
+
+
+map_data = {}
+map_module = {}
+
+
+function change_map(new_map)
+  map = {}
+  map_module = {}
+  map_module = require(new_map)
+  map_module.data = map_data
+  print('Load module: ' .. new_map)
+end
+
+function map_enter()
+  map_module.enter()
+end
+
+function map_exit()
+  map_module.exit()
+end
+
+function map_event(function_name, event, x, y, id)
+  map_module[function_name](event, x, y, id)
+end
+
+
 function start_game()
   io.write('starting game\n')
   sfml_game_start()
@@ -7,7 +36,7 @@ function log(msg)
   io.write(msg .. '\n')
 end
 
-function change_map()
+function _change_map()
   print("Changing map")
   map_name = "house"
   x = 1
@@ -18,6 +47,10 @@ end
 function version()
   io.write(string.format("Lua Version: %s\n", _VERSION))
 end
+
+
+
+-- -- -- -- -- --
 
 function width()
   io.write(string.format("%d", sfml_get_map_width()))

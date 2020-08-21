@@ -19,7 +19,8 @@ int main()
 	try {
 		_game.init();
 #if true
-		_game.start();
+		_game.get_lua()->execute_method("start_game");
+		// _game.start();
 #else
 
 		Lua lua(Path::SCRIPTS + "test/main.lua");
@@ -34,6 +35,10 @@ int main()
 		// lua.call_function(obj.get_object("test"), "show_counter");
 
 		lua.call_function(obj.get_object("test.show_counter"));
+
+
+		// lua.call_function(obj.get_object("update"));
+		lua.execute_method("data_update");
 
 #if false
 		try {

@@ -101,7 +101,6 @@ bool TilemapLayer::load(
 
 
 Tilemap::~Tilemap() {
-	delete script;
 }
 
 bool Tilemap::load_floor_layer (

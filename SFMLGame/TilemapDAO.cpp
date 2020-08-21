@@ -77,11 +77,6 @@ void TilemapDAO::load_map(std::string filename, Tilemap & map) {
 	}
 
 	infile.close();
-
-
-	if (map.script != nullptr)
-		delete map.script;
-	map.script = new Lua(Path::MAPS + filename + ".lua");
 }
 
 bool TilemapDAO::backup(std::string filename) {
@@ -283,11 +278,6 @@ void TiledTilemapDAO::load_map(GameScreen *game_screen, std::string filename, Ti
 			break;
 		}
 	}
-
-
-	if (map.script != nullptr)
-		delete map.script;
-	map.script = new Lua(Path::MAPS + filename + ".lua");
 }
 
 void TiledTilemapDAO::load_characters(GameScreen *game_screen, std::string filename, Tilemap &map) {
