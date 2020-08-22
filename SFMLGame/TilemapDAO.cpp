@@ -319,6 +319,7 @@ void TiledTilemapDAO::load_characters(GameScreen *game_screen, std::string filen
 					Character *character = new Character();
 					character->create(object.getName());
 					character->loop_animation("walk");
+					_game.get_lua()->add_character(character->get_id(), object.getName());
 					game_screen->add_character(character, x, y);
 				}
 			}

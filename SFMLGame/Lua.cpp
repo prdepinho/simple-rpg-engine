@@ -192,6 +192,7 @@ void Lua::execute_script(const char *filename)
 	lua_close(lua_state);
 }
 
+#if false
 void Lua::on_idle(Character &character) {
 	lua_getglobal(state, "on_idle");
 	lua_pushnumber(state, character.get_id());
@@ -201,7 +202,20 @@ void Lua::on_idle(Character &character) {
 	}
 	// lua_pop(state, 1);
 }
+#else
+void Lua::on_idle(Character &character) {
+	lua_getglobal(state, "character_on_idle");
+	lua_pushstring(state, character.get_name().c_str());
+	lua_pushnumber(state, character.get_id());
+	int result = lua_pcall(state, 2, 1, 0);
+	if (result != LUA_OK) {
+		throw LuaException(get_error(state));
+	}
+	// lua_pop(state, 1);
+}
+#endif
 
+#if false
 void Lua::on_turn(Character &character) {
 	lua_getglobal(state, "on_turn");
 	lua_pushnumber(state, character.get_id());
@@ -210,6 +224,17 @@ void Lua::on_turn(Character &character) {
 		throw LuaException(get_error(state));
 	}
 }
+#else
+void Lua::on_turn(Character &character) {
+	lua_getglobal(state, "character_on_turn");
+	lua_pushstring(state, character.get_name().c_str());
+	lua_pushnumber(state, character.get_id());
+	int result = lua_pcall(state, 2, 1, 0);
+	if (result != LUA_OK) {
+		throw LuaException(get_error(state));
+	}
+}
+#endif
 
 void Lua::on_interact(Character &character, int tile_x, int tile_y) {
 	lua_getglobal(state, "on_interact");
@@ -264,13 +289,25 @@ void Lua::call_event(std::string function, std::string event, int tile_x, int ti
 }
 #endif
 
-void Lua::change_map(std::string new_map) {
+void Lua::change_map(std::string script) {
 	lua_getglobal(state, "change_map");
-	lua_pushstring(state, new_map.c_str());
+	lua_pushstring(state, script.c_str());
 	int result = lua_pcall(state, 1, 1, 0);
 	if (result != LUA_OK) {
 		std::stringstream ss;
-		ss << new_map << ": " << get_error(state);
+		ss << script << ": " << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+}
+
+void Lua::add_character(long id, std::string script) {
+	lua_getglobal(state, "add_character");
+	lua_pushnumber(state, id);
+	lua_pushstring(state, script.c_str());
+	int result = lua_pcall(state, 2, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << script << ": " << get_error(state);
 		throw LuaException(ss.str().c_str());
 	}
 }

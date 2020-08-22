@@ -7,7 +7,7 @@ M.door = door
 
 
 function M.enter()
-  print('--------- room.map: enter')
+  print('room.map: enter')
   print('  door_locked: ' .. tostring(M.data.door_locked))
   print('  has_key: ' .. tostring(M.data.has_key))
 
@@ -25,7 +25,7 @@ function M.enter()
 end
 
 function M.exit()
-  print('--------- room.map: exit')
+  print('room.map: exit')
 end
 
 function M.empty_chest(event, x, y, id)

@@ -44,7 +44,8 @@ public:
 	void clear_schedule();
 	std::queue<Action*> get_schedule() { return schedule; }
 
-	Lua *get_script() { return script; }
+	std::string get_name() const { return name; }
+	void set_name(std::string name) { this->name = name; }
 
 	std::vector<sf::Vector2i> get_field_of_vision() { return field_of_vision; }
 	void set_field_of_vision(std::vector<sf::Vector2i> fov) { field_of_vision = fov; }
@@ -57,7 +58,7 @@ private:
 
 	std::map<std::string, Animation> animations;
 	bool facing_left;
-	Lua *script=nullptr;
+	std::string name;
 
 	bool permanent;
 	std::vector<sf::Vector2i> field_of_vision;

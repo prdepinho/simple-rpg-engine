@@ -5,14 +5,12 @@
 Character::Character(bool permanent) : facing_left(true), permanent(permanent), current_animation(""), looping_animation("") {}
 
 Character::~Character() {
-	if (script != nullptr)
-		delete script;
 	clear_schedule();
 }
 
 void Character::create(std::string filename) {
-	script = new Lua(Path::CHARACTERS + filename + ".lua");
-	LuaObject animation = script->get_object("animation");
+	Lua script(Path::CHARACTERS + filename + ".lua");
+	LuaObject animation = script.get_object("animation");
 
 	std::string sprite_sheet = animation.get_string("basic.file");
 	int sprite_height = animation.get_int("basic.size.height");
@@ -50,6 +48,8 @@ void Character::create(std::string filename) {
 
 		animations[name] = Animation{ name, frames, fps };
 	}
+
+	this->name = filename;
 
 	set_dimensions(sprite_height, sprite_width);
 	setOrigin(sf::Vector2f((float) sprite_height / 2, (float) sprite_width / 2));

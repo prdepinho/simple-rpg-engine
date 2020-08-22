@@ -135,7 +135,8 @@ bool GameScreen::update(float elapsed_time) {
 				if (character != player_character) {
 					try {
 						// get_game()->get_lua()->on_turn(character);
-						character->get_script()->on_turn(*character);
+						// character->get_script()->on_turn(*character);
+						_game.get_lua()->on_turn(*character);
 					}
 					catch (LuaException &e) {
 						Log("Lua Error: %s", e.what());
@@ -150,7 +151,8 @@ bool GameScreen::update(float elapsed_time) {
 #endif
 						try {
 							// get_game()->get_lua()->on_idle(character);
-							character->get_script()->on_idle(*character);
+							// character->get_script()->on_idle(*character);
+							_game.get_lua()->on_idle(*character);
 						}
 						catch (LuaException &e) {
 							Log("ua Error: %s", e.what());

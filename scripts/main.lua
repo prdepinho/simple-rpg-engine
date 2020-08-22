@@ -1,10 +1,28 @@
 
 package.path = package.path .. ";../maps/?.lua"
+package.path = package.path .. ";../character/?.lua"
 
 
+character_data = {}
+character_modules = {}
 map_data = {}
 map_module = {}
 
+function add_character(id, script)
+  print('----- add character (' .. tostring(id) .. '): ' .. script)
+  character_modules[script] = require(script)
+  character_data[script] = {}
+  character_modules[script].data = character_data[script]
+  character_modules[script].enter()
+end
+
+function character_on_turn(script, id)
+  character_modules[script].on_turn(id)
+end
+
+function character_on_idle(script, id)
+  character_modules[script].on_idle(id)
+end
 
 function change_map(new_map)
   map = {}
@@ -34,14 +52,6 @@ end
 
 function log(msg)
   io.write(msg .. '\n')
-end
-
-function _change_map()
-  print("Changing map")
-  map_name = "house"
-  x = 1
-  y = 1
-  sfml_change_map(map_name, x, y)
 end
 
 function version()
