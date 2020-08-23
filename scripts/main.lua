@@ -62,6 +62,53 @@ end
 
 -- -- -- -- -- --
 
+
+foo_test = {
+  callback = function() print("foo_test callback") end
+}
+
+
+option = "None"
+function test_dialogue()
+  local dialogue = {
+    start = {
+      text = "A wild maid appear, and she sais the following:",
+      go_to = "question"
+    },
+    question = {
+      text = "Would you like to have tea or coffee this afternoon?",
+      options = {
+        {
+          text = "Tea, please",
+          go_to = "tea",
+        },
+        {
+          text = "I would like a some coffee, please.",
+          go_to = "coffee",
+        }
+      }
+    },
+    tea = {
+      text = "I will prepare some tea right away.",
+      callback = function() print('*tea chosen') end,
+      go_to = "result"
+    },
+    coffee = {
+      text = "Here, then, have some coffee.",
+      callback = function() print('*coffee chosen') end,
+      go_to = "result"
+    },
+    result = {
+      text = "It's delicious",
+      go_to = "end"
+    }
+  }
+  sfml_dialogue(dialogue)
+end
+
+
+-- -- -- -- -- --
+
 function width()
   io.write(string.format("%d", sfml_get_map_width()))
 end

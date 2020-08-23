@@ -529,17 +529,24 @@ int Lua::call_function(std::string path) {
 }
 #endif
 
+// This function is used to call a function from a table at the top of the stack. This is useful in C implemented functions called in lua that receive a table as parameter.
+void Lua::call_table_function(LuaObject *token, std::string function_name) {
+	std::vector<std::string> path = splitstr(token->get_path(), '.');
+	call_function_recursive(path, function_name, 0);
+}
+
+// These two functions are used to call a function from a public table in a lua script.
 void Lua::call_function(LuaObject *token, std::string function_name) {
 	std::vector<std::string> path = splitstr(token->get_path(), '.');
 	lua_getglobal(state, "obj");
-	call_function_recursive(std::vector<std::string>(path.begin() + 1, path.end()), function_name, 0);
+	call_function_recursive(path, function_name, 0);
 	lua_pop(state, 1);
 }
 
 void Lua::call_function(LuaObject *token) {
 	std::vector<std::string> path = splitstr(token->get_path(), '.');
 	lua_getglobal(state, "obj");
-	call_function_recursive(std::vector<std::string>(path.begin() + 1, path.end() -1), token->get_function_name(), 0);
+	call_function_recursive(std::vector<std::string>(path.begin(), path.end() -1), token->get_function_name(), 0);
 	lua_pop(state, 1);
 }
 
@@ -599,17 +606,18 @@ size_t LuaObject::size() const {
 	return 0;
 }
 
+// This function is used to get a table at the top of the stack. This is useful in C implemented functions called in lua that receive a table as parameter.
+LuaObject Lua::read_top_table() {
+	LuaObject object = get_child_object("");
+	object.path = "";
+	return object;
+}
+
 LuaObject Lua::get_object(std::string name) {
 	lua_getglobal(state, name.c_str());
 	LuaObject object = get_child_object(name);
 	object.path = name;
 	lua_pop(state, 1);
-	return object;
-}
-
-LuaObject Lua::get_object_param() {
-	LuaObject object = get_child_object("");
-	object.path = "";
 	return object;
 }
 
@@ -630,7 +638,7 @@ LuaObject Lua::get_child_object(std::string parent_path) {
 		else {
 			key = std::string(lua_tostring(state, -2));
 		}
-		value.path += parent_path + "." + key;
+		value.path += parent_path == "" ? key : (parent_path + "." + key);
 
 		int type = lua_type(state, -1);
 		switch (type) {

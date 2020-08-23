@@ -40,10 +40,20 @@ function test()
   print('return: ' .. tostring(a))
 end
 
+
+alpha = {
+  callback = function() print("alpha") end,
+}
+
+beta = {
+  callback = function() print("beta") end
+}
+
+
 obj = {
   value = 23,
   message = "foobar",
-  callback = function() print("callback called") end,
+  obj_callback = function() print("+callback called") end,
   inside = {
     callback = function () print("the other callback") end,
     message = "inside joke",

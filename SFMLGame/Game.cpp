@@ -608,7 +608,42 @@ public:
 
 	static int sfml_dialogue(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
-		// lua.get_object_param();
+
+		// std::cout << _game.get_lua()->stack_dump() << std::endl;
+
+		LuaObject dialogue = _game.get_lua()->read_top_table();
+
+		std::string go_to = "start";
+		while (go_to != "end") {
+			LuaObject *block = dialogue.get_object(go_to);
+			std::cout << " + block: " << block->get_string("text") << std::endl;
+
+			// std::cout << "block path: " << block->get_path() << std::endl;
+			_game.get_lua()->call_table_function(block, "callback");
+
+			LuaObject *options = block->get_object("options");
+			if (options->size() > 0) {
+				for (auto it = options->begin(); it != options->end(); ++it) {
+					std::cout << "   - option ";
+					std::cout << it->first << ": ";
+					std::cout << it->second.get_string("text");
+					std::cout << " [" << it->second.get_string("go_to") << "]";
+					std::cout << std::endl;
+				}
+				std::string i;
+				std::cin >> i;
+				go_to = options->get_object(i)->get_string("go_to");
+
+			}
+			else {
+				go_to = block->get_string("go_to");
+				std::cout << "press enter" << std::endl;
+			}
+			std::getchar();
+		}
+
+		// std::cout << _game.get_lua()->stack_dump() << std::endl;
+
 		return 1;
 	}
 };

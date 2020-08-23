@@ -68,6 +68,38 @@ end
 
 function M.step_floor(event, x, y)
   if event == "enter_tile" then
+    local dialogue = {
+      start = {
+        text = "A wild maid appear, and she sais the following:",
+        go_to = "question"
+      },
+      question = {
+        text = "Would you like to have tea or coffee this afternoon?",
+        options = {
+          {
+            text = "Tea, please",
+            go_to = "tea"
+          },
+          {
+            text = "I would like a some coffee, please.",
+            go_to = "coffee"
+          }
+        }
+      },
+      tea = {
+        text = "I will prepare some tea right away.",
+        go_to = "result"
+      },
+      coffee = {
+        text = "Here, then, have some coffee.",
+        go_to = "result"
+      },
+      result = {
+        text = "It's delicious",
+        go_to = "end"
+      }
+    }
+    sfml_dialogue(dialogue)
   elseif event == "exit_tile" then
   elseif event == "interact" then
   elseif event == "step_on" then

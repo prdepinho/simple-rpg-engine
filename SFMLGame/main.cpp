@@ -18,15 +18,27 @@ int main()
 {
 	try {
 		_game.init();
-#if true
+#if false
 		_game.get_lua()->execute_method("start_game");
 		// _game.start();
 #else
 
+#if false
+
 		Lua lua(Path::SCRIPTS + "test/main.lua");
-		LuaObject obj = lua.get_object("obj");
-		// lua.call_function("obj");
-		// lua.call_function(obj, "function");
+
+		Lua *script = &lua;
+		// Lua *script = _game.get_lua();
+#if true
+		LuaObject obj = script->get_object("alpha");
+		script->call_function(&obj, "callback");
+		// script->call_function(obj.get_token("callback"));
+#else
+
+		LuaObject obj = script->get_object("foo_test");
+		script->call_function(obj.get_token("foo_callback"));
+
+#endif
 
 		// lua.call_function(obj.get_object("inside.internal"), "callback");
 		// lua.print_object(obj, "callback");
@@ -34,11 +46,14 @@ int main()
 		// lua.call_function(obj.get_object("test"), "increment");
 		// lua.call_function(obj.get_object("test"), "show_counter");
 
-		lua.call_function(obj.get_object("test.show_counter"));
+		// lua.call_function(obj.get_object("test.show_counter"));
 
 
 		// lua.call_function(obj.get_object("update"));
-		lua.execute_method("data_update");
+		// lua.execute_method("data_update");
+#else
+		_game.get_lua()->execute_method("test_dialogue");
+#endif
 
 #if false
 		try {
@@ -76,7 +91,6 @@ int main()
 			std::cout << e.what() << std::endl;
 			std::getchar();
 		}
-
 #endif
 
 

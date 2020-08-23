@@ -68,10 +68,10 @@ public:
 	bool get_boolean(std::string name);
 	std::string get_string(std::string name);
 
+	LuaObject read_top_table();
 	LuaObject get_object(std::string name);
-	LuaObject get_object_param();
 
-	// int call_function(std::string name);
+	void call_table_function(LuaObject *token, std::string function_name);
 	void call_function(LuaObject *token, std::string function_name);
 	void call_function(LuaObject *token);
 
