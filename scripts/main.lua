@@ -94,29 +94,33 @@ function test_dialogue()
     },
     tea = {
       text = "I will prepare some tea right away.",
-      callback = function() print('*tea chosen'); chosen = "tea" end,
+      callback = function() print('*tea chosen'); chosen = "tea"; end,
       go_to = "result"
     },
     coffee = {
       text = "Here, then, have some coffee.",
-      callback = function() print('*coffee chosen'); chosen = "coffe" end,
+      callback = function() print('*coffee chosen'); chosen = "coffee" end,
       go_to = "result"
     },
     none = {
       text = "Oh, suite yourself.",
       callback = function() print('*none chosen') end,
-      go_to = "result_none"
+      go_to = "result"
     },
     result = {
-      text = "It's delicious",
+      -- text = "It's delicious",
+      text = function() 
+        if chosen == 'coffee' then
+          return "The coffe is very hot and yummy."
+        elseif chosen == 'tea' then
+          return "The tea has a kindergarden flavor."
+        else
+          return "Do you have any spirits?"
+        end
+      end,
       callback = function() print('chosen: ' .. chosen) end,
       go_to = "end"
     },
-    result_none = {
-      text = "You reain thirsty.",
-      callback = function() print('chosen: ' .. chosen) end,
-      go_to = "end"
-    }
   }
   sfml_dialogue(dialogue)
 end

@@ -616,7 +616,18 @@ public:
 		std::string go_to = "start";
 		while (go_to != "end") {
 			LuaObject *block = dialogue.get_object(go_to);
-			std::cout << " + block: " << block->get_string("text") << std::endl;
+
+			std::string text = "";
+			switch (block->get_token("text")->get_type()) {
+			case LuaObject::Type::FUNCTION:
+				text = _game.get_lua()->call_table_function(block, "text");
+				break;
+			case LuaObject::Type::STRING:
+				text = block->get_string("text");
+				break;
+			}
+
+			std::cout << " + block: " << text << std::endl;
 
 			// std::cout << "block path: " << block->get_path() << std::endl;
 			std::string rval = _game.get_lua()->call_table_function(block, "callback");
