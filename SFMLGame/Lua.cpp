@@ -530,27 +530,28 @@ int Lua::call_function(std::string path) {
 #endif
 
 // This function is used to call a function from a table at the top of the stack. This is useful in C implemented functions called in lua that receive a table as parameter.
-void Lua::call_table_function(LuaObject *token, std::string function_name) {
+std::string Lua::call_table_function(LuaObject *token, std::string function_name) {
 	std::vector<std::string> path = splitstr(token->get_path(), '.');
-	call_function_recursive(path, function_name, 0);
+	return call_function_recursive(path, function_name, 0);
 }
 
 // These two functions are used to call a function from a public table in a lua script.
-void Lua::call_function(LuaObject *token, std::string function_name) {
+void Lua::call_function(LuaObject *token, std::string table_name, std::string function_name) {
 	std::vector<std::string> path = splitstr(token->get_path(), '.');
-	lua_getglobal(state, "obj");
+	lua_getglobal(state, table_name.c_str());
 	call_function_recursive(path, function_name, 0);
 	lua_pop(state, 1);
 }
 
-void Lua::call_function(LuaObject *token) {
+void Lua::call_function(LuaObject *token, std::string table_name) {
 	std::vector<std::string> path = splitstr(token->get_path(), '.');
-	lua_getglobal(state, "obj");
+	lua_getglobal(state, table_name.c_str());
 	call_function_recursive(std::vector<std::string>(path.begin(), path.end() -1), token->get_function_name(), 0);
 	lua_pop(state, 1);
 }
 
-void Lua::call_function_recursive(std::vector<std::string> path, std::string function_name, int level) {
+std::string Lua::call_function_recursive(std::vector<std::string> path, std::string function_name, int level) {
+	std::string rval = "";
 	lua_pushnil(state);
 	while (lua_next(state, -2)) {
 		std::string key = "";
@@ -571,7 +572,7 @@ void Lua::call_function_recursive(std::vector<std::string> path, std::string fun
 		case LUA_TTABLE:
 			if (path.size() > 0 && key == path[0]) {
 				// std::cout << key << "..." << std::endl;
-				call_function_recursive(std::vector<std::string>(path.begin() + 1, path.end()), function_name, level + 1);
+				rval = call_function_recursive(std::vector<std::string>(path.begin() + 1, path.end()), function_name, level + 1);
 			}
 			lua_pop(state, 1);
 			break;
@@ -581,9 +582,18 @@ void Lua::call_function_recursive(std::vector<std::string> path, std::string fun
 				{
 					int callback_reference = luaL_ref(state, LUA_REGISTRYINDEX);
 					lua_rawgeti(state, LUA_REGISTRYINDEX, callback_reference);
-					if (lua_pcall(state, 0, 0, 0) != 0) {
+
+					lua_pushstring(state, "arg");
+					if (lua_pcall(state, 1, 1, 0) != 0) {
 						Log("Failed to call the callback!\n %s\n", lua_tostring(state, -1));
 					}
+
+					if (lua_isstring(state, -1)) {
+						rval = lua_tostring(state, -1);
+						std::cout << "rval: " << rval << std::endl;
+					}
+					lua_pop(state, 1);
+
 					luaL_unref(state, LUA_REGISTRYINDEX, callback_reference);
 				}
 			}
@@ -596,6 +606,7 @@ void Lua::call_function_recursive(std::vector<std::string> path, std::string fun
 			break;
 		}
 	}
+	return rval;
 }
 
 

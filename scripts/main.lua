@@ -68,7 +68,7 @@ foo_test = {
 }
 
 
-option = "None"
+chosen = "None"
 function test_dialogue()
   local dialogue = {
     start = {
@@ -85,22 +85,53 @@ function test_dialogue()
         {
           text = "I would like a some coffee, please.",
           go_to = "coffee",
+        },
+        {
+          text = "None, thank you.",
+          go_to = "none",
         }
       }
     },
     tea = {
       text = "I will prepare some tea right away.",
-      callback = function() print('*tea chosen') end,
+      callback = function() print('*tea chosen'); chosen = "tea" end,
       go_to = "result"
     },
     coffee = {
       text = "Here, then, have some coffee.",
-      callback = function() print('*coffee chosen') end,
+      callback = function() print('*coffee chosen'); chosen = "coffe" end,
       go_to = "result"
+    },
+    none = {
+      text = "Oh, suite yourself.",
+      callback = function() print('*none chosen') end,
+      go_to = "result_none"
     },
     result = {
       text = "It's delicious",
+      callback = function() print('chosen: ' .. chosen) end,
       go_to = "end"
+    },
+    result_none = {
+      text = "You reain thirsty.",
+      callback = function() print('chosen: ' .. chosen) end,
+      go_to = "end"
+    }
+  }
+  sfml_dialogue(dialogue)
+end
+
+function test_dialogue_simple()
+  dialogue = {
+    start = {
+      text = "",
+      go_to = "result",
+      callback = function() print("this function returns a string"); return "return value" end,
+    },
+    result = {
+      text = "",
+      go_to = "end",
+      callback = function() print("this function doesn't return anything") end,
     }
   }
   sfml_dialogue(dialogue)

@@ -71,12 +71,12 @@ public:
 	LuaObject read_top_table();
 	LuaObject get_object(std::string name);
 
-	void call_table_function(LuaObject *token, std::string function_name);
-	void call_function(LuaObject *token, std::string function_name);
-	void call_function(LuaObject *token);
+	std::string call_table_function(LuaObject *token, std::string function_name);
+	void call_function(LuaObject *token, std::string table_name, std::string function_name);
+	void call_function(LuaObject *token, std::string table_name);
 
 private:
-	void call_function_recursive(std::vector<std::string> path, std::string function_name, int level);
+	std::string call_function_recursive(std::vector<std::string> path, std::string function_name, int level);
 	LuaObject get_child_object(std::string parent_path);
 
 private:
@@ -196,10 +196,19 @@ new value afterwards.
 
 ```
 LuaObject obj = lua.get_object("obj");
-lua.call_function(obj.get_object("test.increment"));
-lua.call_function(obj.get_object("test.show_counter"));
+lua.call_function(obj.get_object("test.increment"), "obj");
+lua.call_function(obj.get_object("test.show_counter"), "obj");
 ```
 
+Use call_table_function if you have a table at the top of the stack and need to
+call a function in it. It works similarly to call_function, but the LuaObject
+needs to be taken from the top of the stack with read_top_table, as follows.
+
+```
+LuaObject dialogue = _game.get_lua()->read_top_table();
+LuaObject *block = dialogue.get_object(go_to);
+_game.get_lua()->call_table_function(block, "callback");
+```
 
 */
 

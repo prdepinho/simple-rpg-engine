@@ -52,7 +52,7 @@ int main()
 		// lua.call_function(obj.get_object("update"));
 		// lua.execute_method("data_update");
 #else
-		_game.get_lua()->execute_method("test_dialogue");
+		_game.get_lua()->execute_method("test_dialogue_simple");
 #endif
 
 #if false
@@ -91,11 +91,11 @@ int main()
 			std::cout << e.what() << std::endl;
 			std::getchar();
 		}
-#endif
 
 
 		std::cout << "Press enter" << std::endl;
 		std::getchar();
+#endif
 
 #if false
 		{

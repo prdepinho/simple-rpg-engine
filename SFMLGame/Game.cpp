@@ -619,7 +619,8 @@ public:
 			std::cout << " + block: " << block->get_string("text") << std::endl;
 
 			// std::cout << "block path: " << block->get_path() << std::endl;
-			_game.get_lua()->call_table_function(block, "callback");
+			std::string rval = _game.get_lua()->call_table_function(block, "callback");
+			std::cout << "rval: [" << rval << "]" << std::endl;
 
 			LuaObject *options = block->get_object("options");
 			if (options->size() > 0) {

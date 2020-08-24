@@ -78,24 +78,41 @@ function M.step_floor(event, x, y)
         options = {
           {
             text = "Tea, please",
-            go_to = "tea"
+            go_to = "tea",
           },
           {
             text = "I would like a some coffee, please.",
-            go_to = "coffee"
+            go_to = "coffee",
+          },
+          {
+            text = "None, thank you.",
+            go_to = "none",
           }
         }
       },
       tea = {
         text = "I will prepare some tea right away.",
+        callback = function() print('*tea chosen'); chosen = "tea" end,
         go_to = "result"
       },
       coffee = {
         text = "Here, then, have some coffee.",
+        callback = function() print('*coffee chosen'); chosen = "coffe" end,
         go_to = "result"
+      },
+      none = {
+        text = "Oh, suite yourself.",
+        callback = function() print('*none chosen') end,
+        go_to = "result_none"
       },
       result = {
         text = "It's delicious",
+        callback = function() print('chosen: ' .. chosen) end,
+        go_to = "end"
+      },
+      result_none = {
+        text = "You reain thirsty.",
+        callback = function() print('chosen: ' .. chosen) end,
         go_to = "end"
       }
     }
