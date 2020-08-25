@@ -22,7 +22,8 @@ TextBox::TextBox(std::string text, int x, int y, int width, int height, float sp
 	completely_written = false;
 
 
-	text_lines = font.split_lines(text, width);
+	text_width = width;
+	text_lines = font.split_lines(text, text_width);
 	visible_lines = std::vector<std::string>(text_lines.size());
 	font_lines = std::vector<Font>(height, Font());
 
@@ -83,7 +84,7 @@ void TextBox::update(float elapsed_time) {
 		}
 		else
 			set_dimensions(get_width(), get_height() + increase);
-		create();  // TODO: Ineffective. Implement a handy resize function at the level of Component.
+		create();  // TODO: Ineficient. Implement a handy resize function at the level of Component.
 	}
 
 	// write text to the window
@@ -140,7 +141,9 @@ Component *TextBox::on_key_pressed(sf::Keyboard::Key key) {
 		if (completely_written) {
 			if (start_line > 0) {
 				end_line = start_line;
-				start_line = std::max<size_t>(start_line - page_lines, 0);
+				long diff = (long)start_line - (long)page_lines;
+				start_line = diff > 0 ? diff : 0;
+				end_line = std::max<size_t>(start_line + page_lines, end_line);
 				for (size_t i = start_line; i < end_line; i++) {
 					visible_lines[i] = text_lines[i];
 				}
@@ -160,8 +163,31 @@ Component *TextBox::on_key_pressed(sf::Keyboard::Key key) {
 			}
 		}
 		break;
+#if false
+	case sf::Keyboard::N:
+		if (end_line == text_lines.size()) {
+			Log("N pressed.");
+			std::string new_text = "Foo bar spam eggFoo bar spam eggFoo bar spam eggFoo bar spam eggFoo bar spam eggFoo bar spam eggFoo bar spam eggFoo bar spam eggFoo bar spam eggsssssssssFoo bar spam eggs...";
+			push_text(new_text);
+		}
+		break;
+#endif
 	}
+
 	return this;
+}
+
+void TextBox::push_text(std::string text) {
+	TextBox &box = get();
+	auto new_split_lines = box.font.split_lines(text, box.text_width);
+	box.text_lines.insert(box.text_lines.end(), new_split_lines.begin(), new_split_lines.end());
+	box.visible_lines.resize(box.text_lines.size());
+	if (box.end_line % box.page_lines == 0) {
+		box.start_line = box.end_line;
+	}
+	box.end_line = std::min(box.start_line + box.page_lines, box.text_lines.size());
+	box.completely_written = false;
+	box.update_view();
 }
 
 Component *TextBox::on_pressed(int x, int y) {
@@ -172,7 +198,7 @@ Component *TextBox::on_pressed(int x, int y) {
 }
 
 void TextBox::show(std::string text, Screen &screen, Callback callback) {
-	static TextBox text_box;
+	TextBox &text_box = get();
 
 	Lua lua(Config::SETTINGS);
 	int height = (int) lua.get_float("text_box_lines");
@@ -208,8 +234,8 @@ void TextBox::update_view() {
 
 
 
-DialogueBox::DialogueBox(std::string text, int x, int y, int width, int height, float speed) 
-	: TextBox(text, x, y, width, height, speed)
+DialogueBox::DialogueBox(int x, int y, int width, int height, float speed) 
+	: TextBox("foobar", x, y, width, height, speed)
 {
 }
 
@@ -239,8 +265,71 @@ Component *DialogueBox::on_pressed(int x, int y) {
 	return this;
 }
 
-void DialogueBox::show(Lua &lua, LuaObject *dialogue_object, Screen &screen, Callback callback) {
+void DialogueBox::show(LuaObject dialogue, Screen &screen, Callback callback) {
+#if true
+	TextBox::show("foobar", screen, callback);
+#endif
+
+#if false
+	static DialogueBox dialogue_box;
+
+	Lua lua(Config::SETTINGS);
+	int height = (int) lua.get_float("text_box_lines");
+	int width  = (int) lua.get_float("text_box_width");
+	float speed = lua.get_float("text_box_speed");
+
+	dialogue_box = DialogueBox(0, 0, width, height, speed);
+	dialogue_box.add_function(callback);
+	dialogue_box.create();
+	int x = (_game.get_resolution_width() / 2) - (dialogue_box.get_width() / 2);
+	int y = x;
+	dialogue_box.set_position(x, y);
+	screen.add_component(dialogue_box);
+#endif
+
+#if false
 	// TextBox::show("Hello world", screen, callback);
+	std::string go_to = "start";
+	while (go_to != "end") {
+		LuaObject *block = dialogue.get_object(go_to);
+
+		std::string text = "";
+		switch (block->get_token("text")->get_type()) {
+		case LuaObject::Type::FUNCTION:
+			text = _game.get_lua()->call_table_function(block, "text");
+			break;
+		case LuaObject::Type::STRING:
+			text = block->get_string("text");
+			break;
+		}
+
+		std::cout << " + block: " << text << std::endl;
+
+		// std::cout << "block path: " << block->get_path() << std::endl;
+		std::string rval = _game.get_lua()->call_table_function(block, "callback");
+		std::cout << "rval: [" << rval << "]" << std::endl;
+
+		LuaObject *options = block->get_object("options");
+		if (options->size() > 0) {
+			for (auto it = options->begin(); it != options->end(); ++it) {
+				std::cout << "   - option ";
+				std::cout << it->first << ": ";
+				std::cout << it->second.get_string("text");
+				std::cout << " [" << it->second.get_string("go_to") << "]";
+				std::cout << std::endl;
+			}
+			std::string i;
+			std::cin >> i;
+			go_to = options->get_object(i)->get_string("go_to");
+
+		}
+		else {
+			go_to = block->get_string("go_to");
+			std::cout << "press enter" << std::endl;
+		}
+		std::getchar();
+	}
+#endif
 }
 
 void DialogueBox::update_view() {

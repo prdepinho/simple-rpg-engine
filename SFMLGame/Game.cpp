@@ -606,7 +606,7 @@ public:
 		return 1;
 	}
 
-	static int sfml_dialogue(lua_State *state) {
+	static int _sfml_dialogue(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 
 		// std::cout << _game.get_lua()->stack_dump() << std::endl;
@@ -656,6 +656,13 @@ public:
 
 		// std::cout << _game.get_lua()->stack_dump() << std::endl;
 
+		return 1;
+	}
+
+	static int sfml_dialogue(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		LuaObject dialogue = _game.get_lua()->read_top_table();
+		screen->show_dialogue_box(dialogue);
 		return 1;
 	}
 };

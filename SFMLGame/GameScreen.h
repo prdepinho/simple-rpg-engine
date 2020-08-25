@@ -75,6 +75,7 @@ public:
 	void set_block_input(bool block) { block_input = block; }
 
 	void show_text_box(std::string text);
+	void show_dialogue_box(LuaObject dialogue);
 
 	void clean_temporary_characters();
 	void add_character(Character *character, int tile_x, int tile_y);

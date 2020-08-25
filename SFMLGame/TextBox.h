@@ -16,6 +16,12 @@ public:
 	virtual Component *on_pressed(int x, int y) override;
 
 	static void show(std::string msg, Screen &screen, Callback callback=Callback());
+	static void push_text(std::string text);
+
+	static TextBox &get() {
+		static TextBox box;
+		return box;
+	}
 
 protected:
 	virtual void update_view();
@@ -34,6 +40,7 @@ private:
 	bool completely_written;
 	float writing_speed;  // letters per second
 
+	int text_width;
 
 	size_t start_line;
 	size_t end_line;
@@ -46,7 +53,7 @@ private:
 
 class DialogueBox : public TextBox {
 public:
-	DialogueBox(std::string text="", int x=0, int y=0, int width=0, int height=0, float speed=0.0f);
+	DialogueBox(int x=0, int y=0, int width=0, int height=0, float speed=0.0f);
 	virtual ~DialogueBox();
 
 	virtual void create() override;
@@ -55,10 +62,10 @@ public:
 	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
 	virtual Component *on_pressed(int x, int y) override;
 
-	static void show(Lua &lua, LuaObject *dialog_object, Screen &screen, Callback callback=Callback());
+	static void show(LuaObject dialog_object, Screen &screen, Callback callback=Callback());
 protected:
 	virtual void update_view();
 
 private:
-
+	std::string go_to = "start";
 };
