@@ -1,7 +1,30 @@
 #pragma once
 #include "Panel.h"
+#include "Button.h"
 #include "Callback.h"
 #include "Lua.h"
+
+class OptionButton : public Button {
+public:
+	OptionButton(std::string name = "", std::string dst = "") : Button(name), dst(dst) {}
+	std::string get_dst() const { return dst; }
+private:
+	std::string dst;
+};
+
+class OptionsPanel : public Panel {
+public:
+	OptionsPanel(int x = 0, int y = 0, int w = 0) : Panel(x, y, w, 0) {}
+	~OptionsPanel() {}
+	virtual void create() override;
+	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
+	void add_option(std::string text, Callback callback);
+	void add_option(std::string text, std::string dst, Callback callback);
+private:
+	std::vector<OptionButton> buttons;
+	int selected_index = 0;
+};
+
 
 class TextBox : public Panel, public CallbackCaller
 {
@@ -16,20 +39,15 @@ public:
 	virtual Component *on_pressed(int x, int y) override;
 
 	static void show(std::string msg, Screen &screen, Callback callback=Callback());
-	static void push_text(std::string text);
-
-	static TextBox &get() {
-		static TextBox box;
-		return box;
-	}
 
 protected:
 	virtual void update_view();
+	void push_text(std::string text);
 
 	int vertical_margin = 10;
 	int horizontal_margin = 10;
+	bool completely_written;
 
-private:
 	Font font;
 
 	int total_height;
@@ -37,7 +55,6 @@ private:
 	float open_speed;  // pixels per second
 
 	std::string text;
-	bool completely_written;
 	float writing_speed;  // letters per second
 
 	int text_width;
@@ -48,7 +65,9 @@ private:
 	std::vector<std::string> text_lines;
 	std::vector<std::string> visible_lines;
 	std::vector<Font> font_lines;
+private:
 };
+
 
 
 class DialogueBox : public TextBox {
@@ -65,7 +84,12 @@ public:
 	static void show(LuaObject dialog_object, Screen &screen, Callback callback=Callback());
 protected:
 	virtual void update_view();
+	void next();
+
+	OptionsPanel options_panel;
+	bool options_shown = false;
 
 private:
 	std::string go_to = "start";
+	LuaObject dialogue;
 };

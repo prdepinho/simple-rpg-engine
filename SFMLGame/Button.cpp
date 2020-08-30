@@ -83,6 +83,7 @@ Component* Button::on_released(int x, int y) {
 }
 
 Component* Button::on_key_pressed(sf::Keyboard::Key key) {
+	Component::on_key_pressed(key);
 	switch(key){
 	case sf::Keyboard::Key::Enter:
 		return on_click();

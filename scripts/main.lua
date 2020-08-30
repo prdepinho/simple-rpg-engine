@@ -10,18 +10,24 @@ map_module = {}
 
 function add_character(id, script)
   print('----- add character (' .. tostring(id) .. '): ' .. script)
-  character_modules[script] = require(script)
-  character_data[script] = {}
-  character_modules[script].data = character_data[script]
-  character_modules[script].enter()
+  if character_modules[script] ~= nil then
+    character_modules[script] = require(script)
+    character_data[script] = {}
+    character_modules[script].data = character_data[script]
+    character_modules[script].enter()
+  end
 end
 
 function character_on_turn(script, id)
-  character_modules[script].on_turn(id)
+  if character_modules[script] ~= nil then
+    character_modules[script].on_turn(id)
+end
 end
 
 function character_on_idle(script, id)
-  character_modules[script].on_idle(id)
+  if character_modules[script] ~= nil then
+    character_modules[script].on_idle(id)
+  end
 end
 
 function change_map(new_map)
@@ -41,7 +47,9 @@ function map_exit()
 end
 
 function map_event(function_name, event, x, y, id)
-  map_module[function_name](event, x, y, id)
+  if map_module[function_name] ~= nil then
+    map_module[function_name](event, x, y, id)
+  end
 end
 
 
@@ -63,8 +71,25 @@ end
 -- -- -- -- -- --
 
 
-foo_test = {
-  callback = function() print("foo_test callback") end
+-- first_callback = function(x) print('callback the first one'); return "return from the first callback" end,
+-- second_callback = function(x) print('callback the second one'); return "return from the second callback" end,
+
+function first_callback() 
+  print('callback the first one'); return "return from the first callback"
+end
+function second_callback() 
+  print('callback the second one'); return "return from the second callback"
+end
+
+alpha = {
+  first = {
+    text = "the first one",
+    callback = first_callback,
+  },
+  second = {
+    text = "the second one",
+    callback = second_callback,
+  },
 }
 
 

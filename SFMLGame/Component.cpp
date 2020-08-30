@@ -120,6 +120,8 @@ Component* Component::on_key_pressed(sf::Keyboard::Key key){
 	if (!activated) {
 		return parent_component;
 	}
+	if (parent_component != nullptr)
+		parent_component->on_key_pressed(key);
 	return this;
 }
 

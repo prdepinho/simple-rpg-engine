@@ -23,15 +23,21 @@ int main()
 		// _game.start();
 #else
 
-#if false
+#if true
 
 		Lua lua(Path::SCRIPTS + "test/main.lua");
 
-		Lua *script = &lua;
-		// Lua *script = _game.get_lua();
+		// Lua *script = &lua;
+		Lua *script = _game.get_lua();
 #if true
 		LuaObject obj = script->get_object("alpha");
-		script->call_function(&obj, "callback");
+		std::cout << obj.get_string("first.text") << std::endl;
+		std::cout << obj.get_string("second.text") << std::endl;
+		obj.call_function("first.callback");
+		obj.call_function("second.callback");
+		obj.delete_functions();
+
+		// script->call_function(&obj, "callback");
 		// script->call_function(obj.get_token("callback"));
 #else
 

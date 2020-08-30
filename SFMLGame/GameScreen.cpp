@@ -363,7 +363,7 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			}
 			break;
 			case sf::Keyboard::Insert:
-			case sf::Keyboard::N:
+			case sf::Keyboard::R:
 				break;
 			case sf::Keyboard::T:
 				{
@@ -375,9 +375,7 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				}
 				break;
 			case sf::Keyboard::D:
-				{
-					// show_dialogue_box();
-				}
+				std::cout << _game.get_lua()->stack_dump().c_str() << std::endl;
 				break;
 			case sf::Keyboard::S:
 				break;

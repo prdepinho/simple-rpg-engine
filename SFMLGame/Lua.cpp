@@ -9,6 +9,7 @@ Lua::Lua()
 {
 	state = luaL_newstate();
 	luaL_openlibs(state);
+	create_registry_table();
 	/*
 	lua_register(state, "howdy", howdy);
 	lua_register(state, "sfml_game_start", howdy);
@@ -19,7 +20,24 @@ Lua::Lua(std::string filename)
 {
 	state = luaL_newstate();
 	luaL_openlibs(state);
+	create_registry_table();
 	load(filename);
+}
+
+Lua::~Lua()
+{
+	destroy_registry_table();
+	lua_close(state);
+}
+
+void Lua::create_registry_table() {
+	lua_newtable(state);
+	registry_index = luaL_ref(state, LUA_REGISTRYINDEX);
+}
+
+void Lua::destroy_registry_table() {
+	luaL_unref(state, LUA_REGISTRYINDEX, registry_index);
+	registry_index = 0;
 }
 
 void Lua::load(std::string filename)
@@ -33,12 +51,6 @@ void Lua::load(std::string filename)
 		throw LuaException(get_error(state));
 	}
 	register_lua_accessible_functions(*this);
-}
-
-
-Lua::~Lua()
-{
-	lua_close(state);
 }
 
 const char* Lua::get_error(lua_State *state)
@@ -56,6 +68,7 @@ void Lua::start_game()
 		throw LuaException(get_error(state));
 		return;
 	}
+	lua_pop(state, 1);
 }
 
 void Lua::log(std::string msg)
@@ -136,6 +149,7 @@ std::map<std::string, std::string> Lua::get_table() {
 	if (result != LUA_OK) {
 		throw LuaException(get_error(state));
 	}
+	lua_pop(state, 1);
 
 	std::map<std::string, std::string> table;
 
@@ -161,6 +175,7 @@ void Lua::execute_method(std::string method) {
 	if (result != LUA_OK) {
 		throw LuaException(get_error(state));
 	}
+	lua_pop(state, 1);
 }
 
 void Lua::execute(std::string code) {
@@ -211,6 +226,7 @@ void Lua::on_idle(Character &character) {
 	if (result != LUA_OK) {
 		throw LuaException(get_error(state));
 	}
+	lua_pop(state, 1);
 	// lua_pop(state, 1);
 }
 #endif
@@ -233,6 +249,7 @@ void Lua::on_turn(Character &character) {
 	if (result != LUA_OK) {
 		throw LuaException(get_error(state));
 	}
+	lua_pop(state, 1);
 }
 #endif
 
@@ -244,6 +261,7 @@ void Lua::on_interact(Character &character, int tile_x, int tile_y) {
 	if (result != LUA_OK) {
 		throw LuaException(get_error(state));
 	}
+	lua_pop(state, 1);
 }
 
 void Lua::call(std::string function, int tile_x, int tile_y) {
@@ -256,6 +274,7 @@ void Lua::call(std::string function, int tile_x, int tile_y) {
 		ss << function << ": " << get_error(state);
 		throw LuaException(ss.str().c_str());
 	}
+	lua_pop(state, 1);
 }
 
 #if false
@@ -274,6 +293,7 @@ void Lua::call_event(std::string function, std::string event, int tile_x, int ti
 }
 #else
 void Lua::call_event(std::string function, std::string event, int tile_x, int tile_y, int character_id) {
+	// std::cout << _game.get_lua()->stack_dump().c_str() << std::endl;
 	lua_getglobal(state, "map_event");
 	lua_pushstring(state, function.c_str());
 	lua_pushstring(state, event.c_str());
@@ -286,6 +306,7 @@ void Lua::call_event(std::string function, std::string event, int tile_x, int ti
 		ss << function << ": " << get_error(state);
 		throw LuaException(ss.str().c_str());
 	}
+	lua_pop(state, 1);
 }
 #endif
 
@@ -298,6 +319,7 @@ void Lua::change_map(std::string script) {
 		ss << script << ": " << get_error(state);
 		throw LuaException(ss.str().c_str());
 	}
+	lua_pop(state, 1);
 }
 
 void Lua::add_character(long id, std::string script) {
@@ -310,6 +332,7 @@ void Lua::add_character(long id, std::string script) {
 		ss << script << ": " << get_error(state);
 		throw LuaException(ss.str().c_str());
 	}
+	lua_pop(state, 1);
 }
 
 
@@ -633,14 +656,14 @@ LuaObject Lua::get_object(std::string name) {
 }
 
 LuaObject Lua::get_child_object(std::string parent_path) {
-	LuaObject obj;
+	LuaObject obj(this);
 	obj.type = LuaObject::Type::OBJECT;
 	obj.object = std::map<std::string, LuaObject>();
 
 	lua_pushnil(state);
 	while (lua_next(state, -2)) {
 		std::string key = "";
-		LuaObject value;
+		LuaObject value(this);
 
 		if (lua_type(state, -2) == LUA_TNUMBER) {
 			int index = (int) lua_tointeger(state, -2);
@@ -672,6 +695,24 @@ LuaObject Lua::get_child_object(std::string parent_path) {
 		case LUA_TFUNCTION:
 			value.type = LuaObject::Type::FUNCTION;
 			value.function_name = key;
+			{
+				// std::cout << "---------------------" << std::endl;
+				// std::cout << stack_dump() << std::endl;
+
+				lua_rawgeti(state, LUA_REGISTRYINDEX, registry_index);  // push registry table
+				// std::cout << "registry index: " << registry_index << std::endl;
+
+				lua_pushvalue(state, -2);  // copy the function to the top of the stack
+
+				value.function_index = luaL_ref(state, -2);  // copy the function to the registry and pop it from the stack
+				// std::cout << "function index: " << value.function_index << std::endl;
+				// std::cout << "function name: " << value.function_name << std::endl;
+
+				lua_pop(state, 1);  // pop the table
+				// std::cout << stack_dump() << std::endl;
+
+				// std::cout << "---------------------" << std::endl;
+			}
 			break;
 		case LUA_TNIL:
 			value.type = LuaObject::Type::NULL_OBJECT;
@@ -684,5 +725,59 @@ LuaObject Lua::get_child_object(std::string parent_path) {
 	return obj;
 }
 
+std::string LuaObject::call_function(std::string name) {
+	LuaObject *token = get_token(name);
+	if (token != nullptr && token->type == FUNCTION) {
+		std::string rval = "";
+		lua_State *state = lua->get_state();
 
+		{
+			// std::cout << "---------------------" << std::endl;
+			// std::cout << lua->stack_dump() << std::endl;
 
+			lua_rawgeti(state, LUA_REGISTRYINDEX, lua->get_registry_index());  // push the table
+			// std::cout << "registry index: " << lua->get_registry_index() << std::endl;
+
+			lua_rawgeti(state, -1, token->function_index);  // push the function from the table
+			// std::cout << "function index: " << token->function_index << std::endl;
+			// std::cout << "function name: " << token->function_name << std::endl;
+
+			// std::cout << "---------------------" << std::endl;
+
+			lua_pushstring(state, "arg");
+			// std::cout << lua->stack_dump() << std::endl;
+			if (lua_pcall(state, 1, 1, 0) != 0) {
+				// std::cout << lua->stack_dump() << std::endl;
+				std::cout << "Failed to call the callback! " << lua_tostring(state, -1) << std::endl;
+			}
+
+			if (lua_isstring(state, -1)) {
+				rval = lua_tostring(state, -1);
+				std::cout << "rval: " << rval << std::endl;
+			}
+			lua_pop(state, 1);
+			lua_pop(state, 1);
+		}
+		return rval;
+	}
+	else
+		throw LuaException("token \"" + name + "\" is not function");
+}
+
+void LuaObject::delete_functions() {
+	delete_functions_recursive(*this);
+}
+
+void LuaObject::delete_functions_recursive(LuaObject &object) {
+	switch (object.type) {
+	case OBJECT:
+		for (auto it = object.begin(); it != object.end(); ++it) {
+			LuaObject &child = it->second;
+			delete_functions_recursive(child);
+		}
+		break;
+	case FUNCTION:
+		luaL_unref(lua->get_state(), LUA_REGISTRYINDEX, object.function_index);
+		break;
+	}
+}

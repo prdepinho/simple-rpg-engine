@@ -663,6 +663,7 @@ public:
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		LuaObject dialogue = _game.get_lua()->read_top_table();
 		screen->show_dialogue_box(dialogue);
+		std::cout << "sfml_dialogue return" << std::endl;
 		return 1;
 	}
 };

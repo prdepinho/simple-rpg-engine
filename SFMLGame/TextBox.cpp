@@ -172,22 +172,23 @@ Component *TextBox::on_key_pressed(sf::Keyboard::Key key) {
 		}
 		break;
 #endif
+	case sf::Keyboard::Y:
+		break;
 	}
 
 	return this;
 }
 
 void TextBox::push_text(std::string text) {
-	TextBox &box = get();
-	auto new_split_lines = box.font.split_lines(text, box.text_width);
-	box.text_lines.insert(box.text_lines.end(), new_split_lines.begin(), new_split_lines.end());
-	box.visible_lines.resize(box.text_lines.size());
-	if (box.end_line % box.page_lines == 0) {
-		box.start_line = box.end_line;
+	auto new_split_lines = font.split_lines(text, text_width);
+	text_lines.insert(text_lines.end(), new_split_lines.begin(), new_split_lines.end());
+	visible_lines.resize(text_lines.size());
+	if (end_line % page_lines == 0) {
+		start_line = end_line;
 	}
-	box.end_line = std::min(box.start_line + box.page_lines, box.text_lines.size());
-	box.completely_written = false;
-	box.update_view();
+	end_line = std::min(start_line + page_lines, text_lines.size());
+	completely_written = false;
+	update_view();
 }
 
 Component *TextBox::on_pressed(int x, int y) {
@@ -198,7 +199,7 @@ Component *TextBox::on_pressed(int x, int y) {
 }
 
 void TextBox::show(std::string text, Screen &screen, Callback callback) {
-	TextBox &text_box = get();
+	static TextBox text_box;
 
 	Lua lua(Config::SETTINGS);
 	int height = (int) lua.get_float("text_box_lines");
@@ -232,15 +233,94 @@ void TextBox::update_view() {
 
 
 
+void OptionsPanel::add_option(std::string text, Callback callback) {
+	int n = buttons.size() + 1;
+	buttons.push_back(OptionButton(std::to_string(n) + ". " + text));
+	buttons.back().set_function(callback);
+	buttons.back().set_dimensions(get_width(), buttons.back().get_height());
+}
+
+
+void OptionsPanel::add_option(std::string text, std::string dst, Callback callback) {
+	int n = buttons.size() + 1;
+	buttons.push_back(OptionButton(std::to_string(n) + ". " + text, dst));
+	buttons.back().set_function(callback);
+	// buttons.back().set_function([&](Component*) {
+	// 	callback(dst);
+	// 	return true;
+	// });
+	buttons.back().set_dimensions(get_width(), buttons.back().get_height());
+}
+
+
+
+void OptionsPanel::create() {
+	if (!buttons.empty()) {
+		set_dimensions(get_width(), buttons.back().get_height() * buttons.size());
+	}
+	Panel::create();
+
+	int i = 0; 
+	for (Button &button : buttons) {
+		button.create();
+		add_component(button);
+		int x = get_x();
+		int y = get_y() + (button.get_height() * i);
+		button.set_position(x, y);
+		i++;
+	}
+
+	if (!buttons.empty()) {
+		Screen *screen = get_screen();
+		Button &button = buttons.front();
+		screen->select(button);
+		selected_index = 1;
+		// get_screen()->select(buttons.front());
+	}
+}
+
+Component *OptionsPanel::on_key_pressed(sf::Keyboard::Key key) {
+	Component::on_key_pressed(key);
+	switch (key) {
+	case sf::Keyboard::Key::Enter:
+	case sf::Keyboard::Key::Escape:
+	case sf::Keyboard::Key::Space:
+		break;
+	case sf::Keyboard::Key::Up:
+		if (selected_index == 1) {
+			selected_index = buttons.size();
+			get_screen()->select(buttons.back());
+		}
+		else {
+			get_screen()->select(buttons[--selected_index -1]);
+		}
+		break;
+	case sf::Keyboard::Key::Down:
+		if (selected_index == buttons.size()) {
+			selected_index = 1;
+			get_screen()->select(buttons.front());
+		}
+		else {
+			get_screen()->select(buttons[++selected_index -1]);
+		}
+		break;
+	}
+	return this;
+}
+
+
+
+
 
 
 DialogueBox::DialogueBox(int x, int y, int width, int height, float speed) 
-	: TextBox("foobar", x, y, width, height, speed)
+	: TextBox("", x, y, width, height, speed)
 {
 }
 
 DialogueBox::~DialogueBox() {
-	TextBox::~TextBox();
+	// TextBox::~TextBox();
+	dialogue.delete_functions();
 }
 
 void DialogueBox::create() {
@@ -256,7 +336,63 @@ void DialogueBox::update(float elapsed_time) {
 }
 
 Component *DialogueBox::on_key_pressed(sf::Keyboard::Key key) {
-	TextBox::on_key_pressed(key);
+	switch (key) {
+	case sf::Keyboard::Key::Enter:
+	case sf::Keyboard::Key::Escape:
+	case sf::Keyboard::Key::Space:
+		if (completely_written) {
+			if (end_line == text_lines.size()) {
+				if (go_to != "end") {
+					next();
+				}
+				else {
+					get_screen()->remove_component(*this);
+					get_screen()->select_container();
+					call_functions(this);
+				}
+			}
+			else {
+				start_line = end_line;
+				end_line = std::min(start_line + page_lines, text_lines.size());
+				completely_written = false;
+			}
+		}
+		else {
+			for (size_t i = start_line; i < end_line; i++) {
+				visible_lines[i] = text_lines[i];
+			}
+			completely_written = true;
+			update_view();
+		}
+		break;
+	case sf::Keyboard::Up:
+		if (completely_written) {
+			if (start_line > 0) {
+				end_line = start_line;
+				long diff = (long)start_line - (long)page_lines;
+				start_line = diff > 0 ? diff : 0;
+				end_line = std::max<size_t>(start_line + page_lines, end_line);
+				for (size_t i = start_line; i < end_line; i++) {
+					visible_lines[i] = text_lines[i];
+				}
+				update_view();
+			}
+		}
+		break;
+	case sf::Keyboard::Down:
+		if (completely_written) {
+			if (end_line < text_lines.size()) {
+				start_line = end_line;
+				end_line = std::min(start_line + page_lines, text_lines.size());
+				for (size_t i = start_line; i < end_line; i++) {
+					visible_lines[i] = text_lines[i];
+				}
+				update_view();
+			}
+		}
+		break;
+	}
+
 	return this;
 }
 
@@ -266,11 +402,10 @@ Component *DialogueBox::on_pressed(int x, int y) {
 }
 
 void DialogueBox::show(LuaObject dialogue, Screen &screen, Callback callback) {
-#if true
+#if false
 	TextBox::show("foobar", screen, callback);
 #endif
 
-#if false
 	static DialogueBox dialogue_box;
 
 	Lua lua(Config::SETTINGS);
@@ -280,17 +415,101 @@ void DialogueBox::show(LuaObject dialogue, Screen &screen, Callback callback) {
 
 	dialogue_box = DialogueBox(0, 0, width, height, speed);
 	dialogue_box.add_function(callback);
+	dialogue_box.dialogue = dialogue;
 	dialogue_box.create();
 	int x = (_game.get_resolution_width() / 2) - (dialogue_box.get_width() / 2);
 	int y = x;
 	dialogue_box.set_position(x, y);
 	screen.add_component(dialogue_box);
+
+	dialogue_box.next();
+}
+
+void DialogueBox::update_view() {
+	TextBox::update_view();
+}
+
+
+#if true
+void DialogueBox::next() {
+	// TextBox::show("Hello world", screen, callback);
+	std::cout << "next (goto: " << go_to << "): " << _game.get_lua()->stack_dump().c_str() << std::endl;
+	if (go_to != "end") {
+		LuaObject *block = dialogue.get_object(go_to);
+
+		std::string text = "";
+		switch (block->get_token("text")->get_type()) {
+		case LuaObject::Type::FUNCTION:
+			text = _game.get_lua()->call_table_function(block, "text");
+			break;
+		case LuaObject::Type::STRING:
+			text = block->get_string("text");
+			break;
+		}
+
+		std::cout << " + block: " << text << std::endl;
+		push_text(text);
+
+		// std::cout << "block path: " << block->get_path() << std::endl;
+#if false
+		if (block->get_token("callback")->get_type() == LuaObject::Type::FUNCTION) {
+			std::string rval = _game.get_lua()->call_table_function(block, "callback");
+			std::cout << "rval: [" << rval << "]" << std::endl;
+		}
+#else
+		if (block->get_token("callback")->get_type() == LuaObject::Type::FUNCTION) {
+			std::string rval = block->call_function("callback");
+			std::cout << "rval: [" << rval << "]" << std::endl;
+		}
 #endif
 
-#if false
+		LuaObject *options = block->get_object("options");
+		if (options->size() > 0) {
+			{
+				int x = get_x();
+				int y = get_y() + get_height();
+				options_panel = OptionsPanel(x, y, get_width());
+			}
+
+			for (auto it = options->begin(); it != options->end(); ++it) {
+				std::cout << "   - option ";
+				std::cout << it->first << ": ";
+				std::cout << it->second.get_string("text");
+				std::cout << " [" << it->second.get_string("go_to") << "]";
+				std::cout << std::endl;
+				std::string text = it->second.get_string("text");
+				std::string dst = it->second.get_string("go_to");
+				options_panel.add_option(text, dst, [&](Component* c) {
+					OptionButton *button = dynamic_cast<OptionButton*>(c);
+					go_to = button->get_dst();
+					Log(" Next: %s", go_to.c_str());
+					next();
+					get_screen()->remove_component(options_panel);
+					get_screen()->select(*this);
+					return true;
+				});
+			}
+
+			{
+				options_shown = true;
+				get_screen()->add_component(options_panel);
+				options_panel.create();
+				options_panel.set_visible(true);
+			}
+		}
+		else {
+			this->go_to = block->get_string("go_to");
+			Log(" Next: %s", this->go_to.c_str());
+		}
+	}
+	std::cout << "after next (goto: " << go_to << "): " << _game.get_lua()->stack_dump().c_str() << std::endl;
+}
+#else
+void DialogueBox::next() {
 	// TextBox::show("Hello world", screen, callback);
 	std::string go_to = "start";
 	while (go_to != "end") {
+		std::cout << _game.get_lua()->stack_dump().c_str() << std::endl;
 		LuaObject *block = dialogue.get_object(go_to);
 
 		std::string text = "";
@@ -329,9 +548,21 @@ void DialogueBox::show(LuaObject dialogue, Screen &screen, Callback callback) {
 		}
 		std::getchar();
 	}
+}
 #endif
-}
 
-void DialogueBox::update_view() {
-	TextBox::update_view();
+#if false
+void DialogueBox::show_option_panel() {
+	int x = get_x();
+	int y = get_y() + get_height();
+	options = OptionsPanel(x, y, get_width());
+	options.add_option("Foobar", [&](Component*) { Log("foo"); return true; });
+	options.add_option("Spameggs", [&](Component*) { Log("spam"); return true; });
+	options.add_option("Woopaloopa", [&](Component*) { Log("woopa"); return true; });
+	get_screen()->add_component(options);
+	options.create();
+	options.set_visible(true);
 }
+#endif
+
+

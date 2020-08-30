@@ -75,12 +75,17 @@ public:
 	void call_function(LuaObject *token, std::string table_name, std::string function_name);
 	void call_function(LuaObject *token, std::string table_name);
 
+	int get_registry_index() const { return registry_index; }
+
 private:
 	std::string call_function_recursive(std::vector<std::string> path, std::string function_name, int level);
 	LuaObject get_child_object(std::string parent_path);
+	void create_registry_table();
+	void destroy_registry_table();
 
 private:
 	lua_State *state; 
+	int registry_index;
 };
 
 
@@ -216,7 +221,8 @@ class LuaObject {
 	friend class Lua;
 public:
 	enum Type { STRING, NUMBER, BOOLEAN, OBJECT, FUNCTION, NULL_OBJECT };
-	LuaObject() {}
+	LuaObject(Lua *lua=nullptr) : lua(lua) {}
+	~LuaObject() {}
 
 	LuaObject *get_token(std::string object_path);
 
@@ -255,12 +261,19 @@ public:
 	std::string get_path() const { return path; }
 	std::string get_function_name() const { return function_name; }
 
+	std::string call_function(std::string name);
+	void delete_functions();
 private:
+	void delete_functions_recursive(LuaObject &object);
+
+private:
+	Lua *lua;
 	Type type;
 	std::string string;
 	float number;
 	bool boolean;
 	std::string path;
 	std::string function_name;
+	int function_index;
 	std::map<std::string, LuaObject> object;
 };
