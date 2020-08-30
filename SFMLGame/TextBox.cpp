@@ -192,9 +192,9 @@ void TextBox::push_text(std::string text) {
 }
 
 Component *TextBox::on_pressed(int x, int y) {
-	get_screen()->remove_component(*this);
-	get_screen()->select_container();
-	call_functions(this);
+	// get_screen()->remove_component(*this);
+	// get_screen()->select_container();
+	// call_functions(this);
 	return this;
 }
 
@@ -343,7 +343,14 @@ Component *DialogueBox::on_key_pressed(sf::Keyboard::Key key) {
 		if (completely_written) {
 			if (end_line == text_lines.size()) {
 				if (go_to != "end") {
-					next();
+					if (show_options) {
+						get_screen()->add_component(options_panel);
+						options_panel.create();
+						options_panel.set_visible(true);
+					}
+					else {
+						next();
+					}
 				}
 				else {
 					get_screen()->remove_component(*this);
@@ -402,10 +409,6 @@ Component *DialogueBox::on_pressed(int x, int y) {
 }
 
 void DialogueBox::show(LuaObject dialogue, Screen &screen, Callback callback) {
-#if false
-	TextBox::show("foobar", screen, callback);
-#endif
-
 	static DialogueBox dialogue_box;
 
 	Lua lua(Config::SETTINGS);
@@ -432,6 +435,7 @@ void DialogueBox::update_view() {
 
 #if true
 void DialogueBox::next() {
+	std::cout << "NEXT. show_options: " << show_options << std::endl;
 	// TextBox::show("Hello world", screen, callback);
 	std::cout << "next (goto: " << go_to << "): " << _game.get_lua()->stack_dump().c_str() << std::endl;
 	if (go_to != "end") {
@@ -486,15 +490,16 @@ void DialogueBox::next() {
 					next();
 					get_screen()->remove_component(options_panel);
 					get_screen()->select(*this);
+					show_options = false;
 					return true;
 				});
 			}
 
 			{
-				options_shown = true;
-				get_screen()->add_component(options_panel);
-				options_panel.create();
-				options_panel.set_visible(true);
+				show_options = true;
+				// get_screen()->add_component(options_panel);
+				// options_panel.create();
+				// options_panel.set_visible(false);
 			}
 		}
 		else {

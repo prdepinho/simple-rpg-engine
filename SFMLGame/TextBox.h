@@ -87,7 +87,7 @@ protected:
 	void next();
 
 	OptionsPanel options_panel;
-	bool options_shown = false;
+	bool show_options = false;
 
 private:
 	std::string go_to = "start";
