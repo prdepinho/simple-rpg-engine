@@ -332,7 +332,54 @@ void DialogueBox::draw(sf::RenderTarget &target, sf::RenderStates states) const 
 }
 
 void DialogueBox::update(float elapsed_time) {
-	TextBox::update(elapsed_time);
+	// TextBox::update(elapsed_time);
+	Component::update(elapsed_time);
+
+	// open window vertically
+	if (!completely_open) {
+		int increase = (int)std::ceil(open_speed * elapsed_time);
+		// Log("height: %d, increase: %d", get_height(), increase);
+
+		if (increase + get_height() >= total_height) {
+			completely_open = true;
+			set_dimensions(get_width(), get_height());
+		}
+		else
+			set_dimensions(get_width(), get_height() + increase);
+		create();  // TODO: Ineficient. Implement a handy resize function at the level of Component.
+	}
+
+	// write text to the window
+	else {
+		if (!completely_written) {
+			static float write_count = 0;
+			write_count += elapsed_time;
+
+			if (write_count >= 1 / writing_speed) {
+				write_count = 0.f;
+				for (size_t i = start_line; i < end_line; i++) {
+					if (visible_lines[i] != text_lines[i]) {
+						visible_lines[i] += text_lines[i].substr(visible_lines[i].size(), 1);
+						Resources::play_sound("boop.wav");
+						break;
+					}
+				}
+			}
+			if (visible_lines[end_line -1] == text_lines[end_line -1]) {
+				completely_written = true;
+				Log("Completely written");
+				if (end_line == text_lines.size()) {
+					if (show_options) {
+						get_screen()->add_component(options_panel);
+						options_panel.create();
+						options_panel.set_visible(true);
+					}
+				}
+			}
+			update_view();
+		}
+	}
+
 }
 
 Component *DialogueBox::on_key_pressed(sf::Keyboard::Key key) {
@@ -343,14 +390,7 @@ Component *DialogueBox::on_key_pressed(sf::Keyboard::Key key) {
 		if (completely_written) {
 			if (end_line == text_lines.size()) {
 				if (go_to != "end") {
-					if (show_options) {
-						get_screen()->add_component(options_panel);
-						options_panel.create();
-						options_panel.set_visible(true);
-					}
-					else {
-						next();
-					}
+					next();
 				}
 				else {
 					get_screen()->remove_component(*this);
@@ -369,12 +409,20 @@ Component *DialogueBox::on_key_pressed(sf::Keyboard::Key key) {
 				visible_lines[i] = text_lines[i];
 			}
 			completely_written = true;
+			if (end_line == text_lines.size()) {
+				if (show_options) {
+					get_screen()->add_component(options_panel);
+					options_panel.create();
+					options_panel.set_visible(true);
+				}
+			}
 			update_view();
 		}
 		break;
 	case sf::Keyboard::Up:
 		if (completely_written) {
 			if (start_line > 0) {
+				pages_retroceded++;
 				end_line = start_line;
 				long diff = (long)start_line - (long)page_lines;
 				start_line = diff > 0 ? diff : 0;
@@ -387,8 +435,9 @@ Component *DialogueBox::on_key_pressed(sf::Keyboard::Key key) {
 		}
 		break;
 	case sf::Keyboard::Down:
-		if (completely_written) {
+		if (completely_written && pages_retroceded > 0) {
 			if (end_line < text_lines.size()) {
+				pages_retroceded--;
 				start_line = end_line;
 				end_line = std::min(start_line + page_lines, text_lines.size());
 				for (size_t i = start_line; i < end_line; i++) {

@@ -46,7 +46,8 @@ protected:
 
 	int vertical_margin = 10;
 	int horizontal_margin = 10;
-	bool completely_written;
+	bool completely_written = false;
+	int pages_retroceded = 0;
 
 	Font font;
 

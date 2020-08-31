@@ -75,8 +75,8 @@ function M.step_floor(event, x, y)
         callback = function() print('+++++++++++++++++++ first callback') end,
       },
       question = {
-        text = "Would you like to have tea or coffee this afternoon?",
-        -- callback = function() print('+++++++++++++++++++ second callback') end,
+        text = "Would you like to have tea or coffee this afternoon? I could prepare some for you.",
+        callback = function() print('+++++++++++++++++++ second callback') end,
         options = {
           {
             text = "Tea, please",
@@ -108,7 +108,7 @@ function M.step_floor(event, x, y)
         go_to = "result_none"
       },
       result = {
-        text = "It's delicious",
+        text = "It's delicious.",
         callback = function() print('chosen: ' .. chosen) end,
         go_to = "end"
       },
