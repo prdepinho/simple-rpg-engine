@@ -118,29 +118,7 @@ function M.step_floor(event, x, y)
         go_to = "end"
       }
     }
-    -- dialogue = {
-    --   start = {
-    --     text = "first",
-    --     go_to = "second",
-    --     callback = function() print('FOOOOBARRRRR 1') end,
-    --   },
-    --   second = {
-    --     text = "second",
-    --     go_to = "third",
-    --     callback = function() print('FOOOOBARRRRR 2') end,
-    --   },
-    --   third = {
-    --     text = "third",
-    --     go_to = "last",
-    --     callback = function() print('FOOOOBARRRRR 3') end,
-    --   },
-    --   last = {
-    --     text = "last",
-    --     go_to = "end",
-    --     callback = function() print('FOOOOBARRRRR 4') end,
-    --   },
-    -- }
-    sfml_dialogue(dialogue)
+    -- sfml_dialogue(dialogue)
   elseif event == "exit_tile" then
   elseif event == "interact" then
   elseif event == "step_on" then

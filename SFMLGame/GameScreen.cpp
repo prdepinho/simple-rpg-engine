@@ -346,7 +346,9 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 					auto tile_coord = map.get_tile_coord(x, y);
 					int tile_x = tile_coord.x;
 					int tile_y = tile_coord.y;
+					auto tile = map.get_tile(tile_x, tile_y);
 					Log("Coordinates: (%d, %d)", tile_x, tile_y);
+					Log("  obstacle: %s", (tile.obstacle ? "true" : "false"));
 					// do something here
 				}
 
@@ -543,8 +545,19 @@ void GameScreen::center_map_on_character(Character &character) {
 }
 
 void GameScreen::put_character_on_tile(Character & character, int x, int y) {
+	{
+		sf::Vector2i position = character_position(character);
+		if (map.in_bounds(position.x, position.y)) {
+			TileData &original_tile = map.get_tile(position.x, position.y);
+			original_tile.obstacle = false;
+		}
+	}
 	auto tile_coords = map.get_tile_pix_coords(x, y);
 	character.set_position(map.get_x() + (int) tile_coords.x + 8, map.get_y() + (int) tile_coords.y + 8);
+	{
+		TileData &tile = map.get_tile(x, y);
+		tile.obstacle = true;
+	}
 
 	if (&character == player_character) {
 		// update camera
@@ -592,6 +605,10 @@ void GameScreen::schedule_character_interaction(Character &character, int tile_x
 void GameScreen::move_character(Character &character, Direction direction) {
 	try {
 		sf::Vector2i position = character_position(character);
+		{
+			TileData &original_tile = map.get_tile(position.x, position.y);
+			original_tile.obstacle = false;
+		}
 		Log("move_character: %d (%d, %d)", character.get_id(), position.x, position.y);
 		switch (direction) {
 		case Direction::UP: position.y--; break;
@@ -599,7 +616,8 @@ void GameScreen::move_character(Character &character, Direction direction) {
 		case Direction::LEFT: position.x--; break;
 		case Direction::RIGHT: position.x++; break;
 		}
-		TileData tile = map.get_tile(position.x, position.y);
+		TileData &tile = map.get_tile(position.x, position.y);
+		tile.obstacle = true;
 		// map.get_script()->call_event(tile.object_name, "enter_tile", position.x, position.y, character.get_id());
 		_game.get_lua()->call_event(tile.object_name, "enter_tile", position.x, position.y, character.get_id());
 	}
@@ -618,9 +636,9 @@ void GameScreen::move_character(Character &character, Direction direction) {
 
 		});
 		effect->set_on_end([&]() {
+			sf::Vector2i position = character_position(*player_character);
+			TileData tile = map.get_tile(position.x, position.y);
 			try {
-				sf::Vector2i position = character_position(*player_character);
-				TileData tile = map.get_tile(position.x, position.y);
 				// map.get_script()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_id());
 				_game.get_lua()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_id());
 			}
@@ -640,9 +658,9 @@ void GameScreen::move_character(Character &character, Direction direction) {
 	else {
 		Effect *effect = new MoveEffect(&character, direction, 16 / turn_duration);
 		effect->set_on_end([&]() {
+			sf::Vector2i position = character_position(character);
+			TileData tile = map.get_tile(position.x, position.y);
 			try {
-				sf::Vector2i position = character_position(character);
-				TileData tile = map.get_tile(position.x, position.y);
 				// map.get_script()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_id());
 				_game.get_lua()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_id());
 			}
