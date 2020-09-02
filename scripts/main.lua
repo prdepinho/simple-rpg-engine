@@ -9,8 +9,8 @@ map_data = {}
 map_module = {}
 
 function add_character(id, script)
-  print('----- add character (' .. tostring(id) .. '): ' .. script)
-  if character_modules[script] ~= nil then
+  print('add character (' .. tostring(id) .. '): ' .. script)
+  if character_modules[script] == nil then
     character_modules[script] = require(script)
     character_data[script] = {}
     character_modules[script].data = character_data[script]
@@ -18,15 +18,27 @@ function add_character(id, script)
   end
 end
 
+function character_on_interact(script, target_id, interactor_id)
+  if character_modules[script] ~= nil then
+    character_modules[script].on_interact(target_id, interactor_id)
+  else
+    print('character module ' .. script .. ' is nil')
+  end
+end
+
 function character_on_turn(script, id)
   if character_modules[script] ~= nil then
     character_modules[script].on_turn(id)
-end
+  else
+    print('character module ' .. script .. ' is nil')
+  end
 end
 
 function character_on_idle(script, id)
   if character_modules[script] ~= nil then
     character_modules[script].on_idle(id)
+  else
+    print('character module ' .. script .. ' is nil')
   end
 end
 

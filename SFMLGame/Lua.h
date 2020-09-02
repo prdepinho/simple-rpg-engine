@@ -52,6 +52,7 @@ public:
 	void on_interact(Character &character, int tile_x, int tile_y);
 	void call(std::string function, int tile_x, int tile_y);
 	void call_event(std::string function, std::string event, int tile_x, int tile_y, int character_id);
+	void character_interaction(std::string filename, int target_character_id, int character_id);
 	void change_map(std::string script);
 	void add_character(long id, std::string script);
 

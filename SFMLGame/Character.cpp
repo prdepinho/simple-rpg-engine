@@ -10,6 +10,7 @@ Character::~Character() {
 
 void Character::create(std::string filename) {
 	Lua script(Path::CHARACTERS + filename + ".lua");
+	this->filename = filename;
 	LuaObject animation = script.get_object("animation");
 
 	std::string sprite_sheet = animation.get_string("basic.file");

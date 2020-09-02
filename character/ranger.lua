@@ -21,4 +21,8 @@ function M.on_idle(id)
   -- common.idle_walk(id)
 end
 
+function M.on_interact(id, interactor_id)
+  print('interact with ranger')
+end
+
 return M

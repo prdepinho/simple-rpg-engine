@@ -293,7 +293,6 @@ void Lua::call_event(std::string function, std::string event, int tile_x, int ti
 }
 #else
 void Lua::call_event(std::string function, std::string event, int tile_x, int tile_y, int character_id) {
-	// std::cout << _game.get_lua()->stack_dump().c_str() << std::endl;
 	lua_getglobal(state, "map_event");
 	lua_pushstring(state, function.c_str());
 	lua_pushstring(state, event.c_str());
@@ -309,6 +308,20 @@ void Lua::call_event(std::string function, std::string event, int tile_x, int ti
 	lua_pop(state, 1);
 }
 #endif
+
+void Lua::character_interaction(std::string filename, int target_character_id, int character_id) {
+	lua_getglobal(state, "character_on_interact");
+	lua_pushstring(state, filename.c_str());
+	lua_pushnumber(state, target_character_id);
+	lua_pushnumber(state, character_id);
+	int result = lua_pcall(state, 3, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	lua_pop(state, 1);
+}
 
 void Lua::change_map(std::string script) {
 	lua_getglobal(state, "change_map");
