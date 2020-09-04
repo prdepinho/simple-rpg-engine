@@ -68,57 +68,21 @@ end
 
 function M.step_floor(event, x, y)
   if event == "enter_tile" then
-    local dialogue = {
-      start = {
-        text = "A wild maid appear, and she sais the following:",
-        go_to = "question",
-        callback = function() print('+++++++++++++++++++ first callback') end,
+    pan_image_data = {
+      image = "lady.png",
+      origin = {
+        x = 0,
+        y = -100,
       },
-      question = {
-        text = "Would you like to have tea or coffee this afternoon? I could prepare some for you.",
-        callback = function() print('+++++++++++++++++++ second callback') end,
-        options = {
-          {
-            text = "Tea, please",
-            go_to = "tea",
-          },
-          {
-            text = "I would like a some coffee, please.",
-            go_to = "coffee",
-          },
-          {
-            text = "None, thank you.",
-            go_to = "none",
-          }
-        }
+      pan_speed = {
+        x = 0,
+        y = 0.1,
       },
-      tea = {
-        text = "I will prepare some tea right away.",
-        callback = function() print('*tea chosen'); chosen = "tea" end,
-        go_to = "result"
-      },
-      coffee = {
-        text = "Here, then, have some coffee.",
-        callback = function() print('*coffee chosen'); chosen = "coffe" end,
-        go_to = "result"
-      },
-      none = {
-        text = "Oh, suite yourself.",
-        callback = function() print('*none chosen') end,
-        go_to = "result_none"
-      },
-      result = {
-        text = "It's delicious.",
-        callback = function() print('chosen: ' .. chosen) end,
-        go_to = "end"
-      },
-      result_none = {
-        text = "You reain thirsty.",
-        callback = function() print('chosen: ' .. chosen) end,
-        go_to = "end"
-      }
+      total_duration = 2,
+      still_duration = 1,
+      callback = function() print('callback') end,
     }
-    -- sfml_dialogue(dialogue)
+    sfml_pan_image(pan_image_data)
   elseif event == "exit_tile" then
   elseif event == "interact" then
   elseif event == "step_on" then

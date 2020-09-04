@@ -9,6 +9,7 @@ animation = animations.types.ranger
 
 function M.enter()
   print('ranger enter')
+  M.data.enemy = true
 end
 
 

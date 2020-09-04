@@ -666,6 +666,31 @@ public:
 		std::cout << "sfml_dialogue return" << std::endl;
 		return 1;
 	}
+
+	static int sfml_pan_image(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		// std::string filename = lua_tostring(state, -7);
+		// int x = lua_tointeger(state, -6);
+		// int y = lua_tointeger(state, -5);
+		// float speed_x = lua_tonumber(state, -4);
+		// float speed_y = lua_tonumber(state, -3);
+		// float total_time = lua_tonumber(state, -2);
+		// float still_time = lua_tonumber(state, -1);
+#if true
+		LuaObject data = _game.get_lua()->read_top_table();
+		screen->pan_foreground(data);
+#else
+		std::string filename = data.get_string("image");
+		int x = data.get_int("origin.x");
+		int y = data.get_int("origin.y");
+		float speed_x = data.get_float("pan_speed.x");
+		float speed_y = data.get_float("pan_speed.y");
+		float total_time = data.get_float("total_duration");
+		float still_time = data.get_float("still_duration");
+		screen->pan_foreground(filename, x, y, speed_x, speed_y, total_time, still_time);
+#endif
+		return 1;
+	}
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -697,4 +722,5 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_loop_animation", LuaFunction::sfml_loop_animation);
 	lua_register(lua.get_state(), "sfml_start_animation", LuaFunction::sfml_start_animation);
 	lua_register(lua.get_state(), "sfml_dialogue", LuaFunction::sfml_dialogue);
+	lua_register(lua.get_state(), "sfml_pan_image", LuaFunction::sfml_pan_image);
 }

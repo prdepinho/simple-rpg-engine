@@ -88,10 +88,24 @@ void GameScreen::draw() {
 	window->setView(gui_view);
 	Screen::draw();
 
+	if (foreground.running)
+		window->draw(foreground.sprite);
 }
 
 bool GameScreen::update(float elapsed_time) {
 	Screen::update(elapsed_time);
+
+	// foreground update
+	if (foreground.running) {
+		foreground.total_time -= elapsed_time;
+		if (foreground.total_time <= 0.f) {
+			foreground.running = false;
+			foreground.data.call_function("callback");
+		}
+		if (foreground.total_time > foreground.still_time) {
+			foreground.sprite.move(foreground.pan_speed.x, foreground.pan_speed.y);
+		}
+	}
 
 	// entity handling
 	{
@@ -791,4 +805,41 @@ void GameScreen::update_field_of_vision(Character *character) {
 	// fov.push_back(character_position(*character));
 	fov = generate_field_of_vision(map, character_position(*character), vision_radius);
 	character->set_field_of_vision(fov);
+}
+
+void GameScreen::pan_foreground(std::string filename, int x, int y, float speed_x, float speed_y, float total_time, float still_time) {
+	foreground.texture.loadFromFile(Path::ASSETS + filename);
+	foreground.sprite = sf::Sprite(foreground.texture);
+	foreground.sprite.setPosition(x, y);
+	foreground.pan_speed.x = speed_x;
+	foreground.pan_speed.y = speed_y;
+	foreground.total_time = total_time;
+	foreground.still_time = still_time;
+	foreground.running = true;
+}
+void GameScreen::pan_foreground(LuaObject data) {
+	std::cout << _game.get_lua()->stack_dump() << std::endl;
+
+	if (foreground.data.size() > 0) {
+		std::cout << "delete function" << std::endl;
+		foreground.data.delete_functions();
+	}
+
+	std::string filename = data.get_string("image");
+	int x = data.get_int("origin.x");
+	int y = data.get_int("origin.y");
+	float speed_x = data.get_float("pan_speed.x");
+	float speed_y = data.get_float("pan_speed.y");
+	float total_time = data.get_float("total_duration");
+	float still_time = data.get_float("still_duration");
+
+	foreground.texture.loadFromFile(Path::ASSETS + filename);
+	foreground.sprite = sf::Sprite(foreground.texture);
+	foreground.sprite.setPosition(x, y);
+	foreground.pan_speed.x = speed_x;
+	foreground.pan_speed.y = speed_y;
+	foreground.total_time = total_time;
+	foreground.still_time = still_time;
+	foreground.running = true;
+	foreground.data = data;
 }

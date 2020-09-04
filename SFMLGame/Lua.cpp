@@ -708,6 +708,7 @@ LuaObject Lua::get_child_object(std::string parent_path) {
 		case LUA_TFUNCTION:
 			value.type = LuaObject::Type::FUNCTION;
 			value.function_name = key;
+#if true
 			{
 				// std::cout << "---------------------" << std::endl;
 				// std::cout << stack_dump() << std::endl;
@@ -726,6 +727,12 @@ LuaObject Lua::get_child_object(std::string parent_path) {
 
 				// std::cout << "---------------------" << std::endl;
 			}
+#else
+			{
+				lua_pushvalue(state, -1);  // copy the function because it will be popped now
+				value.function_index = luaL_ref(state, LUA_REGISTRYINDEX);
+			}
+#endif
 			break;
 		case LUA_TNIL:
 			value.type = LuaObject::Type::NULL_OBJECT;
@@ -744,6 +751,7 @@ std::string LuaObject::call_function(std::string name) {
 		std::string rval = "";
 		lua_State *state = lua->get_state();
 
+#if true
 		{
 			// std::cout << "---------------------" << std::endl;
 			// std::cout << lua->stack_dump() << std::endl;
@@ -771,6 +779,22 @@ std::string LuaObject::call_function(std::string name) {
 			lua_pop(state, 1);
 			lua_pop(state, 1);
 		}
+#else
+		{
+			lua_rawgeti(state, LUA_REGISTRYINDEX, token->function_index);  // push the function from the table
+
+			lua_pushstring(state, "arg");
+			if (lua_pcall(state, 1, 1, 0) != 0) {
+				std::cout << "Failed to call the callback! " << lua_tostring(state, -1) << std::endl;
+			}
+
+			if (lua_isstring(state, -1)) {
+				rval = lua_tostring(state, -1);
+				std::cout << "rval: " << rval << std::endl;
+			}
+			lua_pop(state, 1);
+		}
+#endif
 		return rval;
 	}
 	else
@@ -778,6 +802,8 @@ std::string LuaObject::call_function(std::string name) {
 }
 
 void LuaObject::delete_functions() {
+	
+	std::cout << "+++++++++++ deleting functions ++++++++++++" << std::endl;
 	delete_functions_recursive(*this);
 }
 
@@ -790,7 +816,19 @@ void LuaObject::delete_functions_recursive(LuaObject &object) {
 		}
 		break;
 	case FUNCTION:
-		luaL_unref(lua->get_state(), LUA_REGISTRYINDEX, object.function_index);
-		break;
+#if true
+		std::cout << "deleting function: " << object.function_index << ", " << object.function_name << std::endl;
+		{
+			auto state = lua->get_state();
+			lua_rawgeti(state, LUA_REGISTRYINDEX, lua->get_registry_index());  // push the table
+			luaL_unref(state, -1, object.function_index);
+			lua_pop(state, 1);
+		}
+#else
+		{
+			luaL_unref(lua->get_state(), LUA_REGISTRYINDEX, object.function_index);
+			break;
+		}
+#endif
 	}
 }

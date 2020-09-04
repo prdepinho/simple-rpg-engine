@@ -83,6 +83,9 @@ public:
 
 	void set_player_new_tile_position(int x, int y) { if (new_tile_position.x == 0  && new_tile_position.y == 0) new_tile_position = { x, y }; }
 
+	void pan_foreground(std::string filename, int x, int y, float speed_x, float speed_y, float total_time, float still_time);
+	void pan_foreground(LuaObject data);
+
 private:
 	bool block_input;
 
@@ -113,5 +116,18 @@ private:
 
 	int vision_radius = 5;
 	bool show_fog_of_war = true;
+
+	struct {
+		sf::Sprite sprite;
+		sf::Texture texture;
+		struct {
+			float x;
+			float y;
+		} pan_speed;
+		float still_time;
+		float total_time;
+		bool running = false;
+		LuaObject data;
+	} foreground;
 };
 

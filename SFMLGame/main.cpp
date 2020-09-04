@@ -30,19 +30,98 @@ int main()
 		// Lua *script = &lua;
 		Lua *script = _game.get_lua();
 #if true
-		LuaObject obj = script->get_object("alpha");
-		std::cout << obj.get_string("first.text") << std::endl;
-		std::cout << obj.get_string("second.text") << std::endl;
-		obj.call_function("first.callback");
-		obj.call_function("second.callback");
-		obj.delete_functions();
+		int loops = 3;
+		for (int i = 0; i < loops; i++) {
+			LuaObject obj = script->get_object("alpha");
+			std::cout << obj.get_string("first.text") << std::endl;
+			std::cout << obj.get_string("second.text") << std::endl;
+			obj.call_function("first.callback");
+			obj.call_function("second.callback");
+			obj.delete_functions();
+
+			auto state = script->get_state();
+			std::cout << "print" << std::endl;
+			int total = 10;
+			for (int i = 0; i < total; i++) {
+				lua_rawgeti(state, LUA_REGISTRYINDEX, i);
+				float type = lua_type(state, -1);
+				std::cout << "index[" << i << "] = " << type << std::endl;
+				lua_pop(state, 1);
+			}
+
+#if false
+			{
+				{
+					int total = 10;
+					lua_rawgeti(state, LUA_REGISTRYINDEX, script->get_registry_index());
+
+					std::cout << "print" << std::endl;
+					for (int i = 0; i < total; i++)
+					{
+						lua_rawgeti(state, -1, i);
+						float type = lua_type(state, -1);
+						std::cout << "index[" << i << "] = " << type << std::endl;
+						lua_pop(state, 1);
+					}
+
+					std::cout << "delete" << std::endl;
+					for (int i = 0; i < total; i++) {
+						lua_rawgeti(state, -1, i);
+						float type = lua_type(state, -1);
+						if (type > 0) {
+							luaL_unref(state, LUA_REGISTRYINDEX, i);
+						}
+						lua_pop(state, 1);
+					}
+					std::cout << "Delete done" << std::endl;
+
+					std::cout << "print" << std::endl;
+					for (int i = 0; i < total; i++) {
+						lua_rawgeti(state, -1, i);
+						float type = lua_type(state, -1);
+						std::cout << "index[" << i << "] = " << type << std::endl;
+						lua_pop(state, 1);
+					}
+
+					lua_pop(state, 1);
+				}
+			}
+#endif
+			std::getchar();
+
+		}
+
 
 		// script->call_function(&obj, "callback");
 		// script->call_function(obj.get_token("callback"));
 #else
+		int loops = 2;
+		for (int i = 0; i < loops; i++)
+		{
+			auto state = script->get_state();
 
-		LuaObject obj = script->get_object("foo_test");
-		script->call_function(obj.get_token("foo_callback"));
+			lua_pushstring(state, "foobar");
+			int ref = luaL_ref(state, LUA_REGISTRYINDEX);
+			std::cout << "ref: " << ref << std::endl;
+
+			lua_rawgeti(state, LUA_REGISTRYINDEX, ref);
+			std::string str = lua_tostring(state, -1);
+			std::cout << "string: " << str << std::endl;
+			lua_pop(state, 1);
+
+			luaL_unref(state, LUA_REGISTRYINDEX, ref);
+
+			std::cout << "print" << std::endl;
+			int total = 10;
+			for (int i = 0; i < total; i++) {
+				lua_rawgeti(state, LUA_REGISTRYINDEX, i);
+				float type = lua_type(state, -1);
+				std::cout << "index[" << i << "] = " << type << std::endl;
+				lua_pop(state, 1);
+			}
+
+			std::getchar();
+		}
 
 #endif
 

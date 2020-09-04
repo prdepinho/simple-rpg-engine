@@ -8,6 +8,7 @@ character_modules = {}
 map_data = {}
 map_module = {}
 
+
 function add_character(id, script)
   print('add character (' .. tostring(id) .. '): ' .. script)
   if character_modules[script] == nil then
@@ -20,7 +21,11 @@ end
 
 function character_on_interact(script, target_id, interactor_id)
   if character_modules[script] ~= nil then
-    character_modules[script].on_interact(target_id, interactor_id)
+    if character_modules[script].data.enemy then
+      print('enemy')
+    else
+      character_modules[script].on_interact(target_id, interactor_id)
+    end
   else
     print('character module ' .. script .. ' is nil')
   end

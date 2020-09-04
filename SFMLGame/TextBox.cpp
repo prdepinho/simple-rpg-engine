@@ -320,7 +320,7 @@ DialogueBox::DialogueBox(int x, int y, int width, int height, float speed)
 
 DialogueBox::~DialogueBox() {
 	// TextBox::~TextBox();
-	dialogue.delete_functions();
+	// dialogue.delete_functions();
 }
 
 void DialogueBox::create() {
@@ -459,6 +459,7 @@ Component *DialogueBox::on_pressed(int x, int y) {
 
 void DialogueBox::show(LuaObject dialogue, Screen &screen, Callback callback) {
 	static DialogueBox dialogue_box;
+	dialogue_box.dialogue.delete_functions();
 
 	Lua lua(Config::SETTINGS);
 	int height = (int) lua.get_float("text_box_lines");
