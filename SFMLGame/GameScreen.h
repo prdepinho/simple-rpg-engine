@@ -19,6 +19,7 @@
 #include "Action.h"
 #include "DebugConsole.h"
 #include "Lua.h"
+#include "InputHandler.h"
 
 
 class GameScreen : public Screen
@@ -54,6 +55,16 @@ private:
 	void load_map();
 
 public:
+	void control_move_up();
+	void control_move_down();
+	void control_move_left();
+	void control_move_right();
+	void control_pan_up();
+	void control_pan_down();
+	void control_pan_left();
+	void control_pan_right();
+
+public:
 	void change_map(std::string filename, int tile_x, int tile_y);
 	void center_map_on_character(Character &character);
 
@@ -87,6 +98,8 @@ public:
 	void pan_foreground(LuaObject data);
 
 private:
+	friend class CharacterControlInputHandler;
+
 	bool block_input;
 
 	Lua *rules = nullptr;
@@ -117,6 +130,12 @@ private:
 	int vision_radius = 5;
 	bool show_fog_of_war = true;
 
+	enum {
+		CHARACTER_CONTROL,
+		CUTSCENE
+	} state;
+
+	// foreground image (for cut scenes)
 	struct {
 		sf::Sprite sprite;
 		sf::Texture texture;
@@ -130,4 +149,7 @@ private:
 		LuaObject data;
 	} foreground;
 };
+
+
+
 

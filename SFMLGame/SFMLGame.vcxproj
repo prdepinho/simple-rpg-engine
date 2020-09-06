@@ -141,6 +141,7 @@
     <ClCompile Include="FieldOfVision.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Json.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="LoadGameScreen.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="font.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Callback.h" />
+    <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Json.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="LoadGameScreen.h" />

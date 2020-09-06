@@ -3,6 +3,7 @@
 #include "consts.h"
 #include "Json.h"
 #include "Game.h"
+#include "InputHandler.h"
 
 
 
@@ -113,10 +114,8 @@ void TextBox::update(float elapsed_time) {
 }
 
 Component *TextBox::on_key_pressed(sf::Keyboard::Key key) {
-	switch (key) {
-	case sf::Keyboard::Key::Enter:
-	case sf::Keyboard::Key::Escape:
-	case sf::Keyboard::Key::Space:
+	switch (InputHandler::get_control_input(key)) {
+	case Control::A:
 		if (completely_written) {
 			if (end_line == text_lines.size()) {
 				get_screen()->remove_component(*this);
@@ -137,7 +136,9 @@ Component *TextBox::on_key_pressed(sf::Keyboard::Key key) {
 			update_view();
 		}
 		break;
-	case sf::Keyboard::Up:
+	case Control::B:
+		break;
+	case Control::UP:
 		if (completely_written) {
 			if (start_line > 0) {
 				end_line = start_line;
@@ -151,7 +152,7 @@ Component *TextBox::on_key_pressed(sf::Keyboard::Key key) {
 			}
 		}
 		break;
-	case sf::Keyboard::Down:
+	case Control::DOWN:
 		if (completely_written) {
 			if (end_line < text_lines.size()) {
 				start_line = end_line;
@@ -162,6 +163,17 @@ Component *TextBox::on_key_pressed(sf::Keyboard::Key key) {
 				update_view();
 			}
 		}
+		break;
+	}
+#if false
+	switch (key) {
+	case sf::Keyboard::Key::Enter:
+	case sf::Keyboard::Key::Escape:
+	case sf::Keyboard::Key::Space:
+		break;
+	case sf::Keyboard::Up:
+		break;
+	case sf::Keyboard::Down:
 		break;
 #if false
 	case sf::Keyboard::N:
@@ -175,6 +187,7 @@ Component *TextBox::on_key_pressed(sf::Keyboard::Key key) {
 	case sf::Keyboard::Y:
 		break;
 	}
+#endif
 
 	return this;
 }
@@ -281,12 +294,10 @@ void OptionsPanel::create() {
 
 Component *OptionsPanel::on_key_pressed(sf::Keyboard::Key key) {
 	Component::on_key_pressed(key);
-	switch (key) {
-	case sf::Keyboard::Key::Enter:
-	case sf::Keyboard::Key::Escape:
-	case sf::Keyboard::Key::Space:
+	switch (InputHandler::get_control_input(key)) {
+	case Control::A:
 		break;
-	case sf::Keyboard::Key::Up:
+	case Control::UP:
 		if (selected_index == 1) {
 			selected_index = buttons.size();
 			get_screen()->select(buttons.back());
@@ -295,7 +306,7 @@ Component *OptionsPanel::on_key_pressed(sf::Keyboard::Key key) {
 			get_screen()->select(buttons[--selected_index -1]);
 		}
 		break;
-	case sf::Keyboard::Key::Down:
+	case Control::DOWN:
 		if (selected_index == buttons.size()) {
 			selected_index = 1;
 			get_screen()->select(buttons.front());
@@ -383,10 +394,8 @@ void DialogueBox::update(float elapsed_time) {
 }
 
 Component *DialogueBox::on_key_pressed(sf::Keyboard::Key key) {
-	switch (key) {
-	case sf::Keyboard::Key::Enter:
-	case sf::Keyboard::Key::Escape:
-	case sf::Keyboard::Key::Space:
+	switch (InputHandler::get_control_input(key)) {
+	case Control::A:
 		if (completely_written) {
 			if (end_line == text_lines.size()) {
 				if (go_to != "end") {
@@ -419,7 +428,7 @@ Component *DialogueBox::on_key_pressed(sf::Keyboard::Key key) {
 			update_view();
 		}
 		break;
-	case sf::Keyboard::Up:
+	case Control::UP:
 		if (completely_written) {
 			if (start_line > 0) {
 				pages_retroceded++;
@@ -434,7 +443,7 @@ Component *DialogueBox::on_key_pressed(sf::Keyboard::Key key) {
 			}
 		}
 		break;
-	case sf::Keyboard::Down:
+	case Control::DOWN:
 		if (completely_written && pages_retroceded > 0) {
 			if (end_line < text_lines.size()) {
 				pages_retroceded--;
@@ -448,7 +457,6 @@ Component *DialogueBox::on_key_pressed(sf::Keyboard::Key key) {
 		}
 		break;
 	}
-
 	return this;
 }
 

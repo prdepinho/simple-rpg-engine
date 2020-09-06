@@ -1,6 +1,7 @@
 #include "Button.h"
 #include "Resources.h"
 #include "Json.h"
+#include "InputHandler.h"
 
 
 void Button::create() {
@@ -84,10 +85,9 @@ Component* Button::on_released(int x, int y) {
 
 Component* Button::on_key_pressed(sf::Keyboard::Key key) {
 	Component::on_key_pressed(key);
-	switch(key){
-	case sf::Keyboard::Key::Enter:
+	switch (InputHandler::get_control_input(key)) {
+	case Control::A:
 		return on_click();
-		break;
 	}
 	return this;
 }

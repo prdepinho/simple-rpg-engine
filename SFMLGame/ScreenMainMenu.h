@@ -23,6 +23,5 @@ private:
 	sf::Texture texture;
 	sf::Sprite sprite;
 	int button_index = 0;
-
 };
 

@@ -1,7 +1,7 @@
 #include "ScreenMainMenu.h"
 #include "Json.h"
 #include "Game.h"
-
+#include "InputHandler.h"
 
 ScreenMainMenu::ScreenMainMenu()
 {
@@ -114,9 +114,46 @@ bool ScreenMainMenu::update(float elapsed_time)
 	return true;
 }
 
-void ScreenMainMenu::handle_event(sf::Event &event, float elapsed_time)
-{
+void ScreenMainMenu::handle_event(sf::Event &event, float elapsed_time) {
 	Screen::handle_event(event, elapsed_time);
+
+	switch (InputHandler::get_control_input(event)) {
+	case Control::UP:
+		if (button_index > 0)
+			button_index--;
+		else
+			button_index = buttons.size() - 1;
+		select(buttons[button_index]);
+		Resources::get_sound("vwuuu.wav")->play();
+		break;
+	case Control::DOWN:
+		if ((size_t)button_index < buttons.size() - 1)
+			button_index++;
+		else
+			button_index = 0;
+		select(buttons[button_index]);
+		Resources::get_sound("vwuuu.wav")->play();
+		break;
+	case Control::LEFT:
+		break;
+	case Control::RIGHT:
+		break;
+	case Control::A:
+		Resources::get_sound("crrreee.wav")->play();
+		break;
+	case Control::B:
+		window->close();
+		break;
+	case Control::START:
+		break;
+	case Control::SELECT:
+		break;
+	case Control::OTHER:
+		break;
+	}
+
+
+#if false
 	switch (event.type) {
 	case sf::Event::Closed:
 		window->close();
@@ -124,23 +161,10 @@ void ScreenMainMenu::handle_event(sf::Event &event, float elapsed_time)
 	case sf::Event::KeyPressed:
 		switch (event.key.code) {
 		case sf::Keyboard::Up:
-			if (button_index > 0)
-				button_index--;
-			else
-				button_index = buttons.size() - 1;
-			select(buttons[button_index]);
-			Resources::get_sound("vwuuu.wav")->play();
 			break;
 		case sf::Keyboard::Down:
-			if ((size_t)button_index < buttons.size() - 1)
-				button_index++;
-			else
-				button_index = 0;
-			select(buttons[button_index]);
-			Resources::get_sound("vwuuu.wav")->play();
 			break;
 		case sf::Keyboard::Enter:
-			Resources::get_sound("crrreee.wav")->play();
 			break;
 		}
 		break;
@@ -151,7 +175,6 @@ void ScreenMainMenu::handle_event(sf::Event &event, float elapsed_time)
 			bool alt_held = event.key.alt;
 			bool shift_held = event.key.shift;
 			bool system_held = event.key.system;
-			window->close();
 			break;
 		}
 		case sf::Keyboard::C:
@@ -161,4 +184,5 @@ void ScreenMainMenu::handle_event(sf::Event &event, float elapsed_time)
 	default:
 		break;
 	}
+#endif
 }

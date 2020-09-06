@@ -62,6 +62,8 @@ void GameScreen::create() {
 		debug_console.hide();
 	}
 
+	state = CHARACTER_CONTROL;
+
 	// update fog of war
 	map.get_fog_of_war().update_fog(player_character->get_field_of_vision()); // doesn't have to be here. It only update once a turn.
 
@@ -101,6 +103,7 @@ bool GameScreen::update(float elapsed_time) {
 		if (foreground.total_time <= 0.f) {
 			foreground.running = false;
 			foreground.data.call_function("callback");
+			block_input = false;
 		}
 		if (foreground.total_time > foreground.still_time) {
 			foreground.sprite.move(foreground.pan_speed.x, foreground.pan_speed.y);
@@ -195,93 +198,130 @@ bool GameScreen::update(float elapsed_time) {
 	return true;
 }
 
+
+
+
+void GameScreen::control_move_up() {
+	if (can_move(*player_character, Direction::UP)) {
+		player_character->clear_schedule();
+		auto *action = new MoveAction(player_character, Direction::UP);
+		player_character->schedule_action(action);
+		player_busy = true;
+	}
+	else {
+		auto pos = character_position(*player_character);
+		int dst_x = pos.x;
+		int dst_y = pos.y - 1;
+		auto *action = new InteractionAction(player_character, dst_x, dst_y);
+		player_character->schedule_action(action);
+		player_busy = true;
+	}
+}
+
+void GameScreen::control_move_down() {
+	if (can_move(*player_character, Direction::DOWN)) {
+		player_character->clear_schedule();
+		auto *action = new MoveAction(player_character, Direction::DOWN);
+		player_character->schedule_action(action);
+		player_busy = true;
+	}
+	else {
+		auto pos = character_position(*player_character);
+		int dst_x = pos.x;
+		int dst_y = pos.y + 1;
+		auto *action = new InteractionAction(player_character, dst_x, dst_y);
+		player_character->schedule_action(action);
+		player_busy = true;
+	}
+}
+
+void GameScreen::control_move_left() {
+	if (can_move(*player_character, Direction::LEFT)) {
+		player_character->clear_schedule();
+		auto *action = new MoveAction(player_character, Direction::LEFT);
+		player_character->schedule_action(action);
+		player_busy = true;
+	}
+	else {
+		auto pos = character_position(*player_character);
+		int dst_x = pos.x - 1;
+		int dst_y = pos.y;
+		auto *action = new InteractionAction(player_character, dst_x, dst_y);
+		player_character->schedule_action(action);
+		player_busy = true;
+	}
+}
+
+void GameScreen::control_move_right() {
+	if (can_move(*player_character, Direction::RIGHT)) {
+		player_character->clear_schedule();
+		auto *action = new MoveAction(player_character, Direction::RIGHT);
+		player_character->schedule_action(action);
+		player_busy = true;
+	}
+	else {
+		auto pos = character_position(*player_character);
+		int dst_x = pos.x + 1;
+		int dst_y = pos.y;
+		auto *action = new InteractionAction(player_character, dst_x, dst_y);
+		player_character->schedule_action(action);
+		player_busy = true;
+	}
+}
+
+void GameScreen::control_pan_up() {
+	game_view.move(sf::Vector2f{ 0.f, -2.f });
+}
+
+void GameScreen::control_pan_down() {
+	game_view.move(sf::Vector2f{ 0.f, +2.f });
+}
+
+void GameScreen::control_pan_left() {
+	game_view.move(sf::Vector2f{ -2.f, 0.f });
+}
+
+void GameScreen::control_pan_right() {
+	game_view.move(sf::Vector2f{ +2.f, 0.f });
+}
+
+
+
+
 void GameScreen::poll_events(float elapsed_time) {
 	Screen::poll_events(elapsed_time);
 	if (block_input)
 		return;
 	try {
 		// constant input handler
-
 		if (!player_busy) {
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)) {
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-					game_view.move(sf::Vector2f{0.f, -2.f});
+					control_pan_up();
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-					game_view.move(sf::Vector2f{0.f, +2.f});
+					control_pan_down();
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-					game_view.move(sf::Vector2f{-2.f, 0.f});
+					control_pan_left();
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-					game_view.move(sf::Vector2f{+2.f, 0.f});
+					control_pan_right();
 				} 
 			}
 			else  // yeah 
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-				if (can_move(*player_character, Direction::UP)) {
-					player_character->clear_schedule();
-					auto *action = new MoveAction(player_character, Direction::UP);
-					player_character->schedule_action(action);
-					player_busy = true;
-				}
-				else {
-					auto pos = character_position(*player_character);
-					int dst_x = pos.x;
-					int dst_y = pos.y - 1;
-					auto *action = new InteractionAction(player_character, dst_x, dst_y);
-					player_character->schedule_action(action);
-					player_busy = true;
-				}
+				control_move_up();
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-				if (can_move(*player_character, Direction::DOWN)) {
-					player_character->clear_schedule();
-					auto *action = new MoveAction(player_character, Direction::DOWN);
-					player_character->schedule_action(action);
-					player_busy = true;
-				}
-				else {
-					auto pos = character_position(*player_character);
-					int dst_x = pos.x;
-					int dst_y = pos.y +1;
-					auto *action = new InteractionAction(player_character, dst_x, dst_y);
-					player_character->schedule_action(action);
-					player_busy = true;
-				}
+				control_move_down();
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-				if (can_move(*player_character, Direction::RIGHT)) {
-					player_character->clear_schedule();
-					auto *action = new MoveAction(player_character, Direction::RIGHT);
-					player_character->schedule_action(action);
-					player_busy = true;
-				}
-				else {
-					auto pos = character_position(*player_character);
-					int dst_x = pos.x +1;
-					int dst_y = pos.y;
-					auto *action = new InteractionAction(player_character, dst_x, dst_y);
-					player_character->schedule_action(action);
-					player_busy = true;
-				}
+				control_move_right();
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-				if (can_move(*player_character, Direction::LEFT)) {
-					player_character->clear_schedule();
-					auto *action = new MoveAction(player_character, Direction::LEFT);
-					player_character->schedule_action(action);
-					player_busy = true;
-				}
-				else {
-					auto pos = character_position(*player_character);
-					int dst_x = pos.x -1;
-					int dst_y = pos.y;
-					auto *action = new InteractionAction(player_character, dst_x, dst_y);
-					player_character->schedule_action(action);
-					player_busy = true;
-				}
+				control_move_left();
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 				player_character->clear_schedule();
@@ -819,6 +859,7 @@ void GameScreen::pan_foreground(std::string filename, int x, int y, float speed_
 }
 void GameScreen::pan_foreground(LuaObject data) {
 	std::cout << _game.get_lua()->stack_dump() << std::endl;
+	block_input = true;
 
 	if (foreground.data.size() > 0) {
 		std::cout << "delete function" << std::endl;
@@ -843,3 +884,11 @@ void GameScreen::pan_foreground(LuaObject data) {
 	foreground.running = true;
 	foreground.data = data;
 }
+
+
+
+
+
+
+
+
