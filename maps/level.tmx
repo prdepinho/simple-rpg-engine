@@ -616,6 +616,9 @@
   <object id="52" name="door" x="385.667" y="484.835" width="8.33333" height="9"/>
   <object id="53" name="door" x="403" y="485.165" width="8.33333" height="9"/>
   <object id="54" name="player" x="412.75" y="462.75">
+   <properties>
+    <property name="type" value="player"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

@@ -9,41 +9,42 @@ map_data = {}
 map_module = {}
 
 
-function add_character(id, script)
-  print('add character (' .. tostring(id) .. '): ' .. script)
-  if character_modules[script] == nil then
-    character_modules[script] = require(script)
-    character_data[script] = {}
-    character_modules[script].data = character_data[script]
-    character_modules[script].enter()
+function add_character(id, script, name)
+  print('add character (' .. tostring(id) .. '), ' .. script .. ': ' .. name)
+  if character_data[name] == nil then
+    character_data[name] = {}
+    character_modules[name] = require(script)
+    character_modules[name].data = character_data[name]
+    character_modules[name].enter()
   end
 end
 
-function character_on_interact(script, target_id, interactor_id)
-  if character_modules[script] ~= nil then
-    if character_modules[script].data.enemy then
+function character_on_interact(target_name, target_id, interactor_id)
+  print('target_name: ' .. target_name)
+  if character_modules[target_name] ~= nil then
+    if character_modules[target_name].data.enemy then
       print('enemy')
     else
-      character_modules[script].on_interact(target_id, interactor_id)
+      character_modules[target_name].on_interact(target_id, interactor_id)
     end
   else
-    print('character module ' .. script .. ' is nil')
+    print('character module ' .. target_name .. ' is nil')
   end
 end
 
-function character_on_turn(script, id)
-  if character_modules[script] ~= nil then
-    character_modules[script].on_turn(id)
+function character_on_turn(name, id)
+  if character_modules[name] ~= nil then
+    character_modules[name].on_turn(id)
   else
-    print('character module ' .. script .. ' is nil')
+    print('character module ' .. name .. ' is nil')
   end
 end
 
-function character_on_idle(script, id)
-  if character_modules[script] ~= nil then
-    character_modules[script].on_idle(id)
+function character_on_idle(name, id)
+  if character_modules[name] ~= nil then
+    character_modules[name].on_idle(id)
   else
-    print('character module ' .. script .. ' is nil')
+    print('character module ' .. name .. ' is nil')
   end
 end
 

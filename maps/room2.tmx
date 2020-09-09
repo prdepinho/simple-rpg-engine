@@ -132,6 +132,9 @@
   <object id="5" name="door" x="132" y="195.833" width="8.66667" height="9"/>
   <object id="6" name="north_door" x="132.333" y="19.5" width="8.66667" height="9"/>
   <object id="7" name="witch" x="42.3333" y="125.333">
+   <properties>
+    <property name="type" value="witch"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

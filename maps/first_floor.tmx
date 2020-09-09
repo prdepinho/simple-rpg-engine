@@ -240,67 +240,130 @@
   <object id="20" name="door" x="212.648" y="164.613" width="8.33333" height="9"/>
   <object id="21" name="door" x="402.482" y="485.615" width="8.33333" height="9"/>
   <object id="22" name="door" x="419.815" y="485.945" width="8.33333" height="9"/>
-  <object id="23" name="witch" x="428" y="201.333">
+  <object id="23" name="witch20" x="428" y="201.333">
+   <properties>
+    <property name="type" value="witch"/>
+   </properties>
    <point/>
   </object>
-  <object id="24" name="witch" x="730.5" y="353">
+  <object id="24" name="witch19" x="730.5" y="353">
+   <properties>
+    <property name="type" value="witch"/>
+   </properties>
    <point/>
   </object>
-  <object id="25" name="witch" x="530" y="320">
+  <object id="25" name="witch18" x="530" y="320">
+   <properties>
+    <property name="type" value="witch"/>
+   </properties>
    <point/>
   </object>
-  <object id="26" name="witch" x="614" y="286.5">
+  <object id="26" name="witch17" x="614" y="286.5">
+   <properties>
+    <property name="type" value="witch"/>
+   </properties>
    <point/>
   </object>
-  <object id="27" name="witch" x="617.5" y="407">
+  <object id="27" name="witch16" x="617.5" y="407">
+   <properties>
+    <property name="type" value="witch"/>
+   </properties>
    <point/>
   </object>
-  <object id="28" name="witch" x="721" y="465">
+  <object id="28" name="witch15" x="721" y="465">
+   <properties>
+    <property name="type" value="witch"/>
+   </properties>
    <point/>
   </object>
-  <object id="29" name="witch" x="524" y="442">
+  <object id="29" name="witch14" x="524" y="442">
+   <properties>
+    <property name="type" value="witch"/>
+   </properties>
    <point/>
   </object>
-  <object id="30" name="witch" x="436" y="442">
+  <object id="30" name="witch13" x="436" y="442">
+   <properties>
+    <property name="type" value="witch"/>
+   </properties>
    <point/>
   </object>
-  <object id="31" name="witch" x="228" y="418.5">
+  <object id="31" name="witch12" x="228" y="418.5">
+   <properties>
+    <property name="type" value="witch"/>
+   </properties>
    <point/>
   </object>
-  <object id="32" name="witch" x="313" y="397.5">
+  <object id="32" name="witch11" x="313" y="397.5">
+   <properties>
+    <property name="type" value="witch"/>
+   </properties>
    <point/>
   </object>
-  <object id="33" name="witch" x="127" y="359">
+  <object id="33" name="witch10" x="127" y="359">
+   <properties>
+    <property name="type" value="witch"/>
+   </properties>
    <point/>
   </object>
-  <object id="34" name="witch" x="152" y="52.5">
+  <object id="34" name="witch9" x="152" y="52.5">
+   <properties>
+    <property name="type" value="witch"/>
+   </properties>
    <point/>
   </object>
-  <object id="35" name="witch" x="247.5" y="53">
+  <object id="35" name="witch8" x="247.5" y="53">
+   <properties>
+    <property name="type" value="witch"/>
+   </properties>
    <point/>
   </object>
-  <object id="36" name="witch" x="754" y="50.5">
+  <object id="36" name="witch7" x="754" y="50.5">
+   <properties>
+    <property name="type" value="witch"/>
+   </properties>
    <point/>
   </object>
-  <object id="37" name="witch" x="755" y="134.5">
+  <object id="37" name="witch6" x="755" y="134.5">
+   <properties>
+    <property name="type" value="witch"/>
+   </properties>
    <point/>
   </object>
-  <object id="38" name="witch" x="678" y="97">
+  <object id="38" name="witch5" x="678" y="97">
+   <properties>
+    <property name="type" value="witch"/>
+   </properties>
    <point/>
   </object>
-  <object id="39" name="witch" x="284.5" y="308.5">
+  <object id="39" name="witch4" x="284.5" y="308.5">
+   <properties>
+    <property name="type" value="witch"/>
+   </properties>
    <point/>
   </object>
-  <object id="40" name="witch" x="378" y="387">
+  <object id="40" name="witch3" x="378" y="387">
+   <properties>
+    <property name="type" value="witch"/>
+   </properties>
    <point/>
   </object>
-  <object id="41" name="witch" x="716.5" y="266">
+  <object id="41" name="witch2" x="716.5" y="266">
+   <properties>
+    <property name="type" value="witch"/>
+   </properties>
    <point/>
   </object>
-  <object id="42" name="witch" x="322.667" y="139.667">
+  <object id="42" name="witch1" x="322.667" y="139.667">
+   <properties>
+    <property name="type" value="witch"/>
+   </properties>
    <point/>
   </object>
   <object id="43" name="player" x="409.5" y="449.5">
+   <properties>
+    <property name="type" value="player"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

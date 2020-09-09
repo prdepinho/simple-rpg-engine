@@ -309,9 +309,10 @@ void Lua::call_event(std::string function, std::string event, int tile_x, int ti
 }
 #endif
 
-void Lua::character_interaction(std::string filename, int target_character_id, int character_id) {
+void Lua::character_interaction(std::string filename, std::string target_name, int target_character_id, int character_id) {
 	lua_getglobal(state, "character_on_interact");
-	lua_pushstring(state, filename.c_str());
+	// lua_pushstring(state, filename.c_str());
+	lua_pushstring(state, target_name.c_str());
 	lua_pushnumber(state, target_character_id);
 	lua_pushnumber(state, character_id);
 	int result = lua_pcall(state, 3, 1, 0);
@@ -335,11 +336,12 @@ void Lua::change_map(std::string script) {
 	lua_pop(state, 1);
 }
 
-void Lua::add_character(long id, std::string script) {
+void Lua::add_character(long id, std::string script, std::string name) {
 	lua_getglobal(state, "add_character");
 	lua_pushnumber(state, id);
 	lua_pushstring(state, script.c_str());
-	int result = lua_pcall(state, 2, 1, 0);
+	lua_pushstring(state, name.c_str());
+	int result = lua_pcall(state, 3, 1, 0);
 	if (result != LUA_OK) {
 		std::stringstream ss;
 		ss << script << ": " << get_error(state);

@@ -82,7 +82,7 @@ function M.step_floor(event, x, y)
       still_duration = 1,
       callback = function() print('callback') end,
     }
-    sfml_pan_image(pan_image_data)
+    -- sfml_pan_image(pan_image_data)
   elseif event == "exit_tile" then
   elseif event == "interact" then
   elseif event == "step_on" then

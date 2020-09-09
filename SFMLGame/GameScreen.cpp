@@ -37,7 +37,7 @@ void GameScreen::create() {
 	// create player character
 	{
 		player_character = new Character();
-		player_character->create("ranger");
+		player_character->create("mumu");
 		player_character->loop_animation("walk");
 		player_character->set_permanent(true);
 		characters.push_back(player_character);
@@ -751,7 +751,7 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 			try {
 				Character *target_character = get_character_on_tile(tile_x, tile_y);
 				if (target_character != nullptr) {
-					_game.get_lua()->character_interaction(target_character->get_filename(), target_character->get_id(), character.get_id());
+					_game.get_lua()->character_interaction(target_character->get_filename(), target_character->get_name(), target_character->get_id(), character.get_id());
 				}
 				else {
 					TileData tile = map.get_tile(tile_x, tile_y);

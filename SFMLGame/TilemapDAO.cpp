@@ -303,6 +303,13 @@ void TiledTilemapDAO::load_characters(GameScreen *game_screen, std::string filen
 	for (auto &object : object_layer->getObjects()) {
 		switch (object.getShape()) {
 		case tmx::Object::Shape::Point: {
+				std::string name = object.getName();
+				std::string type;
+				for (auto &prop : object.getProperties()) {
+					if (prop.getName() == "type") {
+						type = prop.getStringValue();
+					}
+				}
 
 				int x = (int) object.getPosition().x;
 				int y = (int) object.getPosition().y;
@@ -310,16 +317,17 @@ void TiledTilemapDAO::load_characters(GameScreen *game_screen, std::string filen
 				x = tile_coords.x;
 				y = tile_coords.y;
 
-				Log("Character: %s (%d, %d)",  object.getName().c_str(), x, y);
-				if (object.getName() == "player") {
+				Log("Character: %s, type: %s (%d, %d)",  name.c_str(), type.c_str(), x, y);
+				if (name == "player") {
 					// game_screen->put_character_on_tile(*game_screen->get_player_character(), x, y);
 					game_screen->set_player_new_tile_position(x, y);
 				}
 				else {
 					Character *character = new Character();
-					character->create(object.getName());
+					character->create(type);
+					character->set_name(name);
 					character->loop_animation("walk");
-					_game.get_lua()->add_character(character->get_id(), object.getName());
+					_game.get_lua()->add_character(character->get_id(), type, name);
 					game_screen->add_character(character, x, y);
 				}
 			}
