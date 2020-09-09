@@ -63,6 +63,7 @@ public:
 	void control_pan_down();
 	void control_pan_left();
 	void control_pan_right();
+	void control_wait();
 
 public:
 	void change_map(std::string filename, int tile_x, int tile_y);

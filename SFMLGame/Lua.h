@@ -55,6 +55,8 @@ public:
 	void character_interaction(std::string filename, std::string target_name, int target_character_id, int character_id);
 	void change_map(std::string script);
 	void add_character(long id, std::string script, std::string name);
+	LuaObject character_status(std::string name);
+	int character_base_ac(std::string name);
 
 
 

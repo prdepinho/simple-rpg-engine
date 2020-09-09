@@ -6,6 +6,7 @@
 #include "Game.h"
 #include <stack>
 #include "FieldOfVision.h"
+#include "CharacterMenu.h"
 
 GameScreen::~GameScreen() {
 	for (Effect *effect : effects)
@@ -37,7 +38,7 @@ void GameScreen::create() {
 	// create player character
 	{
 		player_character = new Character();
-		player_character->create("mumu");
+		player_character->create("player");
 		player_character->loop_animation("walk");
 		player_character->set_permanent(true);
 		characters.push_back(player_character);
@@ -63,6 +64,7 @@ void GameScreen::create() {
 	}
 
 	state = CHARACTER_CONTROL;
+	Overlay::refresh(*this, player_character);
 
 	// update fog of war
 	map.get_fog_of_war().update_fog(player_character->get_field_of_vision()); // doesn't have to be here. It only update once a turn.
@@ -286,6 +288,12 @@ void GameScreen::control_pan_right() {
 }
 
 
+void GameScreen::control_wait() {
+	player_character->clear_schedule();
+	auto *action = new WaitAction(player_character);
+	player_character->schedule_action(action);
+	player_busy = true;
+}
 
 
 void GameScreen::poll_events(float elapsed_time) {
@@ -309,25 +317,23 @@ void GameScreen::poll_events(float elapsed_time) {
 					control_pan_right();
 				} 
 			}
-			else  // yeah 
-
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-				control_move_up();
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-				control_move_down();
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-				control_move_right();
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-				control_move_left();
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-				player_character->clear_schedule();
-				auto *action = new WaitAction(player_character);
-				player_character->schedule_action(action);
-				player_busy = true;
+			else {
+				if (InputHandler::is_pressed(Control::UP)) {
+					control_move_up();
+				}
+				else if (InputHandler::is_pressed(Control::DOWN)) {
+					control_move_down();
+				}
+				else if (InputHandler::is_pressed(Control::LEFT)) {
+					control_move_left();
+				}
+				else if (InputHandler::is_pressed(Control::RIGHT)) {
+					control_move_right();
+				}
+				else if (InputHandler::is_pressed(Control::B)) {
+					// wait
+					control_wait();
+				}
 			}
 		}
 
@@ -365,6 +371,19 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	Screen::handle_event(event, elapsed_time);
 	if (block_input)
 		return;
+
+	switch (InputHandler::get_control_input(event)) {
+	case Control::A:
+		// do
+		break;
+	case Control::START:
+		// open menu
+		break;
+	case Control::SELECT:
+		// select tile
+		break;
+	}
+
 	switch (event.type) {
 	case sf::Event::MouseButtonPressed:
 		if (selected_component == &container) {

@@ -207,17 +207,6 @@ void Lua::execute_script(const char *filename)
 	lua_close(lua_state);
 }
 
-#if false
-void Lua::on_idle(Character &character) {
-	lua_getglobal(state, "on_idle");
-	lua_pushnumber(state, character.get_id());
-	int result = lua_pcall(state, 1, 1, 0);
-	if (result != LUA_OK) {
-		throw LuaException(get_error(state));
-	}
-	// lua_pop(state, 1);
-}
-#else
 void Lua::on_idle(Character &character) {
 	lua_getglobal(state, "character_on_idle");
 	lua_pushstring(state, character.get_name().c_str());
@@ -229,18 +218,7 @@ void Lua::on_idle(Character &character) {
 	lua_pop(state, 1);
 	// lua_pop(state, 1);
 }
-#endif
 
-#if false
-void Lua::on_turn(Character &character) {
-	lua_getglobal(state, "on_turn");
-	lua_pushnumber(state, character.get_id());
-	int result = lua_pcall(state, 1, 1, 0);
-	if (result != LUA_OK) {
-		throw LuaException(get_error(state));
-	}
-}
-#else
 void Lua::on_turn(Character &character) {
 	lua_getglobal(state, "character_on_turn");
 	lua_pushstring(state, character.get_name().c_str());
@@ -251,7 +229,6 @@ void Lua::on_turn(Character &character) {
 	}
 	lua_pop(state, 1);
 }
-#endif
 
 void Lua::on_interact(Character &character, int tile_x, int tile_y) {
 	lua_getglobal(state, "on_interact");
@@ -277,21 +254,6 @@ void Lua::call(std::string function, int tile_x, int tile_y) {
 	lua_pop(state, 1);
 }
 
-#if false
-void Lua::call_event(std::string function, std::string event, int tile_x, int tile_y, int character_id) {
-	lua_getglobal(state, function.c_str());
-	lua_pushstring(state, event.c_str());
-	lua_pushnumber(state, tile_x);
-	lua_pushnumber(state, tile_y);
-	lua_pushnumber(state, character_id);
-	int result = lua_pcall(state, 4, 1, 0);
-	if (result != LUA_OK) {
-		std::stringstream ss;
-		ss << function << ": " << get_error(state);
-		throw LuaException(ss.str().c_str());
-	}
-}
-#else
 void Lua::call_event(std::string function, std::string event, int tile_x, int tile_y, int character_id) {
 	lua_getglobal(state, "map_event");
 	lua_pushstring(state, function.c_str());
@@ -307,7 +269,6 @@ void Lua::call_event(std::string function, std::string event, int tile_x, int ti
 	}
 	lua_pop(state, 1);
 }
-#endif
 
 void Lua::character_interaction(std::string filename, std::string target_name, int target_character_id, int character_id) {
 	lua_getglobal(state, "character_on_interact");
@@ -348,6 +309,42 @@ void Lua::add_character(long id, std::string script, std::string name) {
 		throw LuaException(ss.str().c_str());
 	}
 	lua_pop(state, 1);
+}
+
+LuaObject Lua::character_status(std::string name) {
+	std::cout << stack_dump() << std::endl;
+	lua_getglobal(state, "character_stats");
+	lua_pushstring(state, name.c_str());
+	int result = lua_pcall(state, 1, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << name << ": " << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	LuaObject obj = read_top_table();
+
+#if false
+	int total_hp = obj.get_int("total_hp");
+	int current_hp = obj.get_int("current_hp");
+	std::cout << "total hp: " << total_hp << std::endl;
+	std::cout << "current hp: " << current_hp << std::endl;
+#endif
+
+	lua_pop(state, 1);
+	return obj;
+}
+
+int Lua::character_base_ac(std::string name) {
+	lua_getglobal(state, "character_base_ac");
+	lua_pushstring(state, name.c_str());
+	int result = lua_pcall(state, 1, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << name << ": " << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	int ac = lua_tointeger(state, -1);
+	return ac;
 }
 
 
@@ -521,51 +518,6 @@ std::map<std::string, LuaObject> LuaObject::get_map(std::string name) {
 	else
 		throw LuaException("token \"" + name + "\" is not object");
 }
-
-#if false
-int Lua::call_function(std::string path) {
-	lua_getglobal(state, path.c_str());
-	lua_pushnil(state);
-	while (lua_next(state, -2)) {
-		std::string key = lua_tostring(state, -2);
-		if (key == "inside") {
-			lua_pushnil(state);
-			while (lua_next(state, -2)) {
-				std::string key = lua_tostring(state, -2);
-				if (key == "callback") {
-					int callback_reference = luaL_ref(state, LUA_REGISTRYINDEX);
-					lua_rawgeti(state, LUA_REGISTRYINDEX, callback_reference);
-					if (lua_pcall(state, 0, 0, 0) != 0) {
-						printf("Failed to call the callback!\n %s\n", lua_tostring(state, -1));
-					}
-					luaL_unref(state, LUA_REGISTRYINDEX, callback_reference);
-				}
-				else {
-					lua_pop(state, 1);
-				}
-			}
-			// lua_pop(state, 1);
-		}
-		if (key == "callback") {
-			std::cout << stack_dump() << std::endl;
-			int callback_reference = luaL_ref(state, LUA_REGISTRYINDEX);
-			std::cout << "reference: " << callback_reference << std::endl;
-			lua_rawgeti(state, LUA_REGISTRYINDEX, callback_reference);
-			if (lua_pcall(state, 0, 0, 0) != 0) {
-				printf("Failed to call the callback!\n %s\n", lua_tostring(state, -1));
-			}
-			luaL_unref(state, LUA_REGISTRYINDEX, callback_reference);
-			std::cout << stack_dump() << std::endl;
-		}
-		else {
-			lua_pop(state, 1);
-		}
-	}
-	lua_pop(state, 1);
-
-	return 0;
-}
-#endif
 
 // This function is used to call a function from a table at the top of the stack. This is useful in C implemented functions called in lua that receive a table as parameter.
 std::string Lua::call_table_function(LuaObject *token, std::string function_name) {

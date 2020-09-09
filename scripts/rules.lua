@@ -104,6 +104,8 @@ rules.stats = {
   int = 10,
   wis = 10,
   cha = 10,
+  total_hp = 10,
+  current_hp = 10,
   weapon = rules.weapon.unarmed,
   armor = rules.armor.unarmored,
   shield = rules.shield.no_shield,
@@ -121,11 +123,16 @@ rules.ability_modifier = {
 
 -- rules
 
-function rules.attack_armor_class(attacker, defender)
+function rules.base_armor_class(defender)
   local ac = defender.armor.ac
   ac = ac + defender.shield.ac_bonus
   ac = ac + defender.weapon.ac_bonus
   ac = ac + rules.ability_modifier[1][defender.dex]
+  return ac
+end
+
+function rules.attack_armor_class(attacker, defender)
+  local ac = rules.base_armor_class(defender)
 
   if defender.weapon.weight < attacker.weapon.weight then
     ac = ac + 1

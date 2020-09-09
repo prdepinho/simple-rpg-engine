@@ -1,6 +1,8 @@
 
 package.path = package.path .. ";../maps/?.lua"
 package.path = package.path .. ";../character/?.lua"
+package.path = package.path .. ";../scripts/?.lua"
+local rules = require "rules"
 
 
 character_data = {}
@@ -8,6 +10,33 @@ character_modules = {}
 map_data = {}
 map_module = {}
 
+
+function dump(args)
+  -- args are {table, depth}
+  local table = args.table
+  local depth = args.depth and args.depth or 0
+  local indent = ''
+  for i=0, depth, 1 do
+    indent = indent .. '  '
+  end
+  for key, value in pairs(table) do
+    print(indent .. key .. ': [' .. tostring(value) .. ']')
+    if type(value) == 'table' then
+      dump({table = value, depth = depth + 1})
+    end
+  end
+end
+
+
+function character_stats(name)
+  return character_modules[name].data.stats
+  -- return 42
+end
+
+function character_base_ac(name)
+  local stats = character_modules[name].data.stats
+  return rules.base_armor_class(stats)
+end
 
 function add_character(id, script, name)
   print('add character (' .. tostring(id) .. '), ' .. script .. ': ' .. name)
