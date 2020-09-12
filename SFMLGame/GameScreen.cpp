@@ -378,6 +378,11 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		break;
 	case Control::START:
 		// open menu
+		block_input = true;
+		CharacterMenu::show(*this, player_character, [&](Component *) {
+			block_input = false;
+			return true; 
+		});
 		break;
 	case Control::SELECT:
 		// select tile

@@ -48,30 +48,28 @@ protected:
 		{sf::Keyboard::D,			Control::RIGHT},
 
 		{sf::Keyboard::Enter,		Control::A},
-		{sf::Keyboard::Space,		Control::A},
+		{sf::Keyboard::E,			Control::A},
 		{sf::Keyboard::X,			Control::A},
 
 		{sf::Keyboard::Insert,		Control::B},
 		{sf::Keyboard::Z,			Control::B},
-		{sf::Keyboard::LShift,		Control::B},
-		{sf::Keyboard::RShift,		Control::B},
+		{sf::Keyboard::Q,			Control::B},
 
-		{sf::Keyboard::End,			Control::SELECT},
-		{sf::Keyboard::LControl,	Control::SELECT},
-		{sf::Keyboard::RControl,	Control::SELECT},
+		{sf::Keyboard::PageDown,	Control::SELECT},
+		{sf::Keyboard::Tab,			Control::SELECT},
 
-		{sf::Keyboard::PageDown,	Control::START},
-		{sf::Keyboard::Tab,			Control::START},
+		{sf::Keyboard::Space,		Control::START},
+		{sf::Keyboard::End,			Control::START},
 	};
 	std::map<int, std::vector<int>> rcontrol_map{
 		{Control::UP,		{sf::Keyboard::Up,			sf::Keyboard::W}},
 		{Control::DOWN,		{sf::Keyboard::Down,		sf::Keyboard::S}},
 		{Control::LEFT,		{sf::Keyboard::Left,		sf::Keyboard::A}},
 		{Control::RIGHT,	{sf::Keyboard::Right,		sf::Keyboard::D}},
-		{Control::A,		{sf::Keyboard::Enter,		sf::Keyboard::X,			sf::Keyboard::Space}},
-		{Control::B,		{sf::Keyboard::Insert,		sf::Keyboard::Z,			sf::Keyboard::LShift,			sf::Keyboard::RShift}},
-		{Control::SELECT,	{sf::Keyboard::End,			sf::Keyboard::LControl,		sf::Keyboard::RControl}},
-		{Control::START,	{sf::Keyboard::PageDown,	sf::Keyboard::Tab}},
+		{Control::A,		{sf::Keyboard::Enter,		sf::Keyboard::X,			sf::Keyboard::E}},
+		{Control::B,		{sf::Keyboard::Insert,		sf::Keyboard::Z,			sf::Keyboard::Q}},
+		{Control::SELECT,	{sf::Keyboard::PageDown,	sf::Keyboard::Tab}},
+		{Control::START,	{sf::Keyboard::End,			sf::Keyboard::Space}},
 	};
 private:
 };

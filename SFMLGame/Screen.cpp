@@ -130,7 +130,7 @@ void Screen::handle_event(sf::Event &event, float elapsed_time)
 			}
 		}
 		break;
-	case sf::Event::KeyReleased:
+	case sf::Event::KeyPressed:
 		switch (event.key.code) {
 		case sf::Keyboard::Escape:
 			window->close();
