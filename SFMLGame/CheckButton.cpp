@@ -44,10 +44,11 @@ Component* CheckButton::on_click() {
 Component* CheckButton::on_key_pressed(sf::Keyboard::Key key) {
 	switch (key) {
 	case sf::Keyboard::Key::Enter:
-		return on_click();
+		on_click();
+		return this;
 		break;
 	}
-	return this;
+	return nullptr;
 }
 
 void CheckButton::check() { 

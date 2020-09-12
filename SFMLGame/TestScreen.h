@@ -23,7 +23,7 @@ public:
 	virtual void draw() override;
 	virtual bool update(float fElapsedTime) override;
 	virtual void poll_events(float elased_time) override;
-	virtual void handle_event(sf::Event &event, float elapsed_time) override;
+	virtual Component *handle_event(sf::Event &event, float elapsed_time) override;
 
 private:
 

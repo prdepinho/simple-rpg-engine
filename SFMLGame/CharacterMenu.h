@@ -5,6 +5,7 @@
 #include "Character.h"
 #include "Callback.h"
 #include "font.h"
+#include "consts.h"
 
 
 class Inventory : public Panel {
@@ -12,8 +13,30 @@ public:
 	Inventory();
 	~Inventory();
 	virtual void create() override;
-	static void show(Screen &screen, Character *character);
+	void refresh(Character *character);
+	void set_cursor(int i);
+	void move_cursor(Direction direction);
+private:
+	std::vector<Button> buttons;
+	int inventory_width = 2;
+	int inventory_height = 4;
+	int button_size = 16;
+	int cursor;
 };
+
+
+
+
+class StatsPanel : public Panel {
+public:
+	StatsPanel();
+	virtual void create() override;
+	void refresh(Character *character);
+private:
+	std::vector<Font> fonts;
+};
+
+
 
 class CharacterMenu : public Panel, public CallbackCaller {
 public:
@@ -23,7 +46,8 @@ public:
 	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
 	static void show(Screen &screen, Character *character, Callback callback=Callback());
 private:
-	std::vector<Font> fonts;
+	StatsPanel stats_panel;
+	Inventory inventory;
 };
 
 

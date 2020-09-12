@@ -135,6 +135,7 @@ Component *TextBox::on_key_pressed(sf::Keyboard::Key key) {
 			completely_written = true;
 			update_view();
 		}
+		return this;
 		break;
 	case Control::B:
 		break;
@@ -151,6 +152,7 @@ Component *TextBox::on_key_pressed(sf::Keyboard::Key key) {
 				update_view();
 			}
 		}
+		return this;
 		break;
 	case Control::DOWN:
 		if (completely_written) {
@@ -163,6 +165,7 @@ Component *TextBox::on_key_pressed(sf::Keyboard::Key key) {
 				update_view();
 			}
 		}
+		return this;
 		break;
 	}
 #if false
@@ -189,7 +192,7 @@ Component *TextBox::on_key_pressed(sf::Keyboard::Key key) {
 	}
 #endif
 
-	return this;
+	return nullptr;
 }
 
 void TextBox::push_text(std::string text) {
@@ -305,6 +308,7 @@ Component *OptionsPanel::on_key_pressed(sf::Keyboard::Key key) {
 		else {
 			get_screen()->select(buttons[--selected_index -1]);
 		}
+		return this;
 		break;
 	case Control::DOWN:
 		if (selected_index == buttons.size()) {
@@ -314,9 +318,10 @@ Component *OptionsPanel::on_key_pressed(sf::Keyboard::Key key) {
 		else {
 			get_screen()->select(buttons[++selected_index -1]);
 		}
+		return this;
 		break;
 	}
-	return this;
+	return nullptr;
 }
 
 
@@ -427,6 +432,7 @@ Component *DialogueBox::on_key_pressed(sf::Keyboard::Key key) {
 			}
 			update_view();
 		}
+		return this;
 		break;
 	case Control::UP:
 		if (completely_written) {
@@ -442,6 +448,7 @@ Component *DialogueBox::on_key_pressed(sf::Keyboard::Key key) {
 				update_view();
 			}
 		}
+		return this;
 		break;
 	case Control::DOWN:
 		if (completely_written && pages_retroceded > 0) {
@@ -455,9 +462,10 @@ Component *DialogueBox::on_key_pressed(sf::Keyboard::Key key) {
 				update_view();
 			}
 		}
+		return this;
 		break;
 	}
-	return this;
+	return nullptr;
 }
 
 Component *DialogueBox::on_pressed(int x, int y) {

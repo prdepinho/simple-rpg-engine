@@ -114,8 +114,10 @@ bool ScreenMainMenu::update(float elapsed_time)
 	return true;
 }
 
-void ScreenMainMenu::handle_event(sf::Event &event, float elapsed_time) {
-	Screen::handle_event(event, elapsed_time);
+Component *ScreenMainMenu::handle_event(sf::Event &event, float elapsed_time) {
+	Component *interacted_component = Screen::handle_event(event, elapsed_time);
+	// if (interacted_component)
+	// 	return interacted_component;
 
 	switch (InputHandler::get_control_input(event)) {
 	case Control::UP:
@@ -185,4 +187,5 @@ void ScreenMainMenu::handle_event(sf::Event &event, float elapsed_time) {
 		break;
 	}
 #endif
+	return interacted_component;
 }

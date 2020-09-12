@@ -87,9 +87,10 @@ Component* Button::on_key_pressed(sf::Keyboard::Key key) {
 	Component::on_key_pressed(key);
 	switch (InputHandler::get_control_input(key)) {
 	case Control::A:
-		return on_click();
+		on_click();
+		return this;
 	}
-	return this;
+	return nullptr;
 }
 
 Component* Button::on_click() {

@@ -367,10 +367,13 @@ void GameScreen::poll_events(float elapsed_time) {
 	}
 }
 
-void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
-	Screen::handle_event(event, elapsed_time);
+Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
+	Component *interacted_component = Screen::handle_event(event, elapsed_time);
+	if (interacted_component)
+		return nullptr;
+	
 	if (block_input)
-		return;
+		return nullptr;
 
 	switch (InputHandler::get_control_input(event)) {
 	case Control::A:
@@ -563,6 +566,7 @@ void GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		}
 		break;
 	}
+	return interacted_component;
 }
 
 void GameScreen::add_character(Character *character, int tile_x, int tile_y) {

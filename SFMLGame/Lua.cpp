@@ -311,7 +311,7 @@ void Lua::add_character(long id, std::string script, std::string name) {
 	lua_pop(state, 1);
 }
 
-LuaObject Lua::character_status(std::string name) {
+LuaObject Lua::character_stats(std::string name) {
 	std::cout << stack_dump() << std::endl;
 	lua_getglobal(state, "character_stats");
 	lua_pushstring(state, name.c_str());

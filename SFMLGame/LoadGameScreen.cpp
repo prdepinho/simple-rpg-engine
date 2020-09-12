@@ -65,8 +65,12 @@ bool LoadGameScreen::update(float fElapsedTime) {
 	return true;
 }
 
-void LoadGameScreen::handle_event(sf::Event &event, float elapsed_time) {
-	Screen::handle_event(event, elapsed_time);
+Component *LoadGameScreen::handle_event(sf::Event &event, float elapsed_time) {
+	Component *interacted_component = Screen::handle_event(event, elapsed_time);
+
+	if (interacted_component)
+		return nullptr;
+
 	switch (event.type) {
 	case sf::Event::Closed:
 		window->close();
@@ -108,5 +112,6 @@ void LoadGameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			break;
 		}
 	}
+	return interacted_component;
 }
 

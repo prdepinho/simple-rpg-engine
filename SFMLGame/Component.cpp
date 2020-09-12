@@ -116,13 +116,15 @@ Component* Component::on_held(int x, int y) {
 	return this;
 }
 
+// This function should return this component if it has received a valid input. Otherwise, it should return nullptr;
 Component* Component::on_key_pressed(sf::Keyboard::Key key){
 	if (!activated) {
-		return parent_component;
+		// return parent_component;
+		return nullptr;
 	}
 	if (parent_component != nullptr)
-		parent_component->on_key_pressed(key);
-	return this;
+		return parent_component->on_key_pressed(key);
+	return nullptr;
 }
 
 Component* Component::on_text_input(char c) {

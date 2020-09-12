@@ -115,8 +115,9 @@ void Screen::poll_events(float elapsed_time)
 	}
 }
 
-void Screen::handle_event(sf::Event &event, float elapsed_time)
-{
+Component *Screen::handle_event(sf::Event &event, float elapsed_time) {
+	Component *interacted_component = nullptr;
+
 	switch (event.type) {
 	case sf::Event::Closed:
 		window->close();
@@ -126,7 +127,7 @@ void Screen::handle_event(sf::Event &event, float elapsed_time)
 			// used for user text input. You have to filter out backspaces and other non printable characters.
 			if (selected_component != nullptr) {
 				char c = static_cast<char>(event.text.unicode);
-				Component *typed_gui = selected_component->on_text_input(c);
+				interacted_component = selected_component->on_text_input(c);
 			}
 		}
 		break;
@@ -148,7 +149,7 @@ void Screen::handle_event(sf::Event &event, float elapsed_time)
 		default:
 			{
 				if (selected_component != nullptr) {
-					Component *typed_gui = selected_component->on_key_pressed(event.key.code);
+					interacted_component = selected_component->on_key_pressed(event.key.code);
 				}
 			}
 			break;
@@ -164,8 +165,8 @@ void Screen::handle_event(sf::Event &event, float elapsed_time)
 			int mouse_position_map_x = static_cast<int>(mouse_map_position.x);
 			int mouse_position_map_y = static_cast<int>(mouse_map_position.y);
 
-			Component *pressed_gui = container.on_pressed(mouse_position_gui_x, mouse_position_gui_y);
-			select(*pressed_gui);
+			interacted_component = container.on_pressed(mouse_position_gui_x, mouse_position_gui_y);
+			select(*interacted_component);
 		}
 		break;
 	case sf::Event::MouseButtonReleased:
@@ -182,4 +183,5 @@ void Screen::handle_event(sf::Event &event, float elapsed_time)
 		}
 		break;
 	}
+	return interacted_component;
 }

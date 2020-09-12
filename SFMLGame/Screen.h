@@ -18,7 +18,7 @@ public:
 	virtual void create();
 	virtual bool update(float fElapsedTime);
 	virtual void poll_events(float elased_time);
-	virtual void handle_event(sf::Event &event, float elapsed_time);
+	virtual Component *handle_event(sf::Event &event, float elapsed_time);
 	virtual void draw();
 	virtual void destroy();
 

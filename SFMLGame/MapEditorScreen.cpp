@@ -372,8 +372,11 @@ void MapEditorScreen::poll_events(float elapsed_time) {
 	}
 }
 
-void MapEditorScreen::handle_event(sf::Event &event, float elapsed_time) {
-	Screen::handle_event(event, elapsed_time);
+Component *MapEditorScreen::handle_event(sf::Event &event, float elapsed_time) {
+	Component *interacted_component = Screen::handle_event(event, elapsed_time);
+	if (interacted_component)
+		return nullptr;
+
 	switch (event.type) {
 	case sf::Event::MouseButtonPressed:
 		if (selected_component == &container) {
@@ -466,6 +469,7 @@ void MapEditorScreen::handle_event(sf::Event &event, float elapsed_time) {
 		break;
 	}
 	}
+	return interacted_component;
 }
 
 void MapEditorScreen::create_map(int w, int h) {

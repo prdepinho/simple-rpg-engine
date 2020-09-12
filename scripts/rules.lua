@@ -96,6 +96,10 @@ rules.weapon = {
   arquebus      = { name = "Arquebus",      damage = "d12", armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, ranged = true,  gun = true,  cutthroat = false },
 }
 
+rules.item = {
+  no_item = { name = "No item" }
+}
+
 
 rules.stats = {
   str = 10,
@@ -109,6 +113,11 @@ rules.stats = {
   weapon = rules.weapon.unarmed,
   armor = rules.armor.unarmored,
   shield = rules.shield.no_shield,
+  inventory = { 
+    rules.item.no_item, rules.item.no_item,
+    rules.item.no_item, rules.item.no_item,
+    rules.item.no_item, rules.item.no_item,
+    rules.item.no_item, rules.item.no_item },
   status = { hold = false, poison = false, invisible = false, fear = false, charm = false },
 }
 
