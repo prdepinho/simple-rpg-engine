@@ -42,6 +42,10 @@ Component* CheckButton::on_click() {
 }
 
 Component* CheckButton::on_key_pressed(sf::Keyboard::Key key) {
+	Component *interacted = Component::on_key_pressed(key);
+	if (interacted)
+		return interacted;
+
 	switch (key) {
 	case sf::Keyboard::Key::Enter:
 		on_click();

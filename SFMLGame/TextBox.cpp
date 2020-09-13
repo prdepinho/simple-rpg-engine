@@ -114,6 +114,10 @@ void TextBox::update(float elapsed_time) {
 }
 
 Component *TextBox::on_key_pressed(sf::Keyboard::Key key) {
+	Component *interacted = Component::on_key_pressed(key);
+	if (interacted)
+		return interacted;
+
 	switch (InputHandler::get_control_input(key)) {
 	case Control::A:
 		if (completely_written) {
@@ -296,7 +300,10 @@ void OptionsPanel::create() {
 }
 
 Component *OptionsPanel::on_key_pressed(sf::Keyboard::Key key) {
-	Component::on_key_pressed(key);
+	Component *interacted = Component::on_key_pressed(key);
+	if (interacted)
+		return interacted;
+
 	switch (InputHandler::get_control_input(key)) {
 	case Control::A:
 		break;
@@ -399,6 +406,10 @@ void DialogueBox::update(float elapsed_time) {
 }
 
 Component *DialogueBox::on_key_pressed(sf::Keyboard::Key key) {
+	Component *interacted = Component::on_key_pressed(key);
+	if (interacted)
+		return interacted;
+
 	switch (InputHandler::get_control_input(key)) {
 	case Control::A:
 		if (completely_written) {

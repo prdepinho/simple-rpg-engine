@@ -42,6 +42,15 @@ void Screen::remove_component(Component &component) {
 void Screen::select(Component & component)
 {
 	deselect(container);
+	select_recursive(component);
+	// selected_component = &component;
+	// selected_component->on_selected();
+}
+
+void Screen::select_recursive(Component &component) {
+	Component *parent = component.get_parent();
+	if (parent)
+		select_recursive(*parent);
 	selected_component = &component;
 	selected_component->on_selected();
 }
@@ -149,7 +158,8 @@ Component *Screen::handle_event(sf::Event &event, float elapsed_time) {
 		default:
 			{
 				if (selected_component != nullptr) {
-					interacted_component = selected_component->on_key_pressed(event.key.code);
+					// interacted_component = selected_component->on_key_pressed(event.key.code);
+					interacted_component = container.on_key_pressed(event.key.code);
 				}
 			}
 			break;

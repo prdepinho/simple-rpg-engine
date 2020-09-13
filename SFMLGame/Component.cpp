@@ -122,9 +122,14 @@ Component* Component::on_key_pressed(sf::Keyboard::Key key){
 		// return parent_component;
 		return nullptr;
 	}
-	if (parent_component != nullptr)
-		return parent_component->on_key_pressed(key);
-	return nullptr;
+	// if (parent_component != nullptr)
+	// 	return parent_component->on_key_pressed(key);
+	Component *interacted = nullptr;
+	for (Component *child : components) {
+		if (child->is_selected())
+			interacted = child->on_key_pressed(key);
+	}
+	return interacted;
 }
 
 Component* Component::on_text_input(char c) {

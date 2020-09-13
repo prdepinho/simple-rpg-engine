@@ -84,7 +84,10 @@ Component* Button::on_released(int x, int y) {
 }
 
 Component* Button::on_key_pressed(sf::Keyboard::Key key) {
-	Component::on_key_pressed(key);
+	Component *interacted = Component::on_key_pressed(key);
+	if (interacted)
+		return interacted;
+
 	switch (InputHandler::get_control_input(key)) {
 	case Control::A:
 		on_click();

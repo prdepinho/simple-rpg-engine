@@ -32,6 +32,10 @@ public:
 	void select_previous();
 	void select_next();
 
+protected:
+	void select_recursive(Component &component);
+
+public:
 	Component &get_container() { return container; }
 	void set_window(sf::RenderWindow *window) { this->window = window; }
 	void set_game(Game *game) { this->game = game; }

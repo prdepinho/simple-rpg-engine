@@ -144,6 +144,12 @@ void CharacterMenu::create() {
 
 Component *CharacterMenu::on_key_pressed(sf::Keyboard::Key key) {
 	Log("Character menu - key pressed: %d", (int)key);
+	Component *interacted = Panel::on_key_pressed(key);
+	if (interacted) {
+		Log("+ Interacted");
+		return interacted;
+	}
+
 	switch (InputHandler::get_control_input(key)) {
 	case Control::UP:
 		inventory.move_cursor(Direction::UP);
@@ -159,8 +165,8 @@ Component *CharacterMenu::on_key_pressed(sf::Keyboard::Key key) {
 		return this;
 	case Control::A:
 		break;
-	case Control::START:
 	case Control::B:
+	case Control::START:
 		get_screen()->remove_component(*this);
 		get_screen()->select_container();
 		call_functions(this);

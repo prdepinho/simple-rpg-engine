@@ -2,6 +2,10 @@
 #include "Game.h"
 
 Component* DebugTextField::on_key_pressed(sf::Keyboard::Key key) {
+	Component *interacted = Component::on_key_pressed(key);
+	if (interacted)
+		return interacted;
+
 	switch (key) {
 	case sf::Keyboard::Tilde: 
 		break;
