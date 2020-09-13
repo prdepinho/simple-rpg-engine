@@ -42,9 +42,11 @@ void Screen::remove_component(Component &component) {
 void Screen::select(Component & component)
 {
 	deselect(container);
-	select_recursive(component);
-	// selected_component = &component;
-	// selected_component->on_selected();
+	Component *parent = component.get_parent();
+	if (parent)
+		select_recursive(*parent);
+	selected_component = &component;
+	selected_component->on_selected(true);
 }
 
 void Screen::select_recursive(Component &component) {
@@ -52,7 +54,7 @@ void Screen::select_recursive(Component &component) {
 	if (parent)
 		select_recursive(*parent);
 	selected_component = &component;
-	selected_component->on_selected();
+	selected_component->on_selected(false);
 }
 
 void Screen::deselect(Component &root) {

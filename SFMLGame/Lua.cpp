@@ -312,7 +312,6 @@ void Lua::add_character(long id, std::string script, std::string name) {
 }
 
 LuaObject Lua::character_stats(std::string name) {
-	std::cout << stack_dump() << std::endl;
 	lua_getglobal(state, "character_stats");
 	lua_pushstring(state, name.c_str());
 	int result = lua_pcall(state, 1, 1, 0);

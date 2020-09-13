@@ -458,7 +458,6 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				}
 				break;
 			case sf::Keyboard::D:
-				std::cout << _game.get_lua()->stack_dump().c_str() << std::endl;
 				break;
 			case sf::Keyboard::S:
 				break;
@@ -886,7 +885,6 @@ void GameScreen::pan_foreground(std::string filename, int x, int y, float speed_
 	foreground.running = true;
 }
 void GameScreen::pan_foreground(LuaObject data) {
-	std::cout << _game.get_lua()->stack_dump() << std::endl;
 	block_input = true;
 
 	if (foreground.data.size() > 0) {

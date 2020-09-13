@@ -45,7 +45,7 @@ public:
 
 	// selection
 
-	virtual void on_selected() { selected = true; set_show_selection_outline(true); }
+	virtual void on_selected(bool show_outline=true) { selected = true; set_show_selection_outline(show_outline); }
 	virtual void on_deselected() { selected = false; set_show_selection_outline(false); }
 	bool is_selected() const { return selected; }
 
