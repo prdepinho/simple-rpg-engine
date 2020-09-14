@@ -4,8 +4,8 @@
 #include <sstream>
 #include <map>
 
-Inventory::Inventory() {
-	set_position(100, 100);
+Inventory::Inventory(int x, int y) {
+	set_position(x, y);
 	set_dimensions(button_size * 2, button_size * 4);
 }
 
@@ -70,8 +70,8 @@ void Inventory::move_cursor(Direction direction) {
 
 
 
-StatsPanel::StatsPanel() {
-	set_position(0, 100);
+StatsPanel::StatsPanel(int x, int y) {
+	set_position(x, y);
 	set_dimensions(50, (32 * 2) + 2);
 }
 
@@ -181,12 +181,19 @@ void CharacterMenu::show(Screen &screen, Character *character, Callback callback
 	menu.add_function(callback);
 	menu.create();
 
-	menu.stats_panel = StatsPanel();
+	int x = menu.get_x() + 0;
+	int y = menu.get_y() + 0;
+
+	menu.stats_panel = StatsPanel(x, y);
 	menu.stats_panel.create();
 	menu.stats_panel.refresh(character);
 	menu.add_component(menu.stats_panel);
 
-	menu.inventory = Inventory();
+
+	menu.inventory = Inventory(0, 0);
+	x = menu.get_x() + menu.get_width() - menu.inventory.get_width();
+	y = menu.get_y() + 0;
+	menu.inventory.set_position(x, y);
 	menu.inventory.create();
 	menu.inventory.refresh(character);
 	menu.add_component(menu.inventory);

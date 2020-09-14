@@ -100,6 +100,7 @@ Component* Button::on_click() {
 	for (Callback function : functions) {
 		function(this);
 	}
+	Resources::get_sound("crrreee.wav")->play();
 	return this;
 }
 
@@ -109,3 +110,7 @@ void Button::set_label(std::string str)
 	center_label();
 }
 
+void Button::on_selected(bool show_outline) {
+	Component::on_selected(show_outline);
+	Resources::get_sound("vwuuu.wav")->play();
+}

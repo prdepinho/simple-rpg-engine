@@ -24,6 +24,7 @@ public:
 	virtual Component* on_released(int x, int y) override;
 	virtual Component* on_key_pressed(sf::Keyboard::Key key) override;
 	virtual Component* on_click() override;
+	virtual void on_selected(bool show_outline = true);
 
 	std::string get_label() { return label; }
 	void set_label(std::string str);

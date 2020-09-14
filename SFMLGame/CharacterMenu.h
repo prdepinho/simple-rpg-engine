@@ -10,7 +10,7 @@
 
 class Inventory : public Panel {
 public:
-	Inventory();
+	Inventory(int x=0, int y=0);
 	~Inventory();
 	virtual void create() override;
 	void refresh(Character *character);
@@ -29,7 +29,7 @@ private:
 
 class StatsPanel : public Panel {
 public:
-	StatsPanel();
+	StatsPanel(int x=0, int y=0);
 	virtual void create() override;
 	void refresh(Character *character);
 private:
