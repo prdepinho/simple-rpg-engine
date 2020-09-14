@@ -44,9 +44,6 @@
     <ClCompile Include="Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="font.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="lua5.3.5\lapi.c">
       <Filter>lua5.3.5</Filter>
     </ClCompile>
@@ -263,6 +260,12 @@
     <ClCompile Include="CharacterMenu.cpp">
       <Filter>gui</Filter>
     </ClCompile>
+    <ClCompile Include="font.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="Icon.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lua5.3.5\lapi.h">
@@ -427,9 +430,6 @@
     <ClInclude Include="FieldOfVision.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="font.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -449,6 +449,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="CharacterMenu.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="Icon.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="font.h">
       <Filter>gui</Filter>
     </ClInclude>
   </ItemGroup>

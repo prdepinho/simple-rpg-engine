@@ -3,6 +3,7 @@
 #include "Component.h"
 #include "Callback.h"
 #include "font.h"
+#include "Icon.h"
 
 class Button : public Component, public CallbackCaller {
 public:
@@ -29,6 +30,7 @@ public:
 	std::string get_label() { return label; }
 	void set_label(std::string str);
 	void set_centered_label(bool centered) { this->centered = centered; }
+	void set_icon(std::string texture_file, int tex_x, int tex_y);
 
 private:
 	void center_label();
@@ -43,5 +45,7 @@ protected:
 
 	sf::VertexArray pressed_vertices;
 	sf::VertexArray released_vertices;
+
+	Icon icon;
 };
 

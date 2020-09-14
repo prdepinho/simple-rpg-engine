@@ -15,6 +15,8 @@ void Button::create() {
 
 	set_texture(Resources::get_texture(json.get_string("button/file")));
 
+	add_component(icon);
+
 	float texX = json.get_vector("button/pressed")[0].get_float();
 	float texY = json.get_vector("button/pressed")[1].get_float();
 	pressed_vertices.setPrimitiveType(sf::Quads);
@@ -113,4 +115,13 @@ void Button::set_label(std::string str)
 void Button::on_selected(bool show_outline) {
 	Component::on_selected(show_outline);
 	Resources::get_sound("vwuuu.wav")->play();
+}
+
+void Button::set_icon(std::string texture_file, int pix_x, int pix_y) {
+	remove_component(icon);
+	int x = get_x() + (get_width() / 2) - (16 / 2);
+	int y = get_y() + (get_height() / 2) - (16 / 2);
+	icon = Icon(x, y, 16, 16, pix_x, pix_y);
+	icon.create();
+	add_component(icon);
 }

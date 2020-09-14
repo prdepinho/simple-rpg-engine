@@ -20,7 +20,7 @@ private:
 	std::vector<Button> buttons;
 	int inventory_width = 2;
 	int inventory_height = 4;
-	int button_size = 16;
+	int button_size = 20;
 	int cursor;
 };
 

@@ -45,59 +45,58 @@ end
 -- weapons & armor
 
 rules.armor = {
-  unarmored         = { name = "Unarmored",       ac = 10, type = "unarmored" },
+  unarmored         = { name = "Unarmored",       ac = 10, type = "unarmored", icon = {x = 16*0, y = 16*4} },
 
-  gambeson          = { name = "Gambeson",        ac = 14, type = "padded" },
-  leather_armor     = { name = "Leather Armor",   ac = 14, type = "padded" },
+  gambeson          = { name = "Gambeson",        ac = 14, type = "padded", icon = {x = 16*1, y = 16*4} },
+  leather_armor     = { name = "Leather Armor",   ac = 14, type = "padded", icon = {x = 16*2, y = 16*4} },
 
-  chain_mail        = { name = "Chain Mail",      ac = 16, type = "chain" },
-  ring_mail         = { name = "Ring Mail",       ac = 16, type = "chain" },
-  scale_mail        = { name = "Scale Mail",      ac = 16, type = "chain" },
+  chain_mail        = { name = "Chain Mail",      ac = 16, type = "chain", icon = {x = 16*3, y = 16*4} },
+  scale_mail        = { name = "Scale Mail",      ac = 16, type = "chain", icon = {x = 16*4, y = 16*4} },
 
-  brigantine        = { name = "Brigantine",      ac = 18, type = "plate" },
-  lamellar_armor    = { name = "Lamellar Armor",  ac = 18, type = "plate" },
-  cuirass           = { name = "Cuirass",         ac = 18, type = "plate" },
-  full_plate_mail   = { name = "Full Plate Mail", ac = 20, type = "plate" },
+  brigantine        = { name = "Brigantine",      ac = 18, type = "plate", icon = {x = 16*6, y = 16*4} },
+  lamellar_armor    = { name = "Lamellar Armor",  ac = 18, type = "plate", icon = {x = 16*7, y = 16*4} },
+  cuirass           = { name = "Cuirass",         ac = 18, type = "plate", icon = {x = 16*8, y = 16*4} },
+  full_plate_mail   = { name = "Full Plate Mail", ac = 20, type = "plate", icon = {x = 16*9, y = 16*4} },
 }
 
 rules.shield = {
-  no_shield = { name = "No Shield", ac_bonus = 0 },
-  shield    = { name = "Shield",    ac_bonus = 2 },
+  no_shield = { name = "No Shield", ac_bonus = 0, icon = {16*0, 16*5} },
+  shield    = { name = "Shield",    ac_bonus = 2, icon = {16*1, 16*5} },
 }
 
 rules.weapon = {
-  unarmed       = { name = "Unarmed",       damage = "d1",  armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, ranged = false, gun = false, cutthroat = false },
+  unarmed       = { name = "Unarmed",       damage = "d1",  armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, ranged = false, gun = false, cutthroat = false, icon = {x = 16*0, y = 16*0} },
 
-  hammer        = { name = "Hammer",        damage = "d4",  armor_adjustment = { unarmored = 0, padded = 0, chain = 4, plate = 4 }, hands = 1, ac_bonus = 0, size = 2, weight = 3, ranged = false, gun = false, cutthroat = false },
-  dagger        = { name = "Dagger",        damage = "d4",  armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, ranged = false, gun = false, cutthroat = true  },
+  hammer        = { name = "Hammer",        damage = "d4",  armor_adjustment = { unarmored = 0, padded = 0, chain = 4, plate = 4 }, hands = 1, ac_bonus = 0, size = 2, weight = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*1, y = 16*1} },
+  dagger        = { name = "Dagger",        damage = "d4",  armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, ranged = false, gun = false, cutthroat = true , icon = {x = 16*0, y = 16*1} },
 
-  mace          = { name = "Mace",          damage = "d6",  armor_adjustment = { unarmored = 0, padded = 0, chain = 2, plate = 2 }, hands = 1, ac_bonus = 0, size = 2, weight = 2, ranged = false, gun = false, cutthroat = false },
-  spear         = { name = "Spear",         damage = "d6",  armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 3, weight = 1, ranged = false, gun = false, cutthroat = false },
-  quarterstaff  = { name = "Quarterstaff",  damage = "d6",  armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 3, weight = 1, ranged = false, gun = false, cutthroat = false },
+  mace          = { name = "Mace",          damage = "d6",  armor_adjustment = { unarmored = 0, padded = 0, chain = 2, plate = 2 }, hands = 1, ac_bonus = 0, size = 2, weight = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*4, y = 16*1} },
+  spear         = { name = "Spear",         damage = "d6",  armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 3, weight = 1, ranged = false, gun = false, cutthroat = false, icon = {x = 16*1, y = 16*2} },
+  quarterstaff  = { name = "Quarterstaff",  damage = "d6",  armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 3, weight = 1, ranged = false, gun = false, cutthroat = false, icon = {x = 16*5, y = 16*1} },
 
-  axe           = { name = "Axe",           damage = "d8",  armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 0 }, hands = 1, ac_bonus = 0, size = 2, weight = 3, ranged = false, gun = false, cutthroat = false },
-  arming_sword  = { name = "Arming Sword",  damage = "d8",  armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 1, size = 2, weight = 1, ranged = false, gun = false, cutthroat = false },
-  falcion       = { name = "Falcion",       damage = "d8",  armor_adjustment = { unarmored = 0, padded = 4, chain = 0, plate = 0 }, hands = 1, ac_bonus = 1, size = 2, weight = 1, ranged = false, gun = false, cutthroat = false },
-  morning_star  = { name = "Morning Star",  damage = "d8",  armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 0 }, hands = 2, ac_bonus = 0, size = 3, weight = 3, ranged = false, gun = false, cutthroat = false },
-  maul          = { name = "Maul",          damage = "d8",  armor_adjustment = { unarmored = 0, padded = 0, chain = 2, plate = 2 }, hands = 2, ac_bonus = 0, size = 3, weight = 3, ranged = false, gun = false, cutthroat = false },
-  estoc         = { name = "Estoc",         damage = "d8",  armor_adjustment = { unarmored = 0, padded = 4, chain = 4, plate = 2 }, hands = 2, ac_bonus = 1, size = 3, weight = 1, ranged = false, gun = false, cutthroat = false },
-  pike          = { name = "Pike",          damage = "d8",  armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 4, weight = 2, ranged = false, gun = false, cutthroat = false },
+  axe           = { name = "Axe",           damage = "d8",  armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 0 }, hands = 1, ac_bonus = 0, size = 2, weight = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*3, y = 16*1} },
+  arming_sword  = { name = "Arming Sword",  damage = "d8",  armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 1, size = 2, weight = 1, ranged = false, gun = false, cutthroat = false, icon = {x = 16*2, y = 16*0} },
+  falcion       = { name = "Falcion",       damage = "d8",  armor_adjustment = { unarmored = 0, padded = 4, chain = 0, plate = 0 }, hands = 1, ac_bonus = 1, size = 2, weight = 1, ranged = false, gun = false, cutthroat = false, icon = {x = 16*5, y = 16*0} },
+  morning_star  = { name = "Morning Star",  damage = "d8",  armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 0 }, hands = 2, ac_bonus = 0, size = 3, weight = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*2, y = 16*1} },
+  maul          = { name = "Maul",          damage = "d8",  armor_adjustment = { unarmored = 0, padded = 0, chain = 2, plate = 2 }, hands = 2, ac_bonus = 0, size = 3, weight = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*3, y = 16*2} },
+  estoc         = { name = "Estoc",         damage = "d8",  armor_adjustment = { unarmored = 0, padded = 4, chain = 4, plate = 2 }, hands = 2, ac_bonus = 1, size = 3, weight = 1, ranged = false, gun = false, cutthroat = false, icon = {x = 16*6, y = 16*0} },
+  pike          = { name = "Pike",          damage = "d8",  armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 4, weight = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*2, y = 16*2} },
 
-  long_sword    = { name = "Long Sword",    damage = "d10", armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 2 }, hands = 2, ac_bonus = 1, size = 3, weight = 1, ranged = false, gun = false, cutthroat = false },
-  glave         = { name = "Glave",         damage = "d10", armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 4, weight = 2, ranged = false, gun = false, cutthroat = false },
-  halberd       = { name = "Halberd",       damage = "d10", armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 0 }, hands = 2, ac_bonus = 0, size = 4, weight = 2, ranged = false, gun = false, cutthroat = false },
-  poleaxe       = { name = "Poleaxe",       damage = "d10", armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 4 }, hands = 2, ac_bonus = 0, size = 4, weight = 3, ranged = false, gun = false, cutthroat = false },
+  long_sword    = { name = "Long Sword",    damage = "d10", armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 2 }, hands = 2, ac_bonus = 1, size = 3, weight = 1, ranged = false, gun = false, cutthroat = false, icon = {x = 16*3, y = 16*0} },
+  glave         = { name = "Glave",         damage = "d10", armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 4, weight = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*4, y = 16*2} },
+  halberd       = { name = "Halberd",       damage = "d10", armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 0 }, hands = 2, ac_bonus = 0, size = 4, weight = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*5, y = 16*2} },
+  poleaxe       = { name = "Poleaxe",       damage = "d10", armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 4 }, hands = 2, ac_bonus = 0, size = 4, weight = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*6, y = 16*2} },
 
-  sling         = { name = "Sling",         damage = "d4",  armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, ranged = true,  gun = false, cutthroat = false },
-  short_bow     = { name = "Short Bow",     damage = "d6",  armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, ranged = true,  gun = false, cutthroat = false },
-  long_bow      = { name = "Long Bow",      damage = "d8",  armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, ranged = true,  gun = false, cutthroat = false },
-  crossbow      = { name = "Crossbow",      damage = "d10", armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, ranged = true,  gun = false, cutthroat = false },
-  pistol        = { name = "Pistol",        damage = "d12", armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 0, weight = 0, ranged = true,  gun = true,  cutthroat = false },
-  arquebus      = { name = "Arquebus",      damage = "d12", armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, ranged = true,  gun = true,  cutthroat = false },
+  sling         = { name = "Sling",         damage = "d4",  armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, ranged = true,  gun = false, cutthroat = false, icon = {x = 16*1, y = 16*3} },
+  short_bow     = { name = "Short Bow",     damage = "d6",  armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, ranged = true,  gun = false, cutthroat = false, icon = {x = 16*2, y = 16*3} },
+  long_bow      = { name = "Long Bow",      damage = "d8",  armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, ranged = true,  gun = false, cutthroat = false, icon = {x = 16*3, y = 16*3} },
+  crossbow      = { name = "Crossbow",      damage = "d10", armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, ranged = true,  gun = false, cutthroat = false, icon = {x = 16*4, y = 16*3} },
+  pistol        = { name = "Pistol",        damage = "d12", armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 0, weight = 0, ranged = true,  gun = true,  cutthroat = false, icon = {x = 16*5, y = 16*3} },
+  arquebus      = { name = "Arquebus",      damage = "d12", armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, ranged = true,  gun = true,  cutthroat = false, icon = {x = 16*6, y = 16*3} },
 }
 
 rules.item = {
-  no_item = { name = "No item" }
+  no_item = { name = "No item", icon = {x = 16*0, y = 16*3} }
 }
 
 
