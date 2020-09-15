@@ -266,6 +266,9 @@
     <ClCompile Include="Icon.cpp">
       <Filter>gui</Filter>
     </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lua5.3.5\lapi.h">
@@ -456,6 +459,9 @@
     </ClInclude>
     <ClInclude Include="font.h">
       <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

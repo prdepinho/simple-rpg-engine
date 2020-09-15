@@ -144,6 +144,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Icon.cpp" />
     <ClCompile Include="InputHandler.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Json.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="LoadGameScreen.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="Callback.h" />
     <ClInclude Include="Icon.h" />
     <ClInclude Include="InputHandler.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="Json.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="LoadGameScreen.h" />

@@ -21,16 +21,14 @@ void Inventory::create() {
 			int y = get_y() + i * button_size;
 			int w = button_size - 1;
 			int h = button_size - 1;
-			buttons[k] = Button("F", x, y, w, h, [&](Component*) {
+			buttons[k] = Button("", x, y, w, h, [&](Component*) {
 				Log("Button pressed.");
 				return true;
 			});
-			buttons[k].set_icon("items.txt", 0, 0);
-
 
 			int tex_x = 0;
 			int tex_y = 0;
-			buttons[k].set_icon("icons.png", tex_x, tex_y);
+			buttons[k].set_icon(tex_x, tex_y);
 
 			buttons[k].create();
 			add_component(buttons[k]);

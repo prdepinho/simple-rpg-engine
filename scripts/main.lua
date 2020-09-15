@@ -27,6 +27,9 @@ function dump(args)
   end
 end
 
+function item_stats(name, item_type)
+  return rules[item_type][name]
+end
 
 function character_stats(name)
   return character_modules[name].data.stats

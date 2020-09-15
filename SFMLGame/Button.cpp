@@ -117,7 +117,7 @@ void Button::on_selected(bool show_outline) {
 	Resources::get_sound("vwuuu.wav")->play();
 }
 
-void Button::set_icon(std::string texture_file, int pix_x, int pix_y) {
+void Button::set_icon(int pix_x, int pix_y) {
 	remove_component(icon);
 	int x = get_x() + (get_width() / 2) - (16 / 2);
 	int y = get_y() + (get_height() / 2) - (16 / 2);

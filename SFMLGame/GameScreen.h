@@ -20,6 +20,7 @@
 #include "DebugConsole.h"
 #include "Lua.h"
 #include "InputHandler.h"
+#include "Item.h"
 
 
 class GameScreen : public Screen
@@ -95,6 +96,11 @@ public:
 
 	void set_player_new_tile_position(int x, int y) { if (new_tile_position.x == 0  && new_tile_position.y == 0) new_tile_position = { x, y }; }
 
+	void add_item(Item *item, int tile_x, int tile_y);
+	void put_item_on_tile(Item &item, int x, int y);
+	Item *get_item_on_tile(int tile_x, int tile_y);
+	void clean_items();
+
 	void pan_foreground(std::string filename, int x, int y, float speed_x, float speed_y, float total_time, float still_time);
 	void pan_foreground(LuaObject data);
 
@@ -103,20 +109,19 @@ private:
 
 	bool block_input;
 
-	Lua *rules = nullptr;
-
 	// these variables are for the screen to change the map and put the player character in its position in the loop, after effects have been cleared.
 	std::string next_map = "";
 	sf::Vector2i new_tile_position = { 0, 0 };
 
 	Tilemap map;
 
+	std::vector<Item*> items;
+	std::vector<Effect*> effects;
+
 	std::vector<Character*> characters;
 	Character *player_character;
 	bool player_busy;
 	sf::Keyboard::Key player_input;
-
-	std::vector<Effect*> effects;
 
 	int turn;
 	float turn_duration;  // in seconds

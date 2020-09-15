@@ -17,14 +17,13 @@ GameScreen::~GameScreen() {
 		delete character;
 	characters.clear();
 
-	if (rules)
-		delete rules;
+	for (Item *item : items)
+		delete item;
+	items.clear();
 }
 
 void GameScreen::create() {
 	Screen::create();
-
-	rules = new Lua(Path::SCRIPTS + "rules.lua");
 
 	Json json(Path::SCREENS + "game.json");
 
@@ -83,6 +82,9 @@ void GameScreen::destroy() {
 void GameScreen::draw() {
 	window->setView(game_view);
 	window->draw(map.get_floor_layer());
+	for (Item *item : items) {
+		window->draw(*item);
+	}
 	for (Character *character : characters) {
 		window->draw(*character);
 	}
@@ -370,7 +372,7 @@ void GameScreen::poll_events(float elapsed_time) {
 Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	Component *interacted_component = Screen::handle_event(event, elapsed_time);
 	if (interacted_component)
-		return nullptr;
+	 	return nullptr;
 	
 	if (block_input)
 		return nullptr;
@@ -430,6 +432,14 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 					auto tile = map.get_tile(tile_x, tile_y);
 					Log("Coordinates: (%d, %d)", tile_x, tile_y);
 					Log("  obstacle: %s", (tile.obstacle ? "true" : "false"));
+					Character *character = get_character_on_tile(tile_x, tile_y);
+					if (character) {
+						Log("  Character: %s", character->get_name());
+					}
+					Item *item = get_item_on_tile(tile_x, tile_y);
+					if (item) {
+						Log("  Item: %s (%s)", item->get_name().c_str(), item->get_type().c_str());
+					}
 					// do something here
 				}
 
@@ -573,6 +583,11 @@ void GameScreen::add_character(Character *character, int tile_x, int tile_y) {
 	put_character_on_tile(*character, tile_x, tile_y);
 }
 
+void GameScreen::add_item(Item *item, int tile_x, int tile_y) {
+	items.push_back(item);
+	put_item_on_tile(*item, tile_x, tile_y);
+}
+
 void GameScreen::clean_temporary_characters() {
 	for (auto it = characters.begin(); it != characters.end();) {
 		Character *character = *it;
@@ -583,6 +598,13 @@ void GameScreen::clean_temporary_characters() {
 		else
 			++it;
 	}
+}
+
+void GameScreen::clean_items() {
+	for (Item *item : items) {
+		delete item;
+	}
+	items.clear();
 }
 
 // Change to a new map and put the player character to tile_x and tile_y
@@ -603,6 +625,8 @@ void GameScreen::load_map() {
 	_game.get_lua()->change_map(next_map);
 
 	clean_temporary_characters();
+	clean_items();
+
 	TiledTilemapDAO::load_map(this, next_map, map);
 
 	int x = game->get_resolution_width() / 2 - map.get_width() / 2;
@@ -613,6 +637,7 @@ void GameScreen::load_map() {
 	map.get_fog_of_war().set_show_outline(true);
 
 	TiledTilemapDAO::load_characters(this, next_map, map);
+
 	next_map = "";
 
 	put_character_on_tile(*player_character, new_tile_position.x, new_tile_position.y);
@@ -649,6 +674,11 @@ void GameScreen::put_character_on_tile(Character & character, int x, int y) {
 		// update fog of war
 		map.get_fog_of_war().update_fog(player_character->get_field_of_vision());
 	}
+}
+
+void GameScreen::put_item_on_tile(Item &item, int x, int y) {
+	auto tile_coords = map.get_tile_pix_coords(x, y);
+	item.set_position(map.get_x() + (int) tile_coords.x, map.get_y() + (int) tile_coords.y);
 }
 
 
@@ -836,6 +866,16 @@ Character* GameScreen::get_character_on_tile(int tile_x, int tile_y) {
 		sf::Vector2i position = character_position(*character);
 		if (position.x == tile_x && position.y == tile_y) {
 			return character;
+		}
+	}
+	return nullptr;
+}
+
+Item *GameScreen::get_item_on_tile(int tile_x, int tile_y) {
+	for (Item *item : items) {
+		auto position = map.get_tile_coord(item->get_x(), item->get_y());
+		if (position.x == tile_x && position.y == tile_y) {
+			return item;
 		}
 	}
 	return nullptr;

@@ -302,22 +302,38 @@ void TiledTilemapDAO::load_characters(GameScreen *game_screen, std::string filen
 	// objects
 	for (auto &object : object_layer->getObjects()) {
 		switch (object.getShape()) {
-		case tmx::Object::Shape::Point: {
-				std::string name = object.getName();
-				std::string type;
+		case tmx::Object::Shape::Point: 
+		{
+			int x;
+			int y;
+			std::string name;
+			std::string type;
+			{
+				name = object.getName();
+				type = "";
 				for (auto &prop : object.getProperties()) {
 					if (prop.getName() == "type") {
 						type = prop.getStringValue();
 					}
 				}
 
-				int x = (int) object.getPosition().x;
-				int y = (int) object.getPosition().y;
+				x = (int)object.getPosition().x;
+				y = (int)object.getPosition().y;
 				sf::Vector2i tile_coords = map.get_tile_abs_coord(x, y);
 				x = tile_coords.x;
 				y = tile_coords.y;
-
-				Log("Character: %s, type: %s (%d, %d)",  name.c_str(), type.c_str(), x, y);
+			}
+			// items
+			if (type == "weapon" || type == "armor" || type == "item" || type == "shield") {
+				Log("Item: %s (%s)", name.c_str(), type.c_str());
+				Item *item = new Item();
+				item->create(name, type);
+				game_screen->add_item(item, x, y);
+			}
+			else
+			// characters
+			{
+				Log("Character: %s, type: %s (%d, %d)", name.c_str(), type.c_str(), x, y);
 				if (name == "player") {
 					// game_screen->put_character_on_tile(*game_screen->get_player_character(), x, y);
 					game_screen->set_player_new_tile_position(x, y);
@@ -332,9 +348,9 @@ void TiledTilemapDAO::load_characters(GameScreen *game_screen, std::string filen
 					game_screen->add_character(character, x, y);
 				}
 			}
-			break;
 		}
-		
-
+		break;
+		}
 	}
 }
+

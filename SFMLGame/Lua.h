@@ -57,6 +57,7 @@ public:
 	void add_character(long id, std::string script, std::string name);
 	LuaObject character_stats(std::string name);
 	int character_base_ac(std::string name);
+	LuaObject item_stats(std::string name, std::string type);
 
 
 

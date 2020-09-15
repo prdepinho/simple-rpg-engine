@@ -346,6 +346,20 @@ int Lua::character_base_ac(std::string name) {
 	return ac;
 }
 
+LuaObject Lua::item_stats(std::string name, std::string type) {
+	lua_getglobal(state, "item_stats");
+	lua_pushstring(state, name.c_str());
+	lua_pushstring(state, type.c_str());
+	int result = lua_pcall(state, 2, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << name << ": " << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	LuaObject obj = read_top_table();
+	lua_pop(state, 1);
+	return obj;
+}
 
 int Lua::get_int(std::string name, int default_value){
 	lua_getglobal(state, name.c_str());
