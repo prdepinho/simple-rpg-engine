@@ -306,14 +306,19 @@ void TiledTilemapDAO::load_characters(GameScreen *game_screen, std::string filen
 		{
 			int x;
 			int y;
+			std::string code;
 			std::string name;
 			std::string type;
 			{
-				name = object.getName();
+				code = object.getName();
 				type = "";
+				name = "";
 				for (auto &prop : object.getProperties()) {
 					if (prop.getName() == "type") {
 						type = prop.getStringValue();
+					}
+					else if (prop.getName() == "name") {
+						name = prop.getStringValue();
 					}
 				}
 
@@ -325,26 +330,27 @@ void TiledTilemapDAO::load_characters(GameScreen *game_screen, std::string filen
 			}
 			// items
 			if (type == "weapon" || type == "armor" || type == "item" || type == "shield") {
-				Log("Item: %s (%s)", name.c_str(), type.c_str());
+				Log("Item: %s, %s (%s)", code.c_str(), name.c_str(), type.c_str());
 				Item *item = new Item();
-				item->create(name, type);
+				item->create(code, name, type);
+				_game.get_lua()->add_item(code, name, type);
 				game_screen->add_item(item, x, y);
 			}
 			else
 			// characters
 			{
-				Log("Character: %s, type: %s (%d, %d)", name.c_str(), type.c_str(), x, y);
-				if (name == "player") {
+				Log("Character: %s, type: %s (%d, %d)", code.c_str(), type.c_str(), x, y);
+				if (code == "player") {
 					// game_screen->put_character_on_tile(*game_screen->get_player_character(), x, y);
 					game_screen->set_player_new_tile_position(x, y);
-					_game.get_lua()->add_character(game_screen->get_player_character()->get_id(), type, name);
+					_game.get_lua()->add_character(game_screen->get_player_character()->get_id(), type, code);
 				}
 				else {
 					Character *character = new Character();
 					character->create(type);
-					character->set_name(name);
+					character->set_name(code);
 					character->loop_animation("walk");
-					_game.get_lua()->add_character(character->get_id(), type, name);
+					_game.get_lua()->add_character(character->get_id(), type, code);
 					game_screen->add_character(character, x, y);
 				}
 			}

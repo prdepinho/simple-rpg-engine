@@ -311,6 +311,20 @@ void Lua::add_character(long id, std::string script, std::string name) {
 	lua_pop(state, 1);
 }
 
+void Lua::add_item(std::string code, std::string name, std::string type) {
+	lua_getglobal(state, "add_item");
+	lua_pushstring(state, code.c_str());
+	lua_pushstring(state, name.c_str());
+	lua_pushstring(state, type.c_str());
+	int result = lua_pcall(state, 3, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << name << ": " << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	lua_pop(state, 1);
+}
+
 LuaObject Lua::character_stats(std::string name) {
 	lua_getglobal(state, "character_stats");
 	lua_pushstring(state, name.c_str());

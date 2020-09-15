@@ -99,8 +99,9 @@
    </properties>
    <point/>
   </object>
-  <object id="25" name="long_sword" x="87.25" y="86.5">
+  <object id="25" name="long_sword_1" x="87.25" y="86.5">
    <properties>
+    <property name="name" value="long_sword"/>
     <property name="type" value="weapon"/>
    </properties>
    <point/>

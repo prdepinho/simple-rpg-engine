@@ -380,6 +380,10 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	switch (InputHandler::get_control_input(event)) {
 	case Control::A:
 		// do
+		{
+			auto position = character_position(*player_character);
+			// loot(position.x, position.y);
+		}
 		break;
 	case Control::START:
 		// open menu
@@ -913,6 +917,12 @@ void GameScreen::update_field_of_vision(Character *character) {
 	fov = generate_field_of_vision(map, character_position(*character), vision_radius);
 	character->set_field_of_vision(fov);
 }
+
+
+void GameScreen::loot(int tile_x, int tile_y) {
+	get_item_on_tile(tile_x, tile_y);
+}
+
 
 void GameScreen::pan_foreground(std::string filename, int x, int y, float speed_x, float speed_y, float total_time, float still_time) {
 	foreground.texture.loadFromFile(Path::ASSETS + filename);

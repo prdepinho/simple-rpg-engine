@@ -101,6 +101,8 @@ public:
 	Item *get_item_on_tile(int tile_x, int tile_y);
 	void clean_items();
 
+	void loot(int tile_x, int tile_y);
+
 	void pan_foreground(std::string filename, int x, int y, float speed_x, float speed_y, float total_time, float still_time);
 	void pan_foreground(LuaObject data);
 

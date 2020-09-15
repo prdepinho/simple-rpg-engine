@@ -9,6 +9,7 @@ character_data = {}
 character_modules = {}
 map_data = {}
 map_module = {}
+item_data = {}
 
 
 function dump(args)
@@ -29,6 +30,13 @@ end
 
 function item_stats(name, item_type)
   return rules[item_type][name]
+end
+
+function add_item(code, name, item_type)
+  print('add item (' .. code .. '), ' .. name .. ': ' .. item_type)
+  if item_data[code] == nil then
+    item_data[code] = rules[item_type][name]
+  end
 end
 
 function character_stats(name)

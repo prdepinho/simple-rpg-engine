@@ -6,7 +6,8 @@ Item::Item() {}
 
 Item::~Item() {}
 
-void Item::create(std::string name, std::string type) {
+void Item::create(std::string code, std::string name, std::string type) {
+	this->code = code;
 	this->name = name;
 	this->type = type;
 	LuaObject stats = _game.get_lua()->item_stats(name, type);
