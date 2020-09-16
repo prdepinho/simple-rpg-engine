@@ -5,7 +5,7 @@ local animations = require "animations"
 local common = require "common"
 local rules = require "rules"
 
-M = {}
+local M = {}
 
 animation = animations.types.ranger
 

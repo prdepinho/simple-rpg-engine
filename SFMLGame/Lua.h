@@ -61,6 +61,7 @@ public:
 	void add_item(std::string code, std::string name, std::string type);
 
 
+	void save_game(std::string filename, std::string title);
 
 
 	int get_int(std::string name, int default_value);

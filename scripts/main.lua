@@ -6,22 +6,24 @@ local rules = require "rules"
 local save = require "save"
 
 
-character_data = {}
-character_modules = {}
-map_data = {}
-map_module = {}
-item_data = {}
+local character_data = {}
+local character_modules = {}
+local map_data = {}
+local map_module = {}
+local item_data = {}
 
 
 function save_game(filename, title)
   local data = {}
+  data.title = title
+  -- data.player_position = sfml_get_player_position()
   data.map_data = map_data
   data.character_data = character_data
   data.item_data = item_data
   save.save_data(filename, data)
 end
 
-function load_gaame(filename)
+function load_game(filename)
   local data = require('save')
   map_data = data.map_data
   character_data = data.character_data

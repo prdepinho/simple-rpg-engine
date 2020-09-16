@@ -84,7 +84,7 @@ Component *LoadGameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			else
 				button_index = buttons.size() - 1;
 			select(buttons[button_index]);
-			Resources::get_sound("vwuuu.wav")->play();
+			// Resources::get_sound("vwuuu.wav")->play();
 			break;
 
 		case sf::Keyboard::Down:
@@ -93,11 +93,11 @@ Component *LoadGameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			else
 				button_index = 0;
 			select(buttons[button_index]);
-			Resources::get_sound("vwuuu.wav")->play();
+			// Resources::get_sound("vwuuu.wav")->play();
 			break;
 
 		case sf::Keyboard::Enter:
-			Resources::get_sound("crrreee.wav")->play();
+			// Resources::get_sound("crrreee.wav")->play();
 			break;
 		}
 		break;

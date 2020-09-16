@@ -325,6 +325,21 @@ void Lua::add_item(std::string code, std::string name, std::string type) {
 	lua_pop(state, 1);
 }
 
+
+void Lua::save_game(std::string filename, std::string title) {
+	lua_getglobal(state, "save_game");
+	lua_pushstring(state, filename.c_str());
+	lua_pushstring(state, title.c_str());
+	int result = lua_pcall(state, 2, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << filename << ": " << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	lua_pop(state, 1);
+}
+
+
 LuaObject Lua::character_stats(std::string name) {
 	lua_getglobal(state, "character_stats");
 	lua_pushstring(state, name.c_str());

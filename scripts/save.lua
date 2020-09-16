@@ -1,8 +1,8 @@
-M = {}
+local M = {}
 
 function M.dump(object)
   local str = 'M = {}\nM.data = '
-  str = str .. dump_recursive(object, 0)
+  str = str .. M.dump_recursive(object, 0)
   str = str .. '\nreturn M'
   return str
 end
@@ -50,13 +50,16 @@ function M.dump_recursive(object, depth)
 end 
 
 function M.save_data(filename, object)
-  data = M.dump(object)
-  file = io.open(filename, 'w')
-  io.output(file)
-  io.write(data)
+  local data = M.dump(object)
+  local file = io.open(filename, 'w')
+  file:write(data)
+  -- io.output(file)
+  -- io.write(data)
   io.close(file)
 end
 
 function M.print_data(object)
   print(M.dump(object))
 end
+
+return M

@@ -2,7 +2,7 @@
 package.path = package.path .. ";../maps/?.lua"
 require "common"
 
-M = {}
+local M = {}
 
 M.door = door
 

@@ -491,6 +491,13 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	case sf::Event::KeyPressed:
 		if (selected_component == &container) {
 			switch (event.key.code) {
+			case sf::Keyboard::F5: {
+					std::string filename = Path::SAVES + "save_0.lua";
+					std::string title = "Quicksave";
+					_game.get_lua()->save_game(filename, title);
+					Log("Quicksave successful");
+				}
+				break;
 			case sf::Keyboard::F:
 			{
 				camera_follow = !camera_follow;
