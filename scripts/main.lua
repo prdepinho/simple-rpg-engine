@@ -3,6 +3,7 @@ package.path = package.path .. ";../maps/?.lua"
 package.path = package.path .. ";../character/?.lua"
 package.path = package.path .. ";../scripts/?.lua"
 local rules = require "rules"
+local save = require "save"
 
 
 character_data = {}
@@ -12,20 +13,19 @@ map_module = {}
 item_data = {}
 
 
-function dump(args)
-  -- args are {table, depth}
-  local table = args.table
-  local depth = args.depth and args.depth or 0
-  local indent = ''
-  for i=0, depth, 1 do
-    indent = indent .. '  '
-  end
-  for key, value in pairs(table) do
-    print(indent .. key .. ': [' .. tostring(value) .. ']')
-    if type(value) == 'table' then
-      dump({table = value, depth = depth + 1})
-    end
-  end
+function save_game(filename, title)
+  local data = {}
+  data.map_data = map_data
+  data.character_data = character_data
+  data.item_data = item_data
+  save.save_data(filename, data)
+end
+
+function load_gaame(filename)
+  local data = require('save')
+  map_data = data.map_data
+  character_data = data.character_data
+  item_data = data.item_data
 end
 
 function item_stats(name, item_type)

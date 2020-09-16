@@ -60,8 +60,8 @@ rules.armor = {
 }
 
 rules.shield = {
-  no_shield = { name = "No Shield", ac_bonus = 0, icon = {16*0, 16*5} },
-  shield    = { name = "Shield",    ac_bonus = 2, icon = {16*1, 16*5} },
+  no_shield = { name = "No Shield", ac_bonus = 0, icon = {x = 16*0, y = 16*5} },
+  shield    = { name = "Shield",    ac_bonus = 2, icon = {x = 16*1, y = 16*5} },
 }
 
 rules.weapon = {
