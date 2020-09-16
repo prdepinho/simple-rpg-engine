@@ -53,8 +53,6 @@ function M.save_data(filename, object)
   local data = M.dump(object)
   local file = io.open(filename, 'w')
   file:write(data)
-  -- io.output(file)
-  -- io.write(data)
   io.close(file)
 end
 

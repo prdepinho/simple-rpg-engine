@@ -339,6 +339,43 @@ void Lua::save_game(std::string filename, std::string title) {
 	lua_pop(state, 1);
 }
 
+void Lua::load_game(std::string filename) {
+	lua_getglobal(state, "load_game");
+	lua_pushstring(state, filename.c_str());
+	int result = lua_pcall(state, 1, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << filename << ": " << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	lua_pop(state, 1);
+}
+
+void Lua::delete_save_game(std::string filename) {
+	lua_getglobal(state, "delete_save_game");
+	lua_pushstring(state, filename.c_str());
+	int result = lua_pcall(state, 1, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << filename << ": " << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	lua_pop(state, 1);
+}
+
+LuaObject Lua::get_save_files() {
+	lua_getglobal(state, "get_save_files");
+	int result = lua_pcall(state, 0, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	LuaObject obj = read_top_table();
+	lua_pop(state, 1);
+	return obj;
+}
+
 
 LuaObject Lua::character_stats(std::string name) {
 	lua_getglobal(state, "character_stats");

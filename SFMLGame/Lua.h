@@ -62,6 +62,9 @@ public:
 
 
 	void save_game(std::string filename, std::string title);
+	void load_game(std::string filename);
+	void delete_save_game(std::string filename);
+	LuaObject get_save_files();
 
 
 	int get_int(std::string name, int default_value);

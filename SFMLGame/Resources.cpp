@@ -90,27 +90,17 @@ void Resources::stop_music() {
 	}
 }
 
-std::vector<std::string> Resources::get_save_files() {
-	std::vector<std::string> files;
-
-	for (int i = 0; i < 256; i++) {
-		std::string name = "save_" + std::to_string(i) + ".lua";
-		std::ifstream file(Path::SAVES + name);
-		if (file.is_open()) {
-			files.push_back(name);
-			file.close();
-		}
-		else {
-			break;
-		}
+std::vector<Resources::SaveFile> Resources::get_save_files() {
+	std::vector<Resources::SaveFile> files;
+	LuaObject obj = _game.get_lua()->get_save_files();
+	for (auto it = obj.begin(); it != obj.end(); ++it) {
+		LuaObject file = (*it).second;
+		std::string filename = file.get_string("filename");
+		std::string title = file.get_string("title");
+		bool active = file.get_boolean("active");
+		Resources::SaveFile save_file = { filename, title, active };
+		files.push_back(save_file);
 	}
-
 	return files;
-}
-
-void Resources::load_game(std::string filename) {
-}
-
-void Resources::save_game(std::string filename) {
 }
 

@@ -13,29 +13,33 @@ void LoadGameScreen::create() {
 	int button_length = 100;
 	int x = (game->get_resolution_width() / 2) - (button_length / 2);
 
-	std::vector<std::string> save_files = Resources::get_save_files();
-	buttons = std::vector<Button>(save_files.size() + 1);
+	std::vector<Resources::SaveFile> save_files = Resources::get_save_files();
+	buttons = std::vector<LoadButton>(save_files.size() + 1);
 
 	size_t i = 0;
 	for (i = 0; i < save_files.size(); i++)
 	{
-		Button &button = buttons[i];
+		LoadButton &button = buttons[i];
 		int y = (10 + i * (button.get_height() + 1));
-		button = Button(save_files[i], x, y, button_length, button_height);
+		button = LoadButton(save_files[i].title, x, y, button_length, button_height);
 		button.set_function([&](Component* c) {
-			std::string label = dynamic_cast<Button*>(c)->get_label();
-			game->log(label);
+			LoadButton *b = dynamic_cast<LoadButton*>(c);
+			Log("%s", b->get_save_file().title.c_str());
+			_game.get_lua()->load_game(b->get_save_file().filename);
 			game->change_to_game_screen();
 			return true;
 		});
+		if (!save_files[i].active)
+			button.disactivate();
+		button.set_save_file(save_files[i]);
 		add_component(button);
 		button.create();
 	}
 
 	{
-		Button &button = buttons.back();
+		LoadButton &button = buttons.back();
 		int y = (10 + i * (button.get_height() + 1));
-		button = Button("Back", x, y, button_length, button_height);
+		button = LoadButton("Back", x, y, button_length, button_height);
 		button.set_function([&](Component*) {
 			game->change_to_main_menu_screen();
 			return true;

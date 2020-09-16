@@ -1,5 +1,6 @@
 M = {}
 M.data = {
+  active = true,
   map_data = {
     has_key = false,
     door_locked = true,

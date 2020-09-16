@@ -2,6 +2,7 @@
 package.path = package.path .. ";../maps/?.lua"
 package.path = package.path .. ";../character/?.lua"
 package.path = package.path .. ";../scripts/?.lua"
+package.path = package.path .. ";../saves/?.lua"
 local rules = require "rules"
 local save = require "save"
 
@@ -12,9 +13,41 @@ local map_data = {}
 local map_module = {}
 local item_data = {}
 
+function get_save_files()
+  local save_files = {}
+  for i=0, 256, 1 do
+    local save_file = {}
+
+    local filename = "save_" .. tostring(i)
+    local path = "../saves/" .. filename .. ".lua"
+
+    print("loop: " .. tostring(i))
+    print("filename: " .. filename)
+    print("path: " .. path)
+
+    local file = io.open(path, 'r')
+    if not file then
+      break
+    end
+
+    local module = require(filename)
+    save_file.filename = filename
+    save_file.title = module.data.title
+    save_file.active = module.data.active
+
+    save_files[filename] = save_file
+
+    print(filename .. ': ' .. tostring(file))
+    io.close(file)
+
+  end
+  return save_files
+end
 
 function save_game(filename, title)
+  print('save game: ' .. filename .. ' (' .. title .. ')')
   local data = {}
+  data.active = true
   data.title = title
   -- data.player_position = sfml_get_player_position()
   data.map_data = map_data
@@ -24,10 +57,18 @@ function save_game(filename, title)
 end
 
 function load_game(filename)
-  local data = require('save')
-  map_data = data.map_data
-  character_data = data.character_data
-  item_data = data.item_data
+  print('load game: ' .. filename)
+  local module = require(filename)
+  map_data = module.data.map_data
+  character_data = module.data.character_data
+  item_data = module.data.item_data
+end
+
+function delete_save_game(filename)
+  local data = {}
+  data.active = false
+  data.title = ''
+  save.save_data(filename, data)
 end
 
 function item_stats(name, item_type)
@@ -42,6 +83,7 @@ function add_item(code, name, item_type)
 end
 
 function character_stats(name)
+  save.print_data(character_modules)
   return character_modules[name].data.stats
   -- return 42
 end
@@ -55,10 +97,10 @@ function add_character(id, script, name)
   print('add character (' .. tostring(id) .. '), ' .. script .. ': ' .. name)
   if character_data[name] == nil then
     character_data[name] = {}
-    character_modules[name] = require(script)
-    character_modules[name].data = character_data[name]
-    character_modules[name].enter()
   end
+  character_modules[name] = require(script)
+  character_modules[name].data = character_data[name]
+  character_modules[name].enter()
 end
 
 function character_on_interact(target_name, target_id, interactor_id)
@@ -91,7 +133,7 @@ function character_on_idle(name, id)
 end
 
 function change_map(new_map)
-  map = {}
+  local map = {}
   map_module = {}
   map_module = require(new_map)
   map_module.data = map_data
@@ -242,7 +284,7 @@ function get_double_table(table)
 end
 
 function print_map()
-  map = sfml_get_map()
+  local map = sfml_get_map()
   print(string.format("Map w: %d, h: %d", map['width'], map['height']))
   for index, character in pairs(map['characters']) do
     print(string.format("character id: %d, position: (x: %d, y: %d)", character.id, character.position.x, character.position.y))
