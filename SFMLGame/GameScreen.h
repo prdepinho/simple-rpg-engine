@@ -55,7 +55,7 @@ public:
 private:
 	void load_map();
 
-public:
+private:
 	void control_move_up();
 	void control_move_down();
 	void control_move_left();
@@ -65,6 +65,13 @@ public:
 	void control_pan_left();
 	void control_pan_right();
 	void control_wait();
+
+	void control_mouse_move();
+	void control_mouse_info();
+	void control_mouse_pan_hold();
+	void control_mouse_pan_move();
+	void control_mouse_pan_release();
+	void control_mouse_wheel_zoom(float delta, int x, int y);
 
 public:
 	void change_map(std::string filename, int tile_x, int tile_y);

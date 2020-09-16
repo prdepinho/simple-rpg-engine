@@ -12,7 +12,7 @@ animation = animations.types.cat_girl
 function M.enter()
   print('mumu enter')
   M.data.enemy = false
-  M.data.stats = rules.stats
+  M.data.stats = rules.new_character()
 end
 
 

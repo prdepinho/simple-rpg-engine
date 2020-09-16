@@ -289,13 +289,82 @@ void GameScreen::control_pan_right() {
 	game_view.move(sf::Vector2f{ +2.f, 0.f });
 }
 
-
 void GameScreen::control_wait() {
 	player_character->clear_schedule();
 	auto *action = new WaitAction(player_character);
 	player_character->schedule_action(action);
 	player_busy = true;
 }
+
+
+
+void GameScreen::control_mouse_move() {
+	auto mouse_position = get_mouse_game_position();
+	int x = (int)mouse_position.x;
+	int y = (int)mouse_position.y;
+
+	if (map.in_bounds(x, y)) {
+		auto tile_coord = map.get_tile_coord(x, y);
+		int tile_x = tile_coord.x;
+		int tile_y = tile_coord.y;
+
+		Character* character = get_character_on_tile(tile_x, tile_y);
+
+		// Log("Click: (x: %d, y: %d), Tile: (x: %d, y: %d), Character: %d", x, y, tile_x, tile_y, (character ? character->get_id() : 0l));
+
+		player_character->clear_schedule();
+		schedule_character_movement(*player_character, tile_x, tile_y);
+		schedule_character_interaction(*player_character, tile_x, tile_y);
+	}
+}
+
+void GameScreen::control_mouse_info() {
+	auto mouse_position = get_mouse_game_position();
+	int x = (int)mouse_position.x;
+	int y = (int)mouse_position.y;
+
+	if (map.in_bounds(x, y)) {
+		auto tile_coord = map.get_tile_coord(x, y);
+		int tile_x = tile_coord.x;
+		int tile_y = tile_coord.y;
+		auto tile = map.get_tile(tile_x, tile_y);
+		Log("Coordinates: (%d, %d)", tile_x, tile_y);
+		Log("  obstacle: %s", (tile.obstacle ? "true" : "false"));
+		Character *character = get_character_on_tile(tile_x, tile_y);
+		if (character) {
+			Log("  Character: %s", character->get_name());
+		}
+		Item *item = get_item_on_tile(tile_x, tile_y);
+		if (item) {
+			Log("  Item: %s (%s)", item->get_name().c_str(), item->get_type().c_str());
+		}
+		// do something here
+	}
+}
+
+void GameScreen::control_mouse_pan_hold() {
+	holding_screen = true;
+	holding_start_position = get_mouse_game_position();
+}
+
+void GameScreen::control_mouse_pan_move() {
+	auto mouse_game_position = get_mouse_game_position();
+	int dif_x = (int)(holding_start_position.x - mouse_game_position.x);
+	int dif_y = (int)(holding_start_position.y - mouse_game_position.y);
+	game_view.move(sf::Vector2f{ (float)dif_x, (float)dif_y });
+	holding_start_position = get_mouse_game_position();
+}
+
+void GameScreen::control_mouse_pan_release() {
+	holding_screen = false;
+}
+
+void GameScreen::control_mouse_wheel_zoom(float delta, int x, int y) {
+	float zoom = 1 - (delta * 00.1f); // proportion to screen size
+	game_view.zoom(zoom);
+	window->setView(game_view);
+}
+
 
 
 void GameScreen::poll_events(float elapsed_time) {
@@ -352,13 +421,7 @@ void GameScreen::poll_events(float elapsed_time) {
 				}
 			}
 			else if (holding_screen && sf::Mouse::isButtonPressed(sf::Mouse::Button::Middle)) {
-				auto mouse_game_position = get_mouse_game_position();
-				int dif_x = (int) (holding_start_position.x - mouse_game_position.x);
-				int dif_y = (int) (holding_start_position.y - mouse_game_position.y);
-
-				game_view.move(sf::Vector2f{ (float)dif_x, (float)dif_y });
-
-				holding_start_position = get_mouse_game_position();
+				control_mouse_pan_move();
 			}
 		}
 
@@ -402,54 +465,29 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	case sf::Event::MouseButtonPressed:
 		if (selected_component == &container) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
-				auto mouse_position = get_mouse_game_position();
-				int x = (int) mouse_position.x;
-				int y = (int) mouse_position.y;
-
-				if (map.in_bounds(x, y)) {
-					auto tile_coord = map.get_tile_coord(x, y);
-					int tile_x = tile_coord.x;
-					int tile_y = tile_coord.y;
-
-					Character* character = get_character_on_tile(tile_x, tile_y);
-
-					// Log("Click: (x: %d, y: %d), Tile: (x: %d, y: %d), Character: %d", x, y, tile_x, tile_y, (character ? character->get_id() : 0l));
-
-					player_character->clear_schedule();
-					schedule_character_movement(*player_character, tile_x, tile_y);
-					schedule_character_interaction(*player_character, tile_x, tile_y);
-				}
+				control_mouse_move();
 			}
 			else if (event.mouseButton.button == sf::Mouse::Button::Middle) {
-				holding_screen = true;
-				holding_start_position = get_mouse_game_position();
+				control_mouse_pan_hold();
 			}
 			else if (event.mouseButton.button == sf::Mouse::Button::Right) {
-				auto mouse_position = get_mouse_game_position();
-				int x = (int) mouse_position.x;
-				int y = (int) mouse_position.y;
-
-				if (map.in_bounds(x, y)) {
-					auto tile_coord = map.get_tile_coord(x, y);
-					int tile_x = tile_coord.x;
-					int tile_y = tile_coord.y;
-					auto tile = map.get_tile(tile_x, tile_y);
-					Log("Coordinates: (%d, %d)", tile_x, tile_y);
-					Log("  obstacle: %s", (tile.obstacle ? "true" : "false"));
-					Character *character = get_character_on_tile(tile_x, tile_y);
-					if (character) {
-						Log("  Character: %s", character->get_name());
-					}
-					Item *item = get_item_on_tile(tile_x, tile_y);
-					if (item) {
-						Log("  Item: %s (%s)", item->get_name().c_str(), item->get_type().c_str());
-					}
-					// do something here
-				}
-
+				control_mouse_info();
 			}
 		}
 		break;
+	case sf::Event::MouseButtonReleased:
+		if (selected_component == &container) {
+			if (event.mouseButton.button == sf::Mouse::Button::Middle) {
+				control_mouse_pan_release();
+			}
+		}
+		break;
+	case sf::Event::MouseWheelScrolled:
+		if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel) {
+			control_mouse_wheel_zoom(event.mouseWheelScroll.delta, event.mouseWheelScroll.x, event.mouseWheelScroll.y);
+		}
+		break;
+
 	case sf::Event::KeyPressed:
 		if (selected_component == &container) {
 			switch (event.key.code) {
@@ -459,9 +497,6 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				Log("Camera follow: %s", (camera_follow ? "true" : "false"));
 			}
 			break;
-			case sf::Keyboard::Insert:
-			case sf::Keyboard::R:
-				break;
 			case sf::Keyboard::T:
 				{
 					// text_box.set_visible(!text_box.is_visible());
@@ -470,22 +505,6 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 					std::string str = "Quo usque tandem abutere, Catilina, patientia nostra? quam ";
 					show_text_box(str);
 				}
-				break;
-			case sf::Keyboard::D:
-				break;
-			case sf::Keyboard::S:
-				break;
-			case sf::Keyboard::I:
-				break;
-			case sf::Keyboard::O:
-				break;
-			case sf::Keyboard::Up:
-				break;
-			case sf::Keyboard::Down:
-				break;
-			case sf::Keyboard::Left:
-				break;
-			case sf::Keyboard::Right:
 				break;
 			case sf::Keyboard::V:
 				show_fog_of_war = !show_fog_of_war;
@@ -559,23 +578,6 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				debug_console.hide_console();
 			}
 			break;
-		}
-		break;
-	case sf::Event::MouseButtonReleased:
-		if (selected_component == &container) {
-			if (event.mouseButton.button == sf::Mouse::Button::Middle) {
-				holding_screen = false;
-			}
-		}
-		break;
-	case sf::Event::MouseWheelScrolled:
-		if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel) {
-			float delta = event.mouseWheelScroll.delta;
-			int mouse_position_x = event.mouseWheelScroll.x;
-			int mouse_position_y = event.mouseWheelScroll.y;
-			float zoom = 1 - (delta * 00.1f); // proportion to screen size
-			game_view.zoom(zoom);
-			window->setView(game_view);
 		}
 		break;
 	}

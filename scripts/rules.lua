@@ -100,26 +100,29 @@ rules.item = {
   no_item = { name = "No item", icon = {x = 16*0, y = 16*3} }
 }
 
+function rules.new_character() 
+  local stats = {
+    str = 10,
+    dex = 10,
+    con = 10,
+    int = 10,
+    wis = 10,
+    cha = 10,
+    total_hp = 10,
+    current_hp = 10,
+    weapon = rules.weapon.unarmed,
+    armor = rules.armor.unarmored,
+    shield = rules.shield.no_shield,
+    inventory = { 
+      rules.item.no_item, rules.item.no_item,
+      rules.item.no_item, rules.item.no_item,
+      rules.item.no_item, rules.item.no_item,
+      rules.item.no_item, rules.item.no_item },
+    status = { hold = false, poison = false, invisible = false, fear = false, charm = false },
+  }
+  return stats
+end
 
-rules.stats = {
-  str = 10,
-  dex = 10,
-  con = 10,
-  int = 10,
-  wis = 10,
-  cha = 10,
-  total_hp = 10,
-  current_hp = 10,
-  weapon = rules.weapon.unarmed,
-  armor = rules.armor.unarmored,
-  shield = rules.shield.no_shield,
-  inventory = { 
-    rules.item.no_item, rules.item.no_item,
-    rules.item.no_item, rules.item.no_item,
-    rules.item.no_item, rules.item.no_item,
-    rules.item.no_item, rules.item.no_item },
-  status = { hold = false, poison = false, invisible = false, fear = false, charm = false },
-}
 
 
 -- ability modifiers

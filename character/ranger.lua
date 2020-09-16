@@ -12,7 +12,7 @@ animation = animations.types.ranger
 function M.enter()
   print('ranger enter')
   M.data.enemy = true
-  M.data.stats = rules.stats
+  M.data.stats = rules.new_character()
 end
 
 
