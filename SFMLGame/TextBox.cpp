@@ -287,6 +287,7 @@ void OptionsPanel::create() {
 		int x = get_x();
 		int y = get_y() + (button.get_height() * i);
 		button.set_position(x, y);
+		button.set_dimensions(button.get_width(), button.get_height() - 1);
 		i++;
 	}
 

@@ -37,9 +37,9 @@ void Inventory::create() {
 	}
 	{
 		int w = get_width();
-		int h = button_size;
+		int h = button_size - 1;
 		int x = get_x();
-		int y = buttons[k - 1].get_y() + button_size + 1;
+		int y = buttons[k - 1].get_y() + button_size;
 		buttons[k] = Button("Save", x, y, w, h, [&](Component*) {
 			Log("Save pressed.");
 			return true;
@@ -49,7 +49,7 @@ void Inventory::create() {
 
 		k++;
 
-		y = buttons[k - 1].get_y() + button_size + 1;
+		y = buttons[k - 1].get_y() + button_size;
 		buttons[k] = Button("Exit", x, y, w, h, [&](Component*) {
 			Log("Exit pressed.");
 			ChoicePanel::show("Are you sure you want to exit?", *get_screen(), 
