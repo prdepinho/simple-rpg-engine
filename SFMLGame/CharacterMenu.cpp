@@ -6,14 +6,14 @@
 
 Inventory::Inventory(int x, int y) {
 	set_position(x, y);
-	set_dimensions(button_size * 2, button_size * 4);
+	set_dimensions(button_size * 2, (button_size * 4) + (button_size * 2));
 }
 
 Inventory::~Inventory() {
 }
 
 void Inventory::create() {
-	buttons = std::vector<Button>(inventory_width * inventory_height);
+	buttons = std::vector<Button>(inventory_width * inventory_height + 2);
 	int k = 0;
 	for (int i = 0; i < inventory_height; i++) {
 		for (int j = 0; j < inventory_width; j++) {
@@ -35,6 +35,39 @@ void Inventory::create() {
 			k++;
 		}
 	}
+	{
+		int w = get_width();
+		int h = button_size;
+		int x = get_x();
+		int y = buttons[k - 1].get_y() + button_size + 1;
+		buttons[k] = Button("Save", x, y, w, h, [&](Component*) {
+			Log("Save pressed.");
+			return true;
+		});
+		buttons[k].create();
+		add_component(buttons[k]);
+
+		k++;
+
+		y = buttons[k - 1].get_y() + button_size + 1;
+		buttons[k] = Button("Exit", x, y, w, h, [&](Component*) {
+			Log("Exit pressed.");
+			ChoicePanel::show("Are you sure you want to exit?", *get_screen(), 
+				[&]() {
+					Log("Yes.");
+					// get_screen()->select(buttons.back());
+					_game.change_to_main_menu_screen();
+				},
+				[&]() {
+					Log("No.");
+					get_screen()->select(buttons.back());
+				}
+			);
+			return true;
+		});
+		buttons[k].create();
+		add_component(buttons[k]);
+	}
 }
 
 void Inventory::refresh(Character *character) {
@@ -52,26 +85,38 @@ void Inventory::set_cursor(int i) {
 }
 
 void Inventory::move_cursor(Direction direction) {
+	int inventory_size = inventory_width * inventory_height;
 	switch (direction) {
 	case Direction::UP:
-		set_cursor((cursor - inventory_width) % buttons.size());
+		if (cursor < inventory_width)
+			set_cursor(buttons.size() - 1);
+		else if (cursor < inventory_size)
+			set_cursor(cursor - inventory_width);
+		else
+			set_cursor(cursor - 1);
 		break;
 	case Direction::DOWN:
-		set_cursor((cursor + inventory_width) % buttons.size());
+		if (cursor == buttons.size() - 1)
+			set_cursor(0);
+		else if (cursor >= inventory_size - 1)
+			set_cursor(cursor + 1);
+		else
+			set_cursor(cursor + inventory_width);
 		break;
 	case Direction::LEFT:
-		set_cursor((cursor - 1) % buttons.size());
+		if (cursor == 0)
+			set_cursor(buttons.size() - 1);
+		else
+			set_cursor(cursor - 1);
 		break;
 	case Direction::RIGHT:
-		set_cursor((cursor + 1) % buttons.size());
+		if (cursor == buttons.size() - 1)
+			set_cursor(0);
+		else
+			set_cursor(cursor + 1);
 		break;
 	}
 }
-
-
-
-
-
 
 
 
@@ -153,6 +198,7 @@ Component *CharacterMenu::on_key_pressed(sf::Keyboard::Key key) {
 		return interacted;
 	}
 
+	int rval = 0;
 	switch (InputHandler::get_control_input(key)) {
 	case Control::UP:
 		inventory.move_cursor(Direction::UP);
@@ -202,6 +248,7 @@ void CharacterMenu::show(Screen &screen, Character *character, Callback callback
 	menu.inventory.create();
 	menu.inventory.refresh(character);
 	menu.add_component(menu.inventory);
+
 
 	screen.add_component(menu);
 

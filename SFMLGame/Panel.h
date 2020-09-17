@@ -40,8 +40,9 @@ public:
 	ChoicePanel(std::string msg = "", int x = 0, int y = 0, int width = 80, int height = 60) 
 		: Panel(x, y, width, height), message(msg) { }
 
-	static void show(std::string msg, Screen &screen, std::function<void()> yes_func = []() {}, std::function<void()> no_func = []() {});
+	static void show(std::string msg, Screen &screen, std::function<void()> yes_func = []() {}, std::function<void()> no_func = []() {}, bool default_yes=false);
 	virtual void create() override;
+	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
 
 private:
 	std::function<void()> yes_func;

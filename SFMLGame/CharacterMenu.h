@@ -16,6 +16,7 @@ public:
 	void refresh(Character *character);
 	void set_cursor(int i);
 	void move_cursor(Direction direction);
+	int get_button_size() const { return button_size; }
 private:
 	std::vector<Button> buttons;
 	int inventory_width = 2;
@@ -23,7 +24,6 @@ private:
 	int button_size = 20;
 	int cursor;
 };
-
 
 
 

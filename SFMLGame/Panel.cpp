@@ -106,7 +106,7 @@ void ChoicePanel::create() {
 	get_screen()->select(yes_button);
  }
 
-void ChoicePanel::show( std::string msg, Screen &screen, std::function<void()> yes_func, std::function<void()> no_func) {
+void ChoicePanel::show( std::string msg, Screen &screen, std::function<void()> yes_func, std::function<void()> no_func, bool default_yes) {
 	static ChoicePanel choice_panel;
 	int h = 60;
 	int w = 100;
@@ -127,4 +127,27 @@ void ChoicePanel::show( std::string msg, Screen &screen, std::function<void()> y
 		choice_panel.get_screen()->remove_component(choice_panel);
 		return true;
 	});
+	if (default_yes)
+		screen.select(choice_panel.yes_button);
+	else
+		screen.select(choice_panel.no_button);
+}
+
+Component *ChoicePanel::on_key_pressed(sf::Keyboard::Key key) {
+	Component *interacted = Panel::on_key_pressed(key);
+	if (interacted) {
+		return interacted;
+	}
+
+	switch (InputHandler::get_control_input(key)) {
+	case Control::LEFT:
+		if (!yes_button.is_selected())
+			get_screen()->select(yes_button);
+		return this;
+	case Control::RIGHT:
+		if (!no_button.is_selected())
+			get_screen()->select(no_button);
+		return this;
+	}
+	return nullptr;
 }
