@@ -30,6 +30,9 @@ function get_save_files()
       break
     end
 
+    if package.loaded[filename] then
+      package.loaded[filename] = nil
+    end
     local module = require(filename)
     save_file.filename = filename
     save_file.title = module.data.title

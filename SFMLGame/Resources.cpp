@@ -92,7 +92,6 @@ void Resources::stop_music() {
 
 std::vector<Resources::SaveFile> Resources::get_save_files() {
 	std::vector<Resources::SaveFile> files;
-	files = std::vector<Resources::SaveFile>();
 	LuaObject obj = _game.get_lua()->get_save_files();
 	for (auto it = obj.begin(); it != obj.end(); ++it) {
 		LuaObject file = (*it).second;

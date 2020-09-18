@@ -40,6 +40,8 @@ public:
 	virtual void create() override;
 	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
 	static void show(Screen &screen, Callback callback=Callback());
+	static void refresh_buttons();
+	static SavePanel &get() { static SavePanel panel; return panel; }
 private:
 	int button_height = 20;
 	int button_length = 150;

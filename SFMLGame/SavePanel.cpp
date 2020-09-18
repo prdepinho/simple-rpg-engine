@@ -36,8 +36,6 @@ void SaveOptionMenu::create() {
 		button.set_function([&](Component* c) {
 			Button *b = dynamic_cast<Button*>(c);
 			Log("Save");
-			Log("filename: %s", save_file.filename.c_str());
-			Log("title: %s", save_file.title.c_str());
 			if (save_file.active) {
 				Log("save avtive");
 				ChoicePanel::show("Are you sure you want overwrite?", *get_screen(), 
@@ -45,14 +43,15 @@ void SaveOptionMenu::create() {
 						Log("Yes.");
 						std::string filename = Path::SAVES + save_file.filename + ".lua";
 						_game.get_lua()->save_game(filename, Time::current_time_string());
-			call_functions(this);
-			get_screen()->remove_component(*this);
+						SavePanel::refresh_buttons();
+						call_functions(this);
+						get_screen()->remove_component(*this);
 					},
 					[&]() {
 						Log("No.");
 						// get_screen()->select();
-			call_functions(this);
-			get_screen()->remove_component(*this);
+						call_functions(this);
+						get_screen()->remove_component(*this);
 					},
 					false
 				);
@@ -61,8 +60,8 @@ void SaveOptionMenu::create() {
 				Log("Save inctive");
 				std::string filename = Path::SAVES + save_file.filename + ".lua";
 				_game.get_lua()->save_game(filename, Time::current_time_string());
-			call_functions(this);
-			get_screen()->remove_component(*this);
+				call_functions(this);
+				get_screen()->remove_component(*this);
 			}
 			return true;
 		});
@@ -225,13 +224,28 @@ void SavePanel::create() {
 }
 
 void SavePanel::show(Screen &screen, Callback callback) {
-	static SavePanel panel;
+	SavePanel &panel = get();
 	panel = SavePanel();
 	panel.create();
 	panel.button_index = 0;
 	panel.set_function(callback);
 	screen.add_component(panel);
 	screen.select(panel.buttons.front());
+}
+
+void SavePanel::refresh_buttons() {
+	SavePanel &panel = get();
+	int index = panel.button_index;
+
+	std::vector<Resources::SaveFile> save_files = Resources::get_save_files();
+	size_t i = 0;
+	for (i = 0; i < save_files.size(); i++) {
+		LoadButton &button = panel.buttons[i];
+		button.set_save_file(save_files[i]);
+		button.set_label(save_files[i].title);
+		if (!save_files[i].active)
+			button.disactivate();
+	}
 }
 
 Component *SavePanel::on_key_pressed(sf::Keyboard::Key key) {
