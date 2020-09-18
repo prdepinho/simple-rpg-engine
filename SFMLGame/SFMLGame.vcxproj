@@ -186,6 +186,7 @@
     <ClCompile Include="MapEditorScreen.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Resources.cpp" />
+    <ClCompile Include="SavePanel.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="ScreenMainMenu.cpp" />
     <ClCompile Include="GameScreen.cpp" />
@@ -260,6 +261,7 @@
     <ClInclude Include="Panel.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Resources.h" />
+    <ClInclude Include="SavePanel.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="ScreenMainMenu.h" />
     <ClInclude Include="GameScreen.h" />
@@ -268,6 +270,7 @@
     <ClInclude Include="TextField.h" />
     <ClInclude Include="Tilemap.h" />
     <ClInclude Include="TilemapDAO.h" />
+    <ClInclude Include="Time.h" />
     <ClInclude Include="tmxlite\detail\pugiconfig.hpp" />
     <ClInclude Include="tmxlite\detail\pugixml.hpp" />
     <ClInclude Include="tmxlite\miniz.h" />

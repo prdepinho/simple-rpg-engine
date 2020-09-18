@@ -1,6 +1,7 @@
 
 #include "CharacterMenu.h"
 #include "Game.h"
+#include "SavePanel.h"
 #include <sstream>
 #include <map>
 
@@ -40,8 +41,12 @@ void Inventory::create() {
 		int h = button_size - 1;
 		int x = get_x();
 		int y = buttons[k - 1].get_y() + button_size;
-		buttons[k] = Button("Save", x, y, w, h, [&](Component*) {
-			Log("Save pressed.");
+		buttons[k] = Button("Data", x, y, w, h, [&](Component*) {
+			Log("Data pressed.");
+			SavePanel::show(*get_screen(), [&](Component *) {
+				set_cursor(cursor);
+				return true; 
+			});
 			return true;
 		});
 		buttons[k].create();
@@ -55,7 +60,6 @@ void Inventory::create() {
 			ChoicePanel::show("Are you sure you want to exit?", *get_screen(), 
 				[&]() {
 					Log("Yes.");
-					// get_screen()->select(buttons.back());
 					_game.change_to_main_menu_screen();
 				},
 				[&]() {

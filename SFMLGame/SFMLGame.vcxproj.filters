@@ -269,6 +269,9 @@
     <ClCompile Include="Item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SavePanel.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lua5.3.5\lapi.h">
@@ -462,6 +465,12 @@
     </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SavePanel.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
