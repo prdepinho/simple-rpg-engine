@@ -11,10 +11,8 @@
 
 
 SaveOptionMenu::SaveOptionMenu() {
-	// int w = _game.get_resolution_width() * 2 / 3;
-	// int h = _game.get_resolution_height() * 2 / 3;
-	int w = button_length;
-	int h = button_height * 4;
+	int w = button_length + border * 2;
+	int h = (button_height * 4) + (border * 2);
 	set_dimensions(w, h);
 	int x = (_game.get_resolution_width() / 2) - (w / 2);
 	int y = (_game.get_resolution_height() / 2) - (h / 2);
@@ -31,7 +29,7 @@ void SaveOptionMenu::create() {
 	{
 		Button &button = buttons[i];
 		int x = get_x() + (get_width() / 2) - (button_length / 2);
-		int y = get_y() + (i * button_height);
+		int y = get_y() + border + (i * button_height);
 		button = Button("Save", x, y, button_length, button_height - 1);
 		button.set_function([&](Component* c) {
 			Button *b = dynamic_cast<Button*>(c);
@@ -49,7 +47,6 @@ void SaveOptionMenu::create() {
 					},
 					[&]() {
 						Log("No.");
-						// get_screen()->select();
 						call_functions(this);
 						get_screen()->remove_component(*this);
 					},
@@ -60,6 +57,7 @@ void SaveOptionMenu::create() {
 				Log("Save inctive");
 				std::string filename = Path::SAVES + save_file.filename + ".lua";
 				_game.get_lua()->save_game(filename, Time::current_time_string());
+				SavePanel::refresh_buttons();
 				call_functions(this);
 				get_screen()->remove_component(*this);
 			}
@@ -72,44 +70,71 @@ void SaveOptionMenu::create() {
 	{
 		Button &button = buttons[i];
 		int x = get_x() + (get_width() / 2) - (button_length / 2);
-		int y = get_y() + (i * button_height);
+		int y = get_y() + border + (i * button_height);
 		button = Button("Load", x, y, button_length, button_height - 1);
 		button.set_function([&](Component* c) {
 			Button *b = dynamic_cast<Button*>(c);
 			Log("Load");
-			call_functions(this);
-			get_screen()->remove_component(*this);
+			ChoicePanel::show("Are you sure you want to load?", *get_screen(), 
+				[&]() {
+					Log("Yes.");
+					_game.get_lua()->reset_data();
+					_game.get_lua()->load_game(save_file.filename);
+					_game.change_to_game_screen();
+					// call_functions(this);
+					// get_screen()->remove_component(*this);
+				},
+				[&]() {
+					Log("No.");
+					call_functions(this);
+					get_screen()->remove_component(*this);
+				},
+				false
+			);
 			return true;
 		});
 		add_component(button);
 		button.create();
 		i++;
 	}
+	
 	{
 		Button &button = buttons[i];
 		int x = get_x() + (get_width() / 2) - (button_length / 2);
-		int y = get_y() + (i * button_height);
-		button = Button("Rename", x, y, button_length, button_height - 1);
-		button.set_function([&](Component* c) {
-			Button *b = dynamic_cast<Button*>(c);
-			Log("Save");
-			_game.get_lua()->save_game(save_file.filename, save_file.title);
-			call_functions(this);
-			get_screen()->remove_component(*this);
-			return true;
-		});
-		add_component(button);
-		button.create();
-		i++;
-	}
-	{
-		Button &button = buttons[i];
-		int x = get_x() + (get_width() / 2) - (button_length / 2);
-		int y = get_y() + (i * button_height);
+		int y = get_y() + border + (i * button_height);
 		button = Button("Delete", x, y, button_length, button_height - 1);
 		button.set_function([&](Component* c) {
 			Button *b = dynamic_cast<Button*>(c);
 			Log("Delete");
+			ChoicePanel::show("Are you sure you want to delete?", *get_screen(), 
+				[&]() {
+					Log("Yes.");
+					std::string filename = Path::SAVES + save_file.filename + ".lua";
+					_game.get_lua()->delete_save_game(filename);
+					SavePanel::refresh_buttons();
+					call_functions(this);
+					get_screen()->remove_component(*this);
+				},
+				[&]() {
+					Log("No.");
+					call_functions(this);
+					get_screen()->remove_component(*this);
+				},
+				false
+			);
+			return true;
+		});
+		add_component(button);
+		button.create();
+		i++;
+	}
+	{
+		Button &button = buttons[i];
+		int x = get_x() + (get_width() / 2) - (button_length / 2);
+		int y = get_y() + border + (i * button_height);
+		button = Button("Back", x, y, button_length, button_height - 1);
+		button.set_function([&](Component* c) {
+			Log("Back");
 			call_functions(this);
 			get_screen()->remove_component(*this);
 			return true;
@@ -154,6 +179,11 @@ Component *SaveOptionMenu::on_key_pressed(sf::Keyboard::Key key) {
 		get_screen()->select(buttons[button_index]);
 		return this;
 
+	case Control::B:
+		call_functions(this);
+		get_screen()->remove_component(*this);
+		return this;
+
 	}
 	return nullptr;
 }
@@ -166,8 +196,20 @@ Component *SaveOptionMenu::on_key_pressed(sf::Keyboard::Key key) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 SavePanel::SavePanel() {
-	int w = _game.get_resolution_width() / 2;
+	int w = button_length + border * 2;
 	int h = _game.get_resolution_height() / 2;
 	set_dimensions(w, h);
 	int x = (_game.get_resolution_width() / 2) - (w / 2);
@@ -178,15 +220,29 @@ SavePanel::SavePanel() {
 SavePanel::~SavePanel() {}
 
 void SavePanel::create() {
-	Panel::create();
 	std::vector<Resources::SaveFile> save_files = Resources::get_save_files();
 	buttons = std::vector<LoadButton>(save_files.size() + 1);
+
+	{
+		int h = ((save_files.size() + 2) * button_height) + (border * 2);
+		set_dimensions(get_width(), h);
+		Panel::create();
+	}
+
+	{
+		label = Label("Data", 0, 0);
+		int x = get_x() + (get_width() / 2) - (label.get_width() / 2);
+		int y = get_y() + border;
+		label.create();
+		label.set_position(x, y);
+		add_component(label);
+	}
 
 	size_t i = 0;
 	for (i = 0; i < save_files.size(); i++) {
 		LoadButton &button = buttons[i];
 		int x = get_x() + (get_width() / 2) - (button_length / 2);
-		int y = get_y() + (10 + i * button_height);
+		int y = get_y() + (border * 2) + label.get_height() + (i * button_height);
 		button = LoadButton(save_files[i].title, x, y, button_length, button_height - 1);
 		button.set_function([&](Component* c) {
 			LoadButton *b = dynamic_cast<LoadButton*>(c);
@@ -210,7 +266,7 @@ void SavePanel::create() {
 	{
 		LoadButton &button = buttons.back();
 		int x = get_x() + (get_width() / 2) - (button_length / 2);
-		int y = get_y() + (10 + i * button_height);
+		int y = get_y() + (border * 2) + label.get_height() + (i * button_height);
 		button = LoadButton("Back", x, y, button_length, button_height - 1);
 		button.set_function([&](Component*) {
 			call_functions(this);
@@ -268,6 +324,11 @@ Component *SavePanel::on_key_pressed(sf::Keyboard::Key key) {
 		else
 			button_index = 0;
 		get_screen()->select(buttons[button_index]);
+		return this;
+
+	case Control::B:
+		call_functions(this);
+		get_screen()->remove_component(*this);
 		return this;
 
 	}

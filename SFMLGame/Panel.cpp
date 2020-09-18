@@ -97,11 +97,11 @@ void ChoicePanel::create() {
 
 	x = (get_width() / 3) - (yes_button.get_width() / 2);
 	y = (get_height() * 3 / 4) - (yes_button.get_height() / 2);
-	yes_button.set_position(get_x() + x, get_y() + y);
+	no_button.set_position(get_x() + x, get_y() + y);
 
 	x = (get_width() * 2 / 3) - (yes_button.get_width() / 2);
 	y = (get_height() * 3 / 4) - (yes_button.get_height() / 2);
-	no_button.set_position(get_x() + x, get_y() + y);
+	yes_button.set_position(get_x() + x, get_y() + y);
 
 	get_screen()->select(yes_button);
  }
@@ -140,13 +140,21 @@ Component *ChoicePanel::on_key_pressed(sf::Keyboard::Key key) {
 	}
 
 	switch (InputHandler::get_control_input(key)) {
-	case Control::LEFT:
+	case Control::UP:
+		if (!no_button.is_selected())
+			get_screen()->select(no_button);
+		return this;
+	case Control::DOWN:
 		if (!yes_button.is_selected())
 			get_screen()->select(yes_button);
 		return this;
-	case Control::RIGHT:
+	case Control::LEFT:
 		if (!no_button.is_selected())
 			get_screen()->select(no_button);
+		return this;
+	case Control::RIGHT:
+		if (!yes_button.is_selected())
+			get_screen()->select(yes_button);
 		return this;
 	}
 	return nullptr;

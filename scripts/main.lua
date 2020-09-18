@@ -13,6 +13,12 @@ local map_data = {}
 local map_module = {}
 local item_data = {}
 
+function reset_data()
+  character_data = {}
+  map_data = {}
+  item_data = {}
+end
+
 function get_save_files()
   local save_files = {}
   for i=0, 256, 1 do
@@ -68,6 +74,7 @@ function load_game(filename)
 end
 
 function delete_save_game(filename)
+  print('delete save game: ' .. filename)
   local data = {}
   data.active = false
   data.title = ''

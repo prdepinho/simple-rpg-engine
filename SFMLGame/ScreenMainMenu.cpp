@@ -46,6 +46,7 @@ void ScreenMainMenu::create()
 		i++;
 	}
 
+#if false
 	{
 		Button &button = buttons[i];
 		int y = (10 + i * (button.get_height() + 1));
@@ -75,6 +76,20 @@ void ScreenMainMenu::create()
 		button.create();
 		i++;
 	}
+
+	/*
+    "_buttons": [
+      {
+        "label": "Test",
+        "function": "test"
+      },
+      {
+        "label": "Map Editor",
+        "function": "map_editor"
+      }
+    ]
+	*/
+#endif
 
 	{
 		Button &button = buttons[i];

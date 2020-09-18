@@ -25,8 +25,13 @@ void LoadGameScreen::create() {
 		button.set_function([&](Component* c) {
 			LoadButton *b = dynamic_cast<LoadButton*>(c);
 			Log("%s", b->get_save_file().title.c_str());
-			_game.get_lua()->load_game(b->get_save_file().filename);
-			game->change_to_game_screen();
+			// _game.get_lua()->load_game(b->get_save_file().filename);
+			// game->change_to_game_screen();
+
+			SaveOptionMenu::show(*this, b->get_save_file(), false, [&](Component*) {
+				select(buttons[button_index]);
+				return true;
+			});
 			return true;
 		});
 		if (!save_files[i].active)

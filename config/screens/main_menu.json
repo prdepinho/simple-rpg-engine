@@ -7,14 +7,6 @@
         "function": "game"
       },
       {
-        "label": "Test",
-        "function": "test"
-      },
-      {
-        "label": "Map Editor",
-        "function": "map_editor"
-      },
-      {
         "label": "Exit",
         "function": "exit"
       }

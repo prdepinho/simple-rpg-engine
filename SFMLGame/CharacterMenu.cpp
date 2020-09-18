@@ -60,6 +60,7 @@ void Inventory::create() {
 			ChoicePanel::show("Are you sure you want to exit?", *get_screen(), 
 				[&]() {
 					Log("Yes.");
+					_game.get_lua()->reset_data();
 					_game.change_to_main_menu_screen();
 				},
 				[&]() {

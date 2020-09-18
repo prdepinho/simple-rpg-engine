@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include "Label.h"
 #include "Panel.h"
 #include "Resources.h"
 #include "Callback.h"
@@ -24,6 +25,7 @@ public:
 	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
 	static void show(Screen &screen, Resources::SaveFile save_file, bool allow_save, Callback callback=Callback());
 private:
+	int border = 5;
 	int button_height = 20;
 	int button_length = 50;
 	int button_index = 0;
@@ -43,6 +45,8 @@ public:
 	static void refresh_buttons();
 	static SavePanel &get() { static SavePanel panel; return panel; }
 private:
+	Label label;
+	int border = 5;
 	int button_height = 20;
 	int button_length = 150;
 	std::vector<LoadButton> buttons;

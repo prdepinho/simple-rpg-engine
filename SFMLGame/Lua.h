@@ -61,6 +61,7 @@ public:
 	void add_item(std::string code, std::string name, std::string type);
 
 
+	void reset_data();
 	void save_game(std::string filename, std::string title);
 	void load_game(std::string filename);
 	void delete_save_game(std::string filename);
