@@ -2,6 +2,7 @@
 #include "Resources.h"
 #include "Json.h"
 #include "InputHandler.h"
+#include "Game.h"
 
 
 void Button::create() {
@@ -76,16 +77,27 @@ void Button::set_position(int x, int y) {
 }
 
 Component* Button::on_pressed(int x, int y) {
+	if (!activated) {
+		on_clic_inactive();
+		return this;
+	}
 	vertices = pressed_vertices;
 	return this;
 }
 
 Component* Button::on_released(int x, int y) {
+	if (!activated) {
+		return this;
+	}
 	vertices = released_vertices;
 	return this;
 }
 
 Component* Button::on_key_pressed(sf::Keyboard::Key key) {
+	// if (!activated) {
+	// 	on_clic_inactive();
+	// 	return nullptr;
+	// }
 	Component *interacted = Component::on_key_pressed(key);
 	if (interacted)
 		return interacted;
@@ -104,6 +116,22 @@ Component* Button::on_click() {
 	}
 	Resources::get_sound("crrreee.wav")->play();
 	return this;
+}
+
+void Button::on_clic_inactive() {
+	Resources::get_sound("boop.wav")->play();
+}
+
+void Button::on_activated() {
+	Log("on activated");
+	Component::on_activated();
+	// vertices = released_vertices;
+}
+
+void Button::on_disactivated() {
+	Log("on disactivated");
+	Component::on_disactivated();
+	// vertices = pressed_vertices;
 }
 
 void Button::set_label(std::string str) 

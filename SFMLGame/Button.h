@@ -27,6 +27,10 @@ public:
 	virtual Component* on_click() override;
 	virtual void on_selected(bool show_outline = true);
 
+	void on_activated() override;
+	void on_disactivated() override;
+
+	void on_clic_inactive();
 	std::string get_label() { return label; }
 	void set_label(std::string str);
 	void set_centered_label(bool centered) { this->centered = centered; }

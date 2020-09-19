@@ -58,7 +58,8 @@ public:
 	LuaObject character_stats(std::string name);
 	int character_base_ac(std::string name);
 	LuaObject item_stats(std::string name, std::string type);
-	void add_item(std::string code, std::string name, std::string type);
+	void load_initial_item(std::string code, std::string name, std::string type, int x, int y);
+
 
 
 	void reset_data();

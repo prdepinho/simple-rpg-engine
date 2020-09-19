@@ -6,18 +6,13 @@ local M = {}
 M.door = door
 
 
-function M.enter()
-  print('room.map: enter')
-  print('  door_locked: ' .. tostring(M.data.door_locked))
-  print('  has_key: ' .. tostring(M.data.has_key))
+function M.enter_first_time()
+  M.data.flag = true
+  M.data.door_locked = true
+  M.data.has_key = false
+end
 
-  if M.data.door_locked == nil then
-    M.data.door_locked = true
-  end
-  if M.data.has_key == nil then
-    M.data.has_key = false
-  end
-  
+function M.enter()
   if M.data.door_locked == false then
     sfml_lock_door(false, "north_door")
     print('remove obstacle')

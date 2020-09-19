@@ -332,7 +332,7 @@ void GameScreen::control_mouse_info() {
 		Log("  obstacle: %s", (tile.obstacle ? "true" : "false"));
 		Character *character = get_character_on_tile(tile_x, tile_y);
 		if (character) {
-			Log("  Character: %s", character->get_name());
+			Log("  Character: %s", character->get_name().c_str());
 		}
 		Item *item = get_item_on_tile(tile_x, tile_y);
 		if (item) {
@@ -512,6 +512,12 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 					std::string str = "Quo usque tandem abutere, Catilina, patientia nostra? quam ";
 					show_text_box(str);
 				}
+				break;
+			case sf::Keyboard::N:
+				change_map("room", 4, 2);
+				break;
+			case sf::Keyboard::M:
+				change_map("room2", 8, 6);
 				break;
 			case sf::Keyboard::V:
 				show_fog_of_war = !show_fog_of_war;
@@ -936,7 +942,7 @@ void GameScreen::loot(int tile_x, int tile_y) {
 void GameScreen::pan_foreground(std::string filename, int x, int y, float speed_x, float speed_y, float total_time, float still_time) {
 	foreground.texture.loadFromFile(Path::ASSETS + filename);
 	foreground.sprite = sf::Sprite(foreground.texture);
-	foreground.sprite.setPosition(x, y);
+	foreground.sprite.setPosition((float)x, (float)y);
 	foreground.pan_speed.x = speed_x;
 	foreground.pan_speed.y = speed_y;
 	foreground.total_time = total_time;
@@ -961,7 +967,7 @@ void GameScreen::pan_foreground(LuaObject data) {
 
 	foreground.texture.loadFromFile(Path::ASSETS + filename);
 	foreground.sprite = sf::Sprite(foreground.texture);
-	foreground.sprite.setPosition(x, y);
+	foreground.sprite.setPosition((float)x, (float)y);
 	foreground.pan_speed.x = speed_x;
 	foreground.pan_speed.y = speed_y;
 	foreground.total_time = total_time;

@@ -330,11 +330,13 @@ void TiledTilemapDAO::load_characters(GameScreen *game_screen, std::string filen
 			}
 			// items
 			if (type == "weapon" || type == "armor" || type == "item" || type == "shield") {
+#if false
 				Log("Item: %s, %s (%s)", code.c_str(), name.c_str(), type.c_str());
 				Item *item = new Item();
 				item->create(code, name, type);
-				_game.get_lua()->add_item(code, name, type);
+				// _game.get_lua()->add_item(code, name, type);
 				game_screen->add_item(item, x, y);
+#endif
 			}
 			else
 			// characters

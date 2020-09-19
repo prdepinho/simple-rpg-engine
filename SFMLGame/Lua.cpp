@@ -171,7 +171,7 @@ std::map<std::string, std::string> Lua::get_table() {
 
 void Lua::execute_method(std::string method) {
 	lua_getglobal(state, method.c_str());
-	int result = lua_pcall(state, 0, 0, 0);
+	int result = lua_pcall(state, 0, 1, 0);
 	if (result != LUA_OK) {
 		throw LuaException(get_error(state));
 	}
@@ -311,12 +311,14 @@ void Lua::add_character(long id, std::string script, std::string name) {
 	lua_pop(state, 1);
 }
 
-void Lua::add_item(std::string code, std::string name, std::string type) {
-	lua_getglobal(state, "add_item");
+void Lua::load_initial_item(std::string code, std::string name, std::string type, int x, int y) {
+	lua_getglobal(state, "load_initial_item");
 	lua_pushstring(state, code.c_str());
 	lua_pushstring(state, name.c_str());
 	lua_pushstring(state, type.c_str());
-	int result = lua_pcall(state, 3, 1, 0);
+	lua_pushinteger(state, x);
+	lua_pushinteger(state, y);
+	int result = lua_pcall(state, 5, 1, 0);
 	if (result != LUA_OK) {
 		std::stringstream ss;
 		ss << name << ": " << get_error(state);
@@ -419,7 +421,7 @@ int Lua::character_base_ac(std::string name) {
 		ss << name << ": " << get_error(state);
 		throw LuaException(ss.str().c_str());
 	}
-	int ac = lua_tointeger(state, -1);
+	int ac = (int)lua_tointeger(state, -1);
 	return ac;
 }
 

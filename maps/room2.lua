@@ -6,6 +6,9 @@ local M = {}
 
 M.door = door
 
+function M.enter_first_time()
+end
+
 function M.enter()
   print('room2.map: enter')
 end

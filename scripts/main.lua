@@ -11,12 +11,12 @@ local character_data = {}
 local character_modules = {}
 local map_data = {}
 local map_module = {}
-local item_data = {}
+local current_map = ''
+
 
 function reset_data()
   character_data = {}
   map_data = {}
-  item_data = {}
 end
 
 function get_save_files()
@@ -26,10 +26,6 @@ function get_save_files()
 
     local filename = "save_" .. tostring(i)
     local path = "../saves/" .. filename .. ".lua"
-
-    print("loop: " .. tostring(i))
-    print("filename: " .. filename)
-    print("path: " .. path)
 
     local file = io.open(path, 'r')
     if not file then
@@ -45,8 +41,6 @@ function get_save_files()
     save_file.active = module.data.active
 
     save_files[filename] = save_file
-
-    print(filename .. ': ' .. tostring(file))
     io.close(file)
 
   end
@@ -61,7 +55,6 @@ function save_game(filename, title)
   -- data.player_position = sfml_get_player_position()
   data.map_data = map_data
   data.character_data = character_data
-  data.item_data = item_data
   save.save_data(filename, data)
 end
 
@@ -70,7 +63,6 @@ function load_game(filename)
   local module = require(filename)
   map_data = module.data.map_data
   character_data = module.data.character_data
-  item_data = module.data.item_data
 end
 
 function delete_save_game(filename)
@@ -85,15 +77,7 @@ function item_stats(name, item_type)
   return rules[item_type][name]
 end
 
-function add_item(code, name, item_type)
-  print('add item (' .. code .. '), ' .. name .. ': ' .. item_type)
-  if item_data[code] == nil then
-    item_data[code] = rules[item_type][name]
-  end
-end
-
 function character_stats(name)
-  save.print_data(character_modules)
   return character_modules[name].data.stats
   -- return 42
 end
@@ -104,7 +88,6 @@ function character_base_ac(name)
 end
 
 function add_character(id, script, name)
-  print('add character (' .. tostring(id) .. '), ' .. script .. ': ' .. name)
   if character_data[name] == nil then
     character_data[name] = {}
   end
@@ -143,14 +126,21 @@ function character_on_idle(name, id)
 end
 
 function change_map(new_map)
-  local map = {}
+  current_map = new_map
+  if not map_data[current_map] then
+    map_data[current_map] = {}
+  end
   map_module = {}
-  map_module = require(new_map)
-  map_module.data = map_data
-  print('Load module: ' .. new_map)
+  map_module = require(current_map)
+  map_module.data = map_data[current_map]
+  print('Load module: ' .. current_map)
 end
 
 function map_enter()
+  if not map_data[current_map].flag then
+    map_data[current_map].flag = true
+    map_module.enter_first_time()
+  end
   map_module.enter()
 end
 
@@ -178,105 +168,6 @@ function version()
   io.write(string.format("Lua Version: %s\n", _VERSION))
 end
 
-
-
--- -- -- -- -- --
-
-
--- first_callback = function(x) print('callback the first one'); return "return from the first callback" end,
--- second_callback = function(x) print('callback the second one'); return "return from the second callback" end,
-
-function first_callback() 
-  print('callback the first one'); return "return from the first callback"
-end
-function second_callback() 
-  print('callback the second one'); return "return from the second callback"
-end
-
-alpha = {
-  first = {
-    text = "the first one",
-    callback = first_callback,
-  },
-  second = {
-    text = "the second one",
-    callback = second_callback,
-  },
-}
-
-
-chosen = "None"
-function test_dialogue()
-  local dialogue = {
-    start = {
-      text = "A wild maid appear, and she sais the following:",
-      go_to = "question"
-    },
-    question = {
-      text = "Would you like to have tea or coffee this afternoon?",
-      options = {
-        {
-          text = "Tea, please",
-          go_to = "tea",
-        },
-        {
-          text = "I would like a some coffee, please.",
-          go_to = "coffee",
-        },
-        {
-          text = "None, thank you.",
-          go_to = "none",
-        }
-      }
-    },
-    tea = {
-      text = "I will prepare some tea right away.",
-      callback = function() print('*tea chosen'); chosen = "tea"; end,
-      go_to = "result"
-    },
-    coffee = {
-      text = "Here, then, have some coffee.",
-      callback = function() print('*coffee chosen'); chosen = "coffee" end,
-      go_to = "result"
-    },
-    none = {
-      text = "Oh, suite yourself.",
-      callback = function() print('*none chosen') end,
-      go_to = "result"
-    },
-    result = {
-      -- text = "It's delicious",
-      text = function() 
-        if chosen == 'coffee' then
-          return "The coffe is very hot and yummy."
-        elseif chosen == 'tea' then
-          return "The tea has a kindergarden flavor."
-        else
-          return "Do you have any spirits?"
-        end
-      end,
-      callback = function() print('chosen: ' .. chosen) end,
-      go_to = "end"
-    },
-  }
-  sfml_dialogue(dialogue)
-end
-
-function test_dialogue_simple()
-  dialogue = {
-    start = {
-      text = "",
-      go_to = "result",
-      callback = function() print("this function returns a string"); return "return value" end,
-    },
-    result = {
-      text = "",
-      go_to = "end",
-      callback = function() print("this function doesn't return anything") end,
-    }
-  }
-  sfml_dialogue(dialogue)
-end
 
 
 -- -- -- -- -- --

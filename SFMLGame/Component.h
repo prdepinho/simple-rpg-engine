@@ -18,6 +18,10 @@ public:
 		parent_screen(nullptr),
 		selected(false)
 	{
+		if (activated)
+			on_activated();
+		else
+			on_disactivated();
 		set_position(0, 0);
 		set_dimensions(0, 0);
 	}
@@ -45,7 +49,7 @@ public:
 
 	// selection
 
-	virtual void on_selected(bool show_outline=true) { selected = true; set_show_selection_outline(show_outline); }
+	virtual void on_selected(bool show_outline = true) { selected = true; set_show_selection_outline(show_outline); }
 	virtual void on_deselected() { selected = false; set_show_selection_outline(false); }
 	bool is_selected() const { return selected; }
 
@@ -56,10 +60,12 @@ public:
 	virtual Component* on_key_pressed(sf::Keyboard::Key key);
 	virtual Component* on_text_input(char c);
 	virtual Component* on_click() { return nullptr; }
+	virtual void on_activated() {}
+	virtual void on_disactivated() {}
 
 	// show, work
-	void activate() { activated = true; }
-	void disactivate() { activated = false; }
+	void activate() { activated = true; on_activated(); }
+	void disactivate() { activated = false; on_disactivated(); }
 	bool is_activated() const { return activated; }
 	void show();
 	void hide();

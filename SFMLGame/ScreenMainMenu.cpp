@@ -14,7 +14,7 @@ void ScreenMainMenu::create()
 	int x = (game->get_resolution_width() / 2) - (button_length / 2);
 	int i = 0;
 
-	buttons = std::vector<Button>(5);
+	buttons = std::vector<Button>(3);
 
 	{
 		Button &button = buttons[i];
