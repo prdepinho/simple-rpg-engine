@@ -11,9 +11,16 @@ function M.create()
   M.data.door_locked = true
   M.data.has_key = false
 
-  M.data.items["as1"] = {name = "arming_sword", type = "weapon", x = 5, y = 3}
-  M.data.items["ls1"] = {name = "long_sword", type = "weapon", x = 5, y = 3}
-  M.data.items["gs1"] = {name = "gambeson", type = "armor", x = 5, y = 3}
+  M.data.items["room_w1"] = {name = "axe", type = "weapon", x = 5, y = 3}
+  M.data.items["room_w2"] = {name = "arming_sword", type = "weapon", x = 5, y = 3}
+  M.data.items["room_w3"] = {name = "falcion", type = "weapon", x = 5, y = 3}
+  M.data.items["room_w4"] = {name = "morning_star", type = "weapon", x = 5, y = 3}
+  M.data.items["room_w5"] = {name = "maul", type = "weapon", x = 5, y = 3}
+  M.data.items["room_w6"] = {name = "estoc", type = "weapon", x = 5, y = 3}
+  M.data.items["room_w7"] = {name = "pike", type = "weapon", x = 5, y = 3}
+  M.data.items["room_w8"] = {name = "arming_sword", type = "weapon", x = 5, y = 3}
+  M.data.items["room_w9"] = {name = "long_sword", type = "weapon", x = 5, y = 3}
+  M.data.items["room_a1"] = {name = "gambeson", type = "armor", x = 5, y = 3}
 end
 
 function M.enter()

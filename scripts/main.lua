@@ -14,6 +14,7 @@ local map_module = {}
 local current_map = ''
 
 
+-- Loot item from the ground. Returns false if character inventory is full.
 function loot_item(item_code, character_name)
   local item = map_data[current_map].items[item_code]
   for index, item_data in ipairs(character_data[character_name].stats.inventory) do
@@ -25,11 +26,10 @@ function loot_item(item_code, character_name)
       }
       map_data[current_map].items[item_code] = nil
       sfml_remove_item(item_code)
-      -- return true
-      break
+      return true
     end
   end
-  -- return false
+  return false
 end
 
 
@@ -110,7 +110,7 @@ function character_base_ac(name)
   return rules.base_armor_class(stats)
 end
 
-function add_character(id, script, name)
+function add_character(script, name)
   if character_data[name] == nil then
     character_data[name] = {}
   end

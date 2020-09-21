@@ -352,15 +352,17 @@ void Loot::create() {
 			int y = get_y() + i * button_size;
 			int w = button_size - 1;
 			int h = button_size - 1;
-			buttons[k] = ItemButton("", x, y, w, h, [&](Component* c) {
+			buttons[k] = ItemButton("", x, y, w, h, [&](Component* c) 
+			{
 				ItemButton *b = dynamic_cast<ItemButton*>(c);
 				std::string item_code = b->get_item().get_code();
 				if (item_code != "") {
 					LootMenu *menu = dynamic_cast<LootMenu*>(get_parent());
 					std::string character_name = menu->get_character()->get_name();
 					Log("Item: %s, Character: %s", item_code.c_str(), character_name.c_str());
-					b->set_item(Item());
-					_game.get_lua()->loot_item(item_code, character_name);
+					bool rval = _game.get_lua()->loot_item(item_code, character_name);
+					if (rval)
+						b->set_item(Item());
 					menu->update_buttons();
 				}
 				else 
@@ -430,7 +432,7 @@ void Loot::move_cursor(Direction direction) {
 }
 
 void Loot::set_items(std::vector<Item*> items) {
-	size_t limit = std::min(items.size(), buttons.size());
+	size_t limit = std::min(items.size(), buttons.size() - 1);
 	for (size_t i = 0; i < limit; i++) {
 		ItemButton &button = buttons[i];
 		Item *item = items[i];

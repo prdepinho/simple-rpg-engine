@@ -297,12 +297,11 @@ void Lua::change_map(std::string script) {
 	lua_pop(state, 1);
 }
 
-void Lua::add_character(long id, std::string script, std::string name) {
+void Lua::add_character(std::string script, std::string name) {
 	lua_getglobal(state, "add_character");
-	lua_pushnumber(state, id);
 	lua_pushstring(state, script.c_str());
 	lua_pushstring(state, name.c_str());
-	int result = lua_pcall(state, 3, 1, 0);
+	int result = lua_pcall(state, 2, 1, 0);
 	if (result != LUA_OK) {
 		std::stringstream ss;
 		ss << script << ": " << get_error(state);
@@ -327,7 +326,7 @@ void Lua::load_initial_item(std::string code, std::string name, std::string type
 	lua_pop(state, 1);
 }
 
-void Lua::loot_item(std::string item_code, std::string character_name) {
+bool Lua::loot_item(std::string item_code, std::string character_name) {
 	lua_getglobal(state, "loot_item");
 	lua_pushstring(state, item_code.c_str());
 	lua_pushstring(state, character_name.c_str());
@@ -337,7 +336,9 @@ void Lua::loot_item(std::string item_code, std::string character_name) {
 		ss << item_code << ": " << get_error(state);
 		throw LuaException(ss.str().c_str());
 	}
+	bool rval = lua_toboolean(state, -1);
 	lua_pop(state, 1);
+	return rval;
 }
 
 void Lua::reset_data() {
@@ -434,6 +435,7 @@ int Lua::character_base_ac(std::string name) {
 		throw LuaException(ss.str().c_str());
 	}
 	int ac = (int)lua_tointeger(state, -1);
+	lua_pop(state, 1);
 	return ac;
 }
 

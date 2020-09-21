@@ -699,10 +699,7 @@ public:
 		std::string type = lua_tostring(state, -3);
 		int x = (int) lua_tointeger(state, -2);
 		int y = (int) lua_tointeger(state, -1);
-		Item *item = new Item();
-		item->create(code, name, type);
-		screen->add_item(item, x, y);
-		// _game.get_lua()->add_item(code, name, type);
+		screen->add_item(code, name, type, x, y);
 		return 1;
 	}
 
@@ -715,17 +712,11 @@ public:
 
 	static int sfml_add_character(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
-		std::string code = lua_tostring(state, -5);
 		std::string name = lua_tostring(state, -4);
 		std::string type = lua_tostring(state, -3);
 		int x = (int) lua_tointeger(state, -2);
 		int y = (int) lua_tointeger(state, -1);
-
-		Character *character = new Character();
-		character->create(type);
-		character->set_name(code);
-		character->loop_animation("walk");
-		screen->add_character(character, x, y);
+		screen->add_character(type, name, x, y);
 		// _game.get_lua()->add_character(character->get_id(), type, code);
 		return 1;
 	}

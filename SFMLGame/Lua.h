@@ -54,12 +54,12 @@ public:
 	void call_event(std::string function, std::string event, int tile_x, int tile_y, int character_id);
 	void character_interaction(std::string filename, std::string target_name, int target_character_id, int character_id);
 	void change_map(std::string script);
-	void add_character(long id, std::string script, std::string name);
+	void add_character(std::string script, std::string name);
 	LuaObject character_stats(std::string name);
 	int character_base_ac(std::string name);
 	LuaObject item_stats(std::string name, std::string type);
 	void load_initial_item(std::string code, std::string name, std::string type, int x, int y);
-	void loot_item(std::string item_code, std::string character_name);
+	bool loot_item(std::string item_code, std::string character_name);
 
 
 

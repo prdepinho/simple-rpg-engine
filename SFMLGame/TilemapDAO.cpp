@@ -345,15 +345,11 @@ void TiledTilemapDAO::load_characters(GameScreen *game_screen, std::string filen
 				if (code == "player") {
 					// game_screen->put_character_on_tile(*game_screen->get_player_character(), x, y);
 					game_screen->set_player_new_tile_position(x, y);
-					_game.get_lua()->add_character(game_screen->get_player_character()->get_id(), type, code);
+					_game.get_lua()->add_character(type, code);
 				}
 				else {
-					Character *character = new Character();
-					character->create(type);
-					character->set_name(code);
-					character->loop_animation("walk");
-					_game.get_lua()->add_character(character->get_id(), type, code);
-					game_screen->add_character(character, x, y);
+					game_screen->add_character(type, code, x, y);
+					_game.get_lua()->add_character(type, code);
 				}
 			}
 		}

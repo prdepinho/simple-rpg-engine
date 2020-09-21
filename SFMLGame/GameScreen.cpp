@@ -604,11 +604,25 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 }
 
 void GameScreen::add_character(Character *character, int tile_x, int tile_y) {
+
+
 	characters.push_back(character);
 	put_character_on_tile(*character, tile_x, tile_y);
 }
 
-void GameScreen::add_item(Item *item, int tile_x, int tile_y) {
+void GameScreen::add_character(std::string type, std::string name, int tile_x, int tile_y) {
+	Character *character = new Character();
+	character->create(type);
+	character->set_name(name);
+	character->loop_animation("walk");
+
+	characters.push_back(character);
+	put_character_on_tile(*character, tile_x, tile_y);
+}
+
+void GameScreen::add_item(std::string code, std::string name, std::string type, int tile_x, int tile_y) {
+	Item *item = new Item();
+	item->create(code, name, type);
 	items.push_back(item);
 	put_item_on_tile(*item, tile_x, tile_y);
 }
@@ -618,6 +632,7 @@ void GameScreen::remove_item(std::string code) {
 		Item *item = *it;
 		if (item->get_code() == code) {
 			items.erase(it);
+			delete item;
 			break;
 		}
 	}

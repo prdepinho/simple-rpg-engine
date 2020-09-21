@@ -132,9 +132,9 @@ function rules.new_character()
     },
     total_hp = 10,
     current_hp = 10,
-    weapon = "unarmed",
-    armor = "unarmored",
-    shield = "no_shield",
+    weapon = {code = "", name = "unarmed", type = "weapon"},
+    armor =  {code = "", name = "unarmored", type = "armor"},
+    shield = {code = "", name = "no_shield", type = "shield"},
     inventory = { 
       {code = "", name = "no_item", type = "item"}, 
       {code = "", name = "no_item", type = "item"}, 
@@ -164,9 +164,9 @@ rules.ability_modifier = {
 -- rules
 
 function rules.base_armor_class(defender)
-  local armor = rules.armor[defender.armor]
-  local shield = rules.shield[defender.shield]
-  local weapon = rules.weapon[defender.weapon]
+  local armor = rules.armor[defender.armor.name]
+  local shield = rules.shield[defender.shield.name]
+  local weapon = rules.weapon[defender.weapon.name]
   local ac = armor.ac
   ac = ac + shield.ac_bonus
   ac = ac + weapon.ac_bonus
@@ -177,8 +177,8 @@ end
 function rules.attack_armor_class(attacker, defender)
   local ac = rules.base_armor_class(defender)
 
-  local defender_weapon = rules.weapon[defender.weapon]
-  local attacker_weapon = rules.weapon[attacker.weapon]
+  local defender_weapon = rules.weapon[defender.weapon.name]
+  local attacker_weapon = rules.weapon[attacker.weapon.name]
   if defender_weapon.weight < attacker_weapon.weight then
     ac = ac + 1
   end
@@ -191,10 +191,12 @@ function rules.attack_armor_class(attacker, defender)
 end
 
 function rules.attack_to_hit(attacker, defender)
-  local attacker_weapon = rules.weapon[attacker_weapon]
-  local to_hit = attacker_weapon.armor_adjustment[defender.armor.type]
+  local attacker_weapon = rules.weapon[attacker.weapon.name]
+  local defender_armor = rules.armor[defender.armor.name]
 
-  if attacker.weapon.ranged then
+  local to_hit = attacker_weapon.armor_adjustment[defender_armor.type]
+
+  if attacker_weapon.ranged then
     to_hit = to_hit + rules.ability_modifier[2][attacker.ability.dex]
   else
     to_hit = to_hit + rules.ability_modifier[2][attacker.ability.str]
@@ -221,13 +223,13 @@ function rules.roll_attack(attacker, defender)
   }
 
   -- parameterss
-  local defender_weapon = rules.weapon[defender.weapon]
-  local defender_shield = rules.shield[defender.shield]
-  local defender_armor = rules.armor[defender.armor]
+  local defender_weapon = rules.weapon[defender.weapon.name]
+  local defender_shield = rules.shield[defender.shield.name]
+  local defender_armor = rules.armor[defender.armor.name]
 
-  local attacker_weapon = rules.weapon[attacker.weapon]
-  local attacker_shield = rules.shield[attacker.shield]
-  local attacker_armor = rules.armor[attacker.armor]
+  local attacker_weapon = rules.weapon[attacker.weapon.name]
+  local attacker_shield = rules.shield[attacker.shield.name]
+  local attacker_armor = rules.armor[attacker.armor.name]
 
 
   -- to hit result
@@ -320,9 +322,10 @@ function rules.roll_damage(attacker, defender, hit_result)
   local damage_bonus = rules.ability_modifier[1][attacker.ability.str]
   local result = 0
 
+  local attacker_weapon = rules.weapon[attacker.weapon.name]
   if hit_result.critical_hit then
-    result = result + rules.roll_dice(attacker.weapon.damage)
-    result = result + rules.roll_dice(attacker.weapon.damage)
+    result = result + rules.roll_dice(attacker_weapon.damage)
+    result = result + rules.roll_dice(attacker_weapon.damage)
     result = result + damage_bonus
     print(string.format("Defender receives %d damage from Attacker.", result))
 
@@ -330,7 +333,7 @@ function rules.roll_damage(attacker, defender, hit_result)
     print(string.format("Defender: dead."))
 
   elseif hit_result.hit then
-    result = result + rules.roll_dice(attacker.weapon.damage)
+    result = result + rules.roll_dice(attacker_weapon.damage)
     result = result + damage_bonus
     print(string.format("Defender receives %d damage from Attacker.", result))
 
