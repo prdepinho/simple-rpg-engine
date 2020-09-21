@@ -25,7 +25,9 @@ public:
 	virtual void create() override;
 	void refresh(Character *character);
 private:
+	int margin = 5;
 	std::vector<Font> fonts;
+	Icon portrait;
 };
 
 

@@ -118,8 +118,8 @@ function add_character(id, script, name)
   character_modules[name] = require(script)
   character_modules[name].data = character_data[name]
 
-  if not character_data[name].flag then
-    character_data[name].flag = true
+  if not character_data[name].created then
+    character_data[name].created = true
     character_modules[name].create()
   end
   character_modules[name].enter()
@@ -167,8 +167,8 @@ function change_map(new_map)
 end
 
 function map_enter()
-  if not map_data[current_map].flag then
-    map_data[current_map].flag = true
+  if not map_data[current_map].created then
+    map_data[current_map].created = true
     map_module.create()
   end
   map_module.enter()

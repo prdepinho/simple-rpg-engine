@@ -25,29 +25,50 @@ StatsPanel::StatsPanel(int x, int y) {
 }
 
 void StatsPanel::create() {
-	Panel::create();
-	fonts = std::vector<Font>(6);
+	fonts = std::vector<Font>(7);
 	for (Font &font : fonts) {
 		font = Font();
 		font.set_texture(Resources::get_texture("gui"));
 		add_component(font);
 	}
+	{
+		portrait = Icon(0, 0, 32, 32, 0, 0);
+		portrait.create();
+		add_component(portrait);
+	}
+
+	int h = (fonts[0].line_height() * 7) + portrait.get_height() + (margin * 4);
+	set_dimensions(get_width(), h);
+	Panel::create();
 }
 
 void StatsPanel::refresh(Character *character) {
 	LuaObject stats = _game.get_lua()->character_stats(character->get_name());
+	stats.dump_map();
 
-	int margin = (get_height() - (fonts[0].line_height() * 6)) / 2;
 	int x = get_x() + margin;
-	int y = get_y() - margin / 2;
+	int y = get_y() + margin;
+
+	std::string character_name = stats.get_string("name");
+	fonts.back().draw_line(x, y, character_name, sf::Color::Black);
+
+	y += fonts.back().line_height();
+
+	{
+		int pix_x = stats.get_int("portrait.x");
+		int pix_y = stats.get_int("portrait.y");
+		portrait.set_picture(32, 32, pix_x, pix_y);
+		portrait.set_position(x, y);
+	}
+	y += portrait.get_height() + margin;
 
 	std::vector<std::vector<std::string>> ability_map = {
-		{"str", "Str"},
-		{"dex", "Dex"},
-		{"con", "Con"},
-		{"int", "Int"},
-		{"wis", "Wis"},
-		{"cha", "Cha"}
+		{"ability.str", "Str"},
+		{"ability.dex", "Dex"},
+		{"ability.con", "Con"},
+		{"ability.int", "Int"},
+		{"ability.wis", "Wis"},
+		{"ability.cha", "Cha"}
 	};
 
 	int i = 0;
@@ -59,8 +80,8 @@ void StatsPanel::refresh(Character *character) {
 		std::stringstream ss;
 		ss << str << ": " << value;
 
-		y += fonts[i].line_height();
 		fonts[i].draw_line(x, y, ss.str(), sf::Color::Black);
+		y += fonts[i].line_height();
 		i++;
 	}
 }

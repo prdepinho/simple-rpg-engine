@@ -12,6 +12,8 @@ animation = animations.types.cat_girl
 function M.create()
   M.data.enemy = false
   M.data.stats = rules.new_character()
+  M.data.stats.portrait = {x = 0, y = 224}
+  M.data.stats.name = "Mumu"
 end
 
 function M.enter()

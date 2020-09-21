@@ -835,6 +835,7 @@ void GameScreen::wait_character(Character &character) {
 }
 
 void GameScreen::interact_character(Character &character, int tile_x, int tile_y) {
+	Log("Interaction: %s (%d, %d)", character.get_name().c_str(), tile_x, tile_y);
 
 	auto pos = character_position(character);
 

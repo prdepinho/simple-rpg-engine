@@ -121,12 +121,15 @@ rules.item = {
 
 function rules.new_character() 
   local stats = {
-    str = 10,
-    dex = 10,
-    con = 10,
-    int = 10,
-    wis = 10,
-    cha = 10,
+    name = "character",
+    ability = {
+      str = 10,
+      dex = 10,
+      con = 10,
+      int = 10,
+      wis = 10,
+      cha = 10,
+    },
     total_hp = 10,
     current_hp = 10,
     weapon = "unarmed",
@@ -143,6 +146,7 @@ function rules.new_character()
       {code = "", name = "no_item", type = "item"}, 
     },
     status = { hold = false, poison = false, invisible = false, fear = false, charm = false },
+    portrait = {x = 0, y = 192},
   }
   return stats
 end
@@ -166,7 +170,7 @@ function rules.base_armor_class(defender)
   local ac = armor.ac
   ac = ac + shield.ac_bonus
   ac = ac + weapon.ac_bonus
-  ac = ac + rules.ability_modifier[1][defender.dex]
+  ac = ac + rules.ability_modifier[1][defender.ability.dex]
   return ac
 end
 
@@ -191,9 +195,9 @@ function rules.attack_to_hit(attacker, defender)
   local to_hit = attacker_weapon.armor_adjustment[defender.armor.type]
 
   if attacker.weapon.ranged then
-    to_hit = to_hit + rules.ability_modifier[2][attacker.dex]
+    to_hit = to_hit + rules.ability_modifier[2][attacker.ability.dex]
   else
-    to_hit = to_hit + rules.ability_modifier[2][attacker.str]
+    to_hit = to_hit + rules.ability_modifier[2][attacker.ability.str]
   end
 
   return to_hit
@@ -233,7 +237,7 @@ function rules.roll_attack(attacker, defender)
 
 
   -- armor class calculation
-  local ac_dex = 10 + rules.ability_modifier[2][defender.dex]
+  local ac_dex = 10 + rules.ability_modifier[2][defender.ability.dex]
   local ac_weapon = ac_dex + defender_weapon.ac_bonus
   if defender_weapon.weight < attacker_weapon.weight then
     ac_weapon = ac_weapon + 1
@@ -313,7 +317,7 @@ function rules.roll_attack(attacker, defender)
 end
 
 function rules.roll_damage(attacker, defender, hit_result)
-  local damage_bonus = rules.ability_modifier[1][attacker.str]
+  local damage_bonus = rules.ability_modifier[1][attacker.ability.str]
   local result = 0
 
   if hit_result.critical_hit then
@@ -345,27 +349,27 @@ end
 -- saves
 
 function rules.save_vs_hold(stats)
-  return rules.ability_modifier[2][stats['str']]
+  return rules.ability_modifier[2][stats.ability['str']]
 end
 
 function rules.save_vs_breath(stats)
-  return rules.ability_modifier[2][stats['dex']]
+  return rules.ability_modifier[2][stats.ability['dex']]
 end
 
 function rules.save_vs_poison(stats)
-  return rules.ability_modifier[2][stats['con']]
+  return rules.ability_modifier[2][stats.ability['con']]
 end
 
 function rules.save_vs_illusion(stats)
-  return rules.ability_modifier[2][stats['int']]
+  return rules.ability_modifier[2][stats.ability['int']]
 end
 
 function rules.save_vs_fear(stats)
-  return rules.ability_modifier[2][stats['wis']]
+  return rules.ability_modifier[2][stats.ability['wis']]
 end
 
 function rules.save_vs_charm(stats)
-  return rules.ability_modifier[2][stats['cha']]
+  return rules.ability_modifier[2][stats.ability['cha']]
 end
 
 return rules
