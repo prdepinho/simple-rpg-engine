@@ -35,6 +35,7 @@ public:
 	void set_label(std::string str);
 	void set_centered_label(bool centered) { this->centered = centered; }
 	void set_icon(int tex_x, int tex_y);
+	void set_icon(Icon icon);
 
 private:
 	void center_label();

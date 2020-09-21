@@ -9,10 +9,13 @@ local M = {}
 
 animation = animations.types.cat_girl
 
-function M.enter()
-  print('mumu enter')
+function M.create()
   M.data.enemy = false
   M.data.stats = rules.new_character()
+end
+
+function M.enter()
+  print('mumu enter')
 end
 
 

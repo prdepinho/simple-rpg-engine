@@ -59,6 +59,7 @@ public:
 	int character_base_ac(std::string name);
 	LuaObject item_stats(std::string name, std::string type);
 	void load_initial_item(std::string code, std::string name, std::string type, int x, int y);
+	void loot_item(std::string item_code, std::string character_name);
 
 
 
@@ -274,8 +275,10 @@ public:
 
 	std::string call_function(std::string name);
 	void delete_functions();
+	void dump_map();
 private:
 	void delete_functions_recursive(LuaObject &object);
+	void dump_map_recursive(LuaObject &object, int indent);
 
 private:
 	Lua *lua;

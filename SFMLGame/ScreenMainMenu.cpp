@@ -2,6 +2,7 @@
 #include "Json.h"
 #include "Game.h"
 #include "InputHandler.h"
+#include "SavePanel.h"
 
 ScreenMainMenu::ScreenMainMenu()
 {

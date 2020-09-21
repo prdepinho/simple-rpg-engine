@@ -61,7 +61,7 @@ rules.armor = {
 
 rules.shield = {
   no_shield = { name = "No Shield", ac_bonus = 0, icon = {x = 16*0, y = 16*5} },
-  shield    = { name = "Shield",    ac_bonus = 2, icon = {x = 16*1, y = 16*5} },
+  shield    = { name = "Shield",    ac_bonus = 3, icon = {x = 16*1, y = 16*5} },
 }
 
 -- 
@@ -129,14 +129,19 @@ function rules.new_character()
     cha = 10,
     total_hp = 10,
     current_hp = 10,
-    weapon = rules.weapon.unarmed,
-    armor = rules.armor.unarmored,
-    shield = rules.shield.no_shield,
+    weapon = "unarmed",
+    armor = "unarmored",
+    shield = "no_shield",
     inventory = { 
-      rules.item.no_item, rules.item.no_item,
-      rules.item.no_item, rules.item.no_item,
-      rules.item.no_item, rules.item.no_item,
-      rules.item.no_item, rules.item.no_item },
+      {code = "", name = "no_item", type = "item"}, 
+      {code = "", name = "no_item", type = "item"}, 
+      {code = "", name = "no_item", type = "item"}, 
+      {code = "", name = "no_item", type = "item"}, 
+      {code = "", name = "no_item", type = "item"}, 
+      {code = "", name = "no_item", type = "item"}, 
+      {code = "", name = "no_item", type = "item"}, 
+      {code = "", name = "no_item", type = "item"}, 
+    },
     status = { hold = false, poison = false, invisible = false, fear = false, charm = false },
   }
   return stats
@@ -155,9 +160,12 @@ rules.ability_modifier = {
 -- rules
 
 function rules.base_armor_class(defender)
-  local ac = defender.armor.ac
-  ac = ac + defender.shield.ac_bonus
-  ac = ac + defender.weapon.ac_bonus
+  local armor = rules.armor[defender.armor]
+  local shield = rules.shield[defender.shield]
+  local weapon = rules.weapon[defender.weapon]
+  local ac = armor.ac
+  ac = ac + shield.ac_bonus
+  ac = ac + weapon.ac_bonus
   ac = ac + rules.ability_modifier[1][defender.dex]
   return ac
 end
@@ -165,11 +173,13 @@ end
 function rules.attack_armor_class(attacker, defender)
   local ac = rules.base_armor_class(defender)
 
-  if defender.weapon.weight < attacker.weapon.weight then
+  local defender_weapon = rules.weapon[defender.weapon]
+  local attacker_weapon = rules.weapon[attacker.weapon]
+  if defender_weapon.weight < attacker_weapon.weight then
     ac = ac + 1
   end
 
-  if defender.weapon.size > attacker.weapon.size then
+  if defender_weapon.size > attacker_weapon.size then
     ac = ac + 1
   end
 
@@ -177,7 +187,8 @@ function rules.attack_armor_class(attacker, defender)
 end
 
 function rules.attack_to_hit(attacker, defender)
-  local to_hit = attacker.weapon.armor_adjustment[defender.armor.type]
+  local attacker_weapon = rules.weapon[attacker_weapon]
+  local to_hit = attacker_weapon.armor_adjustment[defender.armor.type]
 
   if attacker.weapon.ranged then
     to_hit = to_hit + rules.ability_modifier[2][attacker.dex]
@@ -205,6 +216,16 @@ function rules.roll_attack(attacker, defender)
     weapon_effective = false,
   }
 
+  -- parameterss
+  local defender_weapon = rules.weapon[defender.weapon]
+  local defender_shield = rules.shield[defender.shield]
+  local defender_armor = rules.armor[defender.armor]
+
+  local attacker_weapon = rules.weapon[attacker.weapon]
+  local attacker_shield = rules.shield[attacker.shield]
+  local attacker_armor = rules.armor[attacker.armor]
+
+
   -- to hit result
   local hit_bonus = rules.attack_to_hit(attacker, defender)
   local die = rules.roll_dice("d20")
@@ -213,17 +234,17 @@ function rules.roll_attack(attacker, defender)
 
   -- armor class calculation
   local ac_dex = 10 + rules.ability_modifier[2][defender.dex]
-  local ac_weapon = ac_dex + defender.weapon.ac_bonus
-  if defender.weapon.weight < attacker.weapon.weight then
+  local ac_weapon = ac_dex + defender_weapon.ac_bonus
+  if defender_weapon.weight < attacker_weapon.weight then
     ac_weapon = ac_weapon + 1
     hit_result.weapon_effective = true
   end
-  if defender.weapon.size > attacker.weapon.size then
+  if defender_weapon.size > attacker_weapon.size then
     ac_weapon = ac_weapon + 1
     hit_result.weapon_effective = true
   end
-  local ac_shield = ac_weapon + defender.shield.ac_bonus
-  local ac_armor = ac_shield + defender.armor.ac - 10
+  local ac_shield = ac_weapon + defender_shield.ac_bonus
+  local ac_armor = ac_shield + defender_armor.ac - 10
 
 
   -- a held character receives no ac bonus for dex, shield or weapon
@@ -231,11 +252,11 @@ function rules.roll_attack(attacker, defender)
     ac_dex = 10
     ac_shield = 10
     ac_weapon = 10
-    ac_armor = defender.armor.ac
+    ac_armor = defender_armor.ac
   end
 
   -- guns ignore weapon, shield or armor ac modifiers
-  if attacker.weapon.gun then
+  if attacker_weapon.gun then
     ac_weapon = ac_dex
     ac_shield = ac_dex
     ac_armor = ac_dex
@@ -244,7 +265,7 @@ function rules.roll_attack(attacker, defender)
 
   local hit_str = ""
 
-  if defender.status.hold and attacker.weapon.cutthroat then
+  if defender.status.hold and attacker_weapon.cutthroat then
     hit_result.cut_throat = true
     print(string.format("Attacker: cut throat!"))
 

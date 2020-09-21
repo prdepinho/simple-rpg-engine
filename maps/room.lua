@@ -1,15 +1,19 @@
 
 package.path = package.path .. ";../maps/?.lua"
-require "common"
+
+local common = require "common"
 
 local M = {}
-M.door = door
+M.door = common.door
 
 
-function M.enter_first_time()
-  M.data.flag = true
+function M.create()
   M.data.door_locked = true
   M.data.has_key = false
+
+  M.data.items["as1"] = {name = "arming_sword", type = "weapon", x = 5, y = 3}
+  M.data.items["ls1"] = {name = "long_sword", type = "weapon", x = 5, y = 3}
+  M.data.items["gs1"] = {name = "gambeson", type = "armor", x = 5, y = 3}
 end
 
 function M.enter()

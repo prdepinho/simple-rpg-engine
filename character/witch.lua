@@ -9,10 +9,13 @@ local M = {}
 
 animation = animations.types.witch
 
-function M.enter()
-  print('witch enter')
+function M.create()
   M.data.enemy = false
   M.data.stats = rules.new_character()
+end
+
+function M.enter()
+  print('witch enter')
 end
 
 

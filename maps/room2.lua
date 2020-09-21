@@ -6,7 +6,7 @@ local M = {}
 
 M.door = door
 
-function M.enter_first_time()
+function M.create()
 end
 
 function M.enter()

@@ -171,7 +171,7 @@ std::map<std::string, std::string> Lua::get_table() {
 
 void Lua::execute_method(std::string method) {
 	lua_getglobal(state, method.c_str());
-	int result = lua_pcall(state, 0, 1, 0);
+	int result = lua_pcall(state, 0, 1, 0);  // the second number parameter has to be 1. If it is 0, memory corruption creeps into the program and random crashes start to happen.
 	if (result != LUA_OK) {
 		throw LuaException(get_error(state));
 	}
@@ -327,6 +327,18 @@ void Lua::load_initial_item(std::string code, std::string name, std::string type
 	lua_pop(state, 1);
 }
 
+void Lua::loot_item(std::string item_code, std::string character_name) {
+	lua_getglobal(state, "loot_item");
+	lua_pushstring(state, item_code.c_str());
+	lua_pushstring(state, character_name.c_str());
+	int result = lua_pcall(state, 2, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << item_code << ": " << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	lua_pop(state, 1);
+}
 
 void Lua::reset_data() {
 	lua_getglobal(state, "reset_data");
@@ -876,5 +888,46 @@ void LuaObject::delete_functions_recursive(LuaObject &object) {
 			break;
 		}
 #endif
+	}
+}
+
+void LuaObject::dump_map() {
+	std::cout << "{" << std::endl;
+	dump_map_recursive(*this, 1);
+	std::cout << "}" << std::endl;
+}
+
+void LuaObject::dump_map_recursive(LuaObject &obj, int indent) {
+	std::string spaces = "";
+	for (int i = 0; i < indent; i++)
+		spaces += "  ";
+
+	switch (obj.type) {
+	case STRING:
+		std::cout << "\"" << obj.get_string() << "\"";
+		break;
+	case NUMBER:
+		std::cout << obj.get_float();
+		break;
+	case BOOLEAN:
+		std::cout << (obj.get_boolean() ? "true" : "false");
+		break;
+	case OBJECT:
+		std::cout << "(table) " << std::endl;
+		{
+			LuaObject *child = obj.get_object();
+			for (auto it = child->begin(); it != child->end(); ++it) {
+				std::cout << spaces << it->first << " = ";
+				dump_map_recursive(it->second, indent + 1);
+				std::cout << std::endl;
+			}
+		}
+		break;
+	case FUNCTION:
+		std::cout << "(function)";
+		break;
+	case NULL_OBJECT:
+		std::cout << "(nil)";
+		break;
 	}
 }

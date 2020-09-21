@@ -706,6 +706,13 @@ public:
 		return 1;
 	}
 
+	static int sfml_remove_item(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		std::string code = lua_tostring(state, -1);
+		screen->remove_item(code);
+		return 1;
+	}
+
 	static int sfml_add_character(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		std::string code = lua_tostring(state, -5);
@@ -755,5 +762,6 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_dialogue", LuaFunction::sfml_dialogue);
 	lua_register(lua.get_state(), "sfml_pan_image", LuaFunction::sfml_pan_image);
 	lua_register(lua.get_state(), "sfml_add_item", LuaFunction::sfml_add_item);
+	lua_register(lua.get_state(), "sfml_remove_item", LuaFunction::sfml_remove_item);
 	lua_register(lua.get_state(), "sfml_add_character", LuaFunction::sfml_add_character);
 }

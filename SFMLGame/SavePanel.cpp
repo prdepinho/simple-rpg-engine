@@ -63,6 +63,8 @@ void SaveOptionMenu::create() {
 			}
 			return true;
 		});
+		if (!allow_save)
+			button.disactivate();
 		add_component(button);
 		button.create();
 		i++;

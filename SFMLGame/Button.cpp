@@ -153,3 +153,13 @@ void Button::set_icon(int pix_x, int pix_y) {
 	icon.create();
 	add_component(icon);
 }
+
+void Button::set_icon(Icon new_icon) {
+	remove_component(icon);
+	icon = new_icon;
+	int x = get_x() + (get_width() / 2) - (16 / 2);
+	int y = get_y() + (get_height() / 2) - (16 / 2);
+	icon.set_position(x, y);
+	icon.create();
+	add_component(icon);
+}

@@ -9,10 +9,13 @@ local M = {}
 
 animation = animations.types.ranger
 
-function M.enter()
-  print('ranger enter')
+function M.create()
   M.data.enemy = true
   M.data.stats = rules.new_character()
+end
+
+function M.enter()
+  print('ranger enter')
 end
 
 

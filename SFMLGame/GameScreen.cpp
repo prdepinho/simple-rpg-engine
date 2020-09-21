@@ -334,8 +334,8 @@ void GameScreen::control_mouse_info() {
 		if (character) {
 			Log("  Character: %s", character->get_name().c_str());
 		}
-		Item *item = get_item_on_tile(tile_x, tile_y);
-		if (item) {
+		std::vector<Item*> items_on_tile= get_items_on_tile(tile_x, tile_y);
+		for (Item *item : items_on_tile) {
 			Log("  Item: %s (%s)", item->get_name().c_str(), item->get_type().c_str());
 		}
 		// do something here
@@ -442,13 +442,18 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 
 	switch (InputHandler::get_control_input(event)) {
 	case Control::A:
+		Log("A");
 		// do
 		{
 			auto position = character_position(*player_character);
-			// loot(position.x, position.y);
+			loot(position.x, position.y);
 		}
 		break;
+	case Control::B:
+		Log("B");
+		break;
 	case Control::START:
+		Log("Start");
 		// open menu
 		block_input = true;
 		CharacterMenu::show(*this, player_character, [&](Component *) {
@@ -457,6 +462,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		});
 		break;
 	case Control::SELECT:
+		Log("Select");
 		// select tile
 		break;
 	}
@@ -605,6 +611,16 @@ void GameScreen::add_character(Character *character, int tile_x, int tile_y) {
 void GameScreen::add_item(Item *item, int tile_x, int tile_y) {
 	items.push_back(item);
 	put_item_on_tile(*item, tile_x, tile_y);
+}
+
+void GameScreen::remove_item(std::string code) {
+	for (auto it = items.begin(); it != items.end(); ++it) {
+		Item *item = *it;
+		if (item->get_code() == code) {
+			items.erase(it);
+			break;
+		}
+	}
 }
 
 void GameScreen::clean_temporary_characters() {
@@ -890,14 +906,15 @@ Character* GameScreen::get_character_on_tile(int tile_x, int tile_y) {
 	return nullptr;
 }
 
-Item *GameScreen::get_item_on_tile(int tile_x, int tile_y) {
+std::vector<Item*> GameScreen::get_items_on_tile(int tile_x, int tile_y) {
+	std::vector<Item*> items_on_tile;
 	for (Item *item : items) {
 		auto position = map.get_tile_coord(item->get_x(), item->get_y());
 		if (position.x == tile_x && position.y == tile_y) {
-			return item;
+			items_on_tile.push_back(item);
 		}
 	}
-	return nullptr;
+	return items_on_tile;
 }
 
 Character *GameScreen::get_character_by_id(long id) {
@@ -935,7 +952,19 @@ void GameScreen::update_field_of_vision(Character *character) {
 
 
 void GameScreen::loot(int tile_x, int tile_y) {
-	get_item_on_tile(tile_x, tile_y);
+	Log("Loot");
+	std::vector<Item*> items_on_tile = get_items_on_tile(tile_x, tile_y);
+	for (Item *item : items_on_tile) {
+		Log("%s: %s (%s)", item->get_code().c_str(), item->get_name().c_str(), item->get_type().c_str());
+	}
+	Log("items: %d", items_on_tile.size());
+	if (items_on_tile.size() > 0) {
+		block_input = true;
+		LootMenu::show(*this, player_character, items_on_tile, [&](Component*) {
+			block_input = false;
+			return true;
+		});
+	}
 }
 
 

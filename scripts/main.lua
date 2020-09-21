@@ -14,6 +14,25 @@ local map_module = {}
 local current_map = ''
 
 
+function loot_item(item_code, character_name)
+  local item = map_data[current_map].items[item_code]
+  for index, item_data in ipairs(character_data[character_name].stats.inventory) do
+    if item_data.code == '' then
+      character_data[character_name].stats.inventory[index] = {
+        code = item_code,
+        name = item.name,
+        type = item.type,
+      }
+      map_data[current_map].items[item_code] = nil
+      sfml_remove_item(item_code)
+      -- return true
+      break
+    end
+  end
+  -- return false
+end
+
+
 function reset_data()
   character_data = {}
   map_data = {}
@@ -74,12 +93,16 @@ function delete_save_game(filename)
 end
 
 function item_stats(name, item_type)
-  return rules[item_type][name]
+  print('name: ' .. name .. ', type: ' .. item_type)
+  if name == '' or item_type == '' then
+    return rules.item.no_item
+  else
+    return rules[item_type][name]
+  end
 end
 
 function character_stats(name)
-  return character_modules[name].data.stats
-  -- return 42
+  return character_data[name].stats
 end
 
 function character_base_ac(name)
@@ -91,8 +114,14 @@ function add_character(id, script, name)
   if character_data[name] == nil then
     character_data[name] = {}
   end
+
   character_modules[name] = require(script)
   character_modules[name].data = character_data[name]
+
+  if not character_data[name].flag then
+    character_data[name].flag = true
+    character_modules[name].create()
+  end
   character_modules[name].enter()
 end
 
@@ -129,6 +158,7 @@ function change_map(new_map)
   current_map = new_map
   if not map_data[current_map] then
     map_data[current_map] = {}
+    map_data[current_map].items = {}
   end
   map_module = {}
   map_module = require(current_map)
@@ -139,9 +169,14 @@ end
 function map_enter()
   if not map_data[current_map].flag then
     map_data[current_map].flag = true
-    map_module.enter_first_time()
+    map_module.create()
   end
   map_module.enter()
+
+  -- populate items
+  for code, item in pairs(map_module.data.items) do
+    sfml_add_item(code, item.name, item.type, item.x, item.y)
+  end
 end
 
 function map_exit()
