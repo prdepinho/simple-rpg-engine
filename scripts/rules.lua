@@ -116,7 +116,8 @@ rules.weapon = {
 }
 
 rules.item = {
-  no_item = { name = "No item", icon = {x = 16*0, y = 16*3} }
+  no_item = { name = "No item", icon = {x = 16*0, y = 16*3}},
+  key = {name = "Key", icon = {x = 16*0, y = 16*9}},
 }
 
 function rules.new_character() 

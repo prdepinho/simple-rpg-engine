@@ -272,6 +272,7 @@ void TiledTilemapDAO::load_map(GameScreen *game_screen, std::string filename, Ti
 				for (int x = left; x < left + width; x++) {
 					for (int y = top; y < top + height; y++) {
 						map.get_tile(x, y).object_name = object.getName();
+						_game.get_lua()->set_map_object(object.getName(), x, y);
 					}
 				}
 			}

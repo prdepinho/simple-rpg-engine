@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="8" height="8" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="27">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="8" height="8" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="28">
  <properties>
   <property name="script" value="room.lua"/>
  </properties>
@@ -36,7 +36,7 @@
 0,0,0,0,0,0,0,0,
 0,130,0,0,0,0,130,0,
 0,115,0,117,0,0,100,0,
-0,0,117,116,117,0,0,0,
+0,0,117,116,117,0,100,0,
 0,0,0,117,0,0,0,0,
 0,115,0,0,0,0,116,0,
 0,0,0,0,0,0,0,0,
@@ -72,7 +72,7 @@
 2,2,2,2,2,2,2,2,
 2,2,2,2,2,2,2,2,
 2,2,0,0,0,0,2,2,
-0,0,0,2,0,0,0,2,
+0,0,0,2,0,0,2,2,
 2,0,0,0,0,0,0,0,
 2,2,0,0,0,0,2,2,
 2,2,2,2,0,2,2,2,
@@ -106,5 +106,6 @@
    </properties>
    <point/>
   </object>
+  <object id="27" name="key_chest" x="100" y="53" width="9.25" height="7.25"/>
  </objectgroup>
 </map>

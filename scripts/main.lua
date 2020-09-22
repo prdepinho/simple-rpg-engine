@@ -159,11 +159,21 @@ function change_map(new_map)
   if not map_data[current_map] then
     map_data[current_map] = {}
     map_data[current_map].items = {}
+    map_data[current_map].objects = {}
   end
   map_module = {}
   map_module = require(current_map)
   map_module.data = map_data[current_map]
   print('Load module: ' .. current_map)
+end
+
+function set_map_object(name, tile_x, tile_y)
+  if not map_data[current_map].created then
+    if map_data[current_map].objects[name] == nil then
+      map_data[current_map].objects[name] = {}
+    end
+    table.insert(map_data[current_map].objects[name], {x = tile_x, y = tile_y})
+  end
 end
 
 function map_enter()
@@ -172,7 +182,6 @@ function map_enter()
     map_module.create()
   end
   map_module.enter()
-
   -- populate items
   for code, item in pairs(map_module.data.items) do
     sfml_add_item(code, item.name, item.type, item.x, item.y)

@@ -66,6 +66,8 @@ private:
 	void control_pan_right();
 	void control_wait();
 
+	void control_loot(int tile_x, int tile_y);
+
 	void control_mouse_move();
 	void control_mouse_info();
 	void control_mouse_pan_hold();
@@ -98,7 +100,6 @@ public:
 	void show_dialogue_box(LuaObject dialogue);
 
 	void clean_temporary_characters();
-	void add_character(Character *character, int tile_x, int tile_y);
 	void add_character(std::string type, std::string name, int tile_x, int tile_y);
 	void update_field_of_vision(Character *character);
 
@@ -109,8 +110,6 @@ public:
 	void put_item_on_tile(Item &item, int x, int y);
 	std::vector<Item*> get_items_on_tile(int tile_x, int tile_y);
 	void clean_items();
-
-	void loot(int tile_x, int tile_y);
 
 	void pan_foreground(std::string filename, int x, int y, float speed_x, float speed_y, float total_time, float still_time);
 	void pan_foreground(LuaObject data);

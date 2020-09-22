@@ -28,6 +28,11 @@ function M.enter()
     sfml_lock_door(false, "north_door")
     print('remove obstacle')
   end
+  if M.data.key_chest_open then
+    local coords = M.data.objects["key_chest"][1]
+    sfml_change_floor_texture(coords.x, coords.y, 2, 4, 6)
+    sfml_lock_door(false, "key_chest")
+  end
 end
 
 function M.exit()
@@ -44,6 +49,19 @@ function M.empty_chest(event, x, y, id)
       sfml_start_animation(id, "use")
     else
       sfml_play_sound("boop.wav")
+    end
+  end
+end
+
+function M.key_chest(event, x, y, id)
+  if event == 'interact' then
+    if not M.data.key_chest_open then
+      M.data.key_chest_open = true
+      M.data.items["room_key1"] = {name = "key", type = "item", x = x, y = y}
+      sfml_add_item("room_key1", "key", "item", x, y)
+      sfml_change_floor_texture(x, y, 2, 4, 6)
+      sfml_lock_door(false, "key_chest")
+      sfml_play_sound("plim.wav")
     end
   end
 end

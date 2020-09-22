@@ -297,6 +297,20 @@ void Lua::change_map(std::string script) {
 	lua_pop(state, 1);
 }
 
+void Lua::set_map_object(std::string name, int x, int y) {
+	lua_getglobal(state, "set_map_object");
+	lua_pushstring(state, name.c_str());
+	lua_pushinteger(state, x);
+	lua_pushinteger(state, y);
+	int result = lua_pcall(state, 3, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << name << ": " << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	lua_pop(state, 1);
+}
+
 void Lua::add_character(std::string script, std::string name) {
 	lua_getglobal(state, "add_character");
 	lua_pushstring(state, script.c_str());

@@ -297,6 +297,22 @@ void GameScreen::control_wait() {
 }
 
 
+void GameScreen::control_loot(int tile_x, int tile_y) {
+	Log("Loot");
+	std::vector<Item*> items_on_tile = get_items_on_tile(tile_x, tile_y);
+	for (Item *item : items_on_tile) {
+		Log("%s: %s (%s)", item->get_code().c_str(), item->get_name().c_str(), item->get_type().c_str());
+	}
+	Log("items: %d", items_on_tile.size());
+	if (items_on_tile.size() > 0) {
+		block_input = true;
+		LootMenu::show(*this, player_character, items_on_tile, [&](Component*) {
+			block_input = false;
+			return true;
+		});
+	}
+}
+
 
 void GameScreen::control_mouse_move() {
 	auto mouse_position = get_mouse_game_position();
@@ -446,7 +462,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		// do
 		{
 			auto position = character_position(*player_character);
-			loot(position.x, position.y);
+			control_loot(position.x, position.y);
 		}
 		break;
 	case Control::B:
@@ -601,13 +617,6 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		break;
 	}
 	return interacted_component;
-}
-
-void GameScreen::add_character(Character *character, int tile_x, int tile_y) {
-
-
-	characters.push_back(character);
-	put_character_on_tile(*character, tile_x, tile_y);
 }
 
 void GameScreen::add_character(std::string type, std::string name, int tile_x, int tile_y) {
@@ -966,22 +975,6 @@ void GameScreen::update_field_of_vision(Character *character) {
 	character->set_field_of_vision(fov);
 }
 
-
-void GameScreen::loot(int tile_x, int tile_y) {
-	Log("Loot");
-	std::vector<Item*> items_on_tile = get_items_on_tile(tile_x, tile_y);
-	for (Item *item : items_on_tile) {
-		Log("%s: %s (%s)", item->get_code().c_str(), item->get_name().c_str(), item->get_type().c_str());
-	}
-	Log("items: %d", items_on_tile.size());
-	if (items_on_tile.size() > 0) {
-		block_input = true;
-		LootMenu::show(*this, player_character, items_on_tile, [&](Component*) {
-			block_input = false;
-			return true;
-		});
-	}
-}
 
 
 void GameScreen::pan_foreground(std::string filename, int x, int y, float speed_x, float speed_y, float total_time, float still_time) {
