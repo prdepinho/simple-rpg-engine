@@ -32,6 +32,31 @@ function loot_item(item_code, character_name)
   return false
 end
 
+-- Drops an item from character's inventory. Returns false if item was not in the inventory.
+function drop_item(item_code, character_name, x, y)
+  for index, item_data in ipairs(character_data[character_name].stats.inventory) do
+    if item_data.code == item_code then
+      map_data[current_map].items[item_code] = {
+        name = item_data.name,
+        type = item_data.type,
+        x = x,
+        y = y,
+      }
+      character_data[character_name].stats.inventory[index] = {code = "", name = "no_item", type = "item"}
+      sfml_add_item(item_code, item_data.name, item_data.type, x, y)
+      return true
+    end
+  end
+  return false
+end
+
+function inventory_exchange_items(index_a, index_b, character_name)
+  print("Exchange: " .. tostring(index_a) .. ' -> ' .. index_b .. ' (' .. character_name .. ')')
+  local tmp = character_data[character_name].stats.inventory[index_a]
+  character_data[character_name].stats.inventory[index_a] = character_data[character_name].stats.inventory[index_b]
+  character_data[character_name].stats.inventory[index_b] = tmp
+end
+
 
 function reset_data()
   character_data = {}

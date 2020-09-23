@@ -8,6 +8,97 @@
 #include "Item.h"
 
 
+
+
+ItemContextMenu::ItemContextMenu() {}
+
+ItemContextMenu::~ItemContextMenu() {}
+
+void ItemContextMenu::create() {
+	buttons = std::vector<Button>(1);
+
+	int w = button_length + margin * 2;
+	int h = (buttons.size() * button_height) + (margin * (buttons.size() + 1));
+	int x = (_game.get_resolution_width() / 2) - (w / 2);
+	int y = (_game.get_resolution_height() / 2) - (h / 2);
+	set_position(x, y);
+	set_dimensions(w, h);
+	Panel::create();
+
+	int i = 0;
+	{
+		x = get_x() + margin;
+		y = get_y() + margin;
+		w = button_length;
+		h = button_height;
+		buttons[i] = Button("Drop", x, y, w, h, [&](Component*) {
+			if (item.get_code() != "") {
+				Log("Drop item: %s", item.get_name().c_str());
+				_game.get_lua()->drop_item(item.get_code(), character->get_name(), tile_x, tile_y);
+			}
+			call_functions(this);
+			get_screen()->remove_component(*this);
+			return true; 
+		});
+		buttons[i].create();
+		add_component(buttons[i]);
+		i++;
+	}
+}
+
+void ItemContextMenu::show(Screen &screen, Item item, Character *character, int x, int y, Callback callback) {
+	static ItemContextMenu menu;
+	menu = ItemContextMenu();
+	menu.item = item;
+	menu.character = character;
+	menu.tile_x = x;
+	menu.tile_y = y;
+	menu.create();
+	menu.add_function(callback);
+	screen.add_component(menu);
+	screen.select(menu.buttons[0]);
+}
+
+Component *ItemContextMenu::on_key_pressed(sf::Keyboard::Key key) {
+	Component *interacted = Panel::on_key_pressed(key);
+	if (interacted) {
+		return interacted;
+	}
+
+	switch (InputHandler::get_control_input(key)) {
+	case Control::UP:
+		if (cursor > 0)
+			cursor--;
+		else
+			cursor = buttons.size() - 1;
+		get_screen()->select(buttons[cursor]);
+		return this;
+
+	case Control::DOWN:
+		if ((size_t) cursor < buttons.size() -1)
+			cursor++;
+		else
+			cursor = 0;
+		get_screen()->select(buttons[cursor]);
+		return this;
+
+	case Control::B:
+		call_functions(this);
+		get_screen()->remove_component(*this);
+		return this;
+
+	}
+	return nullptr;
+}
+
+
+
+
+
+
+
+
+
 void ItemButton::set_item(Item item) { 
 	this->item = item; 
 	set_icon(item.get_icon());
@@ -123,8 +214,19 @@ void Inventory::create() {
 			buttons[k] = ItemButton("", x, y, w, h, [&](Component* c) {
 				Log("Button pressed.");
 				ItemButton *b = dynamic_cast<ItemButton*>(c);
-				std::string name = b->get_item().get_name().c_str();
+				std::string name = b->get_item().get_name();
+				std::string code = b->get_item().get_code();
 				Log("Item: %s", name.c_str());
+				if (code != "") {
+					GameScreen *game_screen = dynamic_cast<GameScreen*>(get_screen());
+					auto position = game_screen->character_position(*character);
+					ItemContextMenu::show(*get_screen(), b->get_item(), character, position.x, position.y, [&](Component *) {
+						Log("After item context menu.");
+						update_items(character);
+						get_screen()->select(buttons[cursor]);
+						return true;
+					});
+				}
 				return true;
 			});
 
@@ -212,6 +314,7 @@ void Inventory::move_cursor(Direction direction) {
 }
 
 void Inventory::update_items(Character *character) {
+	this->character = character;
 	LuaObject object = _game.get_lua()->character_stats(character->get_name());
 	LuaObject *inventory = object.get_object("inventory");
 	for (int i = 0; i < inventory_height * inventory_width; i++) {
@@ -223,6 +326,20 @@ void Inventory::update_items(Character *character) {
 		item.create(code, name, type);
 		buttons[i].set_item(item);
 		buttons[i].set_icon(item.get_icon());
+	}
+	int i = 0;
+	for (auto it = buttons.begin(); it != buttons.end() - 1; ++it, ++i) {
+		if ((*it).get_item().get_code() == "") {
+			int j = i + 1;
+			for (auto next = it + 1; next != buttons.end(); ++next, ++j) {
+				if ((*next).get_item().get_code() != "") {
+					(*it).set_item((*next).get_item());
+					(*next).set_item(Item());
+					_game.get_lua()->inventory_exchange_items(i, j, character->get_name());
+					break;
+				}
+			}
+		}
 	}
 }
 

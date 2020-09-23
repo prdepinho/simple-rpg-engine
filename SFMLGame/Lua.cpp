@@ -355,6 +355,37 @@ bool Lua::loot_item(std::string item_code, std::string character_name) {
 	return rval;
 }
 
+bool Lua::drop_item(std::string item_code, std::string character_name, int x, int y) {
+	lua_getglobal(state, "drop_item");
+	lua_pushstring(state, item_code.c_str());
+	lua_pushstring(state, character_name.c_str());
+	lua_pushinteger(state, x);
+	lua_pushinteger(state, y);
+	int result = lua_pcall(state, 4, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << item_code << ": " << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	bool rval = lua_toboolean(state, -1);
+	lua_pop(state, 1);
+	return rval;
+}
+
+void Lua::inventory_exchange_items(int index_a, int index_b, std::string character_name) {
+	lua_getglobal(state, "inventory_exchange_items");
+	lua_pushinteger(state, index_a + 1);
+	lua_pushinteger(state, index_b + 1);
+	lua_pushstring(state, character_name.c_str());
+	int result = lua_pcall(state, 3, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	lua_pop(state, 1);
+}
+
 void Lua::reset_data() {
 	lua_getglobal(state, "reset_data");
 	int result = lua_pcall(state, 0, 1, 0);

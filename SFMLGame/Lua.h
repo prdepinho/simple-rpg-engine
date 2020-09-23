@@ -61,6 +61,8 @@ public:
 	LuaObject item_stats(std::string name, std::string type);
 	void load_initial_item(std::string code, std::string name, std::string type, int x, int y);
 	bool loot_item(std::string item_code, std::string character_name);
+	bool drop_item(std::string item_code, std::string character_name, int x, int y);
+	void inventory_exchange_items(int index_a, int index_b, std::string character_name);
 
 
 

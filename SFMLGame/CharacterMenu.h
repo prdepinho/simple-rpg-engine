@@ -9,6 +9,28 @@
 #include "Item.h"
 
 
+class ItemContextMenu : public Panel, public CallbackCaller {
+public:
+	ItemContextMenu();
+	~ItemContextMenu();
+	virtual void create() override;
+	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
+	static void show(Screen &screen, Item item, Character *character, int x, int y, Callback callback = Callback());
+private:
+	Item item;
+	Character *character;
+	std::vector<Button> buttons;
+	int tile_x;
+	int tile_y;
+	int margin = 5;
+	int button_length = 50;
+	int button_height = 20;
+	int cursor = 0;
+};
+
+
+
+
 class ItemButton : public Button {
 public:
 	ItemButton(std::string label="", int x = 0, int y = 0, int w = 0, int h = 0, Callback function = Callback()) : Button(label, x, y, w, h, function) {}
@@ -43,6 +65,7 @@ public:
 	int get_button_size() const { return button_size; }
 	void update_items(Character *character);
 private:
+	Character *character;
 	std::vector<ItemButton> buttons;
 	int inventory_width = 2;
 	int inventory_height = 4;
