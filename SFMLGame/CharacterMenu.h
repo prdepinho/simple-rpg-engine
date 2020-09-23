@@ -9,6 +9,7 @@
 #include "Item.h"
 
 class Inventory;
+class CharacterMenu;
 
 class ItemContextMenu : public Panel, public CallbackCaller {
 public:
@@ -48,10 +49,18 @@ public:
 	StatsPanel(int x=0, int y=0);
 	virtual void create() override;
 	void refresh(Character *character);
+	struct EquipmentData {
+		Icon icon;
+		Font name;
+		Font details;
+	};
 private:
 	int margin = 5;
 	std::vector<Font> fonts;
 	Icon portrait;
+	EquipmentData weapon_data;
+	EquipmentData armor_data;
+	EquipmentData shield_data;
 };
 
 
@@ -66,6 +75,7 @@ public:
 	Inventory(int x=0, int y=0);
 	~Inventory();
 	virtual void create() override;
+	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
 	void set_cursor(int i);
 	void move_cursor(Direction direction);
 	int get_button_size() const { return button_size; }
@@ -94,6 +104,7 @@ public:
 	static void show(Screen &screen, Character *character, Callback callback=Callback());
 	static CharacterMenu &get() { static CharacterMenu menu; return menu; }
 	Character *get_character() { return character; }
+	static void refresh_stats();
 private:
 	Character *character;
 	StatsPanel stats_panel;

@@ -15,7 +15,13 @@ ItemContextMenu::ItemContextMenu() {}
 ItemContextMenu::~ItemContextMenu() {}
 
 void ItemContextMenu::create() {
-	buttons = std::vector<Button>(2);
+	bool equipable = item.get_type() == "weapon" || item.get_type() == "armor" || item.get_type() == "shield";
+
+	int buttons_total = 3;
+	if (equipable)
+		buttons_total += 1;
+
+	buttons = std::vector<Button>(buttons_total);
 
 	int w = button_length + margin * 2;
 	int h = (buttons.size() * button_height) + (margin * 2);
@@ -29,6 +35,43 @@ void ItemContextMenu::create() {
 	{
 		x = get_x() + margin;
 		y = get_y() + margin;
+		w = button_length;
+		h = button_height - 1;
+		buttons[i] = Button("Use", x, y, w, h, [&](Component*) {
+			if (item.get_code() != "") {
+				Log("Use item: %s", item.get_name().c_str());
+			}
+			call_functions(this);
+			get_screen()->remove_component(*this);
+			return true; 
+		});
+		buttons[i].create();
+		add_component(buttons[i]);
+		i++;
+	}
+	if (equipable)
+	{
+		x = get_x() + margin;
+		y = buttons[i - 1].get_y() + button_height;
+		w = button_length;
+		h = button_height - 1;
+		buttons[i] = Button("Equip", x, y, w, h, [&](Component*) {
+			if (item.get_code() != "") {
+				Log("Equip item: %s", item.get_name().c_str());
+				_game.get_lua()->equip_item(inventory->get_cursor(), character->get_name());
+				CharacterMenu::refresh_stats();
+			}
+			call_functions(this);
+			get_screen()->remove_component(*this);
+			return true; 
+		});
+		buttons[i].create();
+		add_component(buttons[i]);
+		i++;
+	}
+	{
+		x = get_x() + margin;
+		y = buttons[i - 1].get_y() + button_height;
 		w = button_length;
 		h = button_height - 1;
 		buttons[i] = Button("Move", x, y, w, h, [&](Component*) {
@@ -53,6 +96,7 @@ void ItemContextMenu::create() {
 		buttons[i] = Button("Drop", x, y, w, h, [&](Component*) {
 			if (item.get_code() != "") {
 				_game.get_lua()->drop_item(item.get_code(), character->get_name(), tile_x, tile_y);
+				CharacterMenu::refresh_stats();
 			}
 			call_functions(this);
 			get_screen()->remove_component(*this);
@@ -131,7 +175,7 @@ void ItemButton::set_item(Item item) {
 
 StatsPanel::StatsPanel(int x, int y) {
 	set_position(x, y);
-	set_dimensions(50, (32 * 2) + 2);
+	set_dimensions(150, (32 * 2) + 2);
 }
 
 void StatsPanel::create() {
@@ -145,6 +189,23 @@ void StatsPanel::create() {
 		portrait = Icon(0, 0, 32, 32, 0, 0);
 		portrait.create();
 		add_component(portrait);
+	}
+
+	{
+		std::vector<EquipmentData*> equipment_data = {
+			&weapon_data, &armor_data, &shield_data
+		};
+		for (auto data : equipment_data) {
+			data->icon = Icon(0, 0, 16, 16, 0, 0);
+			data->icon.create();
+			add_component(data->icon);
+			data->name = Font();
+			data->name.set_texture(Resources::get_texture("gui"));
+			add_component(data->name);
+			data->details = Font();
+			data->details.set_texture(Resources::get_texture("gui"));
+			add_component(data->details);
+		}
 	}
 
 	int h = (fonts[0].line_height() * 7) + portrait.get_height() + (margin * 4);
@@ -171,27 +232,91 @@ void StatsPanel::refresh(Character *character) {
 	}
 	y += portrait.get_height() + margin;
 
-	std::vector<std::vector<std::string>> ability_map = {
-		{"ability.str", "Str"},
-		{"ability.dex", "Dex"},
-		{"ability.con", "Con"},
-		{"ability.int", "Int"},
-		{"ability.wis", "Wis"},
-		{"ability.cha", "Cha"}
-	};
+	{
+		std::vector<std::vector<std::string>> ability_map = {
+			{"ability.str", "Str"},
+			{"ability.dex", "Dex"},
+			{"ability.con", "Con"},
+			{"ability.int", "Int"},
+			{"ability.wis", "Wis"},
+			{"ability.cha", "Cha"}
+		};
 
-	int i = 0;
-	for (auto it = ability_map.begin(); it != ability_map.end(); ++it) {
-		std::string key = (*it)[0];
-		std::string str = (*it)[1];
+		int i = 0;
+		for (auto it = ability_map.begin(); it != ability_map.end(); ++it) {
+			std::string key = (*it)[0];
+			std::string str = (*it)[1];
 
-		int value = stats.get_int(key);
+			int value = stats.get_int(key);
+			std::stringstream ss;
+			ss << str << ": " << value;
+
+			fonts[i].draw_line(x, y, ss.str(), sf::Color::Black);
+			y += fonts[i].line_height();
+			i++;
+		}
+	}
+	
+
+	y = get_x() + margin;
+	x += 40;
+	{
+		std::string item_name = stats.get_string("weapon.name");
+		std::string item_type = stats.get_string("weapon.type");
+		LuaObject item = _game.get_lua()->item_stats(item_name, item_type);
+
+		int pix_x = item.get_int("icon.x");
+		int pix_y = item.get_int("icon.y");
+		weapon_data.icon.set_picture(16, 16, pix_x, pix_y);
+		weapon_data.icon.set_position(x, y);
+
+		std::string name = item.get_string("name");
+		std::string damage = item.get_string("damage");
+		int to_hit = _game.get_lua()->character_base_to_hit(character->get_name());
+
+		std::string sign = to_hit >= 0 ? "+" : "";
+
 		std::stringstream ss;
-		ss << str << ": " << value;
+		ss << sign << to_hit << ", " << damage;
 
-		fonts[i].draw_line(x, y, ss.str(), sf::Color::Black);
-		y += fonts[i].line_height();
-		i++;
+		weapon_data.name.draw_line(x + 16, y, name, sf::Color::Black);
+		weapon_data.details.draw_line(x + 16, y + weapon_data.name.line_height(), ss.str(), sf::Color::Black);
+	}
+
+	y += 20;
+	{
+		std::string item_name = stats.get_string("armor.name");
+		std::string item_type = stats.get_string("armor.type");
+		LuaObject item = _game.get_lua()->item_stats(item_name, item_type);
+
+		int pix_x = item.get_int("icon.x");
+		int pix_y = item.get_int("icon.y");
+		armor_data.icon.set_picture(16, 16, pix_x, pix_y);
+		armor_data.icon.set_position(x, y);
+
+		std::string name = item.get_string("name");
+		std::string ac = "ac: " + std::to_string(item.get_int("ac"));
+
+		armor_data.name.draw_line(x + 16, y, name, sf::Color::Black);
+		armor_data.details.draw_line(x + 16, y + armor_data.name.line_height(), ac, sf::Color::Black);
+	}
+
+	y += 20;
+	{
+		std::string item_name = stats.get_string("shield.name");
+		std::string item_type = stats.get_string("shield.type");
+		LuaObject item = _game.get_lua()->item_stats(item_name, item_type);
+
+		int pix_x = item.get_int("icon.x");
+		int pix_y = item.get_int("icon.y");
+		shield_data.icon.set_picture(16, 16, pix_x, pix_y);
+		shield_data.icon.set_position(x, y);
+
+		std::string name = item.get_string("name");
+		std::string ac = "ac bonus: " + std::to_string(item.get_int("ac_bonus"));
+
+		shield_data.name.draw_line(x + 16, y, name, sf::Color::Black);
+		shield_data.details.draw_line(x + 16, y + shield_data.name.line_height(), ac, sf::Color::Black);
 	}
 }
 
@@ -252,7 +377,7 @@ void Inventory::create() {
 				case Inventory::State::SELECT_TO_EXCHANGE:
 					_game.get_lua()->inventory_exchange_items(selected_button_index, cursor, character->get_name());
 					update_items(character);
-					state = Inventory::State::NORMAL;
+					change_state(Inventory::State::NORMAL);
 					break;
 				}
 				return true;
@@ -299,6 +424,45 @@ void Inventory::create() {
 		add_component(buttons[k]);
 	}
 }
+Component *Inventory::on_key_pressed(sf::Keyboard::Key key) {
+	Component *interacted = Panel::on_key_pressed(key);
+	if (interacted) {
+		return interacted;
+	}
+
+	int rval = 0;
+	switch (InputHandler::get_control_input(key)) {
+	case Control::UP:
+		move_cursor(Direction::UP);
+		return this;
+	case Control::DOWN:
+		move_cursor(Direction::DOWN);
+		return this;
+	case Control::LEFT:
+		move_cursor(Direction::LEFT);
+		return this;
+	case Control::RIGHT:
+		move_cursor(Direction::RIGHT);
+		return this;
+	case Control::A:
+		break;
+	case Control::B:
+		if (get_state() != Inventory::State::NORMAL) {
+			change_state(Inventory::State::NORMAL);
+			return this;
+		}
+		break;
+	case Control::START:
+		if (get_state() != Inventory::State::NORMAL) {
+			change_state(Inventory::State::NORMAL);
+			return this;
+		}
+		break;
+	case Control::SELECT:
+		break;
+	}
+	return nullptr;
+}
 
 void Inventory::set_cursor(int i) {
 	get_screen()->select(buttons[i]);
@@ -344,9 +508,11 @@ void Inventory::change_state(Inventory::State state) {
 	switch (state) {
 	case Inventory::State::NORMAL:
 		Log("Change state to: Normal state.");
+		buttons[selected_button_index].hide_outline();
 		break;
 	case Inventory::State::SELECT_TO_EXCHANGE:
 		Log("Change state to: Select to exchange state.");
+		buttons[cursor].show_outline(1, -1, sf::Color::Blue);
 		break;
 	}
 }
@@ -424,23 +590,20 @@ Component *CharacterMenu::on_key_pressed(sf::Keyboard::Key key) {
 	int rval = 0;
 	switch (InputHandler::get_control_input(key)) {
 	case Control::UP:
-		inventory.move_cursor(Direction::UP);
-		return this;
+		break;
 	case Control::DOWN:
-		inventory.move_cursor(Direction::DOWN);
-		return this;
+		break;
 	case Control::LEFT:
-		inventory.move_cursor(Direction::LEFT);
-		return this;
+		break;
 	case Control::RIGHT:
-		inventory.move_cursor(Direction::RIGHT);
-		return this;
+		break;
 	case Control::A:
 		break;
 	case Control::B:
-		if (inventory.get_state() != Inventory::State::SELECT_TO_EXCHANGE)
-			inventory.change_state(Inventory::State::NORMAL);
-		return this;
+		get_screen()->remove_component(*this);
+		get_screen()->select_container();
+		call_functions(this);
+		break;
 	case Control::START:
 		get_screen()->remove_component(*this);
 		get_screen()->select_container();
@@ -482,6 +645,11 @@ void CharacterMenu::show(Screen &screen, Character *character, Callback callback
 	menu.inventory.set_cursor(0);
 }
 
+void CharacterMenu::refresh_stats() {
+	CharacterMenu &menu = get();
+	menu.stats_panel.refresh(menu.character);
+	Overlay::refresh(*menu.get_screen(), menu.character);
+}
 
 
 

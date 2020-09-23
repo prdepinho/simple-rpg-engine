@@ -1,7 +1,7 @@
 
 #include "Entity.h"
 
-Entity::Entity() : show_outline(false) {
+Entity::Entity() {
 	static long global_id = 0;
 	id = global_id++;
 }
@@ -13,13 +13,7 @@ void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	states.transform *= getTransform();
 	states.texture = texture;
 	target.draw(vertices, states);
-	target.draw(outline, states);
-}
-
-void Entity::set_show_outline(bool show) { 
-	show_outline = show; 
-	outline.setOutlineThickness(show ? 1.f : 0.f); 
-	updateOutline();
+	target.draw(outline.shape, states);
 }
 
 void Entity::set_quad(
@@ -51,13 +45,40 @@ void Entity::set_quad_tex_coords(
 	quad[3].texCoords = sf::Vector2f( tex_posX,              tex_posY + tex_height);
 }
 
-void Entity::updateOutline() {
-	outline = sf::RectangleShape(sf::Vector2f((float) get_x(), (float) get_y()));
-	outline.setSize(sf::Vector2f((float) get_width(), (float) get_height()));
-	outline.setOutlineThickness(show_outline ? 1.f : 0.f);
-	outline.setFillColor(sf::Color::Transparent);
-	outline.setOutlineColor(sf::Color::White);
+void Entity::set_show_outline(bool show) { 
+	outline.show = show; 
+	updateOutline();
 }
+
+void Entity::show_outline(int thickness, int size_adjustment, sf::Color color) {
+	outline.thickness = thickness;
+	outline.color = color;
+	outline.size_adjustment = size_adjustment;
+	set_show_outline(true);
+}
+
+void Entity::hide_outline() {
+	set_show_outline(false);
+	outline.color = sf::Color::White;
+}
+
+void Entity::updateOutline() {
+	int x = -outline.size_adjustment;
+	int y = -outline.size_adjustment;
+	int w = get_width() + outline.size_adjustment * 2;
+	int h = get_height() + outline.size_adjustment * 2;
+	outline.shape = sf::RectangleShape();
+	outline.shape.setPosition((float)x, (float)y);
+	outline.shape.setSize(sf::Vector2f((float) w, (float) h));
+	outline.shape.setOutlineThickness(outline.show ? ((float)outline.thickness) : 0.f);
+	outline.shape.setFillColor(sf::Color::Transparent);
+	outline.shape.setOutlineColor(outline.color);
+}
+
+
+
+
+
 
 
 

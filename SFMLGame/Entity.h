@@ -38,6 +38,8 @@ public:
 
 
 	void set_show_outline(bool show);
+	void show_outline(int thickness, int size_adjustment, sf::Color color);
+	void hide_outline();
 
 	void set_quad(
 		sf::Vertex *quad,
@@ -62,10 +64,16 @@ protected:
 	long id;
 
 private:
-	sf::RectangleShape outline;
 	int height;
 	int width;
-	bool show_outline;
+
+	struct {
+		bool show = false;
+		sf::RectangleShape shape;
+		int thickness = 0;
+		int size_adjustment = 0;
+		sf::Color color = sf::Color::White;
+	}outline;
 };
 
 

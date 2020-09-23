@@ -386,6 +386,19 @@ void Lua::inventory_exchange_items(int index_a, int index_b, std::string charact
 	lua_pop(state, 1);
 }
 
+bool Lua::equip_item(int item_index, std::string character_name) {
+	lua_getglobal(state, "equip_item");
+	lua_pushinteger(state, item_index + 1);
+	lua_pushstring(state, character_name.c_str());
+	int result = lua_pcall(state, 2, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	lua_pop(state, 1);
+}
+
 void Lua::reset_data() {
 	lua_getglobal(state, "reset_data");
 	int result = lua_pcall(state, 0, 1, 0);
@@ -472,6 +485,20 @@ LuaObject Lua::character_stats(std::string name) {
 
 int Lua::character_base_ac(std::string name) {
 	lua_getglobal(state, "character_base_ac");
+	lua_pushstring(state, name.c_str());
+	int result = lua_pcall(state, 1, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << name << ": " << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	int ac = (int)lua_tointeger(state, -1);
+	lua_pop(state, 1);
+	return ac;
+}
+
+int Lua::character_base_to_hit(std::string name) {
+	lua_getglobal(state, "character_base_to_hit");
 	lua_pushstring(state, name.c_str());
 	int result = lua_pcall(state, 1, 1, 0);
 	if (result != LUA_OK) {

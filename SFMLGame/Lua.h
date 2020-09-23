@@ -58,11 +58,13 @@ public:
 	void add_character(std::string script, std::string name);
 	LuaObject character_stats(std::string name);
 	int character_base_ac(std::string name);
+	int character_base_to_hit(std::string name);
 	LuaObject item_stats(std::string name, std::string type);
 	void load_initial_item(std::string code, std::string name, std::string type, int x, int y);
 	bool loot_item(std::string item_code, std::string character_name);
 	bool drop_item(std::string item_code, std::string character_name, int x, int y);
 	void inventory_exchange_items(int index_a, int index_b, std::string character_name);
+	bool equip_item(int item_index, std::string character_name);
 
 
 

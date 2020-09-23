@@ -21,6 +21,7 @@ function M.create()
   M.data.items["room_w8"] = {name = "arming_sword", type = "weapon", x = 5, y = 3}
   M.data.items["room_w9"] = {name = "long_sword", type = "weapon", x = 5, y = 3}
   M.data.items["room_a1"] = {name = "gambeson", type = "armor", x = 5, y = 3}
+  M.data.items["room_s1"] = {name = "shield", type = "shield", x = 5, y = 4}
 end
 
 function M.enter()

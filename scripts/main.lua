@@ -14,6 +14,21 @@ local map_module = {}
 local current_map = ''
 
 
+-- Equip an item from character inventory. Return false if item is not equipable.
+function equip_item(item_index, character_name)
+  local item = character_data[character_name].stats.inventory[item_index]
+  if item.type == "weapon" then
+    character_data[character_name].stats.weapon = item
+  elseif item.type == "armor" then
+    character_data[character_name].stats.armor = item
+  elseif item.type == "shield" then
+    character_data[character_name].stats.shield = item
+  else
+    return false
+  end
+  return true
+end
+
 -- Loot item from the ground. Returns false if character inventory is full.
 function loot_item(item_code, character_name)
   local item = map_data[current_map].items[item_code]
@@ -42,8 +57,18 @@ function drop_item(item_code, character_name, x, y)
         x = x,
         y = y,
       }
+
+      if item_code == character_data[character_name].stats.weapon.code then
+        character_data[character_name].stats.weapon = {code = "", name = "unarmed", type = "weapon"}
+      elseif item_code == character_data[character_name].stats.armor.code then
+        character_data[character_name].stats.armor = {code = "", name = "unarmored", type = "armor"}
+      elseif item_code == character_data[character_name].stats.shield.code then
+        character_data[character_name].stats.shield = {code = "", name = "no_shield", type = "shield"}
+      end
+
       character_data[character_name].stats.inventory[index] = {code = "", name = "no_item", type = "item"}
       sfml_add_item(item_code, item_data.name, item_data.type, x, y)
+
       return true
     end
   end
@@ -132,6 +157,11 @@ end
 function character_base_ac(name)
   local stats = character_modules[name].data.stats
   return rules.base_armor_class(stats)
+end
+
+function character_base_to_hit(name)
+  local stats = character_modules[name].data.stats
+  return rules.base_to_hit(stats)
 end
 
 function add_character(script, name)
