@@ -118,7 +118,6 @@ function delete_save_game(filename)
 end
 
 function item_stats(name, item_type)
-  print('name: ' .. name .. ', type: ' .. item_type)
   if name == '' or item_type == '' then
     return rules.item.no_item
   else

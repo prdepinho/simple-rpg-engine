@@ -1,280 +1,268 @@
 M = {}
 M.data = {
+  title = "11:27 2020,9,23",
+  character_data = {
+    ranger = {
+      enemy = true,
+      stats = {
+        total_hp = 10,
+        portrait = {
+          x = 0,
+          y = 192,
+        },
+        name = "character",
+        shield = {
+          code = "",
+          name = "no_shield",
+          type = "shield",
+        },
+        armor = {
+          code = "",
+          name = "unarmored",
+          type = "armor",
+        },
+        inventory = {
+          {
+            code = "",
+            name = "no_item",
+            type = "item",
+          },
+          {
+            code = "",
+            name = "no_item",
+            type = "item",
+          },
+          {
+            code = "",
+            name = "no_item",
+            type = "item",
+          },
+          {
+            code = "",
+            name = "no_item",
+            type = "item",
+          },
+          {
+            code = "",
+            name = "no_item",
+            type = "item",
+          },
+          {
+            code = "",
+            name = "no_item",
+            type = "item",
+          },
+          {
+            code = "",
+            name = "no_item",
+            type = "item",
+          },
+          {
+            code = "",
+            name = "no_item",
+            type = "item",
+          },
+        },
+        weapon = {
+          code = "",
+          name = "unarmed",
+          type = "weapon",
+        },
+        ability = {
+          con = 10,
+          int = 10,
+          wis = 10,
+          cha = 10,
+          str = 10,
+          dex = 10,
+        },
+        status = {
+          charm = false,
+          fear = false,
+          hold = false,
+          poison = false,
+          invisible = false,
+        },
+        current_hp = 10,
+      },
+      created = true,
+    },
+    player = {
+      enemy = false,
+      stats = {
+        total_hp = 10,
+        portrait = {
+          x = 0,
+          y = 224,
+        },
+        name = "Mumu",
+        shield = {
+          code = "",
+          name = "no_shield",
+          type = "shield",
+        },
+        armor = {
+          code = "",
+          name = "unarmored",
+          type = "armor",
+        },
+        inventory = {
+          {
+            code = "room_a1",
+            name = "gambeson",
+            type = "armor",
+          },
+          {
+            code = "room_w8",
+            name = "arming_sword",
+            type = "weapon",
+          },
+          {
+            code = "room_w6",
+            name = "estoc",
+            type = "weapon",
+          },
+          {
+            code = "room_w7",
+            name = "pike",
+            type = "weapon",
+          },
+          {
+            code = "room_w5",
+            name = "maul",
+            type = "weapon",
+          },
+          {
+            code = "room_w4",
+            name = "morning_star",
+            type = "weapon",
+          },
+          {
+            code = "room_w3",
+            name = "falcion",
+            type = "weapon",
+          },
+          {
+            code = "",
+            name = "no_item",
+            type = "item",
+          },
+        },
+        weapon = {
+          code = "",
+          name = "unarmed",
+          type = "weapon",
+        },
+        ability = {
+          con = 10,
+          int = 10,
+          wis = 10,
+          cha = 10,
+          str = 10,
+          dex = 10,
+        },
+        status = {
+          charm = false,
+          fear = false,
+          hold = false,
+          poison = false,
+          invisible = false,
+        },
+        current_hp = 10,
+      },
+      created = true,
+    },
+  },
+  active = true,
   map_data = {
     room = {
-      objects = {
-        door = {
-          {
-            y = 7,
-            x = 4,
-          },
-          {
-            y = 3,
-            x = 0,
-          },
-          {
-            y = 4,
-            x = 7,
-          },
-        },
-        step_floor = {
-          {
-            y = 4,
-            x = 1,
-          },
-          {
-            y = 4,
-            x = 2,
-          },
-          {
-            y = 4,
-            x = 3,
-          },
-          {
-            y = 4,
-            x = 4,
-          },
-          {
-            y = 4,
-            x = 5,
-          },
-          {
-            y = 4,
-            x = 6,
-          },
-        },
-        empty_chest = {
-          {
-            y = 2,
-            x = 6,
-          },
-        },
-        north_door = {
-          {
-            y = 1,
-            x = 4,
-          },
-        },
-        player_position = {
-          {
-            y = 5,
-            x = 4,
-          },
-        },
-        key_chest = {
-          {
-            y = 3,
-            x = 6,
-          },
-        },
-      },
+      door_locked = true,
       has_key = false,
       created = true,
       items = {
-        room_w4 = {
-          y = 3,
-          name = "morning_star",
+        room_w1 = {
+          y = 2,
+          name = "axe",
           type = "weapon",
           x = 5,
         },
-        room_w5 = {
-          y = 3,
-          name = "maul",
-          type = "weapon",
-          x = 5,
-        },
-        room_w9 = {
-          y = 3,
-          name = "long_sword",
-          type = "weapon",
-          x = 5,
-        },
-        room_w8 = {
-          y = 3,
+        room_w2 = {
+          y = 2,
           name = "arming_sword",
           type = "weapon",
           x = 5,
         },
-        room_w6 = {
-          y = 3,
-          name = "estoc",
+        room_w9 = {
+          y = 2,
+          name = "long_sword",
           type = "weapon",
           x = 5,
         },
       },
-      door_locked = true,
-    },
-  },
-  active = true,
-  title = "22:51 2020,9,22",
-  character_data = {
-    player = {
-      created = true,
-      enemy = false,
-      stats = {
-        total_hp = 10,
-        current_hp = 10,
-        inventory = {
+      objects = {
+        empty_chest = {
           {
-            code = "room_a1",
-            type = "armor",
-            name = "gambeson",
-          },
-          {
-            code = "room_w2",
-            type = "weapon",
-            name = "arming_sword",
-          },
-          {
-            code = "room_w7",
-            type = "weapon",
-            name = "pike",
-          },
-          {
-            code = "room_w1",
-            type = "weapon",
-            name = "axe",
-          },
-          {
-            code = "room_w3",
-            type = "weapon",
-            name = "falcion",
-          },
-          {
-            code = "",
-            type = "item",
-            name = "no_item",
-          },
-          {
-            code = "",
-            type = "item",
-            name = "no_item",
-          },
-          {
-            code = "",
-            type = "item",
-            name = "no_item",
+            x = 6,
+            y = 2,
           },
         },
-        portrait = {
-          y = 224,
-          x = 0,
-        },
-        status = {
-          poison = false,
-          fear = false,
-          charm = false,
-          hold = false,
-          invisible = false,
-        },
-        name = "Mumu",
-        weapon = {
-          code = "",
-          type = "weapon",
-          name = "unarmed",
-        },
-        ability = {
-          str = 10,
-          dex = 10,
-          con = 10,
-          cha = 10,
-          int = 10,
-          wis = 10,
-        },
-        armor = {
-          code = "",
-          type = "armor",
-          name = "unarmored",
-        },
-        shield = {
-          code = "",
-          type = "shield",
-          name = "no_shield",
-        },
-      },
-    },
-    ranger = {
-      created = true,
-      enemy = true,
-      stats = {
-        total_hp = 10,
-        current_hp = 10,
-        inventory = {
+        north_door = {
           {
-            code = "",
-            type = "item",
-            name = "no_item",
-          },
-          {
-            code = "",
-            type = "item",
-            name = "no_item",
-          },
-          {
-            code = "",
-            type = "item",
-            name = "no_item",
-          },
-          {
-            code = "",
-            type = "item",
-            name = "no_item",
-          },
-          {
-            code = "",
-            type = "item",
-            name = "no_item",
-          },
-          {
-            code = "",
-            type = "item",
-            name = "no_item",
-          },
-          {
-            code = "",
-            type = "item",
-            name = "no_item",
-          },
-          {
-            code = "",
-            type = "item",
-            name = "no_item",
+            x = 4,
+            y = 1,
           },
         },
-        portrait = {
-          y = 192,
-          x = 0,
+        step_floor = {
+          {
+            x = 1,
+            y = 4,
+          },
+          {
+            x = 2,
+            y = 4,
+          },
+          {
+            x = 3,
+            y = 4,
+          },
+          {
+            x = 4,
+            y = 4,
+          },
+          {
+            x = 5,
+            y = 4,
+          },
+          {
+            x = 6,
+            y = 4,
+          },
         },
-        status = {
-          poison = false,
-          fear = false,
-          charm = false,
-          hold = false,
-          invisible = false,
+        door = {
+          {
+            x = 4,
+            y = 7,
+          },
+          {
+            x = 0,
+            y = 3,
+          },
+          {
+            x = 7,
+            y = 4,
+          },
         },
-        name = "character",
-        weapon = {
-          code = "",
-          type = "weapon",
-          name = "unarmed",
+        player_position = {
+          {
+            x = 4,
+            y = 5,
+          },
         },
-        ability = {
-          str = 10,
-          dex = 10,
-          con = 10,
-          cha = 10,
-          int = 10,
-          wis = 10,
-        },
-        armor = {
-          code = "",
-          type = "armor",
-          name = "unarmored",
-        },
-        shield = {
-          code = "",
-          type = "shield",
-          name = "no_shield",
+        key_chest = {
+          {
+            x = 6,
+            y = 3,
+          },
         },
       },
     },

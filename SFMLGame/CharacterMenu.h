@@ -8,6 +8,7 @@
 #include "consts.h"
 #include "Item.h"
 
+class Inventory;
 
 class ItemContextMenu : public Panel, public CallbackCaller {
 public:
@@ -15,8 +16,9 @@ public:
 	~ItemContextMenu();
 	virtual void create() override;
 	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
-	static void show(Screen &screen, Item item, Character *character, int x, int y, Callback callback = Callback());
+	static void show(Screen &screen, Inventory *inventory, Item item, Character *character, int x, int y, Callback callback = Callback());
 private:
+	Inventory *inventory;
 	Item item;
 	Character *character;
 	std::vector<Button> buttons;
@@ -57,6 +59,10 @@ private:
 
 class Inventory : public Panel {
 public:
+	enum State {
+		NORMAL,
+		SELECT_TO_EXCHANGE,
+	};
 	Inventory(int x=0, int y=0);
 	~Inventory();
 	virtual void create() override;
@@ -64,7 +70,13 @@ public:
 	void move_cursor(Direction direction);
 	int get_button_size() const { return button_size; }
 	void update_items(Character *character);
+	State get_state() const { return state; }
+	void change_state(State state);
+	void set_selected_button_index(int index) { this->selected_button_index = index; }
+	int get_cursor() const { return cursor; }
 private:
+	int selected_button_index;
+	State state = State::NORMAL;
 	Character *character;
 	std::vector<ItemButton> buttons;
 	int inventory_width = 2;

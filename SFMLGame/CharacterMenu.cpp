@@ -15,10 +15,10 @@ ItemContextMenu::ItemContextMenu() {}
 ItemContextMenu::~ItemContextMenu() {}
 
 void ItemContextMenu::create() {
-	buttons = std::vector<Button>(1);
+	buttons = std::vector<Button>(2);
 
 	int w = button_length + margin * 2;
-	int h = (buttons.size() * button_height) + (margin * (buttons.size() + 1));
+	int h = (buttons.size() * button_height) + (margin * 2);
 	int x = (_game.get_resolution_width() / 2) - (w / 2);
 	int y = (_game.get_resolution_height() / 2) - (h / 2);
 	set_position(x, y);
@@ -30,10 +30,28 @@ void ItemContextMenu::create() {
 		x = get_x() + margin;
 		y = get_y() + margin;
 		w = button_length;
-		h = button_height;
+		h = button_height - 1;
+		buttons[i] = Button("Move", x, y, w, h, [&](Component*) {
+			if (item.get_code() != "") {
+				Log("Move item: %s", item.get_name().c_str());
+				inventory->set_selected_button_index(inventory->get_cursor());
+				inventory->change_state(Inventory::State::SELECT_TO_EXCHANGE);
+			}
+			call_functions(this);
+			get_screen()->remove_component(*this);
+			return true; 
+		});
+		buttons[i].create();
+		add_component(buttons[i]);
+		i++;
+	}
+	{
+		x = get_x() + margin;
+		y = buttons[i - 1].get_y() + button_height;
+		w = button_length;
+		h = button_height - 1;
 		buttons[i] = Button("Drop", x, y, w, h, [&](Component*) {
 			if (item.get_code() != "") {
-				Log("Drop item: %s", item.get_name().c_str());
 				_game.get_lua()->drop_item(item.get_code(), character->get_name(), tile_x, tile_y);
 			}
 			call_functions(this);
@@ -46,9 +64,10 @@ void ItemContextMenu::create() {
 	}
 }
 
-void ItemContextMenu::show(Screen &screen, Item item, Character *character, int x, int y, Callback callback) {
+void ItemContextMenu::show(Screen &screen, Inventory *inventory, Item item, Character *character, int x, int y, Callback callback) {
 	static ItemContextMenu menu;
 	menu = ItemContextMenu();
+	menu.inventory = inventory;
 	menu.item = item;
 	menu.character = character;
 	menu.tile_x = x;
@@ -135,7 +154,6 @@ void StatsPanel::create() {
 
 void StatsPanel::refresh(Character *character) {
 	LuaObject stats = _game.get_lua()->character_stats(character->get_name());
-	stats.dump_map();
 
 	int x = get_x() + margin;
 	int y = get_y() + margin;
@@ -212,20 +230,30 @@ void Inventory::create() {
 			int w = button_size - 1;
 			int h = button_size - 1;
 			buttons[k] = ItemButton("", x, y, w, h, [&](Component* c) {
-				Log("Button pressed.");
 				ItemButton *b = dynamic_cast<ItemButton*>(c);
 				std::string name = b->get_item().get_name();
 				std::string code = b->get_item().get_code();
-				Log("Item: %s", name.c_str());
-				if (code != "") {
-					GameScreen *game_screen = dynamic_cast<GameScreen*>(get_screen());
-					auto position = game_screen->character_position(*character);
-					ItemContextMenu::show(*get_screen(), b->get_item(), character, position.x, position.y, [&](Component *) {
-						Log("After item context menu.");
-						update_items(character);
-						get_screen()->select(buttons[cursor]);
-						return true;
-					});
+
+				GameScreen *game_screen = dynamic_cast<GameScreen*>(get_screen());
+				auto position = game_screen->character_position(*character);
+
+				Log("Item index: %d", cursor);
+
+				switch (state) {
+				case Inventory::State::NORMAL:
+					if (code != "") {
+						ItemContextMenu::show(*get_screen(), this, b->get_item(), character, position.x, position.y, [&](Component *) {
+							update_items(character);
+							get_screen()->select(buttons[cursor]);
+							return true;
+						});
+					}
+					break;
+				case Inventory::State::SELECT_TO_EXCHANGE:
+					_game.get_lua()->inventory_exchange_items(selected_button_index, cursor, character->get_name());
+					update_items(character);
+					state = Inventory::State::NORMAL;
+					break;
 				}
 				return true;
 			});
@@ -241,7 +269,6 @@ void Inventory::create() {
 		int x = get_x();
 		int y = buttons[k - 1].get_y() + button_size;
 		buttons[k] = ItemButton("Data", x, y, w, h, [&](Component*) {
-			Log("Data pressed.");
 			SavePanel::show(*get_screen(), [&](Component *) {
 				set_cursor(cursor);
 				return true; 
@@ -255,7 +282,6 @@ void Inventory::create() {
 
 		y = buttons[k - 1].get_y() + button_size;
 		buttons[k] = ItemButton("Exit", x, y, w, h, [&](Component*) {
-			Log("Exit pressed.");
 			ChoicePanel::show("Are you sure you want to exit?", *get_screen(), 
 				[&]() {
 					Log("Yes.");
@@ -313,6 +339,18 @@ void Inventory::move_cursor(Direction direction) {
 	}
 }
 
+void Inventory::change_state(Inventory::State state) {
+	this->state = state;
+	switch (state) {
+	case Inventory::State::NORMAL:
+		Log("Change state to: Normal state.");
+		break;
+	case Inventory::State::SELECT_TO_EXCHANGE:
+		Log("Change state to: Select to exchange state.");
+		break;
+	}
+}
+
 void Inventory::update_items(Character *character) {
 	this->character = character;
 	LuaObject object = _game.get_lua()->character_stats(character->get_name());
@@ -327,6 +365,7 @@ void Inventory::update_items(Character *character) {
 		buttons[i].set_item(item);
 		buttons[i].set_icon(item.get_icon());
 	}
+#if false
 	int i = 0;
 	for (auto it = buttons.begin(); it != buttons.end() - 1; ++it, ++i) {
 		if ((*it).get_item().get_code() == "") {
@@ -341,6 +380,7 @@ void Inventory::update_items(Character *character) {
 			}
 		}
 	}
+#endif
 }
 
 
@@ -398,6 +438,9 @@ Component *CharacterMenu::on_key_pressed(sf::Keyboard::Key key) {
 	case Control::A:
 		break;
 	case Control::B:
+		if (inventory.get_state() != Inventory::State::SELECT_TO_EXCHANGE)
+			inventory.change_state(Inventory::State::NORMAL);
+		return this;
 	case Control::START:
 		get_screen()->remove_component(*this);
 		get_screen()->select_container();
@@ -476,7 +519,6 @@ void Loot::create() {
 				if (item_code != "") {
 					LootMenu *menu = dynamic_cast<LootMenu*>(get_parent());
 					std::string character_name = menu->get_character()->get_name();
-					Log("Item: %s, Character: %s", item_code.c_str(), character_name.c_str());
 					bool rval = _game.get_lua()->loot_item(item_code, character_name);
 					if (rval)
 						b->set_item(Item());
@@ -498,7 +540,6 @@ void Loot::create() {
 		int x = get_x();
 		int y = buttons[k - 1].get_y() + button_size;
 		buttons[k] = ItemButton("Leave", x, y, w, h, [&](Component*) {
-			Log("Leave pressed.");
 			LootMenu *menu = dynamic_cast<LootMenu*>(get_parent());
 			menu->close();
 			return true;
