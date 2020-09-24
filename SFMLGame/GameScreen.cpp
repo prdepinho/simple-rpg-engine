@@ -769,6 +769,11 @@ void GameScreen::schedule_character_interaction(Character &character, int tile_x
 	character.schedule_action(action);
 }
 
+void GameScreen::schedule_character_attack(Character &attacker, Character &defender) {
+	auto *action = new AttackAction(&attacker, &defender);
+	attacker.schedule_action(action);
+}
+
 
 // actions
 
@@ -798,14 +803,14 @@ void GameScreen::move_character(Character &character, Direction direction) {
 	// player character
 	if (&character == player_character) {
 		Effect *effect = new MoveEffect(player_character, direction, 16  / turn_duration);
-		effect->set_on_update([&]() {
+		effect->set_on_update([&](Effect*) {
 			// update camera
 			if (camera_follow) {
 				game_view.setCenter(player_character->getPosition());
 			}
 
 		});
-		effect->set_on_end([&]() {
+		effect->set_on_end([&](Effect*) {
 			sf::Vector2i position = character_position(*player_character);
 			TileData tile = map.get_tile(position.x, position.y);
 			try {
@@ -827,7 +832,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 	// non-player character
 	else {
 		Effect *effect = new MoveEffect(&character, direction, 16 / turn_duration);
-		effect->set_on_end([&]() {
+		effect->set_on_end([&](Effect*) {
 			sf::Vector2i position = character_position(character);
 			TileData tile = map.get_tile(position.x, position.y);
 			try {
@@ -846,7 +851,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 void GameScreen::wait_character(Character &character) {
 	if (&character == player_character) {
 		Effect *effect = new WaitEffect(player_character, turn_duration);
-		effect->set_on_end([&]() {
+		effect->set_on_end([&](Effect*) {
 			player_busy = false;
 		});
 		effects.push_back(effect);
@@ -854,6 +859,25 @@ void GameScreen::wait_character(Character &character) {
 	}
 	else {
 		Effect *effect = new WaitEffect(&character, turn_duration);
+		effects.push_back(effect);
+	}
+}
+
+void GameScreen::attack_character(Character &attacker, Character &defender) {
+	Log("Attack: %s attacks %s", attacker.get_name().c_str(), defender.get_name().c_str());
+	if (&attacker == player_character) {
+		Effect *effect = new AttackEffect(&attacker, &defender, turn_duration);
+		effect->set_on_update([&](Effect*) {
+		});
+		effect->set_on_end([&](Effect*) {
+			Log("On end attack");
+			player_busy = false;
+		});
+		effects.push_back(effect);
+		player_busy = true;
+	}
+	else {
+		Effect *effect = new AttackEffect(&attacker, &defender);
 		effects.push_back(effect);
 	}
 }
@@ -868,7 +892,7 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 			try {
 				Character *target_character = get_character_on_tile(tile_x, tile_y);
 				if (target_character != nullptr) {
-					_game.get_lua()->character_interaction(target_character->get_filename(), target_character->get_name(), target_character->get_id(), character.get_id());
+					_game.get_lua()->character_interaction(target_character->get_name(), character.get_name());
 				}
 				else {
 					TileData tile = map.get_tile(tile_x, tile_y);
@@ -882,7 +906,7 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 
 		if (&character == player_character) {
 			Effect *effect = new WaitEffect(player_character, turn_duration);
-			effect->set_on_end([&]() {
+			effect->set_on_end([&](Effect*) {
 				player_busy = false;
 			});
 			effects.push_back(effect);
@@ -945,6 +969,15 @@ std::vector<Item*> GameScreen::get_items_on_tile(int tile_x, int tile_y) {
 Character *GameScreen::get_character_by_id(long id) {
 	for (Character *character : characters) {
 		if (character->get_id() == id) {
+			return character;
+		}
+	}
+	return nullptr;
+}
+
+Character *GameScreen::get_character_by_name(std::string name) {
+	for (Character *character : characters) {
+		if (character->get_name() == name) {
 			return character;
 		}
 	}

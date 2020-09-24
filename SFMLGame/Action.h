@@ -57,3 +57,14 @@ private:
 	int tile_x;
 	int tile_y;
 };
+
+class AttackAction : public Action {
+public:
+	AttackAction(Character *attacker = nullptr, Character *defender = nullptr)
+		: attacker(attacker), defender(defender) {}
+	virtual void execute(GameScreen *screen) override;
+	virtual std::string to_string() const override { return "AttackAction"; }
+private:
+	Character *attacker;
+	Character *defender;
+};

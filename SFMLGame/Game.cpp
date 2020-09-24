@@ -720,6 +720,16 @@ public:
 		// _game.get_lua()->add_character(character->get_id(), type, code);
 		return 1;
 	}
+
+	static int sfml_attack(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		std::string attacker_name = lua_tostring(state, -2);
+		std::string defender_name = lua_tostring(state, -1);
+		Character *attacker = screen->get_character_by_name(attacker_name);
+		Character *defender = screen->get_character_by_name(defender_name);
+		screen->schedule_character_attack(*attacker, *defender);
+		return 1;
+	}
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -755,4 +765,5 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_add_item", LuaFunction::sfml_add_item);
 	lua_register(lua.get_state(), "sfml_remove_item", LuaFunction::sfml_remove_item);
 	lua_register(lua.get_state(), "sfml_add_character", LuaFunction::sfml_add_character);
+	lua_register(lua.get_state(), "sfml_attack", LuaFunction::sfml_attack);
 }

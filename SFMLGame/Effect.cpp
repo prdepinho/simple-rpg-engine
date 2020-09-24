@@ -32,11 +32,36 @@ void MoveEffect::update(float elapsed_time) {
 			break;
 		}
 	}
-	on_update();
+	on_update(this);
 }
 
 void WaitEffect::update(float elapsed_time) {
 	if ((time_count += elapsed_time) >= seconds) {
 		stop_running();
+	}
+}
+
+void AttackEffect::update(float elapsed_time) {
+	time_count += elapsed_time;
+
+	if (time_count == elapsed_time) {
+		attacker->start_animation("attack");
+	}
+	else {
+#if false
+		if (time_count >= half_seconds) {
+			defender->start_animation("hurt");
+		}
+
+		if (time_count >= seconds) {
+			stop_running();
+		}
+#else
+
+		if (time_count >= seconds) {
+			defender->start_animation("hurt");
+			stop_running();
+		}
+#endif
 	}
 }

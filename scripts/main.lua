@@ -171,6 +171,7 @@ function add_character(script, name)
 
   character_modules[name] = require(script)
   character_modules[name].data = character_data[name]
+  character_modules[name].name = name
 
   if not character_data[name].created then
     character_data[name].created = true
@@ -179,13 +180,13 @@ function add_character(script, name)
   character_modules[name].enter()
 end
 
-function character_on_interact(target_name, target_id, interactor_id)
+function character_on_interact(target_name, interactor_name)
   print('target_name: ' .. target_name)
   if character_modules[target_name] ~= nil then
     if character_modules[target_name].data.enemy then
-      print('enemy')
+      sfml_attack(interactor_name, target_name)
     else
-      character_modules[target_name].on_interact(target_id, interactor_id)
+      character_modules[target_name].on_interact(interactor_name)
     end
   else
     print('character module ' .. target_name .. ' is nil')

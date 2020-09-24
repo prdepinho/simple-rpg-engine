@@ -17,4 +17,5 @@ function common.idle_walk(id)
   end
 end
 
+
 return common

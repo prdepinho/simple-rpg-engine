@@ -16,3 +16,6 @@ void InteractionAction::execute(GameScreen *screen) {
 		screen->interact_character(*character, tile_x, tile_y);
 	}
 }
+void AttackAction::execute(GameScreen *screen) {
+	screen->attack_character(*attacker, *defender);
+}

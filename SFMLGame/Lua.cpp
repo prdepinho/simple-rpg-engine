@@ -270,13 +270,11 @@ void Lua::call_event(std::string function, std::string event, int tile_x, int ti
 	lua_pop(state, 1);
 }
 
-void Lua::character_interaction(std::string filename, std::string target_name, int target_character_id, int character_id) {
+void Lua::character_interaction(std::string target_name, std::string interactor_name) {
 	lua_getglobal(state, "character_on_interact");
-	// lua_pushstring(state, filename.c_str());
 	lua_pushstring(state, target_name.c_str());
-	lua_pushnumber(state, target_character_id);
-	lua_pushnumber(state, character_id);
-	int result = lua_pcall(state, 3, 1, 0);
+	lua_pushstring(state, interactor_name.c_str());
+	int result = lua_pcall(state, 2, 1, 0);
 	if (result != LUA_OK) {
 		std::stringstream ss;
 		ss << get_error(state);

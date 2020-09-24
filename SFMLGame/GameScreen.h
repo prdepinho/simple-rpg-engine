@@ -82,14 +82,17 @@ public:
 	void schedule_character_wait(Character &character, int turns);
 	void schedule_character_movement(Character &character, int tile_x, int tile_y);
 	void schedule_character_interaction(Character &character, int tile_x, int tile_y);
+	void schedule_character_attack(Character &attacker, Character &defender);
 
 	void move_character(Character &character, Direction direction);
 	void wait_character(Character &character);
+	void attack_character(Character &attacker, Character &defender);
 	void interact_character(Character &character, int tile_x, int tile_y);
 
 	bool can_move(Character &character, Direction direction);
 	Character* get_character_on_tile(int tile_x, int tile_y);
 	Character* get_character_by_id(long id);
+	Character *get_character_by_name(std::string name);
 	void put_character_on_tile(Character &character, int x, int y);
 	sf::Vector2i character_position(Character &character);
 

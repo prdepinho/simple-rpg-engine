@@ -19,7 +19,7 @@ local basic_animation = {
     frames = { 1, 0, 2, 0}
   },
   attack = {
-    fps = 2,
+    fps = 4,
     frames = { 3, 4 }
   },
   use = {
@@ -31,7 +31,7 @@ local basic_animation = {
     frames = { 7, 8, 7, 8 }
   },
   hurt = {
-    fps = 2,
+    fps = 4,
     frames = { 9 }
   },
   down = {

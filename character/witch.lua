@@ -30,7 +30,7 @@ function M.on_idle(id)
   -- common.idle_walk(id)
 end
 
-function M.on_interact(id, interactor_id)
+function M.on_interact(interactor_name)
   print('interact with witch')
   local dialogue = {
     start = {
