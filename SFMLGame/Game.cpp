@@ -105,6 +105,7 @@ void Game::configure_game()
 	use_vsync =         lua.get_boolean("use_vsync", Default::USE_VSYNC);
 	limit_framerate =   lua.get_boolean("limit_framerate", Default::LIMIT_FRAMERATE);
 	framerate =         lua.get_int("set_framerate", Default::FRAMERATE);
+	turn_duration =		1.f / lua.get_float("turns_per_second", 1.f);
 
 	int screen_style = sf::Style::Default;
 	if (fullscreen) {

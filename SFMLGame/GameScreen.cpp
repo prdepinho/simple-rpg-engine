@@ -31,7 +31,8 @@ void GameScreen::create() {
 	{
 		turn = 0;
 		turn_count = 0.f;
-		turn_duration = 1 / json.get_float("turns_per_second", 1.f);
+		// turn_duration = 1 / json.get_float("turns_per_second", 1.f);
+		turn_duration = _game.get_turn_duration();
 	}
 	
 	// create player character

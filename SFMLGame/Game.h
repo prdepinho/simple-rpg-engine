@@ -70,6 +70,7 @@ private:
 	bool use_vsync; // don't mix limit_framerate with use_vsync
 	bool limit_framerate;
 	int framerate;
+	float turn_duration;
 
 public:
 	int get_resolution_width() const { return resolution_width; }
@@ -80,6 +81,7 @@ public:
 	bool is_use_vsync() const { return use_vsync; }
 	bool is_limit_framerate() const { return limit_framerate; }
 	int get_framerate() const { return framerate; }
+	float get_turn_duration() const { return turn_duration; }
 
 	void change_resolution(int w, int h, float modifier);
 	void revert_resolution();

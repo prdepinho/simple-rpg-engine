@@ -24,8 +24,13 @@ void Character::create(std::string filename) {
 
 	for (auto &pair : animation_map) {
 		std::string name = pair.first;
-		float fps = pair.second.get_float("fps");
+		int activation_frame = pair.second.get_int("activation_frame", -1);
 		LuaObject *frame_indices = pair.second.get_object("frames");
+#if true
+		float fps = pair.second.get_float("fps");
+#else
+		float fps = frame_indices->size() / _game.get_turn_duration();
+#endif
 
 		std::vector<sf::VertexArray> frames(frame_indices->size());
 
@@ -47,7 +52,7 @@ void Character::create(std::string filename) {
 			frames[i++] = vertices;
 		}
 
-		animations[name] = Animation{ name, frames, fps };
+		animations[name] = Animation{ name, frames, fps, activation_frame };
 	}
 
 	this->name = filename;
@@ -68,11 +73,24 @@ void Character::set_animation(std::string type, bool loop) {
 		});
 	}
 	Animation &animation = animations[type];
+	if (animation.activation_frame > 0) {
+		activation_frame = animation.activation_frame;
+	}
+	else {
+		activation_frame = 0;
+		activation_frame_function = [](void*) {};
+		data = nullptr;
+	}
 	AnimatedEntity::set_animation(animation.frames, animation.fps);
 }
 
 void Character::update(float elapsedTime) {
 	AnimatedEntity::update(elapsedTime);
+	if (frame == activation_frame) {
+		activation_frame_function(data);
+		activation_frame_function = [](void*) {};
+		data = nullptr;
+	}
 }
 
 void Character::face_left() {

@@ -18,6 +18,7 @@ public:
 	std::string type;
 	std::vector<sf::VertexArray> frames;
 	float fps;
+	int activation_frame;
 };
 
 class Character : public AnimatedEntity {
@@ -31,6 +32,8 @@ public:
 	void set_animation(std::string type, bool loop);
 	void start_animation(std::string type) { set_animation(type, false); }
 	void loop_animation(std::string type) { set_animation(type, true); }
+	void start_triggered_animation(std::string type, void *data, std::function<void(void*)> callback) { set_animation(type, false); this->data = data;  activation_frame_function = callback; }
+	void stop_animation() { loop_animation(looping_animation); }
 
 	void face_left();
 	void face_right();
@@ -57,6 +60,10 @@ private:
 
 	std::string current_animation;
 	std::string looping_animation;
+
+	void *data = nullptr;
+	int activation_frame = 0;
+	std::function<void(void*)> activation_frame_function = [](void*) {};
 
 	std::map<std::string, Animation> animations;
 	bool facing_left;

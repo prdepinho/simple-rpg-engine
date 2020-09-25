@@ -63,13 +63,11 @@ public:
 		defender(defender),
 		seconds(seconds)
 	{
-		half_seconds = seconds / 2;
 	}
 	virtual void update(float elapsed_time) override;
 protected:
 	Character *attacker;
 	Character *defender;
 	float seconds = 0.f;
-	float half_seconds = 0.f;
 	float time_count = 0.f;
 };

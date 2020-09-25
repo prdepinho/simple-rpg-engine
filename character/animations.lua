@@ -1,4 +1,7 @@
 
+package.path = package.path .. ";../config/?.lua"
+require "settings"
+
 local animations = {}
 
 local defaults = {
@@ -19,19 +22,20 @@ local basic_animation = {
     frames = { 1, 0, 2, 0}
   },
   attack = {
-    fps = 4,
-    frames = { 3, 4 }
+    fps = 2 * turns_per_second,
+    frames = { 3, 4 },
+    activation_frame = 1,
   },
   use = {
-    fps = 4,
+    fps = 2 * turns_per_second,
     frames = { 5, 6, 5, 6 }
   },
   cast = {
-    fps = 4,
+    fps = 2 * turns_per_second,
     frames = { 7, 8, 7, 8 }
   },
   hurt = {
-    fps = 4,
+    fps = 1 * turns_per_second,
     frames = { 9 }
   },
   down = {

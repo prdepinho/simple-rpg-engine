@@ -43,25 +43,15 @@ void WaitEffect::update(float elapsed_time) {
 
 void AttackEffect::update(float elapsed_time) {
 	time_count += elapsed_time;
-
 	if (time_count == elapsed_time) {
-		attacker->start_animation("attack");
+		attacker->start_triggered_animation("attack", this, [&](void *d) {
+			Log("trigger");
+			defender->start_animation("hurt");
+		});
 	}
 	else {
-#if false
-		if (time_count >= half_seconds) {
-			defender->start_animation("hurt");
-		}
-
 		if (time_count >= seconds) {
 			stop_running();
 		}
-#else
-
-		if (time_count >= seconds) {
-			defender->start_animation("hurt");
-			stop_running();
-		}
-#endif
 	}
 }
