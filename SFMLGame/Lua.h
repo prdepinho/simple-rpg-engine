@@ -65,6 +65,7 @@ public:
 	bool drop_item(std::string item_code, std::string character_name, int x, int y);
 	void inventory_exchange_items(int index_a, int index_b, std::string character_name);
 	bool equip_item(int item_index, std::string character_name);
+	void attack(std::string attacker_name, std::string defender_name);
 
 
 

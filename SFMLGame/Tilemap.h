@@ -56,7 +56,7 @@ class Tilemap {
 	friend class TiledTilemapDAO;
 public:
 	Tilemap() {}
-	~Tilemap();
+	virtual ~Tilemap();
 
 	bool load_floor_layer(sf::Texture *tileset, sf::Vector2u tileSize, const int *tiles, unsigned int width, unsigned int height, unsigned int layers=1);
 	bool load_ceiling_layer(sf::Texture *tileset, sf::Vector2u tileSize, const int *tiles, unsigned int width, unsigned int height, unsigned int layers=1);

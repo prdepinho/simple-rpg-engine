@@ -4,6 +4,19 @@
 
 #include "Game.h"
 
+TimedEffect::TimedEffect(float seconds) : seconds(seconds), count(0.f) {}
+
+TimedEffect::~TimedEffect() {}
+
+void TimedEffect::update(float elapsed_time) {
+	count += elapsed_time;
+	if (count >= seconds)
+		stop_running();
+}
+
+
+
+
 void MoveEffect::update(float elapsed_time) {
 	float pixels_to_move = speed * elapsed_time;
 
@@ -46,6 +59,7 @@ void AttackEffect::update(float elapsed_time) {
 	if (time_count == elapsed_time) {
 		attacker->start_triggered_animation("attack", this, [&](void *d) {
 			Log("trigger");
+			_game.get_lua()->attack(attacker->get_name(), defender->get_name());
 			defender->start_animation("hurt");
 		});
 	}

@@ -6,7 +6,7 @@
 class Item : public Entity {
 public:
 	Item();
-	~Item();
+	virtual ~Item();
 	void create(std::string id, std::string name, std::string type);
 	std::string get_name() const { return name; }
 	std::string get_type() const { return type; }

@@ -397,6 +397,19 @@ bool Lua::equip_item(int item_index, std::string character_name) {
 	lua_pop(state, 1);
 }
 
+void Lua::attack(std::string attacker_name, std::string defender_name) {
+	lua_getglobal(state, "attack");
+	lua_pushstring(state, attacker_name.c_str());
+	lua_pushstring(state, defender_name.c_str());
+	int result = lua_pcall(state, 2, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	lua_pop(state, 1);
+}
+
 void Lua::reset_data() {
 	lua_getglobal(state, "reset_data");
 	int result = lua_pcall(state, 0, 1, 0);

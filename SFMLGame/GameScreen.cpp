@@ -7,6 +7,7 @@
 #include <stack>
 #include "FieldOfVision.h"
 #include "CharacterMenu.h"
+#include "FloatingMessage.h"
 
 GameScreen::~GameScreen() {
 	for (Effect *effect : effects)
@@ -20,6 +21,14 @@ GameScreen::~GameScreen() {
 	for (Item *item : items)
 		delete item;
 	items.clear();
+
+	for (FloatingMessage *floating_message : floating_messages)
+		delete floating_message;
+	floating_messages.clear();
+
+	for (Entity *entity : entities)
+		delete entity;
+	entities.clear();
 }
 
 void GameScreen::create() {
@@ -89,6 +98,10 @@ void GameScreen::draw() {
 	for (Character *character : characters) {
 		window->draw(*character);
 	}
+	for (Entity *entity : entities) {
+		window->draw(*entity);
+	}
+
 	window->draw(map.get_ceiling_layer());
 	if (show_fog_of_war)
 		window->draw(map.get_fog_of_war());
@@ -123,6 +136,11 @@ bool GameScreen::update(float elapsed_time) {
 			character->update(elapsed_time);
 		}
 		map.get_fog_of_war().update(elapsed_time);
+	}
+	{
+		for (Entity *entity : entities) {
+			entity->update(elapsed_time);
+		}
 	}
 
 	// effect handling
@@ -275,19 +293,19 @@ void GameScreen::control_move_right() {
 }
 
 void GameScreen::control_pan_up() {
-	game_view.move(sf::Vector2f{ 0.f, -2.f });
+	pan_game_view(sf::Vector2f{ 0.f, -2.f });
 }
 
 void GameScreen::control_pan_down() {
-	game_view.move(sf::Vector2f{ 0.f, +2.f });
+	pan_game_view(sf::Vector2f{ 0.f, +2.f });
 }
 
 void GameScreen::control_pan_left() {
-	game_view.move(sf::Vector2f{ -2.f, 0.f });
+	pan_game_view(sf::Vector2f{ -2.f, 0.f });
 }
 
 void GameScreen::control_pan_right() {
-	game_view.move(sf::Vector2f{ +2.f, 0.f });
+	pan_game_view(sf::Vector2f{ +2.f, 0.f });
 }
 
 void GameScreen::control_wait() {
@@ -335,15 +353,16 @@ void GameScreen::control_mouse_move() {
 	}
 }
 
+
 void GameScreen::control_mouse_info() {
 	auto mouse_position = get_mouse_game_position();
 	int x = (int)mouse_position.x;
 	int y = (int)mouse_position.y;
+	auto tile_coord = map.get_tile_coord(x, y);
+	int tile_x = tile_coord.x;
+	int tile_y = tile_coord.y;
 
 	if (map.in_bounds(x, y)) {
-		auto tile_coord = map.get_tile_coord(x, y);
-		int tile_x = tile_coord.x;
-		int tile_y = tile_coord.y;
 		auto tile = map.get_tile(tile_x, tile_y);
 		Log("Coordinates: (%d, %d)", tile_x, tile_y);
 		Log("  obstacle: %s", (tile.obstacle ? "true" : "false"));
@@ -356,6 +375,11 @@ void GameScreen::control_mouse_info() {
 			Log("  Item: %s (%s)", item->get_name().c_str(), item->get_type().c_str());
 		}
 		// do something here
+
+		{
+			std::string message = "Position: (" + std::to_string(tile_x) + ", " + std::to_string(tile_y) + ")";
+			add_floating_message(message, tile_x, tile_y, turn_duration * 5);
+		}
 	}
 }
 
@@ -368,9 +392,10 @@ void GameScreen::control_mouse_pan_move() {
 	auto mouse_game_position = get_mouse_game_position();
 	int dif_x = (int)(holding_start_position.x - mouse_game_position.x);
 	int dif_y = (int)(holding_start_position.y - mouse_game_position.y);
-	game_view.move(sf::Vector2f{ (float)dif_x, (float)dif_y });
+	pan_game_view(sf::Vector2f{ (float)dif_x, (float)dif_y });
 	holding_start_position = get_mouse_game_position();
 }
+
 
 void GameScreen::control_mouse_pan_release() {
 	holding_screen = false;
@@ -451,8 +476,11 @@ void GameScreen::poll_events(float elapsed_time) {
 
 Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	Component *interacted_component = Screen::handle_event(event, elapsed_time);
-	if (interacted_component)
-	 	return nullptr;
+
+	// TODO: correct mouse event handling.
+	if (event.type != sf::Event::MouseButtonPressed)
+		if (interacted_component)
+			return nullptr;
 	
 	if (block_input)
 		return nullptr;
@@ -550,7 +578,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				update_field_of_vision(player_character);
 				// update camera
 				if (camera_follow) {
-					game_view.setCenter(player_character->getPosition());
+					center_game_view(player_character->getPosition());
 				}
 				update_field_of_vision(player_character);
 				// update fog of war
@@ -562,7 +590,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				update_field_of_vision(player_character);
 				// update camera
 				if (camera_follow) {
-					game_view.setCenter(player_character->getPosition());
+					center_game_view(player_character->getPosition());
 				}
 				update_field_of_vision(player_character);
 				// update fog of war
@@ -620,6 +648,8 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	return interacted_component;
 }
 
+
+
 void GameScreen::add_character(std::string type, std::string name, int tile_x, int tile_y) {
 	Character *character = new Character();
 	character->create(type);
@@ -667,6 +697,15 @@ void GameScreen::clean_items() {
 	items.clear();
 }
 
+void GameScreen::remove_entity(Entity *entity) {
+	for (auto it = entities.begin(); it != entities.end(); ++it) {
+		if (entity == *it) {
+			it = entities.erase(it);
+			break;
+		}
+	}
+}
+
 // Change to a new map and put the player character to tile_x and tile_y
 void GameScreen::change_map(std::string filename, int tile_x, int tile_y) {
 	_game.get_lua()->execute_method("map_exit");
@@ -707,7 +746,7 @@ void GameScreen::load_map() {
 }
 
 void GameScreen::center_map_on_character(Character &character) {
-	game_view.setCenter(sf::Vector2f((float) character.get_x(), (float) character.get_y()));
+	center_game_view(sf::Vector2f((float) character.get_x(), (float) character.get_y()));
 }
 
 void GameScreen::put_character_on_tile(Character & character, int x, int y) {
@@ -728,7 +767,7 @@ void GameScreen::put_character_on_tile(Character & character, int x, int y) {
 	if (&character == player_character) {
 		// update camera
 		if (camera_follow) {
-			game_view.setCenter(player_character->getPosition());
+			center_game_view(player_character->getPosition());
 		}
 		update_field_of_vision(&character);
 		// update fog of war
@@ -807,7 +846,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 		effect->set_on_update([&](Effect*) {
 			// update camera
 			if (camera_follow) {
-				game_view.setCenter(player_character->getPosition());
+				center_game_view(player_character->getPosition());
 			}
 
 		});
@@ -1049,9 +1088,74 @@ void GameScreen::pan_foreground(LuaObject data) {
 }
 
 
+void GameScreen::pan_game_view(sf::Vector2f v) {
+	game_view.move(v);
+	for (FloatingMessage *floating_message : floating_messages) {
+		Log("Moving floating message %f, %f", v.x, v.y);
+		floating_message->move(-v.x, -v.y);
+		floating_message->create();
+	}
+}
+
+void GameScreen::center_game_view(sf::Vector2f v) {
+	auto center = game_view.getCenter();
+	sf::Vector2f diff = { center.x - v.x, center.y - v.y };
+	game_view.setCenter(v);
+	for (FloatingMessage *floating_message : floating_messages) {
+		floating_message->move(diff.x, diff.y);
+		floating_message->create();
+	}
+}
 
 
 
+void GameScreen::add_floating_message(FloatingMessage *fm) {
+	fm->create();
+	floating_messages.push_back(fm);
+	add_component(*fm);
+}
+
+void GameScreen::add_floating_message(std::string message, int tile_x, int tile_y, float duration) {
+	auto tile_pix_coords = map.get_tile_pix_coords(tile_x, tile_y);
+	auto coords = get_gui_position_over_game(map.get_x() + tile_pix_coords.x, map.get_y() + tile_pix_coords.y);
+	int x = coords.x;
+	int y = coords.y;
+	sf::Color color = sf::Color::White;
+
+	FloatingMessage *floating_message = new FloatingMessage(message, x, y, color);
+	{
+		floating_message->disactivate();
+
+		int width = x + 8 - floating_message->get_message_width() / 2;
+		int height = y - floating_message->get_message_height();
+		floating_message->set_position(width, height);
+
+		floating_message->create();
+		floating_messages.push_back(floating_message);
+		add_component(*floating_message);
+		select(container);
+	}
+
+
+	ComponentEffect *effect = new ComponentEffect(duration, floating_message);
+	effect->set_on_end([&](Effect* e) {
+		ComponentEffect *ce = dynamic_cast<ComponentEffect*>(e);
+		FloatingMessage *fm = dynamic_cast<FloatingMessage*>(ce->get_component());
+		remove_floating_message(fm);
+		delete ce->get_component();
+	});
+	effects.push_back(effect);
+}
+
+void GameScreen::remove_floating_message(FloatingMessage *fm) {
+	for (auto it = floating_messages.begin(); it != floating_messages.end(); ++it) {
+		if (*it == fm) {
+			it = floating_messages.erase(it);
+			remove_component(*fm);
+			break;
+		}
+	}
+}
 
 
 

@@ -21,6 +21,7 @@
 #include "Lua.h"
 #include "InputHandler.h"
 #include "Item.h"
+#include "FloatingMessage.h"
 
 
 class GameScreen : public Screen
@@ -114,6 +115,15 @@ public:
 	std::vector<Item*> get_items_on_tile(int tile_x, int tile_y);
 	void clean_items();
 
+	void remove_entity(Entity *entity);
+
+	void pan_game_view(sf::Vector2f v);
+	void center_game_view(sf::Vector2f v);
+
+	void add_floating_message(FloatingMessage *fm);
+	void add_floating_message(std::string message, int tile_x, int tile_y, float duration);
+	void remove_floating_message(FloatingMessage *fm);
+
 	void pan_foreground(std::string filename, int x, int y, float speed_x, float speed_y, float total_time, float still_time);
 	void pan_foreground(LuaObject data);
 
@@ -130,6 +140,8 @@ private:
 
 	std::vector<Item*> items;
 	std::vector<Effect*> effects;
+	std::vector<Entity*> entities;
+	std::vector<FloatingMessage*> floating_messages;
 
 	std::vector<Character*> characters;
 	Character *player_character;

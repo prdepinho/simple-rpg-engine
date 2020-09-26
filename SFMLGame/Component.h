@@ -26,7 +26,7 @@ public:
 		set_dimensions(0, 0);
 	}
 
-	~Component();
+	virtual ~Component();
 
 	virtual void create();  // create should be called after adding it to its parent component to give the component a screen reference.
 

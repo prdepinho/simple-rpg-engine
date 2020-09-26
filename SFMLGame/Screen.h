@@ -46,6 +46,7 @@ public:
 
 	sf::Vector2f get_mouse_gui_position(); 
 	sf::Vector2f get_mouse_game_position();
+	sf::Vector2f get_gui_position_over_game(float x, float y);
 
 	std::string config_filename;
 

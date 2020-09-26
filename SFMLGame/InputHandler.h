@@ -20,6 +20,7 @@ enum Control {
 class InputHandler {
 public:
 	InputHandler() {}
+	virtual ~InputHandler() {}
 	virtual void poll_events(float elapsed_time) {}
 	virtual void handle_events(sf::Event &event, float elapsed_time) {}
 

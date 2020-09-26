@@ -8,7 +8,7 @@ class Action
 {
 public:
 	Action() {}
-	~Action() {}
+	virtual ~Action() {}
 	virtual void execute(GameScreen *screen) = 0;
 	virtual std::string to_string() const { return "Action"; }
 };
@@ -19,6 +19,7 @@ public:
 	MoveAction(Character *character=nullptr, Direction direction=Direction::UP)
 		: character(character), direction(direction)
 	{}
+	virtual ~MoveAction() {}
 
 	virtual void execute(GameScreen *screen) override;
 	virtual std::string to_string() const override { return "MoveAction"; }

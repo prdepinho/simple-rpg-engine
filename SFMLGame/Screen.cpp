@@ -110,6 +110,20 @@ inline sf::Vector2f Screen::get_mouse_game_position() {
 	return window->mapPixelToCoords(sf::Mouse::getPosition(*window));
 }
 
+// Returns the gui position of coordinates in the game map. TODO: take zoom into account.
+sf::Vector2f Screen::get_gui_position_over_game(float x, float y) {
+	auto gui_center = gui_view.getCenter();
+	auto gui_size = gui_view.getSize();
+	sf::Vector2f gui_origin = {gui_center.x - gui_size.x / 2, gui_center.y - gui_size.y / 2};
+
+	auto game_center = game_view.getCenter();
+	auto game_size = game_view.getSize();
+	sf::Vector2f game_origin = {game_center.x - game_size.x / 2, game_center.y - game_size.y / 2};
+
+	sf::Vector2f diff = { gui_origin.x - game_origin.x, gui_origin.y - game_origin.y };
+	return sf::Vector2f{ x + diff.x, y + diff.y };
+}
+
 void Screen::poll_events(float elapsed_time)
 {
 	try {

@@ -14,6 +14,45 @@ local map_module = {}
 local current_map = ''
 
 
+function attack(attacker_name, defender_name)
+  local attacker = character_data[attacker_name]
+  local defender = character_data[defender_name]
+  local hit_result = rules.roll_attack(attacker.stats, defender.stats)
+  local damage = rules.roll_damage(attacker.stats, defender.stats, hit_result)
+
+  local position = sfml_get_character_position_by_name(defender_name)
+  local x = position.x
+  local y = position.y
+  local msg = ''
+
+  if hit_result.critical_hit then
+    msg = "Critical: " .. tostring(damage)
+    sfml_play_sound("tcsh.wav")
+
+  elseif hit_result.critical_miss then
+    msg = "Critical miss!"
+    sfml_play_sound("bleep.wav")
+
+  elseif hit_result.cut_throat then
+    msg = "Dead!"
+    sfml_play_sound("tcsh.wav")
+
+  elseif hit_result.hit then
+    msg = tostring(damage)
+    sfml_play_sound("tcsh.wav")
+
+  elseif hit_result.miss then
+    msg = "Miss!"
+    sfml_play_sound("bleep.wav")
+
+  elseif hit_result.weapon_effective then
+    msg = "Ineffective!"
+    sfml_play_sound("bleep.wav")
+  end
+
+  sfml_show_floating_message(msg, x, y)
+end  
+
 -- Equip an item from character inventory. Return false if item is not equipable.
 function equip_item(item_index, character_name)
   local item = character_data[character_name].stats.inventory[item_index]

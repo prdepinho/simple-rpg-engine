@@ -10,6 +10,7 @@ public:
 		on_update([&](Effect*) {}),
 		on_end([&](Effect*) {})
 	{ }
+	virtual ~Effect() {}
 
 	virtual void update(float elapsed_time) { stop_running(); }
 
@@ -24,6 +25,38 @@ protected:
 private:
 	bool running;
 };
+
+class TimedEffect : public Effect {
+public:
+	TimedEffect(float seconds=0.f);
+	virtual ~TimedEffect();
+	virtual void update(float elapsed_time) override;
+private:
+	float seconds;
+	float count;
+};
+
+
+class Component;
+class ComponentEffect : public TimedEffect {
+public:
+	ComponentEffect(float seconds=0.f, Component *component=nullptr) : TimedEffect(seconds), component(component) {}
+	virtual ~ComponentEffect() {}
+	Component *get_component() { return component; }
+private:
+	Component *component;
+};
+
+class Entity;
+class EntityEffect : public TimedEffect {
+public:
+	EntityEffect(float seconds=0.f, Entity *entity=nullptr) : TimedEffect(seconds), entity(entity) {}
+	virtual ~EntityEffect() {}
+	Entity *get_entity() { return entity; }
+private:
+	Entity *entity;
+};
+
 
 class MoveEffect : public Effect {
 public:

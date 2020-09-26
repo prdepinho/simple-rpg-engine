@@ -24,7 +24,7 @@ public:
 class Character : public AnimatedEntity {
 public:
 	Character(bool permanent=false);
-	~Character();
+	virtual ~Character();
 
 	void create(std::string filename);
 	virtual void update(float elapsedTime) override;

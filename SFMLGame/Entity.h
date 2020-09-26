@@ -80,6 +80,7 @@ private:
 class AnimatedEntity : public Entity {
 public:
 	AnimatedEntity();
+	virtual ~AnimatedEntity() {}
 
 	virtual void update(float elapsedTime);
 	void set_animation(std::vector<sf::VertexArray> animation, float fps);

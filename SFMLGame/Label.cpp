@@ -10,8 +10,8 @@ Label::~Label()
 Label::Label(std::string text, int x, int y, sf::Color text_color) 
 {
 	set_position(x, y);
-	set_text(text);
 	this->text_color = text_color;
+	set_text(text);
 }
 
 void Label::create() {

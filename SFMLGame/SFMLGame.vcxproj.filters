@@ -272,6 +272,9 @@
     <ClCompile Include="SavePanel.cpp">
       <Filter>gui</Filter>
     </ClCompile>
+    <ClCompile Include="FloaringMessage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lua5.3.5\lapi.h">
@@ -471,6 +474,9 @@
     </ClInclude>
     <ClInclude Include="Time.h">
       <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="FloatingMessage.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

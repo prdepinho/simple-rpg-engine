@@ -140,6 +140,7 @@
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="FieldOfVision.cpp" />
+    <ClCompile Include="FloaringMessage.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Icon.cpp" />
@@ -221,6 +222,7 @@
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FieldOfVision.h" />
+    <ClInclude Include="FloatingMessage.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Callback.h" />

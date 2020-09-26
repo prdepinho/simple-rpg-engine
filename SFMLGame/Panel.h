@@ -11,7 +11,7 @@ public:
 		set_dimensions(width, height);
 	}
 
-	~Panel() {}
+	virtual ~Panel() {}
 
 	virtual void create() override;
 protected:
@@ -24,7 +24,7 @@ class MessagePanel : public Panel {
 public:
 	MessagePanel(std::string msg="", int x = 0, int y = 0, int width = 80, int height = 60) 
 		: Panel(x, y, width, height), message(msg) { }
-	~MessagePanel() {}
+	virtual ~MessagePanel() {}
 
 	static void show(std::string msg, Screen &screen);
 	virtual void create() override;
@@ -39,6 +39,7 @@ class ChoicePanel : public Panel {
 public:
 	ChoicePanel(std::string msg = "", int x = 0, int y = 0, int width = 80, int height = 60) 
 		: Panel(x, y, width, height), message(msg) { }
+	virtual ~ChoicePanel() {}
 
 	static void show(std::string msg, Screen &screen, std::function<void()> yes_func = []() {}, std::function<void()> no_func = []() {}, bool default_yes=false);
 	virtual void create() override;
