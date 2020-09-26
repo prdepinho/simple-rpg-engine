@@ -270,7 +270,8 @@ public:
 		return 1;
 	}
 
-	static int sfml_get_character_position_by_name(lua_State *state) {
+#if true
+	static int sfml_get_character_position(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		std::string name = lua_tostring(state, -1);
 		Character *character = screen->get_character_by_name(name);
@@ -287,7 +288,7 @@ public:
 		}
 		return 1;
 	}
-
+#else
 	static int sfml_get_character_position(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		int id = (int) lua_tointeger(state, -1);
@@ -305,6 +306,7 @@ public:
 		}
 		return 1;
 	}
+#endif
 
 	static int sfml_move(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
@@ -754,8 +756,8 @@ public:
 	static int sfml_show_floating_message(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		std::string message = lua_tostring(state, -3);
-		int tile_x = lua_tointeger(state, -2);
-		int tile_y = lua_tointeger(state, -1);
+		int tile_x = (int)lua_tointeger(state, -2);
+		int tile_y = (int)lua_tointeger(state, -1);
 		screen->add_floating_message(message, tile_x, tile_y, _game.get_turn_duration() * 5);
 		return 1;
 	}
@@ -773,7 +775,6 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_move", LuaFunction::sfml_move);
 	lua_register(lua.get_state(), "sfml_wait", LuaFunction::sfml_wait);
 	lua_register(lua.get_state(), "sfml_get_character_position", LuaFunction::sfml_get_character_position);
-	lua_register(lua.get_state(), "sfml_get_character_position_by_name", LuaFunction::sfml_get_character_position_by_name);
 	lua_register(lua.get_state(), "sfml_get_player_position", LuaFunction::sfml_get_player_position);
 	lua_register(lua.get_state(), "sfml_clear_schedule", LuaFunction::sfml_clear_schedule);
 	lua_register(lua.get_state(), "sfml_get_tile", LuaFunction::sfml_get_tile);

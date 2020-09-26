@@ -20,7 +20,7 @@ end
 
 
 function M.on_turn(id)
-  local position = sfml_get_character_position(id)
+  -- local position = sfml_get_character_position(M.name)
   -- print('ranger position: x: ' .. tostring(position.x) .. ', y: ' .. tostring(position.y))
 end
 

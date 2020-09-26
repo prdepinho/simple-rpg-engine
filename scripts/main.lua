@@ -20,7 +20,7 @@ function attack(attacker_name, defender_name)
   local hit_result = rules.roll_attack(attacker.stats, defender.stats)
   local damage = rules.roll_damage(attacker.stats, defender.stats, hit_result)
 
-  local position = sfml_get_character_position_by_name(defender_name)
+  local position = sfml_get_character_position(defender_name)
   local x = position.x
   local y = position.y
   local msg = ''
