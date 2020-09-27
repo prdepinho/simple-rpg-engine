@@ -498,18 +498,18 @@ public:
 
 	static int sfml_start_animation(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
-		int id = (int)lua_tointeger(state, -2);
+		std::string name = lua_tostring(state, -2);
 		std::string type = lua_tostring(state, -1);
-		Character *character = screen->get_character_by_id(id);
+		Character *character = screen->get_character_by_name(name);
 		character->start_animation(type);
 		return 1;
 	}
 
 	static int sfml_loop_animation(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
-		int id = (int)lua_tointeger(state, -2);
+		std::string name = lua_tostring(state, -2);
 		std::string type = lua_tostring(state, -1);
-		Character *character = screen->get_character_by_id(id);
+		Character *character = screen->get_character_by_name(name);
 		character->loop_animation(type);
 		return 1;
 	}

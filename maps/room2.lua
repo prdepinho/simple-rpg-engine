@@ -19,7 +19,7 @@ end
 
 
 
-function M.north_door(event, x, y, id)
+function M.north_door(event, x, y, character_name)
   if event == "enter_tile" then
     sfml_change_floor_texture(x, y, 1, 1, 9)
     sfml_play_sound("tcsh.wav")

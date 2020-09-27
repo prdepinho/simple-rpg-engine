@@ -12,6 +12,11 @@ animation = animations.types.ranger
 function M.create()
   M.data.enemy = true
   M.data.stats = rules.new_character()
+  M.data.stats.weapon =       {code = "ranger_w", name = "halberd", type = "weapon"}
+  M.data.stats.armor =        {code = "ranger_a", name = "leather_armor", type = "armor"}
+  M.data.stats.shield =       {code = "", name = "no_shield", type = "shield"}
+  M.data.stats.inventory[0] = {code = "ranger_i", name = "shield", type = "shield"}
+  M.data.stats.inventory[1] = {code = "ranger_w2", name = "dagger", type = "weapon"}
 end
 
 function M.enter()

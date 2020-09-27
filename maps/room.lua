@@ -40,21 +40,21 @@ function M.exit()
   print('room.map: exit')
 end
 
-function M.empty_chest(event, x, y, id)
+function M.empty_chest(event, x, y, character_name)
   if event == 'interact' then
     if not M.data.has_key then
       sfml_text_box("Got key.");
       sfml_play_sound("plim.wav")
       sfml_change_floor_texture(x, y, 2, 4, 6)
       M.data.has_key = true
-      sfml_start_animation(id, "use")
+      sfml_start_animation(character_name, "use")
     else
       sfml_play_sound("boop.wav")
     end
   end
 end
 
-function M.key_chest(event, x, y, id)
+function M.key_chest(event, x, y, character_name)
   if event == 'interact' then
     if not M.data.key_chest_open then
       M.data.key_chest_open = true
@@ -67,7 +67,7 @@ function M.key_chest(event, x, y, id)
   end
 end
 
-function M.north_door(event, x, y, id)
+function M.north_door(event, x, y, character_name)
   M.door(event, x, y)
   if event == 'interact' then
     if M.data.door_locked then
@@ -76,7 +76,7 @@ function M.north_door(event, x, y, id)
         sfml_play_sound("plim.wav")
         M.data.door_locked = false
         sfml_set_obstacle(false, x, y)
-        sfml_start_animation(id, "use")
+        sfml_start_animation(character_name, "use")
       else
         sfml_text_box("The door is loked.")
         sfml_play_sound("boop.wav")

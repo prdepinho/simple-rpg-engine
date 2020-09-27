@@ -254,13 +254,13 @@ void Lua::call(std::string function, int tile_x, int tile_y) {
 	lua_pop(state, 1);
 }
 
-void Lua::call_event(std::string function, std::string event, int tile_x, int tile_y, int character_id) {
+void Lua::call_event(std::string function, std::string event, int tile_x, int tile_y, std::string character_name) {
 	lua_getglobal(state, "map_event");
 	lua_pushstring(state, function.c_str());
 	lua_pushstring(state, event.c_str());
 	lua_pushnumber(state, tile_x);
 	lua_pushnumber(state, tile_y);
-	lua_pushnumber(state, character_id);
+	lua_pushstring(state, character_name.c_str());
 	int result = lua_pcall(state, 5, 1, 0);
 	if (result != LUA_OK) {
 		std::stringstream ss;

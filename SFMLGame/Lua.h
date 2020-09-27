@@ -51,7 +51,7 @@ public:
 	void on_turn(Character &character);
 	void on_interact(Character &character, int tile_x, int tile_y);
 	void call(std::string function, int tile_x, int tile_y);
-	void call_event(std::string function, std::string event, int tile_x, int tile_y, int character_id);
+	void call_event(std::string function, std::string event, int tile_x, int tile_y, std::string character_name);
 	void character_interaction(std::string target_name, std::string interactor_name);
 	void change_map(std::string script);
 	void set_map_object(std::string name, int x, int y);

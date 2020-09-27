@@ -21,8 +21,6 @@ function attack(attacker_name, defender_name)
   local damage_result = rules.roll_damage(attacker.stats, defender.stats, hit_result)
 
   local position = sfml_get_character_position(defender_name)
-  local x = position.x
-  local y = position.y
   local fmsg = ''
   local hit_msg = attacker.stats.name .. ' - ';
   local dmg_msg = defender.stats.name .. ' - ';
@@ -51,7 +49,7 @@ function attack(attacker_name, defender_name)
 
     sfml_push_log(hit_msg)
     sfml_push_log(dmg_msg)
-    sfml_show_floating_message(fmsg, x, y)
+    sfml_show_floating_message(fmsg, position.x, position.y)
 
   elseif hit_result.critical_miss then
     fmsg = "Critical miss!"
@@ -60,14 +58,14 @@ function attack(attacker_name, defender_name)
     sfml_play_sound("bleep.wav")
 
     sfml_push_log(hit_msg)
-    sfml_show_floating_message(fmsg, x, y)
+    sfml_show_floating_message(fmsg, position.x, position.y)
 
   elseif hit_result.cut_throat then
     fmsg = "Dead!"
     sfml_play_sound("tcsh.wav")
 
     sfml_push_log(hit_msg)
-    sfml_show_floating_message(fmsg, x, y)
+    sfml_show_floating_message(fmsg, position.x, position.y)
 
   elseif hit_result.hit then
     fmsg = tostring(damage_result.total_damage)
@@ -83,7 +81,7 @@ function attack(attacker_name, defender_name)
 
     sfml_push_log(hit_msg)
     sfml_push_log(dmg_msg)
-    sfml_show_floating_message(fmsg, x, y)
+    sfml_show_floating_message(fmsg, position.x, position.y)
 
   elseif hit_result.parried then
     fmsg = "Parried!"
@@ -92,7 +90,7 @@ function attack(attacker_name, defender_name)
     sfml_play_sound("bleep.wav")
 
     sfml_push_log(hit_msg)
-    sfml_show_floating_message(fmsg, x, y)
+    sfml_show_floating_message(fmsg, position.x, position.y)
 
   elseif hit_result.dodged then
     fmsg = "Dodged!"
@@ -101,7 +99,7 @@ function attack(attacker_name, defender_name)
     sfml_play_sound("bleep.wav")
 
     sfml_push_log(hit_msg)
-    sfml_show_floating_message(fmsg, x, y)
+    sfml_show_floating_message(fmsg, position.x, position.y)
 
   elseif hit_result.hit_armor then
     fmsg = "Hit Armor!"
@@ -110,7 +108,7 @@ function attack(attacker_name, defender_name)
     sfml_play_sound("bleep.wav")
 
     sfml_push_log(hit_msg)
-    sfml_show_floating_message(fmsg, x, y)
+    sfml_show_floating_message(fmsg, position.x, position.y)
 
   elseif hit_result.miss then
     fmsg = "Missed!"
@@ -119,7 +117,17 @@ function attack(attacker_name, defender_name)
     sfml_play_sound("bleep.wav")
 
     sfml_push_log(hit_msg)
-    sfml_show_floating_message(fmsg, x, y)
+    sfml_show_floating_message(fmsg, position.x, position.y)
+  end
+
+  if damage_result.total_damage > 0 then
+    defender.stats.current_hp = defender.stats.current_hp - damage_result.total_damage
+    print(defender.stats.name .. ' hp: ' .. tostring(defender.stats.current_hp))
+    if defender.stats.current_hp <= 0 then
+      print('dead')
+      sfml_push_log(defender.stats.name .. ' - Dead!')
+      sfml_loop_animation(defender_name, "dead")
+    end
   end
 
 end  

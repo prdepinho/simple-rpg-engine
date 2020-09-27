@@ -2,7 +2,7 @@
 local M = {}
 
 -- global function that acts as the default behavior for doors.
-door = function(event, x, y, id)
+door = function(event, x, y, character_name)
   print('open_door')
   if event == "enter_tile" then
     tile = sfml_get_tile(x, y)

@@ -849,7 +849,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 		TileData &tile = map.get_tile(position.x, position.y);
 		tile.obstacle = true;
 		// map.get_script()->call_event(tile.object_name, "enter_tile", position.x, position.y, character.get_id());
-		_game.get_lua()->call_event(tile.object_name, "enter_tile", position.x, position.y, character.get_id());
+		_game.get_lua()->call_event(tile.object_name, "enter_tile", position.x, position.y, character.get_name());
 	}
 	catch (LuaException &e) {
 		// Log("Lua Error: %s", e.what());
@@ -870,7 +870,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 			TileData tile = map.get_tile(position.x, position.y);
 			try {
 				// map.get_script()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_id());
-				_game.get_lua()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_id());
+				_game.get_lua()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_name());
 			}
 			catch (LuaException &e) {
 				// Log("Lua Error: %s", e.what());
@@ -892,7 +892,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 			TileData tile = map.get_tile(position.x, position.y);
 			try {
 				// map.get_script()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_id());
-				_game.get_lua()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_id());
+				_game.get_lua()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_name());
 			}
 			catch (LuaException &e) {
 				// Log("Lua Error: %s", e.what());
@@ -951,7 +951,7 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 				}
 				else {
 					TileData tile = map.get_tile(tile_x, tile_y);
-					_game.get_lua()->call_event(tile.object_name, "interact", tile_x, tile_y, character.get_id());
+					_game.get_lua()->call_event(tile.object_name, "interact", tile_x, tile_y, character.get_name());
 				}
 			}
 			catch (LuaException &e) {
