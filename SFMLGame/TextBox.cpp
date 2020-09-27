@@ -209,6 +209,9 @@ void TextBox::push_text(std::string text) {
 	end_line = std::min(start_line + page_lines, text_lines.size());
 	completely_written = false;
 	update_view();
+
+	GameScreen *gs = dynamic_cast<GameScreen*>(get_screen());
+	gs->get_log_box().push_line(text);
 }
 
 Component *TextBox::on_pressed(int x, int y) {
@@ -234,6 +237,9 @@ void TextBox::show(std::string text, Screen &screen, Callback callback) {
 	int y = x;
 	text_box.set_position(x, y);
 	screen.add_component(text_box);
+
+	GameScreen *gs = dynamic_cast<GameScreen*>(&screen);
+	gs->get_log_box().push_line(text);
 }
 
 void TextBox::update_view() {
@@ -563,6 +569,7 @@ void DialogueBox::next() {
 				std::string dst = it->second.get_string("go_to");
 				options_panel.add_option(text, dst, [&](Component* c) {
 					OptionButton *button = dynamic_cast<OptionButton*>(c);
+					push_text(button->get_label());
 					go_to = button->get_dst();
 					Log(" Next: %s", go_to.c_str());
 					next();

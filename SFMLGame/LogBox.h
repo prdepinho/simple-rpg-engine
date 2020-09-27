@@ -12,6 +12,7 @@ public:
 	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
 	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
 
+	void clear();
 	void push_line(std::string str);
 private:
 	std::vector<std::string> history;

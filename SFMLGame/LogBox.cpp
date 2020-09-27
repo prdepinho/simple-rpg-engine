@@ -75,3 +75,13 @@ Component *LogBox::on_key_pressed(sf::Keyboard::Key key) {
 	}
 	return nullptr;
 }
+
+void LogBox::clear() {
+	history = std::vector<std::string>(history_size, "");
+	current_line = 0;
+	for (int i = 0; i < visible_lines; i++) {
+		int x = get_x() + border;
+		int y = get_y() + get_height() - (lines[i].line_height() * (i + 1)) - border;
+		lines[i].draw_line(x, y, "", sf::Color::Black);
+	}
+}
