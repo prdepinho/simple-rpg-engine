@@ -72,6 +72,13 @@ void GameScreen::create() {
 		debug_console.hide();
 	}
 
+	// log box
+	{
+		log_box.create();
+		add_component(log_box);
+		log_box.hide();
+	}
+
 	state = CHARACTER_CONTROL;
 	Overlay::refresh(*this, player_character);
 
@@ -379,6 +386,7 @@ void GameScreen::control_mouse_info() {
 		{
 			std::string message = "Position: (" + std::to_string(tile_x) + ", " + std::to_string(tile_y) + ")";
 			add_floating_message(message, tile_x, tile_y, turn_duration * 5);
+			log_box.push_line(message);
 		}
 	}
 }
@@ -509,6 +517,12 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	case Control::SELECT:
 		Log("Select");
 		// select tile
+		if (log_box.is_visible()) {
+			log_box.hide();
+		}
+		else {
+			log_box.show();
+		}
 		break;
 	}
 
@@ -561,7 +575,8 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 					// std::string str = "Quo usque tandem abutere, Catilina, patientia nostra? quam diu etiam furor iste tuus nos eludet? quem ad finem sese effrenata iactabit audacia? Nihilne te nocturnum praesidium Palati, nihil urbis vigiliae, nihil timor populi, nihil concursus bonorum omnium, nihil hic munitissimus habendi senatus locus, nihil horum ora voltusque moverunt? Patere tua consilia non sentis, constrictam iam horum omnium scientia teneri coniurationem tuam non vides? Quid proxima, quid superiore nocte egeris, ubi fueris, quos convocaveris, quid consilii ceperis, quem nostrum ignorare arbitraris? [2] O tempora, o mores! Senatus haec intellegit. Consul videt; hic tamen vivit. Vivit? immo vero etiam in senatum venit, fit publici consilii particeps, notat et designat oculis ad caedem unum quemque nostrum. Nos autem fortes viri satis facere rei publicae videmur, si istius furorem ac tela vitemus. Ad mortem te, Catilina, duci iussu consulis iam pridem oportebat, in te conferri pestem, quam tu in nos [omnes iam diu] machinaris.";
 					// std::string str = "Quo usque tandem abutere, Catilina, patientia nostra? quam diu etiam furor iste tuus nos eludet? quem ad finem sese";
 					std::string str = "Quo usque tandem abutere, Catilina, patientia nostra? quam ";
-					show_text_box(str);
+					// show_text_box(str);
+					log_box.push_line(str);
 				}
 				break;
 			case sf::Keyboard::N:

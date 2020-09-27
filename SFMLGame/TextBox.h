@@ -15,7 +15,7 @@ private:
 class OptionsPanel : public Panel {
 public:
 	OptionsPanel(int x = 0, int y = 0, int w = 0) : Panel(x, y, w, 0) {}
-	~OptionsPanel() {}
+	virtual ~OptionsPanel() {}
 	virtual void create() override;
 	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
 	void add_option(std::string text, Callback callback);

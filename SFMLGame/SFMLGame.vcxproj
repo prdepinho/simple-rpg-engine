@@ -149,6 +149,7 @@
     <ClCompile Include="Json.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="LoadGameScreen.cpp" />
+    <ClCompile Include="LogBox.cpp" />
     <ClCompile Include="Lua.cpp" />
     <ClCompile Include="lua5.3.5\lapi.c" />
     <ClCompile Include="lua5.3.5\lauxlib.c" />
@@ -232,6 +233,7 @@
     <ClInclude Include="Json.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="LoadGameScreen.h" />
+    <ClInclude Include="LogBox.h" />
     <ClInclude Include="Lua.h" />
     <ClInclude Include="lua5.3.5\lapi.h" />
     <ClInclude Include="lua5.3.5\lauxlib.h" />

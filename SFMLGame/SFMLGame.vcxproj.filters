@@ -275,6 +275,9 @@
     <ClCompile Include="FloaringMessage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LogBox.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lua5.3.5\lapi.h">
@@ -477,6 +480,9 @@
     </ClInclude>
     <ClInclude Include="FloatingMessage.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LogBox.h">
+      <Filter>gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -18,39 +18,110 @@ function attack(attacker_name, defender_name)
   local attacker = character_data[attacker_name]
   local defender = character_data[defender_name]
   local hit_result = rules.roll_attack(attacker.stats, defender.stats)
-  local damage = rules.roll_damage(attacker.stats, defender.stats, hit_result)
+  local damage_result = rules.roll_damage(attacker.stats, defender.stats, hit_result)
 
   local position = sfml_get_character_position(defender_name)
   local x = position.x
   local y = position.y
-  local msg = ''
+  local fmsg = ''
+  local hit_msg = attacker.stats.name .. ' - ';
+  local dmg_msg = defender.stats.name .. ' - ';
+
+  hit_msg = hit_msg .. 'attack roll: '
+  hit_msg = hit_msg .. '(' .. tostring(hit_result.hit_rolls[1])
+  if hit_result.hit_rolls[2] then
+    hit_msg = hit_msg .. ', ' .. tostring(hit_result.hit_rolls[2])
+  end
+  hit_msg = hit_msg .. ") + " .. tostring(hit_result.hit_bonus) .. " vs. " .. tostring(hit_result.ac) .. ': '
+
 
   if hit_result.critical_hit then
-    msg = "Critical: " .. tostring(damage)
+    fmsg = "Critical: " .. tostring(damage_result.total_damage)
+
+    hit_msg = hit_msg .. 'Critica Hit!'
+
+    dmg_msg = dmg_msg .. 'has taken '
+    dmg_msg = dmg_msg .. tostring(damage_result.total_damage)
+    dmg_msg = dmg_msg .. '= (' .. tostring(damage_result.dice_results[1]) .. ' + '
+    dmg_msg = dmg_msg .. tostring(damage_result.dice_results[2]) .. ') + '
+    dmg_msg = dmg_msg .. tostring(damage_result.damage_bonus)
+    dmg_msg = dmg_msg .. ' damage '
+
     sfml_play_sound("tcsh.wav")
+
+    sfml_push_log(hit_msg)
+    sfml_push_log(dmg_msg)
+    sfml_show_floating_message(fmsg, x, y)
 
   elseif hit_result.critical_miss then
-    msg = "Critical miss!"
+    fmsg = "Critical miss!"
+    hit_msg = hit_msg .. 'Critical Miss!'
+
     sfml_play_sound("bleep.wav")
+
+    sfml_push_log(hit_msg)
+    sfml_show_floating_message(fmsg, x, y)
 
   elseif hit_result.cut_throat then
-    msg = "Dead!"
+    fmsg = "Dead!"
     sfml_play_sound("tcsh.wav")
+
+    sfml_push_log(hit_msg)
+    sfml_show_floating_message(fmsg, x, y)
 
   elseif hit_result.hit then
-    msg = tostring(damage)
+    fmsg = tostring(damage_result.total_damage)
+    hit_msg = hit_msg .. 'Hit!'
+
+    dmg_msg = dmg_msg .. 'has taken '
+    dmg_msg = dmg_msg .. tostring(damage_result.total_damage)
+    dmg_msg = dmg_msg .. ' = (' .. tostring(damage_result.dice_results[1]) .. ') + '
+    dmg_msg = dmg_msg .. tostring(damage_result.damage_bonus)
+    dmg_msg = dmg_msg .. ' damage '
+
     sfml_play_sound("tcsh.wav")
 
-  elseif hit_result.miss then
-    msg = "Miss!"
+    sfml_push_log(hit_msg)
+    sfml_push_log(dmg_msg)
+    sfml_show_floating_message(fmsg, x, y)
+
+  elseif hit_result.parried then
+    fmsg = "Parried!"
+    hit_msg = hit_msg .. 'Parried!'
+
     sfml_play_sound("bleep.wav")
 
-  elseif hit_result.weapon_effective then
-    msg = "Ineffective!"
+    sfml_push_log(hit_msg)
+    sfml_show_floating_message(fmsg, x, y)
+
+  elseif hit_result.dodged then
+    fmsg = "Dodged!"
+    hit_msg = hit_msg .. 'Dodged!'
+
     sfml_play_sound("bleep.wav")
+
+    sfml_push_log(hit_msg)
+    sfml_show_floating_message(fmsg, x, y)
+
+  elseif hit_result.hit_armor then
+    fmsg = "Hit Armor!"
+    hit_msg = hit_msg .. 'Hit Armor!'
+
+    sfml_play_sound("bleep.wav")
+
+    sfml_push_log(hit_msg)
+    sfml_show_floating_message(fmsg, x, y)
+
+  elseif hit_result.miss then
+    fmsg = "Missed!"
+    hit_msg = hit_msg .. "Missed!"
+
+    sfml_play_sound("bleep.wav")
+
+    sfml_push_log(hit_msg)
+    sfml_show_floating_message(fmsg, x, y)
   end
 
-  sfml_show_floating_message(msg, x, y)
 end  
 
 -- Equip an item from character inventory. Return false if item is not equipable.

@@ -22,6 +22,7 @@
 #include "InputHandler.h"
 #include "Item.h"
 #include "FloatingMessage.h"
+#include "LogBox.h"
 
 
 class GameScreen : public Screen
@@ -127,6 +128,7 @@ public:
 	void pan_foreground(std::string filename, int x, int y, float speed_x, float speed_y, float total_time, float still_time);
 	void pan_foreground(LuaObject data);
 
+	LogBox &get_log_box() { return log_box; }
 private:
 	friend class CharacterControlInputHandler;
 
@@ -160,6 +162,8 @@ private:
 
 	int vision_radius = 5;
 	bool show_fog_of_war = true;
+
+	LogBox log_box;
 
 	enum {
 		CHARACTER_CONTROL,

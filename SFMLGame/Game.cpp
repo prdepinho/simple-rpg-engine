@@ -762,6 +762,13 @@ public:
 		return 1;
 	}
 
+	static int sfml_push_log(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		std::string message = lua_tostring(state, -1);
+		screen->get_log_box().push_line(message);
+		return 1;
+	}
+
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -799,4 +806,5 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_add_character", LuaFunction::sfml_add_character);
 	lua_register(lua.get_state(), "sfml_attack", LuaFunction::sfml_attack);
 	lua_register(lua.get_state(), "sfml_show_floating_message", LuaFunction::sfml_show_floating_message);
+	lua_register(lua.get_state(), "sfml_push_log", LuaFunction::sfml_push_log);
 }

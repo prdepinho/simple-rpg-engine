@@ -15,7 +15,7 @@ public:
 		set_text(text);
 		set_function(func);
 	}
-	~TextField() {}
+	virtual ~TextField() {}
 
 	virtual void create() override;
 	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;

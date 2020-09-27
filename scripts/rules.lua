@@ -84,35 +84,35 @@ rules.shield = {
 -- gun: guns ignore some armor class when attacking.
 -- cutthroat: may be used to inflict coup de grace.
 rules.weapon = {
-  unarmed       = { name = "Unarmed",       damage = "d1",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, bulk = 0, ranged = false, gun = false, cutthroat = false, icon = {x = 16*0, y = 16*0} },
+  unarmed       = { name = "Unarmed",       damage = "1d1",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, bulk = 0, ranged = false, gun = false, cutthroat = false, icon = {x = 16*0, y = 16*0} },
 
-  hammer        = { name = "Warhammer",     damage = "d4",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 4, plate = 4 }, hands = 1, ac_bonus = 0, size = 2, weight = 3, bulk = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*1, y = 16*1} },
-  dagger        = { name = "Dagger",        damage = "d4",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, bulk = 1, ranged = false, gun = false, cutthroat = true , icon = {x = 16*0, y = 16*1} },
+  hammer        = { name = "Warhammer",     damage = "1d4",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 4, plate = 4 }, hands = 1, ac_bonus = 0, size = 2, weight = 3, bulk = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*1, y = 16*1} },
+  dagger        = { name = "Dagger",        damage = "1d4",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, bulk = 1, ranged = false, gun = false, cutthroat = true , icon = {x = 16*0, y = 16*1} },
 
-  mace          = { name = "Mace",          damage = "d6",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 2, plate = 2 }, hands = 1, ac_bonus = 0, size = 2, weight = 2, bulk = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*4, y = 16*1} },
-  spear         = { name = "Spear",         damage = "d6",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 3, weight = 1, bulk = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*1, y = 16*2} },
-  quarterstaff  = { name = "Quarterstaff",  damage = "d6",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 3, weight = 1, bulk = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*5, y = 16*1} },
+  mace          = { name = "Mace",          damage = "1d6",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 2, plate = 2 }, hands = 1, ac_bonus = 0, size = 2, weight = 2, bulk = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*4, y = 16*1} },
+  spear         = { name = "Spear",         damage = "1d6",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 3, weight = 1, bulk = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*1, y = 16*2} },
+  quarterstaff  = { name = "Quarterstaff",  damage = "1d6",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 3, weight = 1, bulk = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*5, y = 16*1} },
 
-  axe           = { name = "Axe",           damage = "d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 0 }, hands = 1, ac_bonus = 0, size = 2, weight = 3, bulk = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*3, y = 16*1} },
-  arming_sword  = { name = "Arming Sword",  damage = "d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 1, size = 2, weight = 1, bulk = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*2, y = 16*0} },
-  falcion       = { name = "Falcion",       damage = "d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 4, chain = 0, plate = 0 }, hands = 1, ac_bonus = 1, size = 2, weight = 1, bulk = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*5, y = 16*0} },
-  morning_star  = { name = "Morning Star",  damage = "d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 0 }, hands = 2, ac_bonus = 0, size = 3, weight = 3, bulk = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*2, y = 16*1} },
-  maul          = { name = "Maul",          damage = "d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 2, plate = 2 }, hands = 2, ac_bonus = 0, size = 3, weight = 3, bulk = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*3, y = 16*2} },
-  estoc         = { name = "Estoc",         damage = "d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 4, chain = 4, plate = 2 }, hands = 2, ac_bonus = 1, size = 3, weight = 1, bulk = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*6, y = 16*0} },
-  pike          = { name = "Pike",          damage = "d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 4, weight = 2, bulk = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*2, y = 16*2} },
+  axe           = { name = "Axe",           damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 0 }, hands = 1, ac_bonus = 0, size = 2, weight = 3, bulk = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*3, y = 16*1} },
+  arming_sword  = { name = "Arming Sword",  damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 1, size = 2, weight = 1, bulk = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*2, y = 16*0} },
+  falcion       = { name = "Falcion",       damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 4, chain = 0, plate = 0 }, hands = 1, ac_bonus = 1, size = 2, weight = 1, bulk = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*5, y = 16*0} },
+  morning_star  = { name = "Morning Star",  damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 0 }, hands = 2, ac_bonus = 0, size = 3, weight = 3, bulk = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*2, y = 16*1} },
+  maul          = { name = "Maul",          damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 2, plate = 2 }, hands = 2, ac_bonus = 0, size = 3, weight = 3, bulk = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*3, y = 16*2} },
+  estoc         = { name = "Estoc",         damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 4, chain = 4, plate = 2 }, hands = 2, ac_bonus = 1, size = 3, weight = 1, bulk = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*6, y = 16*0} },
+  pike          = { name = "Pike",          damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 4, weight = 2, bulk = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*2, y = 16*2} },
 
-  long_sword    = { name = "Long Sword",    damage = "d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 2 }, hands = 2, ac_bonus = 1, size = 3, weight = 1, bulk = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*3, y = 16*0} },
-  bill          = { name = "Bill",          damage = "d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 4, weight = 2, bulk = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*4, y = 16*2} },
-  halberd       = { name = "Halberd",       damage = "d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 0 }, hands = 2, ac_bonus = 0, size = 4, weight = 2, bulk = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*5, y = 16*2} },
-  pollaxe       = { name = "Pollaxe",       damage = "d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 4 }, hands = 2, ac_bonus = 0, size = 4, weight = 3, bulk = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*6, y = 16*2} },
-  bec_de_corbin = { name = "Bec de Corbin", damage = "d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 4 }, hands = 2, ac_bonus = 0, size = 4, weight = 3, bulk = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*7, y = 16*2} },
+  long_sword    = { name = "Long Sword",    damage = "1d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 2 }, hands = 2, ac_bonus = 1, size = 3, weight = 1, bulk = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*3, y = 16*0} },
+  bill          = { name = "Bill",          damage = "1d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 4, weight = 2, bulk = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*4, y = 16*2} },
+  halberd       = { name = "Halberd",       damage = "1d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 0 }, hands = 2, ac_bonus = 0, size = 4, weight = 2, bulk = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*5, y = 16*2} },
+  pollaxe       = { name = "Pollaxe",       damage = "1d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 4 }, hands = 2, ac_bonus = 0, size = 4, weight = 3, bulk = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*6, y = 16*2} },
+  bec_de_corbin = { name = "Bec de Corbin", damage = "1d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 4 }, hands = 2, ac_bonus = 0, size = 4, weight = 3, bulk = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*7, y = 16*2} },
 
-  sling         = { name = "Sling",         damage = "d4",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 1, ranged = true,  gun = false, cutthroat = false, icon = {x = 16*1, y = 16*3} },
-  short_bow     = { name = "Short Bow",     damage = "d6",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 3, ranged = true,  gun = false, cutthroat = false, icon = {x = 16*2, y = 16*3} },
-  long_bow      = { name = "Long Bow",      damage = "d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 3, ranged = true,  gun = false, cutthroat = false, icon = {x = 16*3, y = 16*3} },
-  crossbow      = { name = "Crossbow",      damage = "d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 3, ranged = true,  gun = false, cutthroat = false, icon = {x = 16*4, y = 16*3} },
-  pistol        = { name = "Pistol",        damage = "d12", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 0, weight = 0, bulk = 2, ranged = true,  gun = true,  cutthroat = false, icon = {x = 16*5, y = 16*3} },
-  arquebus      = { name = "Arquebus",      damage = "d12", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 3, ranged = true,  gun = true,  cutthroat = false, icon = {x = 16*6, y = 16*3} },
+  sling         = { name = "Sling",         damage = "1d4",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 1, ranged = true,  gun = false, cutthroat = false, icon = {x = 16*1, y = 16*3} },
+  short_bow     = { name = "Short Bow",     damage = "1d6",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 3, ranged = true,  gun = false, cutthroat = false, icon = {x = 16*2, y = 16*3} },
+  long_bow      = { name = "Long Bow",      damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 3, ranged = true,  gun = false, cutthroat = false, icon = {x = 16*3, y = 16*3} },
+  crossbow      = { name = "Crossbow",      damage = "1d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 3, ranged = true,  gun = false, cutthroat = false, icon = {x = 16*4, y = 16*3} },
+  pistol        = { name = "Pistol",        damage = "1d12", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 0, weight = 0, bulk = 2, ranged = true,  gun = true,  cutthroat = false, icon = {x = 16*5, y = 16*3} },
+  arquebus      = { name = "Arquebus",      damage = "1d12", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 3, ranged = true,  gun = true,  cutthroat = false, icon = {x = 16*6, y = 16*3} },
 }
 
 rules.item = {
@@ -225,9 +225,16 @@ function rules.roll_attack(attacker, defender)
     critical_hit = false,
     critical_miss = false,
     cut_throat = false,
+    parried = false,
+    dodged = false,
+    hit_armor = false,
     hit = false,
     miss = false,
     weapon_effective = false,
+    hit_rolls = {0},
+    hit_bonus = 0,
+    hit_total = 0,
+    ac = 0,
   }
 
   -- parameterss
@@ -238,7 +245,6 @@ function rules.roll_attack(attacker, defender)
   local attacker_weapon = rules.weapon[attacker.weapon.name]
   local attacker_shield = rules.shield[attacker.shield.name]
   local attacker_armor = rules.armor[attacker.armor.name]
-
 
   -- to hit result
   local hit_bonus = rules.attack_to_hit(attacker, defender)
@@ -277,7 +283,10 @@ function rules.roll_attack(attacker, defender)
   end
 
 
-  local hit_str = ""
+  hit_result.hit_rolls[1] = die
+  hit_result.hit_bonus = hit_bonus
+  hit_result.hit_total = result
+  hit_result.ac = ac_armor
 
   if defender.status.hold and attacker_weapon.cutthroat then
     hit_result.cut_throat = true
@@ -285,42 +294,34 @@ function rules.roll_attack(attacker, defender)
 
   else
     if die  == 20 then
-      hit_str = "critial hit!"
       hit_result.critical_hit = true
 
     elseif die == 1 then
-      hit_str = "critical miss!"
       hit_result.critical_miss = true
 
     elseif result < 10 then
-      hit_str = "miss!"
       hit_result.miss = true
 
     elseif result < ac_dex then
-      hit_str = "dodged!"
-      hit_result.miss = true
+      hit_result.dodged = true
 
     elseif result < ac_weapon then
-      hit_str = "parried with weapon!"
-      hit_result.miss = true
+      hit_result.parried = true;
 
     elseif result < ac_shield  then
-      hit_str = "parried with shield!"
-      hit_result.miss = true
+      hit_result.parried = true
 
     elseif result < ac_armor then
-      hit_str = "hit armor!"
-      hit_result.miss = true
+      hit_result.hit_armor = true
 
     else
-      hit_str = "hit!"
       hit_result.hit = true
     end
 
     local ac = ac_armor
     -- local ac = rules.attack_armor_class(attacker, defender)
 
-    print(string.format("Attack roll: %d + %d = %d vs AC %d: %s", die, hit_bonus, result, ac, hit_str))
+    -- print(string.format("Attack roll: %d + %d = %d vs AC %d: %s", die, hit_bonus, result, ac, hit_str))
   end
 
   return hit_result
@@ -328,22 +329,26 @@ end
 
 function rules.roll_damage(attacker, defender, hit_result)
   local damage_bonus = rules.ability_modifier[1][attacker.ability.str]
-  local result = 0
+  local result = {
+    total_damage = 0,
+    dice_results = {0},
+    damage_bonus = 0,
+  }
 
   local attacker_weapon = rules.weapon[attacker.weapon.name]
   if hit_result.critical_hit then
-    result = result + rules.roll_dice(attacker_weapon.damage)
-    result = result + rules.roll_dice(attacker_weapon.damage)
-    result = result + damage_bonus
-    print(string.format("Defender receives %d damage from Attacker.", result))
+    result.dice_results[1] = rules.roll_dice(attacker_weapon.damage)
+    result.dice_results[2] = rules.roll_dice(attacker_weapon.damage)
+    result.damage_bonus = damage_bonus
+    result.total_damage = result.dice_results[1] + result.dice_results[2] + result.damage_bonus
 
   elseif hit_result.cut_throat then
     print(string.format("Defender: dead."))
 
   elseif hit_result.hit then
-    result = result + rules.roll_dice(attacker_weapon.damage)
-    result = result + damage_bonus
-    print(string.format("Defender receives %d damage from Attacker.", result))
+    result.dice_results[1] = rules.roll_dice(attacker_weapon.damage)
+    result.damage_bonus = damage_bonus
+    result.total_damage = result.dice_results[1] + result.damage_bonus
 
   elseif hit_result.miss then
 
