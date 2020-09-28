@@ -97,6 +97,7 @@ public:
 	Character *get_character_by_name(std::string name);
 	void put_character_on_tile(Character &character, int x, int y);
 	sf::Vector2i character_position(Character &character);
+	void push_character_to_bottom(Character &character);
 
 	bool is_block_input() const { return block_input; }
 	void set_block_input(bool block) { block_input = block; }
@@ -106,6 +107,7 @@ public:
 
 	void clean_temporary_characters();
 	void add_character(std::string type, std::string name, int tile_x, int tile_y);
+	void remove_character(Character *character);
 	void update_field_of_vision(Character *character);
 
 	void set_player_new_tile_position(int x, int y) { if (new_tile_position.x == 0  && new_tile_position.y == 0) new_tile_position = { x, y }; }

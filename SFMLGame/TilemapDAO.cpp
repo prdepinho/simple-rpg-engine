@@ -349,8 +349,13 @@ void TiledTilemapDAO::load_characters(GameScreen *game_screen, std::string filen
 					_game.get_lua()->add_character(type, code);
 				}
 				else {
-					game_screen->add_character(type, code, x, y);
-					_game.get_lua()->add_character(type, code);
+					// if (!_game.get_lua()->is_character_removed(code)) {
+					// 	game_screen->add_character(type, code, x, y);
+					// }
+					if (!_game.get_lua()->is_character_removed(code)) {
+						game_screen->add_character(type, code, x, y);
+						_game.get_lua()->add_character(type, code);
+					}
 				}
 			}
 		}

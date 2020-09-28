@@ -499,7 +499,10 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		// do
 		{
 			auto position = character_position(*player_character);
-			control_loot(position.x, position.y);
+			// control_loot(position.x, position.y);
+			auto *action = new InteractionAction(player_character, position.x, position.y);
+			player_character->schedule_action(action);
+			player_busy = true;
 		}
 		break;
 	case Control::B:
@@ -673,6 +676,16 @@ void GameScreen::add_character(std::string type, std::string name, int tile_x, i
 
 	characters.push_back(character);
 	put_character_on_tile(*character, tile_x, tile_y);
+}
+
+void GameScreen::remove_character(Character *character) {
+	for (auto it = characters.begin(); it != characters.end(); ++it) {
+		if (character == *it) {
+			characters.erase(it);
+			delete character;
+			break;
+		}
+	}
 }
 
 void GameScreen::add_item(std::string code, std::string name, std::string type, int tile_x, int tile_y) {
@@ -946,9 +959,29 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 		if (map.in_tile_bounds(tile_x, tile_y)) {
 			try {
 				Character *target_character = get_character_on_tile(tile_x, tile_y);
-				if (target_character != nullptr) {
-					_game.get_lua()->character_interaction(target_character->get_name(), character.get_name());
+				std::vector<Item*> target_items = get_items_on_tile(tile_x, tile_y);
+				// loot if this is the same tile as player character
+				if (target_character == player_character) {
+					control_loot(tile_x, tile_y);
 				}
+				// if it is another character, interact with that character
+				else if (target_character != nullptr) {
+					bool target_dead = _game.get_lua()->character_stats(target_character->get_name()).get_boolean("status.dead");
+					if (!target_dead) {
+						_game.get_lua()->character_interaction(target_character->get_name(), character.get_name());
+					}
+					else {
+						_game.get_lua()->strip_character_items(target_character->get_name());
+						_game.get_lua()->remove_character(target_character->get_name());
+						remove_character(target_character);
+						control_loot(tile_x, tile_y);
+					}
+				}
+				// if there are no characters, but there are items, loot
+				else if (target_items.size() > 0) {
+					control_loot(tile_x, tile_y);
+				}
+				// if nothing is there, interact with the map
 				else {
 					TileData tile = map.get_tile(tile_x, tile_y);
 					_game.get_lua()->call_event(tile.object_name, "interact", tile_x, tile_y, character.get_name());
@@ -977,6 +1010,20 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 
 inline sf::Vector2i GameScreen::character_position(Character &character) {
 	return map.get_tile_coord(character.get_x(), character.get_y());
+}
+
+// print the character first so that it is not on top of others.
+void GameScreen::push_character_to_bottom(Character &character) {
+	int i = 0;
+	for (; i < characters.size(); i++) {
+		if (characters[i] == &character) {
+			break;
+		}
+	}
+	for (int j = i; j > 0; j--) {
+		characters[j] = characters[j - 1];
+		characters[j - 1] = &character;
+	}
 }
 
 bool GameScreen::can_move(Character &character, Direction direction) {

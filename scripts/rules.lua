@@ -146,7 +146,7 @@ function rules.new_character()
       {code = "", name = "no_item", type = "item"}, 
       {code = "", name = "no_item", type = "item"}, 
     },
-    status = { hold = false, poison = false, invisible = false, fear = false, charm = false },
+    status = { hold = false, poison = false, invisible = false, fear = false, charm = false, dead = false },
     portrait = {x = 0, y = 192},
   }
   return stats

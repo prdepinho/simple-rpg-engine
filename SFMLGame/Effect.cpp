@@ -60,7 +60,7 @@ void AttackEffect::update(float elapsed_time) {
 		attacker->start_triggered_animation("attack", this, [&](void *d) {
 			Log("trigger");
 			_game.get_lua()->attack(attacker->get_name(), defender->get_name());
-			defender->start_animation("hurt");
+			// defender->start_animation("hurt");
 		});
 	}
 	else {

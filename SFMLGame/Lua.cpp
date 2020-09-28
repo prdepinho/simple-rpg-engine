@@ -322,6 +322,32 @@ void Lua::add_character(std::string script, std::string name) {
 	lua_pop(state, 1);
 }
 
+bool Lua::is_character_removed(std::string name) {
+	lua_getglobal(state, "is_character_removed");
+	lua_pushstring(state, name.c_str());
+	int result = lua_pcall(state, 1, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << name << ": " << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	bool rval = lua_toboolean(state, -1);
+	lua_pop(state, 1);
+	return rval;
+}
+
+void Lua::remove_character(std::string name) {
+	lua_getglobal(state, "remove_character");
+	lua_pushstring(state, name.c_str());
+	int result = lua_pcall(state, 1, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << name << ": " << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	lua_pop(state, 1);
+}
+
 void Lua::load_initial_item(std::string code, std::string name, std::string type, int x, int y) {
 	lua_getglobal(state, "load_initial_item");
 	lua_pushstring(state, code.c_str());
@@ -402,6 +428,18 @@ void Lua::attack(std::string attacker_name, std::string defender_name) {
 	lua_pushstring(state, attacker_name.c_str());
 	lua_pushstring(state, defender_name.c_str());
 	int result = lua_pcall(state, 2, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	lua_pop(state, 1);
+}
+
+void Lua::strip_character_items(std::string character_name) {
+	lua_getglobal(state, "strip_character_items");
+	lua_pushstring(state, character_name.c_str());
+	int result = lua_pcall(state, 1, 1, 0);
 	if (result != LUA_OK) {
 		std::stringstream ss;
 		ss << get_error(state);

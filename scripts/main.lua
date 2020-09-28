@@ -40,7 +40,7 @@ function attack(attacker_name, defender_name)
 
     dmg_msg = dmg_msg .. 'has taken '
     dmg_msg = dmg_msg .. tostring(damage_result.total_damage)
-    dmg_msg = dmg_msg .. '= (' .. tostring(damage_result.dice_results[1]) .. ' + '
+    dmg_msg = dmg_msg .. ' = (' .. tostring(damage_result.dice_results[1]) .. ' + '
     dmg_msg = dmg_msg .. tostring(damage_result.dice_results[2]) .. ') + '
     dmg_msg = dmg_msg .. tostring(damage_result.damage_bonus)
     dmg_msg = dmg_msg .. ' damage '
@@ -121,16 +121,38 @@ function attack(attacker_name, defender_name)
   end
 
   if damage_result.total_damage > 0 then
-    defender.stats.current_hp = defender.stats.current_hp - damage_result.total_damage
-    print(defender.stats.name .. ' hp: ' .. tostring(defender.stats.current_hp))
-    if defender.stats.current_hp <= 0 then
-      print('dead')
-      sfml_push_log(defender.stats.name .. ' - Dead!')
-      sfml_loop_animation(defender_name, "dead")
-    end
+    damage_character(defender_name, damage_result.total_damage)
   end
 
 end  
+
+function damage_character(character_name, damage)
+  local character = character_data[character_name]
+  character.stats.current_hp = character.stats.current_hp - damage
+
+  print(character.stats.name .. ' hp: ' .. tostring(character.stats.current_hp))
+  sfml_start_animation(character_name, "hurt")
+
+  if character.stats.current_hp <= 0 then
+    character.stats.current_hp = 0
+    kill_character(character_name)
+  end
+end
+
+function kill_character(character_name)
+  local character = character_data[character_name]
+  for key, status in pairs(character.stats.status) do
+    character.stats.status[key] = false
+  end
+  character.stats.status.dead = true
+  print('dead')
+  sfml_push_log(character.stats.name .. ' - Dead!')
+  sfml_loop_animation(character_name, 'dead')
+  sfml_push_character_to_bottom(character_name)
+
+  local position = sfml_get_character_position(character_name)
+  sfml_set_obstacle(false, position.x, position.y)
+end
 
 -- Equip an item from character inventory. Return false if item is not equipable.
 function equip_item(item_index, character_name)
@@ -191,6 +213,16 @@ function drop_item(item_code, character_name, x, y)
     end
   end
   return false
+end
+
+function strip_character_items(character_name)
+  local character = character_data[character_name]
+  local position = sfml_get_character_position(character_name)
+  for index, item in ipairs(character.stats.inventory) do
+    if item.code ~= "" then
+      drop_item(item.code, character_name, position.x, position.y)
+    end
+  end
 end
 
 function inventory_exchange_items(index_a, index_b, character_name)
@@ -292,16 +324,41 @@ function add_character(script, name)
   character_modules[name].name = name
 
   if not character_data[name].created then
+    character_data[name].removed = false
     character_data[name].created = true
     character_modules[name].create()
+  else
+    if character_data[name].stats.status.dead then
+      local position = sfml_get_character_position(name)
+      sfml_set_obstacle(false, position.x, position.y)
+      sfml_loop_animation(name, 'dead')
+      sfml_push_character_to_bottom(name)
+    end
   end
   character_modules[name].enter()
+end
+
+function remove_character(name)
+  print(name .. ' is removed')
+  character_data[name].removed = true
+end
+
+function is_character_removed(name)
+  local removed = false
+  if character_data[name] then
+    removed = character_data[name].removed
+  end
+  print(name .. ' has been previously removed')
+  return removed
 end
 
 function character_on_interact(target_name, interactor_name)
   print('target_name: ' .. target_name)
   if character_modules[target_name] ~= nil then
-    if character_modules[target_name].data.enemy then
+    local character = character_modules[target_name].data
+    if character.stats.status.dead then
+      print(target_name .. ' is dead')
+    elseif character.enemy then
       sfml_attack(interactor_name, target_name)
     else
       character_modules[target_name].on_interact(interactor_name)
@@ -313,7 +370,9 @@ end
 
 function character_on_turn(name, id)
   if character_modules[name] ~= nil then
-    character_modules[name].on_turn(id)
+    if not character_modules[name].data.status.dead then
+      character_modules[name].on_turn(id)
+    end
   else
     print('character module ' .. name .. ' is nil')
   end
@@ -321,7 +380,9 @@ end
 
 function character_on_idle(name, id)
   if character_modules[name] ~= nil then
-    character_modules[name].on_idle(id)
+    if not character_modules[name].data.status.dead then
+      character_modules[name].on_idle(id)
+    end
   else
     print('character module ' .. name .. ' is nil')
   end

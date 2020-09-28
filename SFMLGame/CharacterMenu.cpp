@@ -971,6 +971,8 @@ void Overlay::refresh(Screen &screen, Character *character) {
 			ss << "fear ";
 		if (status->get_boolean("charm"))
 			ss << "chrm ";
+		if (status->get_boolean("dead"))
+			ss << "dead ";
 		y += overlay.ac.line_height();
 		overlay.status.draw_line(x, y, ss.str(), sf::Color::Black);
 	}

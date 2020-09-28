@@ -56,6 +56,8 @@ public:
 	void change_map(std::string script);
 	void set_map_object(std::string name, int x, int y);
 	void add_character(std::string script, std::string name);
+	bool is_character_removed(std::string name);
+	void remove_character(std::string name);
 	LuaObject character_stats(std::string name);
 	int character_base_ac(std::string name);
 	int character_base_to_hit(std::string name);
@@ -66,6 +68,7 @@ public:
 	void inventory_exchange_items(int index_a, int index_b, std::string character_name);
 	bool equip_item(int item_index, std::string character_name);
 	void attack(std::string attacker_name, std::string defender_name);
+	void strip_character_items(std::string character_name);
 
 
 
