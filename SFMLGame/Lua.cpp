@@ -144,6 +144,7 @@ std::map<std::string, std::string> Lua::get_table() {
 		lua_settable(state, -3);
 	}
 
+	
 
 	int result = lua_pcall(state, 1, 1, 0);
 	if (result != LUA_OK) {
@@ -192,12 +193,14 @@ void Lua::execute_script(const char *filename)
 {
 	lua_State *lua_state = luaL_newstate();
 	luaL_openlibs(lua_state);
+
 	int result = luaL_loadfile(lua_state, filename);
 	if (result != LUA_OK) {
 		const char *msg = get_error(lua_state);
 		lua_close(lua_state);
 		throw LuaException(msg);
 	}
+
 	result = lua_pcall(lua_state, 0, LUA_MULTRET, 0);
 	if (result != LUA_OK) {
 		const char *msg = get_error(lua_state);

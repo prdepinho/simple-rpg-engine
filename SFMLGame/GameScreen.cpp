@@ -8,6 +8,7 @@
 #include "FieldOfVision.h"
 #include "CharacterMenu.h"
 #include "FloatingMessage.h"
+#include "Fireworks.h"
 
 GameScreen::~GameScreen() {
 	for (Effect *effect : effects)
@@ -383,11 +384,17 @@ void GameScreen::control_mouse_info() {
 		}
 		// do something here
 
+#if false
 		{
 			std::string message = "Position: (" + std::to_string(tile_x) + ", " + std::to_string(tile_y) + ")";
 			add_floating_message(message, tile_x, tile_y, turn_duration * 5);
 			log_box.push_line(message);
 		}
+#else
+		{
+			start_firework("fireball_blast", tile_x, tile_y);
+		}
+#endif
 	}
 }
 
@@ -723,6 +730,10 @@ void GameScreen::clean_items() {
 		delete item;
 	}
 	items.clear();
+}
+
+void GameScreen::add_entity(Entity *entity) {
+	entities.push_back(entity);
 }
 
 void GameScreen::remove_entity(Entity *entity) {
@@ -1200,12 +1211,14 @@ void GameScreen::add_floating_message(std::string message, int tile_x, int tile_
 
 
 	ComponentEffect *effect = new ComponentEffect(duration, floating_message);
-	effect->set_on_end([&](Effect* e) {
+	auto callback = ([&](Effect* e) {
 		ComponentEffect *ce = dynamic_cast<ComponentEffect*>(e);
 		FloatingMessage *fm = dynamic_cast<FloatingMessage*>(ce->get_component());
 		remove_floating_message(fm);
 		delete ce->get_component();
 	});
+	effect->set_on_end(callback);
+	effect->set_on_interrupt(callback);
 	effects.push_back(effect);
 }
 
@@ -1220,4 +1233,25 @@ void GameScreen::remove_floating_message(FloatingMessage *fm) {
 }
 
 
+void GameScreen::start_firework(std::string type, int tile_x, int tile_y) {
+	sf::Vector2f tile_pix_coords = map.get_tile_pix_coords(tile_x, tile_y);
+
+	Fireworks *fireworks = new Fireworks();
+	fireworks->create(type);
+	fireworks->set_position(map.get_x() + (int)tile_pix_coords.x, map.get_y() + (int)tile_pix_coords.y);
+	add_entity(fireworks);
+
+	float duration = fireworks->get_duration();
+	Resources::play_sound(fireworks->get_sound());
+
+	EntityEffect *effect = new EntityEffect(duration, fireworks);
+	auto callback = ([&](Effect *e) {
+		EntityEffect *ee = dynamic_cast<EntityEffect*>(e);
+		remove_entity(ee->get_entity());
+		delete ee->get_entity();
+	});
+	effect->set_on_end(callback);
+	effect->set_on_interrupt(callback);
+	effects.push_back(effect);
+}
 

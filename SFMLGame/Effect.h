@@ -8,7 +8,8 @@ public:
 	Effect(bool run = true)
 		: running(run),
 		on_update([&](Effect*) {}),
-		on_end([&](Effect*) {})
+		on_end([&](Effect*) {}),
+		on_interrupt([&](Effect*) {})
 	{ }
 	virtual ~Effect() {}
 
@@ -16,12 +17,14 @@ public:
 
 	bool is_running() const { return running; }
 	void stop_running() { running = false; on_end(this); }
-	void interrupt() { running = false; }
+	void interrupt() { running = false; on_interrupt(this); }
 	void set_on_update(std::function<void(Effect*)> callback) { on_update = callback; }
 	void set_on_end(std::function<void(Effect*)> callback) { on_end = callback; }
+	void set_on_interrupt(std::function<void(Effect*)> callback) { on_interrupt = callback; }
 protected:
 	std::function<void(Effect*)> on_update;
 	std::function<void(Effect*)> on_end;
+	std::function<void(Effect*)> on_interrupt;
 private:
 	bool running;
 };

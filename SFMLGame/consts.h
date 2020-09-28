@@ -52,6 +52,7 @@ public:
 	static const std::string CHARACTERS;
 	static const std::string SOUNDS;
 	static const std::string MUSIC;
+	static const std::string EFFECTS;
 };
 
 class Script {
