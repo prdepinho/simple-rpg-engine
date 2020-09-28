@@ -30,10 +30,12 @@ end
 function M.on_turn(id)
   -- local position = sfml_get_character_position(M.name)
   -- print('ranger position: x: ' .. tostring(position.x) .. ', y: ' .. tostring(position.y))
+  print('Ranger on turn')
 end
 
 function M.on_idle(id)
   -- common.idle_walk(id)
+  print('Ranger on idle')
 end
 
 function M.on_interact(interactor_name)

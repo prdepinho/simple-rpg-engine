@@ -370,7 +370,7 @@ end
 
 function character_on_turn(name, id)
   if character_modules[name] ~= nil then
-    if not character_modules[name].data.status.dead then
+    if not character_modules[name].data.stats.status.dead then
       character_modules[name].on_turn(id)
     end
   else
@@ -380,7 +380,7 @@ end
 
 function character_on_idle(name, id)
   if character_modules[name] ~= nil then
-    if not character_modules[name].data.status.dead then
+    if not character_modules[name].data.stats.status.dead then
       character_modules[name].on_idle(id)
     end
   else
