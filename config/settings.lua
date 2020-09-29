@@ -22,5 +22,4 @@ text_box_lines = 3   -- lines per text box
 text_box_width = screen_resolution.width * 2/3  -- width of text box
 
 -- game speed
--- turns_per_second = 5
 turns_per_second = 5

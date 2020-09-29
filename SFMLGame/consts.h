@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <sstream>
+#include <cmath>
 
 class Color {
 public:
@@ -73,6 +74,10 @@ public:
 };
 
 enum class Direction {
-	UP, DOWN, LEFT, RIGHT
+	UP, DOWN, LEFT, RIGHT, NO_DIRECTION, UP_RIGHT, UP_LEFT, DOWN_RIGHT, DOWN_LEFT
 };
 
+#define PI       3.14159265358979323846   // pi
+namespace Consts {
+	Direction figure_orientation(int src_x, int src_y, int dst_x, int dst_y);
+}

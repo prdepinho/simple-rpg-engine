@@ -55,6 +55,36 @@ animations.types = {
     },
   },
 
+  arrow = {
+    basic = defaults,
+    duration = 1 / (turns_per_second * 2),
+    sound = "",
+    oriented = true,
+    coordinates = {
+      x = 16 * 11,
+      y = 16 * 1,
+    },
+    animation = {
+      fps = 1,
+      frames = {0},
+    },
+  },
+
+  bolt = {
+    basic = defaults,
+    duration = 1 / (turns_per_second * 2),
+    sound = "",
+    oriented = true,
+    coordinates = {
+      x = 16 * 14,
+      y = 16 * 1,
+    },
+    animation = {
+      fps = 1,
+      frames = {0},
+    },
+  },
+
 }
 
 return animations

@@ -11,6 +11,10 @@
 #include "Fireworks.h"
 
 GameScreen::~GameScreen() {
+	for (Effect *effect : effects_buffer)
+		delete effect;
+	effects.clear();
+
 	for (Effect *effect : effects)
 		delete effect;
 	effects.clear();
@@ -410,7 +414,8 @@ void GameScreen::control_mouse_info() {
 				start_firework("fireball_blast", tile_coords.x, tile_coords.y);
 			};
 			auto src = character_position(*player_character);
-			cast_missile("bullet", src.x, src.y, tile_x, tile_y, callback);
+			// cast_missile("bullet", src.x, src.y, tile_x, tile_y, callback);
+			cast_missile("arrow", src.x, src.y, tile_x, tile_y, callback);
 		}
 #endif
 	}
@@ -774,6 +779,9 @@ void GameScreen::change_map(std::string filename, int tile_x, int tile_y) {
 	next_map = filename;
 	for (Character *character : characters) {
 		character->clear_schedule();
+	}
+	for (Effect *effect : effects_buffer) {
+		effect->interrupt();
 	}
 	for (Effect *effect : effects) {
 		effect->interrupt();
@@ -1284,8 +1292,9 @@ void GameScreen::cast_missile(std::string firework_type, int tile_src_x, int til
 	sf::Vector2f src_pix_coords = map.get_tile_pix_coords(tile_src_x, tile_src_y);
 	sf::Vector2f dst_pix_coords = map.get_tile_pix_coords(tile_dst_x, tile_dst_y);
 
+	Direction direction = Consts::figure_orientation(tile_src_x, tile_src_y, tile_dst_x, tile_dst_y);
 	Fireworks *fireworks = new Fireworks();
-	fireworks->create(firework_type);
+	fireworks->create(firework_type, direction);
 	fireworks->set_position(map.get_x() + (int)src_pix_coords.x, map.get_y() + (int)src_pix_coords.y);
 	add_entity(fireworks);
 
@@ -1309,3 +1318,4 @@ void GameScreen::cast_missile(std::string firework_type, int tile_src_x, int til
 	effect->set_on_interrupt(callback);
 	add_effect(effect);
 }
+

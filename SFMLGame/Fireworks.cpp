@@ -5,7 +5,7 @@
 
 Fireworks::Fireworks() {}
 
-void Fireworks::create(std::string type) {
+void Fireworks::create(std::string type, Direction direction) {
 	Lua script(Config::EFFECTS);
 	LuaObject animations = script.read_top_table();
 	// animations.dump_map();
@@ -19,6 +19,48 @@ void Fireworks::create(std::string type) {
 
 	duration = animation->get_float("duration");
 	sound = animation->get_string("sound", "");
+	oriented = animation->get_boolean("oriented", false);
+
+	if (oriented) {
+		switch (direction) {
+		case Direction::UP:
+			std::cout << "UP" << std::endl;
+			origin_y -= sprite_height;
+			break;
+		case Direction::DOWN:
+			std::cout << "DOWN" << std::endl;
+			origin_y += sprite_height;
+			break;
+		case Direction::LEFT:
+			std::cout << "LEFT" << std::endl;
+			origin_x -= sprite_width;
+			break;
+		case Direction::RIGHT:
+			std::cout << "RIGHT" << std::endl;
+			origin_x += sprite_width;
+			break;
+		case Direction::UP_RIGHT:
+			std::cout << "UP_RIGHT" << std::endl;
+			origin_y -= sprite_height;
+			origin_x += sprite_height;
+			break;
+		case Direction::UP_LEFT:
+			std::cout << "UP_LEFT" << std::endl;
+			origin_y -= sprite_height;
+			origin_x -= sprite_width;
+			break;
+		case Direction::DOWN_RIGHT:
+			std::cout << "DOWN_RIGHT" << std::endl;
+			origin_y += sprite_height;
+			origin_x += sprite_width;
+			break;
+		case Direction::DOWN_LEFT:
+			std::cout << "DOWN_LEFT" << std::endl;
+			origin_y += sprite_height;
+			origin_x -= sprite_width;
+			break;
+		}
+	}
 
 	set_texture(Resources::get_texture(sprite_sheet));
 
@@ -37,7 +79,7 @@ void Fireworks::create(std::string type) {
 		vertices.resize(4 * 1);
 		set_quad(&vertices[0], 0.f, 0.f,
 			(float)sprite_width, (float)sprite_height,
-			(float) texture_x, (float)texture_y,
+			(float)texture_x,    (float)texture_y,
 			(float)sprite_width, (float)sprite_height
 		);
 		frames[i++] = vertices;
