@@ -39,7 +39,22 @@ animations.types = {
       fps = 2 * turns_per_second,
       frames = {0, 1, 2, 3},
     },
-  }
+  },
+
+  bullet = {
+    basic = defaults,
+    duration = 1 / (turns_per_second * 2),
+    sound = "",
+    coordinates = {
+      x = 16 * 8,
+      y = 0,
+    },
+    animation = {
+      fps = 1,
+      frames = {0},
+    },
+  },
+
 }
 
 return animations

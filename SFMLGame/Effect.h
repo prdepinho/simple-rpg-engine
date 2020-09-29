@@ -34,7 +34,7 @@ public:
 	TimedEffect(float seconds=0.f);
 	virtual ~TimedEffect();
 	virtual void update(float elapsed_time) override;
-private:
+protected:
 	float seconds;
 	float count;
 };
@@ -46,7 +46,7 @@ public:
 	ComponentEffect(float seconds=0.f, Component *component=nullptr) : TimedEffect(seconds), component(component) {}
 	virtual ~ComponentEffect() {}
 	Component *get_component() { return component; }
-private:
+protected:
 	Component *component;
 };
 
@@ -56,8 +56,26 @@ public:
 	EntityEffect(float seconds=0.f, Entity *entity=nullptr) : TimedEffect(seconds), entity(entity) {}
 	virtual ~EntityEffect() {}
 	Entity *get_entity() { return entity; }
-private:
+protected:
 	Entity *entity;
+};
+
+class MissileEffect : public EntityEffect {
+public:
+	MissileEffect(float seconds=0.f, Entity *entity=nullptr, int src_x=0, int src_y=0, int dst_x=0, int dst_y=0);
+	virtual void update(float elapsed_time) override;
+	void set_callback(std::function<void(MissileEffect*)> callback) { this->callback = callback; }
+	std::function<void(MissileEffect*)> get_callback() const { return callback; }
+	int get_src_x() const { return src_x; }
+	int get_src_y() const { return src_y; }
+	int get_dst_x() const { return dst_x; }
+	int get_dst_y() const { return dst_y; }
+private:
+	std::function<void(MissileEffect*)> callback;
+	int src_x;
+	int src_y;
+	int dst_x;
+	int dst_y;
 };
 
 

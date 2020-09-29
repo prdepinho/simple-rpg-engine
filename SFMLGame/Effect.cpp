@@ -1,6 +1,7 @@
 #include "Effect.h"
 #include <cstdlib>
 #include <cmath>
+#include "Entity.h"
 
 #include "Game.h"
 
@@ -9,12 +10,24 @@ TimedEffect::TimedEffect(float seconds) : seconds(seconds), count(0.f) {}
 TimedEffect::~TimedEffect() {}
 
 void TimedEffect::update(float elapsed_time) {
+	on_update(this);
 	count += elapsed_time;
 	if (count >= seconds)
 		stop_running();
 }
 
 
+
+MissileEffect::MissileEffect(float seconds, Entity *entity, int src_x, int src_y, int dst_x, int dst_y)
+	: EntityEffect(seconds, entity), src_x(src_x), src_y(src_y), dst_x(dst_x), dst_y(dst_y), callback([&](MissileEffect*) {})
+{}
+
+void MissileEffect::update(float elapsed_time) {
+	float delta_x = (dst_x - src_x) * elapsed_time / seconds;
+	float delta_y = (dst_y - src_y) * elapsed_time / seconds;
+	entity->move(delta_x, delta_y);
+	EntityEffect::update(elapsed_time);
+}
 
 
 void MoveEffect::update(float elapsed_time) {

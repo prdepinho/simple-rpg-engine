@@ -118,6 +118,8 @@ public:
 	std::vector<Item*> get_items_on_tile(int tile_x, int tile_y);
 	void clean_items();
 
+	void add_effect(Effect *effect);
+
 	void add_entity(Entity *entity);
 	void remove_entity(Entity *entity);
 
@@ -129,6 +131,7 @@ public:
 	void remove_floating_message(FloatingMessage *fm);
 
 	void start_firework(std::string type, int tile_x, int tile_y);
+	void cast_missile(std::string firework_type, int tile_src_x, int tile_src_y, int tile_dst_x, int tile_dst_y, std::function<void(MissileEffect*)> on_end = [&](MissileEffect*) {});
 
 	void pan_foreground(std::string filename, int x, int y, float speed_x, float speed_y, float total_time, float still_time);
 	void pan_foreground(LuaObject data);
@@ -147,6 +150,7 @@ private:
 
 	std::vector<Item*> items;
 	std::vector<Effect*> effects;
+	std::vector<Effect*> effects_buffer;
 	std::vector<Entity*> entities;
 	std::vector<FloatingMessage*> floating_messages;
 

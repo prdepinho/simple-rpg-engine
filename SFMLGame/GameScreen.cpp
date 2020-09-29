@@ -153,6 +153,10 @@ bool GameScreen::update(float elapsed_time) {
 
 	// effect handling
 	{
+
+		effects.insert(effects.end(), effects_buffer.begin(), effects_buffer.end());
+		effects_buffer.clear();
+
 		for (auto it = effects.begin(); it != effects.end();) {
 			Effect *effect = *it;
 			effect->update(elapsed_time);
@@ -164,6 +168,7 @@ bool GameScreen::update(float elapsed_time) {
 				++it;
 			}
 		}
+
 	}
 
 	// change map here
@@ -390,9 +395,22 @@ void GameScreen::control_mouse_info() {
 			add_floating_message(message, tile_x, tile_y, turn_duration * 5);
 			log_box.push_line(message);
 		}
-#else
+#endif
+#if false
 		{
 			start_firework("fireball_blast", tile_x, tile_y);
+		}
+#else
+		{
+			auto callback = [&](MissileEffect* e) {
+				Log("CALLBACK");
+				auto tile_coords = map.get_tile_coord(e->get_dst_x(), e->get_dst_y());
+				Log("pixl coords: (%d, %d)", e->get_dst_x(), e->get_dst_y());
+				Log("tile coords: (%d, %d)", tile_coords.x, tile_coords.y);
+				start_firework("fireball_blast", tile_coords.x, tile_coords.y);
+			};
+			auto src = character_position(*player_character);
+			cast_missile("bullet", src.x, src.y, tile_x, tile_y, callback);
 		}
 #endif
 	}
@@ -732,6 +750,10 @@ void GameScreen::clean_items() {
 	items.clear();
 }
 
+void GameScreen::add_effect(Effect *effect) {
+	effects_buffer.push_back(effect);
+}
+
 void GameScreen::add_entity(Entity *entity) {
 	entities.push_back(entity);
 }
@@ -904,7 +926,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 			// update fog of war
 			map.get_fog_of_war().update_fog(player_character->get_field_of_vision()); 
 		});
-		effects.push_back(effect);
+		add_effect(effect);
 		player_busy = true;
 	}
 
@@ -923,7 +945,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 			}
 			update_field_of_vision(&character);
 		});
-		effects.push_back(effect);
+		add_effect(effect);
 	}
 }
 
@@ -933,12 +955,12 @@ void GameScreen::wait_character(Character &character) {
 		effect->set_on_end([&](Effect*) {
 			player_busy = false;
 		});
-		effects.push_back(effect);
+		add_effect(effect);
 		player_busy = true;
 	}
 	else {
 		Effect *effect = new WaitEffect(&character, turn_duration);
-		effects.push_back(effect);
+		add_effect(effect);
 	}
 }
 
@@ -952,12 +974,12 @@ void GameScreen::attack_character(Character &attacker, Character &defender) {
 			Log("On end attack");
 			player_busy = false;
 		});
-		effects.push_back(effect);
+		add_effect(effect);
 		player_busy = true;
 	}
 	else {
 		Effect *effect = new AttackEffect(&attacker, &defender);
-		effects.push_back(effect);
+		add_effect(effect);
 	}
 }
 
@@ -1008,12 +1030,12 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 			effect->set_on_end([&](Effect*) {
 				player_busy = false;
 			});
-			effects.push_back(effect);
+			add_effect(effect);
 			player_busy = true;
 		}
 		else {
 			Effect *effect = new WaitEffect(&character, turn_duration);
-			effects.push_back(effect);
+			add_effect(effect);
 		}
 	}
 
@@ -1219,7 +1241,7 @@ void GameScreen::add_floating_message(std::string message, int tile_x, int tile_
 	});
 	effect->set_on_end(callback);
 	effect->set_on_interrupt(callback);
-	effects.push_back(effect);
+	add_effect(effect);
 }
 
 void GameScreen::remove_floating_message(FloatingMessage *fm) {
@@ -1242,7 +1264,10 @@ void GameScreen::start_firework(std::string type, int tile_x, int tile_y) {
 	add_entity(fireworks);
 
 	float duration = fireworks->get_duration();
-	Resources::play_sound(fireworks->get_sound());
+
+	std::string sound = fireworks->get_sound();
+	if (sound != "")
+		Resources::play_sound(sound);
 
 	EntityEffect *effect = new EntityEffect(duration, fireworks);
 	auto callback = ([&](Effect *e) {
@@ -1252,6 +1277,35 @@ void GameScreen::start_firework(std::string type, int tile_x, int tile_y) {
 	});
 	effect->set_on_end(callback);
 	effect->set_on_interrupt(callback);
-	effects.push_back(effect);
+	add_effect(effect);
 }
 
+void GameScreen::cast_missile(std::string firework_type, int tile_src_x, int tile_src_y, int tile_dst_x, int tile_dst_y, std::function<void(MissileEffect*)> on_end) {
+	sf::Vector2f src_pix_coords = map.get_tile_pix_coords(tile_src_x, tile_src_y);
+	sf::Vector2f dst_pix_coords = map.get_tile_pix_coords(tile_dst_x, tile_dst_y);
+
+	Fireworks *fireworks = new Fireworks();
+	fireworks->create(firework_type);
+	fireworks->set_position(map.get_x() + (int)src_pix_coords.x, map.get_y() + (int)src_pix_coords.y);
+	add_entity(fireworks);
+
+	float duration = fireworks->get_duration();
+
+	std::string sound = fireworks->get_sound();
+	if (sound != "")
+		Resources::play_sound(sound);
+
+	MissileEffect *effect = new MissileEffect(duration, fireworks, 
+		map.get_x() + src_pix_coords.x, map.get_y() + src_pix_coords.y, 
+		map.get_x() + dst_pix_coords.x, map.get_y() + dst_pix_coords.y);
+	effect->set_callback(on_end);
+	auto callback = ([&](Effect *e) {
+		MissileEffect *me = dynamic_cast<MissileEffect*>(e);
+		me->get_callback()(me);
+		remove_entity(me->get_entity());
+		delete me->get_entity();
+	});
+	effect->set_on_end(callback);
+	effect->set_on_interrupt(callback);
+	add_effect(effect);
+}

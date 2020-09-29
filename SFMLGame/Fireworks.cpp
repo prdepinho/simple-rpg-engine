@@ -18,7 +18,7 @@ void Fireworks::create(std::string type) {
 	int origin_y = animation->get_int("coordinates.y");
 
 	duration = animation->get_float("duration");
-	sound = animation->get_string("sound");
+	sound = animation->get_string("sound", "");
 
 	set_texture(Resources::get_texture(sprite_sheet));
 
