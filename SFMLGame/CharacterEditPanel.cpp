@@ -1,21 +1,29 @@
 #include "CharacterEditPanel.h"
 #include "InputHandler.h"
 #include "Game.h"
+#include "CharacterMenu.h"
 
 
-CharacterEditPanel::CharacterEditPanel(Character *character, int x, int y, int w, int h) : Panel(x, y, w, h), character(character) {}
+CharacterEditPanel::CharacterEditPanel(Character *character, int x, int y, int w, int h) : Panel(x, y, w, h), character(character) {
+}
 
-CharacterEditPanel::~CharacterEditPanel() {}
-
-void CharacterEditPanel::create() {
-	LuaObject stats = _game.get_lua()->character_stats(character->get_name());
-
-	{
-		Lua lua(Path::SCRIPTS + "rules.lua");
-		LuaObject rules = lua.read_top_table();
-		points = rules.get_int("creation_rules.points.total");
+CharacterEditPanel::~CharacterEditPanel() {
+	if (is_created()) {
 		rules.delete_functions();
 	}
+	if (lua) {
+		delete lua;
+	}
+}
+
+void CharacterEditPanel::create() {
+	lua = new Lua(Path::SCRIPTS + "rules.lua");
+	rules = lua->read_top_table();
+
+	LuaObject stats = _game.get_lua()->character_stats(character->get_name());
+
+
+	points = give_points ? rules.get_int("creation_rules.points.total") : 0;
 
 	ability_map = {
 		{"ability.str", "Str"},
@@ -79,61 +87,61 @@ void CharacterEditPanel::create() {
 	for (int j = 0; i < 12; i += 2, j++) {
 		x = labels[j].get_x() - (button_width + margin);
 		y = labels[j].get_y();
-		buttons[i] = AbilityButton("Minus", x, y, w, h - 1, [&](Component* c) {
+		buttons[i] = AbilityButton("<", x, y, w, h - 1, [&](Component* c) {
 			if (editable) {
 				AbilityButton *b = dynamic_cast<AbilityButton*>(c);
 				std::string str = ability_map[b->get_index()][0];
 				int score = ability_scores[str];
 
-				Lua lua(Path::SCRIPTS + "rules.lua");
-				LuaObject rules = lua.read_top_table();
 				LuaObject *point_costs = rules.get_object("creation_rules.points.costs");
 				int price = (*point_costs)[score - 1].get_int("", -1);
 
 				if (price > -1) {
 					points += price;
 					ability_scores[str] -= 1;
+					refresh();
+					return true;
+				}
+				else {
+					refresh();
+					return false;
 				}
 
-				rules.delete_functions();
-				refresh();
-
 			}
-			else
+			else {
 				Log("Uneditable");
-			return true;
+				return false;
+			}
 		});
 		buttons[i].set_index(j);
 		buttons[i].create();
 		add_component(buttons[i]);
 
 		x = labels[j].get_x() + button_width + margin;
-		buttons[i + 1] = AbilityButton("Plus", x, y, w, h - 1, [&](Component* c) {
+		buttons[i + 1] = AbilityButton(">", x, y, w, h - 1, [&](Component* c) {
 			if (editable) {
 				AbilityButton *b = dynamic_cast<AbilityButton*>(c);
 				std::string str = ability_map[b->get_index()][0];
 				int score = ability_scores[str];
 
-				Lua lua(Path::SCRIPTS + "rules.lua");
-				LuaObject rules = lua.read_top_table();
 				LuaObject *point_costs = rules.get_object("creation_rules.points.costs");
 				int price = (*point_costs)[score].get_int("", -1);
 
 				if (price > -1 && points >= price) {
 					points -= price;
 					ability_scores[str] += 1;
+					refresh();
+					return true;
 				}
 				else {
-					Log("No points available.");
+					refresh();
+					return false;
 				}
-
-				rules.delete_functions();
-				refresh();
-
 			}
-			else
+			else {
 				Log("Uneditable");
-			return true;
+				return false;
+			}
 		});
 		buttons[i + 1].set_index(j);
 		buttons[i + 1].create();
@@ -152,6 +160,16 @@ void CharacterEditPanel::create() {
 		x = margin;
 		y = points_label.get_y() + points_label.get_height() + margin;
 		buttons[i] = AbilityButton("Accept", x, y, w, h - 1, [&](Component*) {
+			_game.get_lua()->set_ability_scores(
+				character->get_name(),
+				ability_scores[ability_map[0][0]],
+				ability_scores[ability_map[1][0]],
+				ability_scores[ability_map[2][0]],
+				ability_scores[ability_map[3][0]],
+				ability_scores[ability_map[4][0]],
+				ability_scores[ability_map[5][0]]
+			);
+			exit();
 			return true;
 		});
 		buttons[i].create();
@@ -162,22 +180,20 @@ void CharacterEditPanel::create() {
 		x = buttons[i - 1].get_x() + buttons[i - 1].get_width() + margin;
 		buttons[i] = AbilityButton("Roll", x, y, w, h - 1, [&](Component*) {
 			if (editable) {
-				Lua lua(Path::SCRIPTS + "rules.lua");
-				LuaObject rules = lua.read_top_table();
 
 				for (int i = 0; i < 6; i++) {
 					ability_scores[ability_map[i][0]] = std::stoi(rules.call_function("creation_rules.roll_ability_score").c_str());
 				}
 
-				rules.delete_functions();
 				points = 0;
-				editable = false;
+				editable = true;
 				refresh();
+				return true;
 			}
 			else {
 				Log("Uneditable");
+				return false;
 			}
-			return true;
 		});
 		buttons[i].create();
 		add_component(buttons[i]);
@@ -186,6 +202,7 @@ void CharacterEditPanel::create() {
 	{
 		x = buttons[i - 1].get_x() + buttons[i - 1].get_width() + margin;
 		buttons[i] = AbilityButton("Back", x, y, w, h - 1, [&](Component*) {
+			exit();
 			return true;
 		});
 		buttons[i].create();
@@ -194,23 +211,48 @@ void CharacterEditPanel::create() {
 	}
 
 	Panel::create();
+	refresh();
 }
 
 void CharacterEditPanel::refresh() {
-	for (int i = 0; i < 6; i++) {
-		std::string str = ability_map[i][1] + ": " + std::to_string(ability_scores[ability_map[i][0]]);
+	LuaObject *point_costs = rules.get_object("creation_rules.points.costs");
+
+	for (int i = 0, j = 0; i < 6; i++, j+=2) {
+		int score = ability_scores[ability_map[i][0]];
+		std::string str = ability_map[i][1] + ": " + std::to_string(score);
 		labels[i].set_text(str);
+		{
+			int price_up = (*point_costs)[score].get_int("", -1);
+			int price_down = (*point_costs)[score - 1].get_int("", -1);
+			
+			if (price_down > -1) {
+				buttons[j].set_label("+" + std::to_string(price_down));
+			}
+			else {
+				buttons[j].set_label("---");
+			}
+
+			if (price_up > -1) {
+				buttons[j + 1].set_label("-" + std::to_string(price_up));
+			}
+			else {
+				buttons[j + 1].set_label("---");
+			}
+		}
 	}
 	points_label.set_text("Points: " + std::to_string(points));
+
+	
 }
 
 
 
 
 
-void CharacterEditPanel::show(Character *character, Screen &screen, Callback callback) {
+void CharacterEditPanel::show(Character *character, bool give_points, Screen &screen, Callback callback) {
 	static CharacterEditPanel panel;
 	panel = CharacterEditPanel(character, 0, 0, _game.get_resolution_width(), _game.get_resolution_height());
+	panel.give_points = give_points;
 	panel.add_function(callback);
 	panel.create();
 	screen.add_component(panel);
@@ -280,10 +322,35 @@ Component *CharacterEditPanel::on_key_pressed(sf::Keyboard::Key key) {
 		return this;
 
 	case Control::B:
-		call_functions(this);
-		get_screen()->remove_component(*this);
+		exit();
+		return this;
+
+	case Control::START:
+		exit();
+		return this;
+
+	case Control::SELECT:
+		exit();
 		return this;
 
 	}
 	return nullptr;
+}
+
+void CharacterEditPanel::exit() {
+	if (points > 0) {
+		ChoicePanel::show("There are points remaining. Exit?", *get_screen(),
+			[&]() {
+				call_functions(this);
+				get_screen()->remove_component(*this);
+			},
+			[&]() {
+				set_cursor(cursor);
+			}
+		);
+	}
+	else {
+		call_functions(this);
+		get_screen()->remove_component(*this);
+	}
 }

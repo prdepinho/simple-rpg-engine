@@ -25,11 +25,13 @@ public:
 	virtual ~CharacterEditPanel();
 	virtual void create() override;
 	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
-	static void show(Character *character, Screen &screen, Callback callback);
+	static void show(Character *character, bool give_points, Screen &screen, Callback callback);
 	void move_cursor(Direction direction);
 	void set_cursor(int i);
 	void refresh();
+	void exit();
 private:
+	bool give_points = false;
 	std::vector<std::vector<std::string>> ability_map;
 	std::map<std::string, int> ability_scores;
 	Character *character;
@@ -44,4 +46,7 @@ private:
 	Label ac_label;
 	int cursor = 0;
 	bool editable = true;
+
+	Lua *lua = nullptr;
+	LuaObject rules;
 };

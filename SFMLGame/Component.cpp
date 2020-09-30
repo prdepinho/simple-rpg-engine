@@ -23,6 +23,7 @@ void Component::create() {
 	for (Component *c : components) {
 		c->create();
 	}
+	created = true;
 }
 
 void Component::update(float fElapsedTime) {

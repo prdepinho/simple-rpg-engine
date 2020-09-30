@@ -14,6 +14,17 @@ local map_module = {}
 local current_map = ''
 
 
+function set_ability_scores(name, str, dex, con, int, wis, cha)
+  local character = character_data[name]
+  rules.set_ability_scores(character.stats, str, dex, con, int, wis, cha)
+end
+
+function level_up(name, total_hp)
+  local character = character_data[name]
+  rules.level_up(character.stats)
+end
+
+
 function attack(attacker_name, defender_name)
   local attacker = character_data[attacker_name]
   local defender = character_data[defender_name]

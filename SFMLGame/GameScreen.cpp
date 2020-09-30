@@ -616,16 +616,24 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			case sf::Keyboard::N:
 				change_map("room", 4, 2);
 				break;
+			case sf::Keyboard::G:
+				std::cout << _game.get_lua()->stack_dump() << std::endl;
+				break;
 			case sf::Keyboard::M:
 				change_map("room2", 8, 6);
 				break;
-			case sf::Keyboard::R:
-				player_busy = true;
-				CharacterEditPanel::show(player_character, *this, [&](Component*) {
-					player_busy = false;
-					select(container);
-					return true; 
-				});
+			case sf::Keyboard::R: 
+				{
+					static int give_points = true;
+					player_busy = true;
+					CharacterEditPanel::show(player_character, give_points, *this, [&](Component*) {
+						Overlay::refresh(*this, player_character);
+						player_busy = false;
+						select(container);
+						give_points = false;
+						return true;
+					});
+				}
 				break;
 			case sf::Keyboard::V:
 				show_fog_of_war = !show_fog_of_war;

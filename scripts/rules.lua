@@ -131,8 +131,10 @@ function rules.new_character()
       wis = 8,
       cha = 8,
     },
-    total_hp = 10,
-    current_hp = 10,
+    total_hp = 6,
+    current_hp = 6,
+    level = 1,
+    hit_die = "d10",
     weapon = {code = "", name = "unarmed", type = "weapon"},
     armor =  {code = "", name = "unarmored", type = "armor"},
     shield = {code = "", name = "no_shield", type = "shield"},
@@ -152,12 +154,61 @@ function rules.new_character()
   return stats
 end
 
+
+function rules.set_ability_scores(stats, str, dex, con, int, wis, cha)
+  local previous_con = stats.ability.con
+  stats.ability.str = str
+  stats.ability.dex = dex
+  stats.ability.con = con
+  stats.ability.int = int
+  stats.ability.wis = wis
+  stats.ability.cha = cha
+
+  local previous_hp_bonus = stats.level * rules.ability_modifier[1][previous_con]
+  local new_hp_bonus = stats.level * rules.ability_modifier[1][stats.ability.con]
+  local diff_bonus = new_hp_bonus - previous_hp_bonus
+  rules.set_max_hit_points(stats, stats.total_hp + diff_bonus)
+end
+
+function rules.level_up(stats)
+  if hit_die == "d12" then
+    rules.set_max_hit_points(stats, stats.total_hp + 7 + rules.ability_modifier[1][stats.ability.con])
+  elseif hit_die == "d10" then
+    rules.set_max_hit_points(stats, stats.total_hp + 6 + rules.ability_modifier[1][stats.ability.con])
+  elseif hit_die == "d8" then
+    rules.set_max_hit_points(stats, stats.total_hp + 5 + rules.ability_modifier[1][stats.ability.con])
+  elseif hit_die == "d6" then
+    rules.set_max_hit_points(stats, stats.total_hp + 4 + rules.ability_modifier[1][stats.ability.con])
+  elseif hit_die == "d4" then
+    rules.set_max_hit_points(stats, stats.total_hp + 3 + rules.ability_modifier[1][stats.ability.con])
+  end
+end
+
+function rules.set_max_hit_points(stats, total_hp)
+  local difference = total_hp - stats.total_hp
+  stats.total_hp = total_hp
+
+  -- if increased, then increase current hp
+  if difference > 0 then
+    stats.current_hp = stats.current_hp + difference
+
+  -- if decreased, then check current hp is not greater than total hp
+  elseif stats.current_hp > stats.total_hp then
+    stats.current_hp = stats.total_hep
+  end
+end
+
+
 -- ability modifiers
 rules.ability_modifier = {
   --  1,   2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
-  { -21, -13, -8, -5, -3, -2, -1, -1,  0,  0,  0,  0,  1,  1,  2,  3,  5,  8,  13, 21 },
-  { -13, -8,  -5, -3, -2, -1, -1,  0,  0,  0,  0,  0,  0,  1,  1,  2,  3,  5,  8,  13 },
-  { -34, -21,-13, -8, -5, -3, -2, -1, -1,  0,  0,  1,  1,  2,  3,  5,  8,  13, 21, 34 },
+  { -21, -13, -8, -5, -3, -2, -1, -1,  0,  0,  0,  0,  1,  1,  2,  3,  5,  8,  13, 21 },  -- 1. middle fibonacci
+  { -13, -8,  -5, -3, -2, -1, -1,  0,  0,  0,  0,  0,  0,  1,  1,  2,  3,  5,  8,  13 },  -- 2. late fibonacci
+  { -34, -21, -13,-8, -5, -3, -2, -1, -1,  0,  0,  1,  1,  2,  3,  5,  8,  13, 21, 34 },  -- 3. early fibonacci
+  { -9,  -8,  -7, -6, -5, -4, -3, -2, -1,  0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10 },  -- 4. linear
+  { -5,  -4,  -4, -3, -3, -2, -2, -1, -1,  0,  0,  1,  1,  2,  2,  3,  3,  4,  4,  5  },  -- 5. linear stepped
+  {  1,   2,   3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 },  -- 6. linear mirror
+  {  20,  19,  18, 17, 16, 15, 14, 13, 12, 11, 10, 9,  8,  7,  6,  5,  4,  3,  2,  1  },  -- 7. inverse mirror
 }
 
 rules.creation_rules = {
@@ -173,8 +224,10 @@ rules.creation_rules = {
   end,
   points = {
     --         1    2    3    4    5    6    7    8    9   10  11  12  13  14  15  16   17   18   19   20
-    costs = { nil, nil, nil, nil, nil, nil, nil, nil,  1,  1,  1,  1,  1,  2,  2,  nil, nil, nil, nil, nil },
-    total = 27,
+    costs = { nil, nil, nil,  5,   3,   2,   2,   1,   1,  1,  1,  1,  2,  2,  3,  5,   8,   13,  nil, nil  },
+    total = 33,
+    -- costs = { nil, nil, nil,  1,   1,   1,   1,   1,   1,  1,  1,  1,  1,  2,  2,  3,   4,   5,  nil, nil },
+    -- total = 27,
   },
 }
 

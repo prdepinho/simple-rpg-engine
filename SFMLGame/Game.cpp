@@ -30,7 +30,7 @@ void Game::start() {
 }
 
  void Game::loop(){
-	Resources::play_music("theme.wav");
+	// Resources::play_music("theme.wav");
 	run = true;
 	while (window.isOpen()) {
 		float elapsed_time = clock.restart().asSeconds();

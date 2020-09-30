@@ -563,6 +563,36 @@ int Lua::character_base_to_hit(std::string name) {
 	return ac;
 }
 
+void Lua::level_up(std::string name) {
+	lua_getglobal(state, "level_up");
+	lua_pushstring(state, name.c_str());
+	int result = lua_pcall(state, 1, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << name << ": " << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	lua_pop(state, 1);
+}
+
+void Lua::set_ability_scores(std::string name, int str, int dex, int con, int intl, int wis, int cha) {
+	lua_getglobal(state, "set_ability_scores");
+	lua_pushstring(state, name.c_str());
+	lua_pushinteger(state, str);
+	lua_pushinteger(state, dex);
+	lua_pushinteger(state, con);
+	lua_pushinteger(state, intl);
+	lua_pushinteger(state, wis);
+	lua_pushinteger(state, cha);
+	int result = lua_pcall(state, 7, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << name << ": " << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	lua_pop(state, 1);
+}
+
 LuaObject Lua::item_stats(std::string name, std::string type) {
 	lua_getglobal(state, "item_stats");
 	lua_pushstring(state, name.c_str());

@@ -23,6 +23,7 @@ void Panel::create() {
 	set_quad(&vertices[6*4], 0.f,   h-2.f, 2.f,   2.f,   texX,      texY+10.f, 2.f,  2.f);
 	set_quad(&vertices[7*4], 2.f,   h-2.f, w-4.f, 2.f,   texX+2.f,  texY+10.f, 12.f, 2.f);
 	set_quad(&vertices[8*4], w-2.f, h-2.f, 2.f,   2.f,   texX+14.f, texY+10.f, 2.f,  2.f);
+	created = true;
  }
 
 

@@ -61,6 +61,9 @@ public:
 	LuaObject character_stats(std::string name);
 	int character_base_ac(std::string name);
 	int character_base_to_hit(std::string name);
+	void level_up(std::string name);
+	void set_ability_scores(std::string name, int str, int dex, int con, int intl, int wis, int cha);
+
 	LuaObject item_stats(std::string name, std::string type);
 	void load_initial_item(std::string code, std::string name, std::string type, int x, int y);
 	bool loot_item(std::string item_code, std::string character_name);

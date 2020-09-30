@@ -111,10 +111,18 @@ Component* Button::on_key_pressed(sf::Keyboard::Key key) {
 }
 
 Component* Button::on_click() {
+	bool rval = false;
 	for (Callback function : functions) {
-		function(this);
+		rval = rval || function(this);
+		// function(this);
 	}
-	Resources::get_sound("crrreee.wav")->play();
+	std::cout << "Rval: " << rval << std::endl;
+	if (rval) {
+		Resources::get_sound("crrreee.wav")->play();
+	}
+	else {
+		Resources::get_sound("boop.wav")->play();
+	}
 	return this;
 }
 

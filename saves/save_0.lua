@@ -1,22 +1,39 @@
 M = {}
 M.data = {
+  active = true,
   character_data = {
     player = {
-      created = true,
+      enemy = false,
       stats = {
+        current_hp = 12,
+        level = 1,
+        ability = {
+          str = 16,
+          int = 14,
+          dex = 14,
+          cha = 16,
+          con = 17,
+          wis = 11,
+        },
         armor = {
           name = "unarmored",
           code = "",
           type = "armor",
         },
-        shield = {
-          name = "no_shield",
-          code = "",
-          type = "shield",
-        },
         name = "Mumu",
-        current_hp = 10,
-        total_hp = 10,
+        portrait = {
+          y = 224,
+          x = 0,
+        },
+        total_hp = 12,
+        status = {
+          poison = false,
+          fear = false,
+          hold = false,
+          dead = false,
+          invisible = false,
+          charm = false,
+        },
         inventory = {
           {
             name = "no_item",
@@ -59,51 +76,53 @@ M.data = {
             type = "item",
           },
         },
-        ability = {
-          con = 10,
-          dex = 10,
-          wis = 10,
-          int = 10,
-          str = 10,
-          cha = 10,
-        },
-        weapon = {
-          name = "unarmed",
-          code = "",
-          type = "weapon",
-        },
-        portrait = {
-          y = 224,
-          x = 0,
-        },
-        status = {
-          fear = false,
-          charm = false,
-          dead = false,
-          hold = false,
-          poison = false,
-          invisible = false,
-        },
-      },
-      removed = false,
-      enemy = false,
-    },
-    ranger = {
-      created = true,
-      stats = {
-        armor = {
-          name = "leather_armor",
-          code = "ranger_a",
-          type = "armor",
-        },
         shield = {
           name = "no_shield",
           code = "",
           type = "shield",
         },
+        hit_die = "d10",
+        weapon = {
+          name = "unarmed",
+          code = "",
+          type = "weapon",
+        },
+      },
+      created = true,
+      removed = false,
+    },
+    ranger = {
+      enemy = true,
+      stats = {
+        current_hp = 6,
+        level = 1,
+        ability = {
+          str = 8,
+          int = 8,
+          dex = 8,
+          cha = 8,
+          con = 8,
+          wis = 8,
+        },
+        armor = {
+          name = "leather_armor",
+          code = "ranger_a",
+          type = "armor",
+        },
         name = "character",
-        current_hp = 10,
-        total_hp = 10,
+        portrait = {
+          y = 192,
+          x = 0,
+        },
+        total_hp = 6,
+        status = {
+          poison = false,
+          fear = false,
+          hold = false,
+          dead = false,
+          invisible = false,
+          charm = false,
+        },
         inventory = {
           {
             name = "halberd",
@@ -146,117 +165,47 @@ M.data = {
             type = "item",
           },
         },
-        ability = {
-          con = 10,
-          dex = 10,
-          wis = 10,
-          int = 10,
-          str = 10,
-          cha = 10,
+        shield = {
+          name = "no_shield",
+          code = "",
+          type = "shield",
         },
+        hit_die = "d10",
         weapon = {
           name = "halberd",
           code = "ranger_w",
           type = "weapon",
         },
-        portrait = {
-          y = 192,
-          x = 0,
-        },
-        status = {
-          fear = false,
-          charm = false,
-          dead = false,
-          hold = false,
-          poison = false,
-          invisible = false,
-        },
       },
+      created = true,
       removed = false,
-      enemy = true,
     },
   },
-  active = true,
+  title = "19:28 2020,9,30",
   map_data = {
     room = {
-      created = true,
-      door_locked = true,
       has_key = false,
-      items = {
-        room_w5 = {
-          name = "maul",
-          y = 3,
-          type = "weapon",
-          x = 5,
-        },
-        room_w2 = {
-          name = "arming_sword",
-          y = 3,
-          type = "weapon",
-          x = 5,
-        },
-        room_w3 = {
-          name = "falcion",
-          y = 3,
-          type = "weapon",
-          x = 5,
-        },
-        room_w4 = {
-          name = "morning_star",
-          y = 3,
-          type = "weapon",
-          x = 5,
-        },
-        room_a2 = {
-          name = "chain_mail",
-          y = 3,
-          type = "armor",
-          x = 3,
-        },
-        room_w6 = {
-          name = "estoc",
-          y = 3,
-          type = "weapon",
-          x = 5,
-        },
-        room_w8 = {
-          name = "arming_sword",
-          y = 4,
-          type = "weapon",
-          x = 5,
-        },
-        room_s1 = {
-          name = "shield",
-          y = 4,
-          type = "shield",
-          x = 5,
-        },
-        room_a1 = {
-          name = "gambeson",
-          y = 4,
-          type = "armor",
-          x = 5,
-        },
-        room_w7 = {
-          name = "pike",
-          y = 4,
-          type = "weapon",
-          x = 5,
-        },
-        room_w9 = {
-          name = "long_sword",
-          y = 4,
-          type = "weapon",
-          x = 5,
-        },
-        room_w1 = {
-          name = "axe",
-          y = 3,
-          type = "weapon",
-          x = 5,
-        },
-      },
+      door_locked = true,
+      created = true,
       objects = {
+        player_position = {
+          {
+            y = 5,
+            x = 4,
+          },
+        },
+        north_door = {
+          {
+            y = 1,
+            x = 4,
+          },
+        },
+        key_chest = {
+          {
+            y = 3,
+            x = 6,
+          },
+        },
         step_floor = {
           {
             y = 4,
@@ -283,10 +232,10 @@ M.data = {
             x = 6,
           },
         },
-        player_position = {
+        empty_chest = {
           {
-            y = 5,
-            x = 4,
+            y = 2,
+            x = 6,
           },
         },
         door = {
@@ -303,27 +252,82 @@ M.data = {
             x = 7,
           },
         },
-        empty_chest = {
-          {
-            y = 2,
-            x = 6,
-          },
+      },
+      items = {
+        room_w1 = {
+          name = "axe",
+          x = 5,
+          y = 3,
+          type = "weapon",
         },
-        key_chest = {
-          {
-            y = 3,
-            x = 6,
-          },
+        room_w8 = {
+          name = "arming_sword",
+          x = 5,
+          y = 4,
+          type = "weapon",
         },
-        north_door = {
-          {
-            y = 1,
-            x = 4,
-          },
+        room_w6 = {
+          name = "estoc",
+          x = 5,
+          y = 3,
+          type = "weapon",
+        },
+        room_a1 = {
+          name = "gambeson",
+          x = 5,
+          y = 4,
+          type = "armor",
+        },
+        room_w2 = {
+          name = "arming_sword",
+          x = 5,
+          y = 3,
+          type = "weapon",
+        },
+        room_w5 = {
+          name = "maul",
+          x = 5,
+          y = 3,
+          type = "weapon",
+        },
+        room_w9 = {
+          name = "long_sword",
+          x = 5,
+          y = 4,
+          type = "weapon",
+        },
+        room_w7 = {
+          name = "pike",
+          x = 5,
+          y = 4,
+          type = "weapon",
+        },
+        room_s1 = {
+          name = "shield",
+          x = 5,
+          y = 4,
+          type = "shield",
+        },
+        room_w4 = {
+          name = "morning_star",
+          x = 5,
+          y = 3,
+          type = "weapon",
+        },
+        room_a2 = {
+          name = "chain_mail",
+          x = 3,
+          y = 3,
+          type = "armor",
+        },
+        room_w3 = {
+          name = "falcion",
+          x = 5,
+          y = 3,
+          type = "weapon",
         },
       },
     },
   },
-  title = "13:30 2020,9,29",
 }
 return M

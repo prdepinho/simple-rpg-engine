@@ -682,19 +682,21 @@ void Loot::create() {
 			int h = button_size - 1;
 			buttons[k] = ItemButton("", x, y, w, h, [&](Component* c) 
 			{
+				bool rval = false;
 				ItemButton *b = dynamic_cast<ItemButton*>(c);
 				std::string item_code = b->get_item().get_code();
 				if (item_code != "") {
 					LootMenu *menu = dynamic_cast<LootMenu*>(get_parent());
 					std::string character_name = menu->get_character()->get_name();
-					bool rval = _game.get_lua()->loot_item(item_code, character_name);
-					if (rval)
+					rval = _game.get_lua()->loot_item(item_code, character_name);
+					if (rval) {
 						b->set_item(Item());
+					}
 					menu->update_buttons();
 				}
 				else 
 					Log("Empty slot");
-				return true;
+				return rval;
 			});
 
 			buttons[k].create();

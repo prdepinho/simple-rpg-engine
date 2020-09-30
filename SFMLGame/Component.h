@@ -30,6 +30,8 @@ public:
 
 	virtual void create();  // create should be called after adding it to its parent component to give the component a screen reference.
 
+	bool is_created() const { return created; }
+
 	Game *get_game();
 	Screen *get_screen() { return parent_screen; }
 	void set_screen(Screen *screen);
@@ -90,6 +92,7 @@ protected:
 	std::vector<Component*> components;
 	Component *parent_component;
 	Screen *parent_screen;
+	bool created = false;
 
 private:
 	std::string identifier;
