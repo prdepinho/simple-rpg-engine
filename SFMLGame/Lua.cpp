@@ -986,8 +986,7 @@ std::string LuaObject::call_function(std::string name) {
 }
 
 void LuaObject::delete_functions() {
-	
-	std::cout << "+++++++++++ deleting functions ++++++++++++" << std::endl;
+	// std::cout << "+++++++++++ deleting functions ++++++++++++" << std::endl;
 	delete_functions_recursive(*this);
 }
 
@@ -1001,7 +1000,7 @@ void LuaObject::delete_functions_recursive(LuaObject &object) {
 		break;
 	case FUNCTION:
 #if true
-		std::cout << "deleting function: " << object.function_index << ", " << object.function_name << std::endl;
+		// std::cout << "deleting function: " << object.function_index << ", " << object.function_name << std::endl;
 		{
 			auto state = lua->get_state();
 			lua_rawgeti(state, LUA_REGISTRYINDEX, lua->get_registry_index());  // push the table

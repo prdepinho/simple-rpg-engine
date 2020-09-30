@@ -281,6 +281,9 @@
     <ClCompile Include="Fireworks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CharacterEditPanel.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lua5.3.5\lapi.h">
@@ -489,6 +492,9 @@
     </ClInclude>
     <ClInclude Include="Fireworks.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterEditPanel.h">
+      <Filter>gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

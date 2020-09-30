@@ -59,8 +59,8 @@ animations.types = {
     basic = defaults,
     duration = 1 / (turns_per_second * 2),
     sound = "",
-    oriented = true,
-    coordinates = {
+    oriented = true, -- oriented fireworks have a sprite for each of the eight directions it might face.
+    coordinates = {  -- coordinates for the tranparent square in the middle of the sprites.
       x = 16 * 11,
       y = 16 * 1,
     },

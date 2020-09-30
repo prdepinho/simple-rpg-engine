@@ -9,6 +9,7 @@
 #include "CharacterMenu.h"
 #include "FloatingMessage.h"
 #include "Fireworks.h"
+#include "CharacterEditPanel.h"
 
 GameScreen::~GameScreen() {
 	for (Effect *effect : effects_buffer)
@@ -617,6 +618,14 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				break;
 			case sf::Keyboard::M:
 				change_map("room2", 8, 6);
+				break;
+			case sf::Keyboard::R:
+				player_busy = true;
+				CharacterEditPanel::show(player_character, *this, [&](Component*) {
+					player_busy = false;
+					select(container);
+					return true; 
+				});
 				break;
 			case sf::Keyboard::V:
 				show_fog_of_war = !show_fog_of_war;
