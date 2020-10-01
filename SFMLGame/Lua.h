@@ -61,6 +61,7 @@ public:
 	LuaObject character_stats(std::string name);
 	int character_base_ac(std::string name);
 	int character_base_to_hit(std::string name);
+	int character_base_damage_bonus(std::string name);
 	void level_up(std::string name);
 	void set_ability_scores(std::string name, int str, int dex, int con, int intl, int wis, int cha);
 
@@ -244,7 +245,7 @@ _game.get_lua()->call_table_function(block, "callback");
 class LuaObject {
 	friend class Lua;
 public:
-	enum Type { STRING, NUMBER, BOOLEAN, OBJECT, FUNCTION, NULL_OBJECT };
+	enum Type { STRING, NUMBER, BOOLEAN, OBJECT, FUNCTION, NULL_OBJECT, INTEGER };
 	LuaObject(Lua *lua=nullptr) : lua(lua) {}
 	~LuaObject() {}
 
@@ -285,16 +286,20 @@ public:
 	std::string get_path() const { return path; }
 	std::string get_function_name() const { return function_name; }
 
-	std::string call_function(std::string name);
+	std::string call_function(std::string name, LuaObject arg = {});
 	void delete_functions();
 	void dump_map();
+
+	static LuaObject wrap_number(float i);
+	static LuaObject wrap_int(int i);
+	static LuaObject wrap_string(std::string s);
 private:
 	void delete_functions_recursive(LuaObject &object);
 	void dump_map_recursive(LuaObject &object, int indent);
 
 private:
 	Lua *lua;
-	Type type;
+	Type type = Type::NULL_OBJECT;
 	std::string string;
 	float number;
 	bool boolean;
@@ -303,3 +308,5 @@ private:
 	int function_index;
 	std::map<std::string, LuaObject> object;
 };
+
+

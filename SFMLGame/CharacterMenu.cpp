@@ -272,6 +272,9 @@ void StatsPanel::refresh(Character *character) {
 
 		std::string name = item.get_string("name");
 		std::string damage = item.get_string("damage");
+		int damage_bonus = _game.get_lua()->character_base_damage_bonus(character->get_name());
+		damage += (damage_bonus >= 0) ? ("+" + std::to_string(damage_bonus)) : (std::to_string(damage_bonus));
+
 		int to_hit = _game.get_lua()->character_base_to_hit(character->get_name());
 
 		std::string sign = to_hit >= 0 ? "+" : "";

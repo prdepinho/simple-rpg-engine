@@ -303,6 +303,10 @@ function rules.base_to_hit(attacker)
   return to_hit
 end
 
+function rules.base_damage_bonus(attacker)
+  return rules.ability_modifier[1][attacker.ability.str]
+end
+
 function rules.attack_armor_class(attacker, defender)
   local ac = rules.base_armor_class(defender)
 
@@ -444,7 +448,7 @@ function rules.roll_attack(attacker, defender)
 end
 
 function rules.roll_damage(attacker, defender, hit_result)
-  local damage_bonus = rules.ability_modifier[1][attacker.ability.str]
+  local damage_bonus = rules.base_damage_bonus(attacker)
   local result = {
     total_damage = 0,
     dice_results = {0},

@@ -7,6 +7,7 @@
 #include "Button.h"
 #include "Callback.h"
 #include <vector>
+#include "TextArea.h"
 
 class AbilityButton : public Button {
 public:
@@ -29,12 +30,14 @@ public:
 	void move_cursor(Direction direction);
 	void set_cursor(int i);
 	void refresh();
+	void update_text_area();
 	void exit();
 private:
 	bool give_points = false;
 	std::vector<std::vector<std::string>> ability_map;
 	std::map<std::string, int> ability_scores;
 	Character *character;
+	TextArea text_area;
 	std::vector<AbilityButton> buttons;
 	std::vector<Label> labels;
 	int hp = 0;

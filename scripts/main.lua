@@ -325,6 +325,11 @@ function character_base_to_hit(name)
   return rules.base_to_hit(stats)
 end
 
+function character_base_damage_bonus(name)
+  local stats = character_modules[name].data.stats
+  return rules.base_damage_bonus(stats)
+end
+
 function add_character(script, name)
   if character_data[name] == nil then
     character_data[name] = {}

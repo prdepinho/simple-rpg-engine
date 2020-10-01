@@ -423,7 +423,9 @@ bool Lua::equip_item(int item_index, std::string character_name) {
 		ss << get_error(state);
 		throw LuaException(ss.str().c_str());
 	}
+	bool rval = lua_toboolean(state, -1);
 	lua_pop(state, 1);
+	return rval;
 }
 
 void Lua::attack(std::string attacker_name, std::string defender_name) {
@@ -551,6 +553,20 @@ int Lua::character_base_ac(std::string name) {
 
 int Lua::character_base_to_hit(std::string name) {
 	lua_getglobal(state, "character_base_to_hit");
+	lua_pushstring(state, name.c_str());
+	int result = lua_pcall(state, 1, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << name << ": " << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	int ac = (int)lua_tointeger(state, -1);
+	lua_pop(state, 1);
+	return ac;
+}
+
+int Lua::character_base_damage_bonus(std::string name) {
+	lua_getglobal(state, "character_base_damage_bonus");
 	lua_pushstring(state, name.c_str());
 	int result = lua_pcall(state, 1, 1, 0);
 	if (result != LUA_OK) {
@@ -721,7 +737,7 @@ LuaObject * LuaObject::get_token(std::string object_path) {
 
 int LuaObject::get_int(std::string name, int default_value) {
 	LuaObject *token = get_token(name);
-	return (token != nullptr && token->type == NUMBER) ? (int)token->number : default_value;
+	return (token != nullptr && (token->type == NUMBER || token->type == INTEGER)) ? (int)token->number : default_value;
 }
 
 float LuaObject::get_float(std::string name, float default_value) {
@@ -741,7 +757,7 @@ std::string LuaObject::get_string(std::string name, std::string default_value) {
 
 int LuaObject::get_int(std::string name) {
 	LuaObject *token = get_token(name);
-	if (token != nullptr && token->type == NUMBER)
+	if (token != nullptr && (token->type == NUMBER || token->type == INTEGER))
 		return (int)token->number;
 	else
 		throw LuaException("token \"" + name + "\" is not int");
@@ -959,7 +975,7 @@ LuaObject Lua::get_child_object(std::string parent_path) {
 	return obj;
 }
 
-std::string LuaObject::call_function(std::string name) {
+std::string LuaObject::call_function(std::string name, LuaObject arg) {
 	LuaObject *token = get_token(name);
 	if (token != nullptr && token->type == FUNCTION) {
 		std::string rval = "";
@@ -979,7 +995,20 @@ std::string LuaObject::call_function(std::string name) {
 
 			// std::cout << "---------------------" << std::endl;
 
-			lua_pushstring(state, "arg");
+			switch (arg.get_type()) {
+			case Type::INTEGER:
+				lua_pushinteger(state, arg.get_int());
+				break;
+			case Type::NUMBER:
+				lua_pushnumber(state, arg.get_float());
+				break;
+			case Type::STRING:
+				lua_pushstring(state, arg.get_string().c_str());
+				break;
+			default:
+				lua_pushstring(state, "");
+				break;
+			}
 			// std::cout << lua->stack_dump() << std::endl;
 			if (lua_pcall(state, 1, 1, 0) != 0) {
 				// std::cout << lua->stack_dump() << std::endl;
@@ -988,7 +1017,7 @@ std::string LuaObject::call_function(std::string name) {
 
 			if (lua_isstring(state, -1)) {
 				rval = lua_tostring(state, -1);
-				std::cout << "rval: " << rval << std::endl;
+				// std::cout << "rval: " << rval << std::endl;
 			}
 			lua_pop(state, 1);
 			lua_pop(state, 1);
@@ -1085,4 +1114,25 @@ void LuaObject::dump_map_recursive(LuaObject &obj, int indent) {
 		std::cout << "(nil)";
 		break;
 	}
+}
+
+LuaObject LuaObject::wrap_int(int i) {
+	LuaObject obj;
+	obj.type = LuaObject::Type::INTEGER;
+	obj.number = (float)i;
+	return obj;
+}
+
+LuaObject LuaObject::wrap_number(float i) {
+	LuaObject obj;
+	obj.type = LuaObject::Type::NUMBER;
+	obj.number = i;
+	return obj;
+}
+
+LuaObject LuaObject::wrap_string(std::string s) {
+	LuaObject obj;
+	obj.type = LuaObject::Type::STRING;
+	obj.string = s;
+	return obj;
 }

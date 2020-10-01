@@ -22,7 +22,6 @@ void CharacterEditPanel::create() {
 
 	LuaObject stats = _game.get_lua()->character_stats(character->get_name());
 
-
 	points = give_points ? rules.get_int("creation_rules.points.total") : 0;
 
 	ability_map = {
@@ -51,6 +50,7 @@ void CharacterEditPanel::create() {
 	int h = button_height;
 
 
+	// name
 	{
 		x = margin;
 		y = margin;
@@ -59,6 +59,7 @@ void CharacterEditPanel::create() {
 		add_component(name_label);
 	}
 
+	// hp
 	{
 		x = name_label.get_x() + name_label.get_width() + margin * 2;
 		hp_label = Label("hp: " + std::to_string(stats.get_int("total_hp")), x, y);
@@ -66,6 +67,7 @@ void CharacterEditPanel::create() {
 		add_component(hp_label);
 	}
 
+	// ac
 	{
 		int base_ac = _game.get_lua()->character_base_ac(character->get_name());
 		x = hp_label.get_x() + hp_label.get_width() + margin * 2;
@@ -74,6 +76,7 @@ void CharacterEditPanel::create() {
 		add_component(ac_label);
 	}
 
+	// ability scores
 	for (int i = 0; i < 6; i++) {
 		x = margin + button_width + margin;
 		y = ac_label.get_y() + ac_label.get_height() + margin + i * button_height + margin;
@@ -83,6 +86,7 @@ void CharacterEditPanel::create() {
 		add_component(labels[i]);
 	}
 
+	// add/subtract ability buttons
 	int i = 0;
 	for (int j = 0; i < 12; i += 2, j++) {
 		x = labels[j].get_x() - (button_width + margin);
@@ -148,6 +152,7 @@ void CharacterEditPanel::create() {
 		add_component(buttons[i + 1]);
 	}
 
+	// points
 	{
 		x = margin;
 		y = buttons[i - 1].get_y() + buttons[i - 1].get_height() + margin;
@@ -156,6 +161,8 @@ void CharacterEditPanel::create() {
 		add_component(points_label);
 	}
 
+
+	// accept button
 	{
 		x = margin;
 		y = points_label.get_y() + points_label.get_height() + margin;
@@ -176,6 +183,8 @@ void CharacterEditPanel::create() {
 		add_component(buttons[i]);
 		i++;
 	}
+
+	// roll button
 	{
 		x = buttons[i - 1].get_x() + buttons[i - 1].get_width() + margin;
 		buttons[i] = AbilityButton("Roll", x, y, w, h - 1, [&](Component*) {
@@ -199,6 +208,8 @@ void CharacterEditPanel::create() {
 		add_component(buttons[i]);
 		i++;
 	}
+
+	// back button
 	{
 		x = buttons[i - 1].get_x() + buttons[i - 1].get_width() + margin;
 		buttons[i] = AbilityButton("Back", x, y, w, h - 1, [&](Component*) {
@@ -208,6 +219,18 @@ void CharacterEditPanel::create() {
 		buttons[i].create();
 		add_component(buttons[i]);
 		i++;
+	}
+
+	// text area
+	{
+		int lines_per_page = 10;
+		x = buttons[i-1].get_x() + buttons[i-1].get_width() + margin;
+		y = name_label.get_y() + name_label.get_height() + margin;
+		w = 120;
+		text_area = TextArea(x, y, w, lines_per_page, 20);
+		text_area.create();
+		text_area.push_line("Character creation.");
+		add_component(text_area);
 	}
 
 	Panel::create();
@@ -242,6 +265,7 @@ void CharacterEditPanel::refresh() {
 	}
 	points_label.set_text("Points: " + std::to_string(points));
 
+	update_text_area();
 	
 }
 
@@ -262,6 +286,35 @@ void CharacterEditPanel::show(Character *character, bool give_points, Screen &sc
 void CharacterEditPanel::set_cursor(int i) {
 	get_screen()->select(buttons[i]);
 	cursor = i;
+	update_text_area();
+}
+
+void CharacterEditPanel::update_text_area() {
+	text_area.clear();
+	int score = 0;
+	if (cursor < 12)
+		score = ability_scores[ability_map[cursor / 2][0]];
+
+	switch (cursor) {
+	case 0: case 1:
+		text_area.push_line(rules.call_function("ability_score_description.str", LuaObject::wrap_int(score)));
+		break;
+	case 2: case 3:
+		text_area.push_line(rules.call_function("ability_score_description.dex", LuaObject::wrap_int(score)));
+		break;
+	case 4: case 5:
+		text_area.push_line(rules.call_function("ability_score_description.con", LuaObject::wrap_int(score)));
+		break;
+	case 6: case 7:
+		text_area.push_line(rules.call_function("ability_score_description.int", LuaObject::wrap_int(score)));
+		break;
+	case 8: case 9:
+		text_area.push_line(rules.call_function("ability_score_description.wis", LuaObject::wrap_int(score)));
+		break;
+	case 10: case 11:
+		text_area.push_line(rules.call_function("ability_score_description.cha", LuaObject::wrap_int(score)));
+		break;
+	}
 }
 
 void CharacterEditPanel::move_cursor(Direction direction) {
