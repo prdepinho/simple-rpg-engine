@@ -1,4 +1,3 @@
-
 local M = {}
 
 -- walk here and there.
@@ -17,4 +16,9 @@ function M.idle_walk(name)
   end
 end
 
+function M.foo()
+  print('this is foo')
+end
+
 return M
+

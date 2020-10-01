@@ -1,9 +1,10 @@
 
 package.path = package.path .. ";../character/?.lua"
 package.path = package.path .. ";../scripts/?.lua"
-local animations = require "animations"
 local rules = require "rules"
 local common = require "common"
+local animations = require "animations"
+local commons = require "commons"
 
 local M = {}
 
@@ -34,7 +35,7 @@ function M.on_turn(id)
 end
 
 function M.on_idle(id)
-  -- common.idle_walk(M.name)
+  commons.idle_walk(M.name)
   print('Ranger on idle')
 
   -- if math.random(100) > 50 then

@@ -27,7 +27,6 @@ function M.on_turn(id)
 end
 
 function M.on_idle(id)
-  -- common.idle_walk(M.name)
 end
 
 function M.on_interact(interactor_name)
