@@ -311,14 +311,14 @@ public:
 	static int sfml_move(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 
-		int id = (int) lua_tointeger(state, -3);
+		std::string name = lua_tostring(state, -3);
 		int x = (int) lua_tointeger(state, -2);
 		int y = (int) lua_tointeger(state, -1);
 #if false
 		_game.log("sfml_move (" + std::to_string(id) + ") x: " + std::to_string(x) + ", y: " + std::to_string(y));
 #endif
 
-		Character *character = screen->get_character_by_id(id);
+		Character *character = screen->get_character_by_name(name);
 		screen->schedule_character_movement(*character, x, y);
 		return 0;
 	}
@@ -326,13 +326,13 @@ public:
 	static int sfml_wait(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 
-		int id = (int) lua_tointeger(state, -2);
+		std::string name = lua_tostring(state, -2);
 		int turns = (int) lua_tointeger(state, -1);
 #if false
 		_game.log("sfml_wait (" + std::to_string(id) + ") turns: " + std::to_string(turns));
 #endif
 
-		Character *character = screen->get_character_by_id(id);
+		Character *character = screen->get_character_by_name(name);
 		screen->schedule_character_wait(*character, turns);
 		return 0;
 	}
@@ -516,9 +516,10 @@ public:
 
 	static int sfml_get_field_of_vision(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
-		int id = (int) lua_tointeger(state, -1);
-		Character *character = screen->get_character_by_id(id);
-		auto fov = generate_field_of_vision(screen->get_map(), screen->character_position(*character), 5);
+		std::string name = lua_tostring(state, -2);
+		int radius = (int)lua_tointeger(state, -1);
+		Character *character = screen->get_character_by_name(name);
+		auto fov = generate_field_of_vision(screen->get_map(), screen->character_position(*character), radius);
 
 		lua_newtable(state);
 		for (size_t i = 0; i < fov.size(); i++)

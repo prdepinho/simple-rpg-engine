@@ -339,7 +339,7 @@ Component *CharacterEditPanel::on_key_pressed(sf::Keyboard::Key key) {
 
 void CharacterEditPanel::exit() {
 	if (points > 0) {
-		ChoicePanel::show("There are points remaining. Exit?", *get_screen(),
+		ChoicePanel::show("Exit? There are points left.", *get_screen(),
 			[&]() {
 				call_functions(this);
 				get_screen()->remove_component(*this);

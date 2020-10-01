@@ -1,21 +1,20 @@
 
-local common = {}
+local M = {}
 
 -- walk here and there.
-function common.idle_walk(id)
+function M.idle_walk(name)
   -- 50% chance walk, 50% chance wait 1d4 turns
 
   if math.random(100) > 50 then
     -- move
-    local fov = sfml_get_field_of_vision(id) -- exponential complexity (very slow)
+    local fov = sfml_get_field_of_vision(name, 2) -- exponential complexity (very slow)
     local dst = fov[math.random(#fov)]
-    sfml_move(id, dst.x, dst.y)
+    sfml_move(name, dst.x, dst.y)
 
   else
     -- wait
-    sfml_wait(id, math.random(4))
+    sfml_wait(name, math.random(4))
   end
 end
 
-
-return common
+return M

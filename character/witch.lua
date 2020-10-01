@@ -27,7 +27,7 @@ end
 function M.on_idle(id)
   -- local fov = sfml_get_field_of_vision(id)
   -- sfml_wait(id, 1);
-  -- common.idle_walk(id)
+  -- common.idle_walk(M.name)
 end
 
 function M.on_interact(interactor_name)
