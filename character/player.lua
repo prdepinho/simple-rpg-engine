@@ -2,7 +2,7 @@
 package.path = package.path .. ";../character/?.lua"
 package.path = package.path .. ";../scripts/?.lua"
 local animations = require "animations"
-local common = require "common"
+local commons = require "commons"
 local rules = require "rules"
 
 local M = {}

@@ -2,7 +2,7 @@
 package.path = package.path .. ";../character/?.lua"
 package.path = package.path .. ";../scripts/?.lua"
 local animations = require "animations"
-local common = require "common"
+local commons = require "commons"
 local rules = require "rules"
 
 local M = {}
@@ -27,7 +27,7 @@ end
 function M.on_idle(id)
   -- local fov = sfml_get_field_of_vision(id)
   -- sfml_wait(id, 1);
-  -- common.idle_walk(M.name)
+  -- commons.idle_walk(M.name)
 end
 
 function M.on_interact(interactor_name)

@@ -540,6 +540,47 @@ public:
 		return 1;
 	}
 
+	static int sfml_get_line_of_sight(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		int src_x = (int)lua_tointeger(state, -5);
+		int src_y = (int)lua_tointeger(state, -4);
+		int dst_x = (int)lua_tointeger(state, -3);
+		int dst_y = (int)lua_tointeger(state, -2);
+		int radius = (int)lua_tointeger(state, -1);
+		auto line = generate_line_of_sight(screen->get_map(), {src_x, src_y}, {dst_x, dst_y}, radius);
+
+		lua_newtable(state);
+		for (size_t i = 0; i < line.size(); i++)
+		{
+			auto point = line[i];
+			lua_newtable(state);
+			{
+				lua_pushliteral(state, "x");
+				lua_pushnumber(state, point.x);
+				lua_settable(state, -3);
+
+				lua_pushliteral(state, "y");
+				lua_pushnumber(state, point.y);
+				lua_settable(state, -3);
+			}
+			lua_rawseti(state, -2, i + 1);
+		}
+		return 1;
+	}
+
+	static int sfml_is_in_line_of_sight(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		int src_x = (int)lua_tointeger(state, -5);
+		int src_y = (int)lua_tointeger(state, -4);
+		int dst_x = (int)lua_tointeger(state, -3);
+		int dst_y = (int)lua_tointeger(state, -2);
+		int radius = (int)lua_tointeger(state, -1);
+		bool rval = is_in_line_of_sight(screen->get_map(), {src_x, src_y}, {dst_x, dst_y}, radius);
+		lua_pushboolean(state, rval);
+		return 1;
+	}
+
+
 	static int sfml_test(lua_State *state) {
 		std::string str = lua_tostring(state, -2);
 		Log("sfml_test: %s", str.c_str());
@@ -805,6 +846,8 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_change_ceiling_texture", LuaFunction::sfml_change_ceiling_texture);
 	lua_register(lua.get_state(), "sfml_text_box", LuaFunction::sfml_text_box);
 	lua_register(lua.get_state(), "sfml_get_field_of_vision", LuaFunction::sfml_get_field_of_vision);
+	lua_register(lua.get_state(), "sfml_get_line_of_sight", LuaFunction::sfml_get_line_of_sight);
+	lua_register(lua.get_state(), "sfml_is_in_line_of_sight", LuaFunction::sfml_is_in_line_of_sight);
 	lua_register(lua.get_state(), "sfml_get_idle_walk_destination", LuaFunction::sfml_get_idle_walk_destination);
 	lua_register(lua.get_state(), "sfml_loop_animation", LuaFunction::sfml_loop_animation);
 	lua_register(lua.get_state(), "sfml_start_animation", LuaFunction::sfml_start_animation);

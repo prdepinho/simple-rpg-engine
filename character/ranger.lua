@@ -2,7 +2,6 @@
 package.path = package.path .. ";../character/?.lua"
 package.path = package.path .. ";../scripts/?.lua"
 local rules = require "rules"
-local common = require "common"
 local animations = require "animations"
 local commons = require "commons"
 
@@ -35,19 +34,14 @@ function M.on_turn(id)
 end
 
 function M.on_idle(id)
-  commons.idle_walk(M.name)
+  -- commons.idle_walk(M.name)
+
+  if commons.is_player_in_sight(M.name, 4) then
+    print('Player is in sight')
+  else
+    print('I cannot see you')
+  end
   print('Ranger on idle')
-
-  -- if math.random(100) > 50 then
-  --   -- move
-  --   local fov = sfml_get_field_of_vision(M.name, 2)
-  --   local dst = fov[math.random(#fov)]
-  --   sfml_move(M.name, dst.x, dst.y)
-
-  -- else
-  --   -- wait
-  --   sfml_wait(M.name, math.random(4))
-  -- end
 end
 
 function M.on_interact(interactor_name)

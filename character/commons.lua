@@ -16,6 +16,12 @@ function M.idle_walk(name)
   end
 end
 
+function M.is_player_in_sight(name, radius)
+  local src = sfml_get_character_position(name)
+  local dst = sfml_get_player_position()
+  return sfml_is_in_line_of_sight(src.x, src.y, dst.x, dst.y, radius)
+end
+
 function M.foo()
   print('this is foo')
 end

@@ -141,3 +141,25 @@ std::vector<sf::Vector2i> bresenham_line (int x0, int y0, int x1, int y1) {
 	}
 	return points;
 }
+
+// return the coordinates in the line if is in sight, else return an empty vector.
+std::vector<sf::Vector2i> generate_line_of_sight(Tilemap &map, sf::Vector2i src, sf::Vector2i dst, int radius) {
+	std::vector<sf::Vector2i> rval;
+	std::vector<sf::Vector2i> line = bresenham_line(src.x, src.y, dst.x, dst.y);
+	strip_out_of_bounds_tiles(map, line);
+	for (size_t i = 0; i < line.size() -1; i++) {
+		sf::Vector2i line_point = line[i];
+		rval.push_back(line_point);
+		if (line_point != src && map.get_tile(line_point.x, line_point.y).obstacle) {
+			rval.clear();
+			break;
+		}
+	}
+	if (rval.size() > radius)
+		rval.clear();
+	return rval;
+}
+
+bool is_in_line_of_sight(Tilemap &map, sf::Vector2i src, sf::Vector2i dst, int radius) {
+	return generate_line_of_sight(map, src, dst, radius).size() > 0;
+}
