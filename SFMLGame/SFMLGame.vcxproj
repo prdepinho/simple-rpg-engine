@@ -194,6 +194,7 @@
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="ScreenMainMenu.cpp" />
     <ClCompile Include="GameScreen.cpp" />
+    <ClCompile Include="SelectTileModecpp.cpp" />
     <ClCompile Include="TestScreen.cpp" />
     <ClCompile Include="TextArea.cpp" />
     <ClCompile Include="TextBox.cpp" />
@@ -274,6 +275,7 @@
     <ClInclude Include="Screen.h" />
     <ClInclude Include="ScreenMainMenu.h" />
     <ClInclude Include="GameScreen.h" />
+    <ClInclude Include="SelectTileMode.h" />
     <ClInclude Include="TestScreen.h" />
     <ClInclude Include="TextArea.h" />
     <ClInclude Include="TextBox.h" />

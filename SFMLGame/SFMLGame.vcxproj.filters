@@ -287,6 +287,9 @@
     <ClCompile Include="TextArea.cpp">
       <Filter>gui</Filter>
     </ClCompile>
+    <ClCompile Include="SelectTileModecpp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lua5.3.5\lapi.h">
@@ -501,6 +504,9 @@
     </ClInclude>
     <ClInclude Include="TextArea.h">
       <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectTileMode.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

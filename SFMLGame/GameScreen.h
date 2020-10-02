@@ -142,7 +142,6 @@ public:
 
 	LogBox &get_log_box() { return log_box; }
 private:
-	friend class CharacterControlInputHandler;
 
 	bool block_input;
 

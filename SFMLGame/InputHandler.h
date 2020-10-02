@@ -5,7 +5,7 @@
 #include "GameScreen.h"
 
 
-enum Control {
+enum class Control {
 	UP,
 	DOWN,
 	LEFT,
@@ -24,12 +24,12 @@ public:
 	virtual void poll_events(float elapsed_time) {}
 	virtual void handle_events(sf::Event &event, float elapsed_time) {}
 
-	int _get_control_input(sf::Event &event);
-	int _get_control_input(sf::Keyboard::Key key);
+	Control _get_control_input(sf::Event &event);
+	Control _get_control_input(sf::Keyboard::Key key);
 	bool _is_pressed(Control control);
 
-	static int get_control_input(sf::Event &event) { return get()._get_control_input(event); }
-	static int get_control_input(sf::Keyboard::Key key) { return get()._get_control_input(key); }
+	static Control get_control_input(sf::Event &event) { return get()._get_control_input(event); }
+	static Control get_control_input(sf::Keyboard::Key key) { return get()._get_control_input(key); }
 	static bool is_pressed(Control control) { return get()._is_pressed(control); }
 
 	static InputHandler &get() {
@@ -38,7 +38,7 @@ public:
 	}
 	
 protected:
-	std::map<int, int> control_map {
+	std::map<int, Control> control_map {
 		{sf::Keyboard::Up,			Control::UP},
 		{sf::Keyboard::W,			Control::UP},
 		{sf::Keyboard::K,			Control::UP},
@@ -72,7 +72,7 @@ protected:
 		{sf::Keyboard::Insert,		Control::START},
 		{sf::Keyboard::Numpad0,		Control::START},
 	};
-	std::map<int, std::vector<int>> rcontrol_map{
+	std::map<Control, std::vector<int>> rcontrol_map{
 		{Control::UP,		{sf::Keyboard::Up,			sf::Keyboard::W,			sf::Keyboard::K,		sf::Keyboard::Numpad8}},
 		{Control::DOWN,		{sf::Keyboard::Down,		sf::Keyboard::S,			sf::Keyboard::J,		sf::Keyboard::Numpad2}},
 		{Control::LEFT,		{sf::Keyboard::Left,		sf::Keyboard::A,			sf::Keyboard::H,		sf::Keyboard::Numpad4}},
@@ -83,9 +83,4 @@ protected:
 		{Control::START,	{sf::Keyboard::Insert,		sf::Keyboard::Space,		sf::Keyboard::Numpad0}},
 	};
 private:
-};
-
-class CharacterControlInputHandler : public InputHandler {
-	virtual void poll_events(float elapsed_time) override;
-	virtual void handle_events(sf::Event &event, float elapsed_time) override;
 };
