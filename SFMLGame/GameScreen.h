@@ -23,11 +23,13 @@
 #include "Item.h"
 #include "FloatingMessage.h"
 #include "LogBox.h"
+#include "SelectTileMode.h"
 
 
 class GameScreen : public Screen
 {
 public:
+	friend class SelectTileMode;
 	GameScreen()
 		: holding_screen(false),
 		player_character(nullptr),
@@ -125,6 +127,8 @@ public:
 
 	void pan_game_view(sf::Vector2f v);
 	void center_game_view(sf::Vector2f v);
+	void center_map_on_tile(sf::Vector2i v);
+	sf::Vector2f get_tile_position(sf::Vector2i v);
 
 	void add_floating_message(FloatingMessage *fm);
 	void add_floating_message(std::string message, int tile_x, int tile_y, float duration);
@@ -142,6 +146,9 @@ public:
 
 	LogBox &get_log_box() { return log_box; }
 private:
+
+	Mode *current_mode = nullptr;
+	SelectTileMode select_tile_mode;
 
 	bool block_input;
 

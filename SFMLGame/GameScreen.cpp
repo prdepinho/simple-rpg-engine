@@ -100,12 +100,16 @@ void GameScreen::create() {
 	gui_view.setCenter((float)game->get_resolution_width() / 2.f, (float) game->get_resolution_height() / 2.f);
 }
 
-void GameScreen::destroy() {
-}
+void GameScreen::destroy() {}
 
 void GameScreen::draw() {
 	window->setView(game_view);
 	window->draw(map.get_floor_layer());
+
+	if (current_mode) {
+		current_mode->draw();
+	}
+
 	for (Item *item : items) {
 		window->draw(*item);
 	}
@@ -128,6 +132,9 @@ void GameScreen::draw() {
 
 bool GameScreen::update(float elapsed_time) {
 	Screen::update(elapsed_time);
+
+	if (current_mode)
+		current_mode->update(elapsed_time);
 
 	// foreground update
 	if (foreground.running) {
@@ -451,6 +458,11 @@ void GameScreen::control_mouse_wheel_zoom(float delta, int x, int y) {
 
 void GameScreen::poll_events(float elapsed_time) {
 	Screen::poll_events(elapsed_time);
+	if (current_mode) {
+		current_mode->poll_events(elapsed_time);
+		return;
+	}
+
 	if (block_input)
 		return;
 	try {
@@ -517,6 +529,11 @@ void GameScreen::poll_events(float elapsed_time) {
 Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	Component *interacted_component = Screen::handle_event(event, elapsed_time);
 
+	if (current_mode) {
+		current_mode->handle_event(event, elapsed_time);
+		return nullptr;
+	}
+
 	// TODO: correct mouse event handling.
 	if (event.type != sf::Event::MouseButtonPressed)
 		if (interacted_component)
@@ -551,10 +568,33 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			});
 			break;
 		case Control::SELECT:
-			Log("Select");
-			// select tile
-			// show range tiles in cyan
-			// show effect tiles in red
+			{
+				Log("Select");
+				// select tile
+				auto center = character_position(*player_character);
+				int range_radius = 3;
+				int effect_radius = 1;
+				select_tile_mode = SelectTileMode(this, center, range_radius, effect_radius, 
+					[&](std::vector<sf::Vector2i> &selected_tiles) {
+						Log("On ok");
+						for (auto tile : selected_tiles) {
+							Log("%d, %d", tile.x, tile.y);
+							auto src = character_position(*player_character);
+							auto callback = [&](MissileEffect* e) {
+								auto tile_coords = map.get_tile_coord(e->get_dst_x(), e->get_dst_y());
+								start_firework("fireball_blast", tile_coords.x, tile_coords.y);
+							};
+							cast_missile("arrow", src.x, src.y, tile.x, tile.y, callback);
+						}
+					},
+					[&]() {
+						Log("On end");
+						current_mode = nullptr; 
+					}
+				);
+				select_tile_mode.create();
+				current_mode = &select_tile_mode;
+			}
 			break;
 		}
 	}
@@ -832,6 +872,16 @@ void GameScreen::load_map() {
 
 void GameScreen::center_map_on_character(Character &character) {
 	center_game_view(sf::Vector2f((float) character.get_x(), (float) character.get_y()));
+}
+
+void GameScreen::center_map_on_tile(sf::Vector2i v) {
+	sf::Vector2f coords = map.get_tile_pix_coords(v.x, v.y);
+	center_game_view(sf::Vector2f((float) map.get_x() + coords.x + 8, (float) map.get_y() + coords.y + 8));
+}
+
+sf::Vector2f GameScreen::get_tile_position(sf::Vector2i v) {
+	sf::Vector2f coords = map.get_tile_pix_coords(v.x, v.y);
+	return { (float)map.get_x() + coords.x, (float)map.get_y() + coords.y };
 }
 
 void GameScreen::put_character_on_tile(Character & character, int x, int y) {

@@ -478,8 +478,8 @@ function rules.roll_damage(attacker, defender, hit_result)
     print('oops')
   end
 
-  if result < 0 then
-    result = 0
+  if result.total_damage < 0 then
+    result.total_damage = 0
   end
   return result
 end
