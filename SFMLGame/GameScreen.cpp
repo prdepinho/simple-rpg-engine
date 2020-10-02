@@ -80,6 +80,7 @@ void GameScreen::create() {
 
 	// log box
 	{
+		log_box = LogBox(8);
 		log_box.create();
 		add_component(log_box);
 		log_box.hide();
@@ -524,40 +525,38 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	if (block_input)
 		return nullptr;
 
-	switch (InputHandler::get_control_input(event)) {
-	case Control::A:
-		Log("A");
-		// do
-		{
-			auto position = character_position(*player_character);
-			// control_loot(position.x, position.y);
-			auto *action = new InteractionAction(player_character, position.x, position.y);
-			player_character->schedule_action(action);
-			player_busy = true;
+	if (!player_busy) {
+		switch (InputHandler::get_control_input(event)) {
+		case Control::A:
+			Log("A");
+			// do
+			{
+				auto position = character_position(*player_character);
+				// control_loot(position.x, position.y);
+				auto *action = new InteractionAction(player_character, position.x, position.y);
+				player_character->schedule_action(action);
+				player_busy = true;
+			}
+			break;
+		case Control::B:
+			Log("B");
+			break;
+		case Control::START:
+			Log("Start");
+			// open menu
+			block_input = true;
+			CharacterMenu::show(*this, player_character, [&](Component *) {
+				block_input = false;
+				return true;
+			});
+			break;
+		case Control::SELECT:
+			Log("Select");
+			// select tile
+			// show range tiles in cyan
+			// show effect tiles in red
+			break;
 		}
-		break;
-	case Control::B:
-		Log("B");
-		break;
-	case Control::START:
-		Log("Start");
-		// open menu
-		block_input = true;
-		CharacterMenu::show(*this, player_character, [&](Component *) {
-			block_input = false;
-			return true; 
-		});
-		break;
-	case Control::SELECT:
-		Log("Select");
-		// select tile
-		if (log_box.is_visible()) {
-			log_box.hide();
-		}
-		else {
-			log_box.show();
-		}
-		break;
 	}
 
 	switch (event.type) {
@@ -1268,6 +1267,24 @@ void GameScreen::add_floating_message(std::string message, int tile_x, int tile_
 	effect->set_on_interrupt(callback);
 	add_effect(effect);
 }
+
+void GameScreen::toggle_log() {
+	if (log_box.is_visible()) {
+		log_box.hide();
+	}
+	else {
+		log_box.show();
+	}
+}
+
+void GameScreen::show_log() {
+	log_box.show();
+}
+
+void GameScreen::hide_log() {
+	log_box.hide();
+}
+
 
 void GameScreen::remove_floating_message(FloatingMessage *fm) {
 	for (auto it = floating_messages.begin(); it != floating_messages.end(); ++it) {

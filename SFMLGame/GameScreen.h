@@ -130,6 +130,10 @@ public:
 	void add_floating_message(std::string message, int tile_x, int tile_y, float duration);
 	void remove_floating_message(FloatingMessage *fm);
 
+	void toggle_log();
+	void show_log();
+	void hide_log();
+
 	void start_firework(std::string type, int tile_x, int tile_y);
 	void cast_missile(std::string firework_type, int tile_src_x, int tile_src_y, int tile_dst_x, int tile_dst_y, std::function<void(MissileEffect*)> on_end = [&](MissileEffect*) {});
 

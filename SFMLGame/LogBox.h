@@ -7,7 +7,7 @@
 
 class LogBox : public TextArea, public CallbackCaller {
 public:
-	LogBox();
+	LogBox(int lines=0);
 	virtual void create() override;
 	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
 };

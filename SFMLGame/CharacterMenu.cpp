@@ -349,7 +349,7 @@ Inventory::~Inventory() {
 }
 
 void Inventory::create() {
-	buttons = std::vector<ItemButton>(inventory_width * inventory_height + 2);
+	buttons = std::vector<ItemButton>(inventory_width * inventory_height + 3);
 	int k = 0;
 	for (int i = 0; i < inventory_height; i++) {
 		for (int j = 0; j < inventory_width; j++) {
@@ -391,23 +391,42 @@ void Inventory::create() {
 			k++;
 		}
 	}
+
+	int w = 0;
+	int h = 0;
+	int x = 0;
+	int y = 0;
 	{
-		int w = get_width();
-		int h = button_size - 1;
-		int x = get_x();
-		int y = buttons[k - 1].get_y() + button_size;
+		w = get_width();
+		h = button_size - 1;
+		x = get_x();
+		y = buttons[k - 1].get_y() + button_size;
+		buttons[k] = ItemButton("Log", x, y, w, h, [&](Component*) {
+			GameScreen *screen = dynamic_cast<GameScreen*>(get_screen());
+			screen->toggle_log();
+			return true;
+		});
+		buttons[k].create();
+		add_component(buttons[k]);
+		k++;
+	}
+	{
+		w = get_width();
+		h = button_size - 1;
+		x = get_x();
+		y = buttons[k - 1].get_y() + button_size;
 		buttons[k] = ItemButton("Data", x, y, w, h, [&](Component*) {
 			SavePanel::show(*get_screen(), [&](Component *) {
 				set_cursor(cursor);
-				return true; 
+				return true;
 			});
 			return true;
 		});
 		buttons[k].create();
 		add_component(buttons[k]);
-
 		k++;
-
+	}
+	{
 		y = buttons[k - 1].get_y() + button_size;
 		buttons[k] = ItemButton("Exit", x, y, w, h, [&](Component*) {
 			ChoicePanel::show("Are you sure you want to exit?", *get_screen(), 
@@ -425,6 +444,7 @@ void Inventory::create() {
 		});
 		buttons[k].create();
 		add_component(buttons[k]);
+		k++;
 	}
 }
 Component *Inventory::on_key_pressed(sf::Keyboard::Key key) {
