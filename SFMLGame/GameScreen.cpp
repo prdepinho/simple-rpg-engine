@@ -497,7 +497,7 @@ void GameScreen::poll_events(float elapsed_time) {
 				}
 				else if (InputHandler::is_pressed(Control::B)) {
 					// wait
-					control_wait();
+					// control_wait();
 				}
 			}
 		}
@@ -774,9 +774,9 @@ void GameScreen::remove_character(Character *character) {
 	}
 }
 
-void GameScreen::add_item(std::string code, std::string name, std::string type, int tile_x, int tile_y) {
+void GameScreen::add_item(std::string code, std::string name, std::string type, int quantity, int tile_x, int tile_y) {
 	Item *item = new Item();
-	item->create(code, name, type);
+	item->create(code, name, type, quantity);
 	items.push_back(item);
 	put_item_on_tile(*item, tile_x, tile_y);
 }

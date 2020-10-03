@@ -73,6 +73,7 @@ public:
 	bool equip_item(int item_index, std::string character_name);
 	void attack(std::string attacker_name, std::string defender_name);
 	void strip_character_items(std::string character_name);
+	bool inventory_stack_pop(int index, std::string character_name, int how_much);
 
 
 

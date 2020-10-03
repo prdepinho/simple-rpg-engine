@@ -6,10 +6,11 @@ Item::Item() {}
 
 Item::~Item() {}
 
-void Item::create(std::string code, std::string name, std::string type) {
+void Item::create(std::string code, std::string name, std::string type, int quantity) {
 	this->code = code;
 	this->name = name;
 	this->type = type;
+	this->quantity = quantity;
 	LuaObject stats = _game.get_lua()->item_stats(name, type);
 	float pix_x = stats.get_float("icon.x", 0.f);
 	float pix_y = stats.get_float("icon.y", 0.f);

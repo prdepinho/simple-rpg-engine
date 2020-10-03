@@ -174,6 +174,8 @@ function equip_item(item_index, character_name)
     character_data[character_name].stats.armor = item
   elseif item.type == "shield" then
     character_data[character_name].stats.shield = item
+  elseif item.type == "ammo" then
+    character_data[character_name].stats.ammo = item
   else
     return false
   end
@@ -185,10 +187,12 @@ function loot_item(item_code, character_name)
   local item = map_data[current_map].items[item_code]
   for index, item_data in ipairs(character_data[character_name].stats.inventory) do
     if item_data.code == '' then
+      save.print_data(item)
       character_data[character_name].stats.inventory[index] = {
         code = item_code,
         name = item.name,
         type = item.type,
+        quantity = item.quantity,
       }
       map_data[current_map].items[item_code] = nil
       sfml_remove_item(item_code)
@@ -207,6 +211,7 @@ function drop_item(item_code, character_name, x, y)
         type = item_data.type,
         x = x,
         y = y,
+        quantity = item_data.quantity,
       }
 
       if item_code == character_data[character_name].stats.weapon.code then
@@ -215,10 +220,12 @@ function drop_item(item_code, character_name, x, y)
         character_data[character_name].stats.armor = {code = "", name = "unarmored", type = "armor"}
       elseif item_code == character_data[character_name].stats.shield.code then
         character_data[character_name].stats.shield = {code = "", name = "no_shield", type = "shield"}
+      elseif item_code == character_data[character_name].stats.ammo.code then
+        character_data[character_name].stats.ammo = {code = "", name = "no_ammo", type = "ammo"}
       end
 
       character_data[character_name].stats.inventory[index] = {code = "", name = "no_item", type = "item"}
-      sfml_add_item(item_code, item_data.name, item_data.type, x, y)
+      sfml_add_item(item_code, item_data.name, item_data.type, item_data.quantity or 0, x, y)
 
       return true
     end
@@ -237,12 +244,45 @@ function strip_character_items(character_name)
 end
 
 function inventory_exchange_items(index_a, index_b, character_name)
-  print("Exchange: " .. tostring(index_a) .. ' -> ' .. index_b .. ' (' .. character_name .. ')')
-  local tmp = character_data[character_name].stats.inventory[index_a]
-  character_data[character_name].stats.inventory[index_a] = character_data[character_name].stats.inventory[index_b]
-  character_data[character_name].stats.inventory[index_b] = tmp
+  local item_a = character_data[character_name].stats.inventory[index_a]
+  local item_b = character_data[character_name].stats.inventory[index_b]
+
+  if item_a.name == item_b.name and rules[item_a.type][item_a.name].stack_capacity then
+    print("Stack: " .. tostring(index_a) .. ' -> ' .. index_b .. ' (' .. character_name .. ')')
+    stack_items(item_a, item_b)
+
+  else
+    print("Exchange: " .. tostring(index_a) .. ' -> ' .. index_b .. ' (' .. character_name .. ')')
+    local tmp = character_data[character_name].stats.inventory[index_a]
+    character_data[character_name].stats.inventory[index_a] = character_data[character_name].stats.inventory[index_b]
+    character_data[character_name].stats.inventory[index_b] = tmp
+
+  end
 end
 
+function stack_items(src, dst)
+  local stack_capacity = rules[dst.type][dst.name].stack_capacity
+  dst.quantity = dst.quantity + src.quantity
+  if dst.quantity > stack_capacity then
+    src.quantity = dst.quantity - stack_capacity
+    dst.quantity = stack_capacity
+  else
+    src.quantity = 0
+  end
+end
+
+function inventory_stack_pop(index, character_name, how_much)
+  local item = character_data[character_name].stats.inventory[index]
+  if rules[item.type][item.name].stack_capacity then
+    item.quantity = item.quantity - how_much
+    if item.quantity < 0 then
+      item.quantity = 0
+      return false
+    end
+    return true
+  end
+  return false
+end
 
 function reset_data()
   character_data = {}
@@ -434,7 +474,7 @@ function map_enter()
   map_module.enter()
   -- populate items
   for code, item in pairs(map_module.data.items) do
-    sfml_add_item(code, item.name, item.type, item.x, item.y)
+    sfml_add_item(code, item.name, item.type, item.quantity or 0, item.x, item.y)
   end
 end
 

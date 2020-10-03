@@ -39,8 +39,11 @@ public:
 	ItemButton(std::string label="", int x = 0, int y = 0, int w = 0, int h = 0, Callback function = Callback()) : Button(label, x, y, w, h, function) {}
 	void set_item(Item item);
 	Item get_item() const { return item; }
+	void virtual create() override;
+	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 private:
 	Item item;
+	Font quantity;
 };
 
 
@@ -61,6 +64,7 @@ private:
 	EquipmentData weapon_data;
 	EquipmentData armor_data;
 	EquipmentData shield_data;
+	EquipmentData ammo_data;
 };
 
 

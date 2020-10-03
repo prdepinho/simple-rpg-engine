@@ -15,7 +15,7 @@ ItemContextMenu::ItemContextMenu() {}
 ItemContextMenu::~ItemContextMenu() {}
 
 void ItemContextMenu::create() {
-	bool equipable = item.get_type() == "weapon" || item.get_type() == "armor" || item.get_type() == "shield";
+	bool equipable = item.get_type() == "weapon" || item.get_type() == "armor" || item.get_type() == "shield" || item.get_type() == "ammo";
 
 	int buttons_total = 3;
 	if (equipable)
@@ -165,8 +165,27 @@ Component *ItemContextMenu::on_key_pressed(sf::Keyboard::Key key) {
 void ItemButton::set_item(Item item) { 
 	this->item = item; 
 	set_icon(item.get_icon());
+
+	if (item.get_quantity() > 0) {
+		int x = get_x() + 1;
+		int y = get_y() + get_height() - quantity.line_height() - 1;
+		quantity.draw_line(x, y, std::to_string(item.get_quantity()), sf::Color::White);
+	}
+	else {
+		quantity.draw_line(0, 0, "", sf::Color::White);
+	}
 }
 
+void ItemButton::create() {
+	quantity.set_texture(Resources::get_texture("gui"));
+	Button::create();
+}
+
+void ItemButton::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+	Component::draw(target, states);
+	if (item.get_quantity() > 0)
+		quantity.draw(target, states);
+}
 
 
 
@@ -193,7 +212,7 @@ void StatsPanel::create() {
 
 	{
 		std::vector<EquipmentData*> equipment_data = {
-			&weapon_data, &armor_data, &shield_data
+			&weapon_data, &armor_data, &shield_data, &ammo_data
 		};
 		for (auto data : equipment_data) {
 			data->icon = Icon(0, 0, 16, 16, 0, 0);
@@ -271,12 +290,16 @@ void StatsPanel::refresh(Character *character) {
 		weapon_data.icon.set_position(x, y);
 
 		std::string name = item.get_string("name");
+
 		std::string damage = item.get_string("damage");
 		int damage_bonus = _game.get_lua()->character_base_damage_bonus(character->get_name());
+		if (item.get_boolean("ranged")) {
+			LuaObject ammo = _game.get_lua()->item_stats(stats.get_string("ammo.name"), "ammo");
+			damage_bonus += ammo.get_int("damage_bonus");
+		}
 		damage += (damage_bonus >= 0) ? ("+" + std::to_string(damage_bonus)) : (std::to_string(damage_bonus));
 
 		int to_hit = _game.get_lua()->character_base_to_hit(character->get_name());
-
 		std::string sign = to_hit >= 0 ? "+" : "";
 
 		std::stringstream ss;
@@ -320,6 +343,24 @@ void StatsPanel::refresh(Character *character) {
 
 		shield_data.name.draw_line(x + 16, y, name, sf::Color::Black);
 		shield_data.details.draw_line(x + 16, y + shield_data.name.line_height(), ac, sf::Color::Black);
+	}
+
+	y += 20;
+	{
+		std::string item_name = stats.get_string("ammo.name");
+		std::string item_type = stats.get_string("ammo.type");
+		LuaObject item = _game.get_lua()->item_stats(item_name, item_type);
+
+		int pix_x = item.get_int("icon.x");
+		int pix_y = item.get_int("icon.y");
+		ammo_data.icon.set_picture(16, 16, pix_x, pix_y);
+		ammo_data.icon.set_position(x, y);
+
+		std::string name = item.get_string("name");
+		std::string quantity = "quantity: " + std::to_string(stats.get_int("ammo.quantity", 0));
+
+		ammo_data.name.draw_line(x + 16, y, name, sf::Color::Black);
+		ammo_data.details.draw_line(x + 16, y + ammo_data.name.line_height(), quantity, sf::Color::Black);
 	}
 }
 
@@ -549,8 +590,9 @@ void Inventory::update_items(Character *character) {
 		std::string name = item_object.get_string("name");
 		std::string type = item_object.get_string("type");
 		std::string code = item_object.get_string("code");
+		int quantity = item_object.get_int("quantity", 0);
 		Item item;
-		item.create(code, name, type);
+		item.create(code, name, type, quantity);
 		buttons[i].set_item(item);
 		buttons[i].set_icon(item.get_icon());
 	}

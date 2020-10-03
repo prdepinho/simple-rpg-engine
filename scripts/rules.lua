@@ -87,7 +87,7 @@ rules.weapon = {
   unarmed       = { name = "Unarmed",       damage = "1d1",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, bulk = 0, ranged = false, gun = false, cutthroat = false, icon = {x = 16*0, y = 16*0} },
 
   hammer        = { name = "Warhammer",     damage = "1d4",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 4, plate = 4 }, hands = 1, ac_bonus = 0, size = 2, weight = 3, bulk = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*1, y = 16*1} },
-  dagger        = { name = "Dagger",        damage = "1d4",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, bulk = 1, ranged = false, gun = false, cutthroat = true , icon = {x = 16*0, y = 16*1} },
+  dagger        = { name = "Dagger",        damage = "1d4",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, bulk = 1, ranged = false, gun = false, cutthroat = true , icon = {x = 16*1, y = 16*0} },
 
   mace          = { name = "Mace",          damage = "1d6",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 2, plate = 2 }, hands = 1, ac_bonus = 0, size = 2, weight = 2, bulk = 2, ranged = false, gun = false, cutthroat = false, icon = {x = 16*4, y = 16*1} },
   spear         = { name = "Spear",         damage = "1d6",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 3, weight = 1, bulk = 3, ranged = false, gun = false, cutthroat = false, icon = {x = 16*1, y = 16*2} },
@@ -115,10 +115,19 @@ rules.weapon = {
   arquebus      = { name = "Arquebus",      damage = "1d12", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 3, ranged = true,  gun = true,  cutthroat = false, icon = {x = 16*6, y = 16*3} },
 }
 
+rules.ammo = {
+  no_ammo       = { name = "No ammo",       damage_bonus = 0, range_bonus = 0, stack_capacity = 20, icon = {x = 16*0, y = 16*1}, projectile_effect = "" },
+  arrow         = { name = "Arrow",         damage_bonus = 0, range_bonus = 0, stack_capacity = 20, icon = {x = 16*2, y = 16*5}, projectile_effect = "arrow" },
+  bolt          = { name = "Bolt",          damage_bonus = 0, range_bonus = 0, stack_capacity = 20, icon = {x = 16*3, y = 16*0}, projectile_effect = "bolt" },
+  sling_bullet  = { name = "Sling Bullet",  damage_bonus = 0, range_bonus = 0, stack_capacity = 20, icon = {x = 16*4, y = 16*0}, projectile_effect = "bullet" },
+  gun_bullet    = { name = "Gun Bullet",    damage_bonus = 0, range_bonus = 0, stack_capacity = 20, icon = {x = 16*5, y = 16*0}, projectile_effect = "bullet" },
+}
+
 rules.item = {
   no_item = { name = "No item", icon = {x = 16*0, y = 16*3}},
   key = {name = "Key", icon = {x = 16*0, y = 16*9}},
 }
+
 
 function rules.new_character() 
   local stats = {
@@ -138,6 +147,7 @@ function rules.new_character()
     weapon = {code = "", name = "unarmed", type = "weapon"},
     armor =  {code = "", name = "unarmored", type = "armor"},
     shield = {code = "", name = "no_shield", type = "shield"},
+    ammo   = {code = "", name = "no_ammo", type = "ammo"},
     inventory = { 
       {code = "", name = "no_item", type = "item"}, 
       {code = "", name = "no_item", type = "item"}, 

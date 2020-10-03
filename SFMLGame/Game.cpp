@@ -757,12 +757,13 @@ public:
 
 	static int sfml_add_item(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
-		std::string code = lua_tostring(state, -5);
-		std::string name = lua_tostring(state, -4);
-		std::string type = lua_tostring(state, -3);
+		std::string code = lua_tostring(state, -6);
+		std::string name = lua_tostring(state, -5);
+		std::string type = lua_tostring(state, -4);
+		int quantity = lua_tointeger(state, -3);
 		int x = (int) lua_tointeger(state, -2);
 		int y = (int) lua_tointeger(state, -1);
-		screen->add_item(code, name, type, x, y);
+		screen->add_item(code, name, type, quantity, x, y);
 		return 1;
 	}
 
@@ -860,4 +861,5 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_show_floating_message", LuaFunction::sfml_show_floating_message);
 	lua_register(lua.get_state(), "sfml_push_log", LuaFunction::sfml_push_log);
 	lua_register(lua.get_state(), "sfml_push_character_to_bottom", LuaFunction::sfml_push_character_to_bottom);
+
 }
