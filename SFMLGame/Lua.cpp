@@ -453,6 +453,21 @@ void Lua::strip_character_items(std::string character_name) {
 	lua_pop(state, 1);
 }
 
+bool Lua::ammo_stack_pop(std::string character_name, int how_much) {
+	lua_getglobal(state, "ammo_stack_pop");
+	lua_pushstring(state, character_name.c_str());
+	lua_pushinteger(state, how_much);
+	int result = lua_pcall(state, 2, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	bool rval = lua_toboolean(state, -1);
+	lua_pop(state, 1);
+	return rval;
+}
+
 bool Lua::inventory_stack_pop(int index, std::string character_name, int how_much) {
 	lua_getglobal(state, "inventory_stack_pop");
 	lua_pushinteger(state, index);

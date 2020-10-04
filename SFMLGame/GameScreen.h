@@ -145,7 +145,21 @@ public:
 	void pan_foreground(LuaObject data);
 
 	LogBox &get_log_box() { return log_box; }
+
+	bool is_equipped_with_ranged_weapon(Character &character);
+	int equipped_weapon_range(Character &character);
+	void target_character(Character &character);
+	void clear_target();
+	bool is_in_range(Character &attacker, Character &defender);
+	bool has_ammo(Character &character);
+	bool is_dead(Character *character);
+
+	void select_tile_to_shoot();
+	void select_tile(sf::Vector2i center, int range_radius, int effect_radius, std::function<bool(std::vector<sf::Vector2i>&)> on_select);
+
 private:
+
+	Character *target = nullptr;
 
 	Mode *current_mode = nullptr;
 	SelectTileMode select_tile_mode;

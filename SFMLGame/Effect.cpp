@@ -82,3 +82,31 @@ void AttackEffect::update(float elapsed_time) {
 		}
 	}
 }
+
+void RangedAttackEffect::update(float elapsed_time) {
+	time_count += elapsed_time;
+	if (time_count == elapsed_time) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+
+		std::string type = "";
+		{
+			LuaObject character_stats = _game.get_lua()->character_stats(attacker->get_name());
+			std::string ammo_name = character_stats.get_string("ammo.name");
+			LuaObject ammo_stats = _game.get_lua()->item_stats(ammo_name, "ammo");
+			type = ammo_stats.get_string("projectile_effect");
+		}
+		
+		attacker->start_animation("attack");
+		auto src = screen->character_position(*attacker);
+		auto dst = screen->character_position(*defender);
+		screen->cast_missile("arrow", src.x, src.y, dst.x, dst.y, [&](MissileEffect*e) {
+			Log("Missle end, effect stop running.");
+			_game.get_lua()->attack(attacker->get_name(), defender->get_name());
+		});
+	}
+	else {
+		if (time_count >= seconds) {
+			stop_running();
+		}
+	}
+}

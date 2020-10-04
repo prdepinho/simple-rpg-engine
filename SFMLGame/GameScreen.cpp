@@ -184,6 +184,10 @@ bool GameScreen::update(float elapsed_time) {
 
 	}
 
+	if (is_dead(target)) {
+		clear_target();
+	}
+
 	// change map here
 	if (next_map != "")
 		load_map();
@@ -555,8 +559,11 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				player_busy = true;
 			}
 			break;
-		case Control::B:
+		case Control::B: 
 			Log("B");
+			{
+				select_tile_to_shoot();
+			}
 			break;
 		case Control::START:
 			Log("Start");
@@ -586,6 +593,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 							};
 							cast_missile("arrow", src.x, src.y, tile.x, tile.y, callback);
 						}
+						return true;
 					},
 					[&]() {
 						Log("On end");
@@ -767,6 +775,8 @@ void GameScreen::add_character(std::string type, std::string name, int tile_x, i
 void GameScreen::remove_character(Character *character) {
 	for (auto it = characters.begin(); it != characters.end(); ++it) {
 		if (character == *it) {
+			if (*it == target)
+				clear_target();
 			characters.erase(it);
 			delete character;
 			break;
@@ -848,6 +858,7 @@ void GameScreen::change_map(std::string filename, int tile_x, int tile_y) {
 void GameScreen::load_map() {
 	_game.get_lua()->change_map(next_map);
 
+	clear_target();
 	clean_temporary_characters();
 	clean_items();
 
@@ -1040,20 +1051,54 @@ void GameScreen::wait_character(Character &character) {
 
 void GameScreen::attack_character(Character &attacker, Character &defender) {
 	Log("Attack: %s attacks %s", attacker.get_name().c_str(), defender.get_name().c_str());
-	if (&attacker == player_character) {
-		Effect *effect = new AttackEffect(&attacker, &defender, turn_duration);
-		effect->set_on_update([&](Effect*) {
-		});
-		effect->set_on_end([&](Effect*) {
-			Log("On end attack");
-			player_busy = false;
-		});
-		add_effect(effect);
-		player_busy = true;
+	if (is_equipped_with_ranged_weapon(attacker)) {
+		Log("Ranged attack");
+		if (has_ammo(attacker)) {
+			Log("Has ammo");
+			if (is_in_range(attacker, defender)) {
+				_game.get_lua()->ammo_stack_pop(attacker.get_name(), 1);
+				Log("Is in range.");
+				if (&attacker == player_character) {
+					Effect *effect = new RangedAttackEffect(&attacker, &defender, turn_duration);
+					effect->set_on_update([&](Effect*) {
+					});
+					effect->set_on_end([&](Effect*) {
+						Log("On end attack");
+						player_busy = false;
+					});
+					add_effect(effect);
+					player_busy = true;
+				}
+				else {
+					Effect *effect = new RangedAttackEffect(&attacker, &defender, turn_duration);
+					add_effect(effect);
+				}
+			}
+			else {
+				Log("Is not in range.");
+			}
+		}
+		else {
+			Log("No ammo");
+		}
 	}
 	else {
-		Effect *effect = new AttackEffect(&attacker, &defender);
-		add_effect(effect);
+		Log("Melee attack");
+		if (&attacker == player_character) {
+			Effect *effect = new AttackEffect(&attacker, &defender, turn_duration);
+			effect->set_on_update([&](Effect*) {
+			});
+			effect->set_on_end([&](Effect*) {
+				Log("On end attack");
+				player_busy = false;
+			});
+			add_effect(effect);
+			player_busy = true;
+		}
+		else {
+			Effect *effect = new AttackEffect(&attacker, &defender, turn_duration);
+			add_effect(effect);
+		}
 	}
 }
 
@@ -1403,3 +1448,96 @@ void GameScreen::cast_missile(std::string firework_type, int tile_src_x, int til
 	add_effect(effect);
 }
 
+bool GameScreen::is_equipped_with_ranged_weapon(Character &character) {
+	LuaObject character_stats = _game.get_lua()->character_stats(character.get_name());
+	std::string item_name = character_stats.get_string("weapon.name");
+	std::string item_type = character_stats.get_string("weapon.type");
+	LuaObject item_stats = _game.get_lua()->item_stats(item_name, item_type);
+	return item_stats.get_boolean("ranged");
+}
+
+int GameScreen::equipped_weapon_range(Character &character) {
+	LuaObject character_stats = _game.get_lua()->character_stats(character.get_name());
+	std::string weapon_name = character_stats.get_string("weapon.name");
+	std::string ammo_name = character_stats.get_string("ammo.name");
+	LuaObject weapon_stats = _game.get_lua()->item_stats(weapon_name, "weapon");
+	LuaObject ammo_stats = _game.get_lua()->item_stats(ammo_name, "ammo");
+	return weapon_stats.get_int("range") + ammo_stats.get_int("range_bonus");
+}
+
+void GameScreen::target_character(Character &character) {
+	Log("Targeting character %s", character.get_name().c_str());
+	clear_target();
+	target = &character;
+	target->show_outline(1, 0, sf::Color::Red);
+}
+
+void GameScreen::clear_target() {
+	if (target) {
+		Log("Untargeting character %s", target->get_name().c_str());
+		target->hide_outline();
+		target = nullptr;
+	}
+}
+
+bool GameScreen::is_in_range(Character &attacker, Character &defender) {
+	auto src = character_position(attacker);
+	auto dst = character_position(defender);
+	int radius = equipped_weapon_range(attacker);
+	return is_in_line_of_sight(map, src, dst, radius);
+}
+
+bool GameScreen::is_dead(Character *character) {
+	if (character) {
+		LuaObject character_stats = _game.get_lua()->character_stats(character->get_name());
+		return character_stats.get_boolean("status.dead");
+	}
+	return false;
+}
+
+void GameScreen::select_tile(sf::Vector2i center, int range_radius, int effect_radius, std::function<bool(std::vector<sf::Vector2i>&)> on_select) {
+	select_tile_mode = SelectTileMode(this, center, range_radius, effect_radius, on_select, [&]() { current_mode = nullptr; });
+	select_tile_mode.create();
+	current_mode = &select_tile_mode;
+}
+
+bool GameScreen::has_ammo(Character &character) {
+	LuaObject stats = _game.get_lua()->character_stats(character.get_name());
+	int quantity = stats.get_int("ammo.quantity");
+	Log("Quantity: %d", quantity)
+	return quantity > 0;
+}
+
+void GameScreen::select_tile_to_shoot() {
+	// if equipped with ranged weapon:
+	if (is_equipped_with_ranged_weapon(*player_character)) {
+		Log("Is equipped with ranged weapons");
+		//	if target_character == nullptr
+		if (target == nullptr) {
+			Log("there is no target");
+			//    select target
+			auto center = character_position(*player_character);
+			int range_radius = equipped_weapon_range(*player_character);
+			int effect_radius = 0;
+			select_tile(center, range_radius, effect_radius, [&](std::vector<sf::Vector2i> &selected) {
+				for (auto tile : selected) {
+					Log("Target selected");
+					Character *character = get_character_on_tile(tile.x, tile.y);
+					if (character) {
+						target_character(*character);
+						attack_character(*player_character, *target);
+						return true;
+					}
+				}
+				return false;
+			});
+		}
+		//  else
+		else {
+			attack_character(*player_character, *target);
+		}
+	}
+	else {
+		Log("Is not equipped with ranged weapon");
+	}
+}

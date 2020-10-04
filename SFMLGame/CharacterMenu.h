@@ -109,6 +109,7 @@ public:
 	static CharacterMenu &get() { static CharacterMenu menu; return menu; }
 	Character *get_character() { return character; }
 	static void refresh_stats();
+	void exit();
 private:
 	Character *character;
 	StatsPanel stats_panel;

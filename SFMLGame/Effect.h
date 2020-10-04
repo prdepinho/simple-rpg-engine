@@ -125,3 +125,11 @@ protected:
 	float seconds = 0.f;
 	float time_count = 0.f;
 };
+
+class RangedAttackEffect : public AttackEffect {
+public:
+	RangedAttackEffect(Character *attacker = nullptr, Character *defender = nullptr, float seconds = 0.f)
+		: AttackEffect(attacker, defender, seconds) {}
+	virtual void update(float elapsed_time) override;
+protected:
+};

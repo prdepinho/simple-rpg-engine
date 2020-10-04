@@ -25,6 +25,17 @@ function level_up(name, total_hp)
 end
 
 
+function is_equipped_with_ranged_weapon(character_name)
+  local stats = character_data[character_name].stats
+  return rules.weapon[stats.weapon.name].ranged
+end
+
+function equipped_weapon_range(character_name)
+  local stats = character_data[character_name].stats
+  return rules.weapon[stats.weapon.name].range + rules.ammo[stats.ammo.name].bonus_range
+end
+
+
 function attack(attacker_name, defender_name)
   local attacker = character_data[attacker_name]
   local defender = character_data[defender_name]
@@ -175,11 +186,22 @@ function equip_item(item_index, character_name)
   elseif item.type == "shield" then
     character_data[character_name].stats.shield = item
   elseif item.type == "ammo" then
-    character_data[character_name].stats.ammo = item
+    if does_ammo_match_weapon(item.name, character_name) then
+      character_data[character_name].stats.ammo = item
+    else
+      return false
+    end
   else
     return false
   end
   return true
+end
+
+function does_ammo_match_weapon(ammo_name, character_name)
+  local ammo = rules.ammo[ammo_name]
+  local weapon_name = character_data[character_name].stats.weapon.name
+  local weapon = rules.weapon[weapon_name]
+  return ammo.category == weapon.ammo_category
 end
 
 -- Loot item from the ground. Returns false if character inventory is full.
@@ -269,6 +291,30 @@ function stack_items(src, dst)
   else
     src.quantity = 0
   end
+end
+
+function ammo_stack_pop(character_name, how_much)
+  local stats = character_data[character_name].stats
+  local ammo = stats.ammo
+  local inventory_item = {}
+
+  for index, item in ipairs(stats.inventory) do
+    if item.code == ammo.code then
+      inventory_item = item
+    end
+  end
+
+  if rules[ammo.type][ammo.name].stack_capacity then
+    ammo.quantity = ammo.quantity - how_much
+    inventory_item.quantity = ammo.quantity
+    if ammo.quantity < 0 then
+      ammo.quantity = 0
+      inventory_item.quantity = 0
+      return false
+    end
+    return true
+  end
+  return false
 end
 
 function inventory_stack_pop(index, character_name, how_much)

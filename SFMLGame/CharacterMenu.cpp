@@ -40,6 +40,17 @@ void ItemContextMenu::create() {
 		buttons[i] = Button("Use", x, y, w, h, [&](Component*) {
 			if (item.get_code() != "") {
 				Log("Use item: %s", item.get_name().c_str());
+				GameScreen *screen = dynamic_cast<GameScreen*>(get_screen());
+				Character *player_character = screen->get_player_character();
+				LuaObject stats = _game.get_lua()->character_stats(player_character->get_name());
+				if (screen->is_equipped_with_ranged_weapon(*player_character) && item.get_code() == stats.get_string("weapon.code")) {
+					Log("This weapon is the same equipped ranged weapon");
+					call_functions(this);
+					get_screen()->remove_component(*this);
+					CharacterMenu::get().exit();
+					screen->select_tile_to_shoot();
+				}
+
 			}
 			call_functions(this);
 			get_screen()->remove_component(*this);
@@ -58,7 +69,10 @@ void ItemContextMenu::create() {
 		buttons[i] = Button("Equip", x, y, w, h, [&](Component*) {
 			if (item.get_code() != "") {
 				Log("Equip item: %s", item.get_name().c_str());
-				_game.get_lua()->equip_item(inventory->get_cursor(), character->get_name());
+				bool rval = _game.get_lua()->equip_item(inventory->get_cursor(), character->get_name());
+				if (!rval) {
+					Log("Could not equip item");
+				}
 				CharacterMenu::refresh_stats();
 			}
 			call_functions(this);
@@ -668,7 +682,7 @@ Component *CharacterMenu::on_key_pressed(sf::Keyboard::Key key) {
 		get_screen()->remove_component(*this);
 		get_screen()->select_container();
 		call_functions(this);
-		break;
+		return this;
 	case Control::START:
 		get_screen()->remove_component(*this);
 		get_screen()->select_container();
@@ -716,6 +730,11 @@ void CharacterMenu::refresh_stats() {
 	Overlay::refresh(*menu.get_screen(), menu.character);
 }
 
+void CharacterMenu::exit() {
+	get_screen()->remove_component(*this);
+	get_screen()->select_container();
+	call_functions(this);
+}
 
 
 
