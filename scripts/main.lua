@@ -181,14 +181,24 @@ function equip_item(item_index, character_name)
   local item = character_data[character_name].stats.inventory[item_index]
   if item.type == "weapon" then
     character_data[character_name].stats.weapon = item
+    if rules.weapon[item.name].hands > 1 then
+      character_data[character_name].stats.shield = {code = "", name = "no_shield", type = "shield"}
+      print("Shield has been unequipped")
+    end
   elseif item.type == "armor" then
     character_data[character_name].stats.armor = item
   elseif item.type == "shield" then
-    character_data[character_name].stats.shield = item
+    if rules.weapon[character_data[character_name].stats.weapon.name].hands <= 1 then
+      character_data[character_name].stats.shield = item
+    else
+      print("Shield cannot be equipped with two handed weapons")
+      return false
+    end
   elseif item.type == "ammo" then
     if does_ammo_match_weapon(item.name, character_name) then
       character_data[character_name].stats.ammo = item
     else
+      print("Ammo does not match equipped weapon")
       return false
     end
   else
