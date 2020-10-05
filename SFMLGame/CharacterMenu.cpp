@@ -42,14 +42,35 @@ void ItemContextMenu::create() {
 				Log("Use item: %s", item.get_name().c_str());
 				GameScreen *screen = dynamic_cast<GameScreen*>(get_screen());
 				Character *player_character = screen->get_player_character();
-				LuaObject stats = _game.get_lua()->character_stats(player_character->get_name());
-				if (screen->is_equipped_with_ranged_weapon(*player_character) && item.get_code() == stats.get_string("weapon.code")) {
+				LuaObject character_stats = _game.get_lua()->character_stats(player_character->get_name());
+
+				// select target for ranged weapon
+				if (screen->is_equipped_with_ranged_weapon(*player_character) && item.get_code() == character_stats.get_string("weapon.code")) {
 					Log("This weapon is the same equipped ranged weapon");
-					// call_functions(this);
-					// get_screen()->remove_component(*this);
 					CharacterMenu::get().exit();
 					screen->select_tile_to_shoot();
+					return true;
 				}
+
+				LuaObject item_stats = _game.get_lua()->item_stats(item.get_name(), item.get_type());
+				// use usable items
+				if (item_stats.get_boolean("usable")) {
+					if (item.get_quantity() > 0) {
+						call_functions(this);
+						get_screen()->remove_component(*this);
+						CharacterMenu::get().exit();
+						_game.get_lua()->inventory_stack_pop(inventory->get_cursor() + 1, player_character->get_name(), 1);
+						// screen->select_tile_to_cast(item_stats.get_string("use"));
+
+						// item_stats.call_function("use");
+						// item_stats.delete_functions();
+						return true;
+					}
+					else {
+						Log("Item has no more charges");
+					}
+				}
+				item_stats.delete_functions();
 
 			}
 			call_functions(this);

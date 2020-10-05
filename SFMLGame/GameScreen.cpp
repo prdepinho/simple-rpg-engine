@@ -539,10 +539,8 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			return nullptr;
 	
 	if (block_input) {
-		Log(" --- GameScreen: input blocked");
 		return nullptr;
 	}
-	Log(" --- GameScreen: Free");
 
 	if (current_mode) {
 		current_mode->handle_event(event, elapsed_time);
@@ -932,7 +930,7 @@ void GameScreen::put_item_on_tile(Item &item, int x, int y) {
 }
 
 
-// scheduling 
+// Action scheduling 
 
 void GameScreen::schedule_character_wait(Character &character, int turns) {
 	for (int i = 0; i < turns; ++i) {
@@ -966,7 +964,7 @@ void GameScreen::schedule_character_attack(Character &attacker, Character &defen
 }
 
 
-// actions
+// effects
 
 void GameScreen::move_character(Character &character, Direction direction) {
 	try {
@@ -1163,6 +1161,10 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 		}
 	}
 
+}
+
+void GameScreen::cast_magic(Character &caster, std::vector<sf::Vector2i> targets, std::string magic_name) {
+	Log("Cast magic: %s", magic_name.c_str());
 }
 
 inline sf::Vector2i GameScreen::character_position(Character &character) {
@@ -1545,4 +1547,12 @@ void GameScreen::select_tile_to_shoot() {
 	else {
 		Log("Is not equipped with ranged weapon");
 	}
+}
+
+void GameScreen::select_tile_to_cast(int range_radius, int effect_radius, std::string magic_name) {
+	auto center = character_position(*player_character);
+	select_tile(center, range_radius, effect_radius, [&](std::vector<sf::Vector2i> &selected) {
+		cast_magic(*player_character, selected, magic_name);
+		return true;
+	});
 }

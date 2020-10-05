@@ -92,6 +92,7 @@ public:
 	void wait_character(Character &character);
 	void attack_character(Character &attacker, Character &defender);
 	void interact_character(Character &character, int tile_x, int tile_y);
+	void cast_magic(Character &caster, std::vector<sf::Vector2i> targets, std::string magic_name);
 
 	bool can_move(Character &character, Direction direction);
 	Character* get_character_on_tile(int tile_x, int tile_y);
@@ -155,6 +156,7 @@ public:
 	bool is_dead(Character *character);
 
 	void select_tile_to_shoot();
+	void select_tile_to_cast(int range_radius, int effect_radius, std::string magic_name);
 	void select_tile(sf::Vector2i center, int range_radius, int effect_radius, std::function<bool(std::vector<sf::Vector2i>&)> on_select);
 
 private:

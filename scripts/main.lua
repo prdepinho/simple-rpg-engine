@@ -337,6 +337,9 @@ end
 
 function inventory_stack_pop(index, character_name, how_much)
   local item = character_data[character_name].stats.inventory[index]
+  print("index: " .. tostring(index))
+  print("name: " .. item.name)
+  print("type: " .. item.type)
   if rules[item.type][item.name].stack_capacity then
     item.quantity = item.quantity - how_much
     if item.quantity < 0 then

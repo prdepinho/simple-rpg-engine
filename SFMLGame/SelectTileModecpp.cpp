@@ -109,10 +109,8 @@ Component *SelectTileMode::handle_event(sf::Event &event, float elapsed_time) {
 	// 	return nullptr;
 
 	if (game_screen->block_input) {
-		Log(" +++ Select tile mode: input blocked");
 		return nullptr;
 	}
-	Log(" +++ Select tile mode: input free");
 
 	switch (InputHandler::get_control_input(event)) {
 	case Control::UP:
