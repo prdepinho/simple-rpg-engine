@@ -64,7 +64,7 @@ function M.key_chest(event, x, y, character_name)
     if not M.data.key_chest_open then
       M.data.key_chest_open = true
       M.data.items["room_key1"] = {name = "key", type = "item", x = x, y = y}
-      sfml_add_item("room_key1", "key", "item", x, y)
+      sfml_add_item("room_key1", "key", "item", 0, x, y)
       sfml_change_floor_texture(x, y, 2, 4, 6)
       sfml_lock_door(false, "key_chest")
       sfml_play_sound("plim.wav")
