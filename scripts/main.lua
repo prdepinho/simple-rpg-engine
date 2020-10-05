@@ -185,8 +185,14 @@ function equip_item(item_index, character_name)
       character_data[character_name].stats.shield = {code = "", name = "no_shield", type = "shield"}
       print("Shield has been unequipped")
     end
+    if not does_ammo_match_weapon(character_data[character_name].stats.ammo.name, character_name) then
+      character_data[character_name].stats.ammo = {code = "", name = "no_ammo", type = "ammo", quantity = 0}
+      print("Unequipped ammo that does not match new weapon")
+    end
+
   elseif item.type == "armor" then
     character_data[character_name].stats.armor = item
+
   elseif item.type == "shield" then
     if rules.weapon[character_data[character_name].stats.weapon.name].hands <= 1 then
       character_data[character_name].stats.shield = item
@@ -194,6 +200,7 @@ function equip_item(item_index, character_name)
       print("Shield cannot be equipped with two handed weapons")
       return false
     end
+
   elseif item.type == "ammo" then
     if does_ammo_match_weapon(item.name, character_name) then
       character_data[character_name].stats.ammo = item
@@ -201,6 +208,7 @@ function equip_item(item_index, character_name)
       print("Ammo does not match equipped weapon")
       return false
     end
+
   else
     return false
   end
@@ -253,7 +261,7 @@ function drop_item(item_code, character_name, x, y)
       elseif item_code == character_data[character_name].stats.shield.code then
         character_data[character_name].stats.shield = {code = "", name = "no_shield", type = "shield"}
       elseif item_code == character_data[character_name].stats.ammo.code then
-        character_data[character_name].stats.ammo = {code = "", name = "no_ammo", type = "ammo", quantity = 0}
+        Character_data[character_name].stats.ammo = {code = "", name = "no_ammo", type = "ammo", quantity = 0}
       end
 
       character_data[character_name].stats.inventory[index] = {code = "", name = "no_item", type = "item"}
