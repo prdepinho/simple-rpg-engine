@@ -60,7 +60,11 @@ void ItemContextMenu::create() {
 						get_screen()->remove_component(*this);
 						CharacterMenu::get().exit();
 						_game.get_lua()->inventory_stack_pop(inventory->get_cursor() + 1, player_character->get_name(), 1);
-						// screen->select_tile_to_cast(item_stats.get_string("use"));
+
+						int range_radius = item_stats.get_int("range_radius");
+						int effect_radius = item_stats.get_int("effect_radius");
+						std::string magic_name = item_stats.get_string("use");
+						screen->select_tile_to_cast(range_radius, effect_radius, magic_name);
 
 						// item_stats.call_function("use");
 						// item_stats.delete_functions();

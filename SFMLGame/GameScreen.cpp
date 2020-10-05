@@ -572,7 +572,6 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			// open menu
 			block_input = true;
 			CharacterMenu::show(*this, player_character, [&](Component *) {
-				Log(" --- unblock_input");
 				block_input = false;
 				return true;
 			});
@@ -963,6 +962,11 @@ void GameScreen::schedule_character_attack(Character &attacker, Character &defen
 	attacker.schedule_action(action);
 }
 
+void GameScreen::schedule_character_cast_magic(std::string magic_name, Character &caster, std::vector<sf::Vector2i> targets) {
+	Log("schedule_character_cast_magic");
+	auto *action = new MagicAction(magic_name, &caster, targets);
+	caster.schedule_action(action);
+}
 
 // effects
 
@@ -1164,7 +1168,7 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 }
 
 void GameScreen::cast_magic(Character &caster, std::vector<sf::Vector2i> targets, std::string magic_name) {
-	Log("Cast magic: %s", magic_name.c_str());
+	Log(" ++++ Cast magic: %s", magic_name.c_str());
 }
 
 inline sf::Vector2i GameScreen::character_position(Character &character) {
@@ -1532,7 +1536,7 @@ void GameScreen::select_tile_to_shoot() {
 					Character *character = get_character_on_tile(tile.x, tile.y);
 					if (character) {
 						target_character(*character);
-						attack_character(*player_character, *target);
+						schedule_character_attack(*player_character, *target);
 						return true;
 					}
 				}
@@ -1541,7 +1545,7 @@ void GameScreen::select_tile_to_shoot() {
 		}
 		//  else
 		else {
-			attack_character(*player_character, *target);
+			schedule_character_attack(*player_character, *target);
 		}
 	}
 	else {
@@ -1551,8 +1555,10 @@ void GameScreen::select_tile_to_shoot() {
 
 void GameScreen::select_tile_to_cast(int range_radius, int effect_radius, std::string magic_name) {
 	auto center = character_position(*player_character);
+	selected_magic = magic_name;
 	select_tile(center, range_radius, effect_radius, [&](std::vector<sf::Vector2i> &selected) {
-		cast_magic(*player_character, selected, magic_name);
+		Log("on select end");
+		schedule_character_cast_magic(selected_magic, *player_character, selected);
 		return true;
 	});
 }

@@ -87,6 +87,7 @@ public:
 	void schedule_character_movement(Character &character, int tile_x, int tile_y);
 	void schedule_character_interaction(Character &character, int tile_x, int tile_y);
 	void schedule_character_attack(Character &attacker, Character &defender);
+	void schedule_character_cast_magic(std::string magic_name, Character &caster, std::vector<sf::Vector2i> targets);
 
 	void move_character(Character &character, Direction direction);
 	void wait_character(Character &character);
@@ -161,6 +162,7 @@ public:
 
 private:
 
+	std::string selected_magic = "";
 	Character *target = nullptr;
 
 	Mode *current_mode = nullptr;

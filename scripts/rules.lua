@@ -129,8 +129,8 @@ rules.item = {
 }
 
 rules.spell = {
-  magic_missile = { name = "Magic Missile", category = "arcane", stack_capacity = 10, icon = {x = 16*0, y = 16*6}, range = 6, effect = 0, usable = true, use = "magic_missile"},
-  cure_wounds   = { name = "Cure Wounds",   category = "divine", stack_capacity = 10, icon = {x = 16*0, y = 16*8}, range = 6, effect = 0, usable = true, use = "cure_wounds"},
+  magic_missile = { name = "Magic Missile", category = "arcane", stack_capacity = 10, icon = {x = 16*0, y = 16*6}, range_radius = 6, effect_radius = 0, usable = true, use = "magic_missile"},
+  cure_wounds   = { name = "Cure Wounds",   category = "divine", stack_capacity = 10, icon = {x = 16*0, y = 16*8}, range_radius = 6, effect_radius = 0, usable = true, use = "cure_wounds"},
 }
 
 

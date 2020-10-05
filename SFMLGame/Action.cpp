@@ -1,5 +1,6 @@
 #include "Action.h"
 #include "GameScreen.h"
+#include "Game.h"
 
 void MoveAction::execute(GameScreen *screen) {
 	if(character != nullptr)
@@ -18,4 +19,9 @@ void InteractionAction::execute(GameScreen *screen) {
 }
 void AttackAction::execute(GameScreen *screen) {
 	screen->attack_character(*attacker, *defender);
+}
+
+void MagicAction::execute(GameScreen *screen) {
+	Log("MagicAction::execute");
+	screen->cast_magic(*caster, targets, magic_name);
 }
