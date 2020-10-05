@@ -45,8 +45,8 @@ void ItemContextMenu::create() {
 				LuaObject stats = _game.get_lua()->character_stats(player_character->get_name());
 				if (screen->is_equipped_with_ranged_weapon(*player_character) && item.get_code() == stats.get_string("weapon.code")) {
 					Log("This weapon is the same equipped ranged weapon");
-					call_functions(this);
-					get_screen()->remove_component(*this);
+					// call_functions(this);
+					// get_screen()->remove_component(*this);
 					CharacterMenu::get().exit();
 					screen->select_tile_to_shoot();
 				}

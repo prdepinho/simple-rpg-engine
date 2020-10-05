@@ -253,7 +253,7 @@ function drop_item(item_code, character_name, x, y)
       elseif item_code == character_data[character_name].stats.shield.code then
         character_data[character_name].stats.shield = {code = "", name = "no_shield", type = "shield"}
       elseif item_code == character_data[character_name].stats.ammo.code then
-        character_data[character_name].stats.ammo = {code = "", name = "no_ammo", type = "ammo"}
+        character_data[character_name].stats.ammo = {code = "", name = "no_ammo", type = "ammo", quantity = 0}
       end
 
       character_data[character_name].stats.inventory[index] = {code = "", name = "no_item", type = "item"}

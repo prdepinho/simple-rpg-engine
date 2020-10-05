@@ -533,18 +533,22 @@ void GameScreen::poll_events(float elapsed_time) {
 Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	Component *interacted_component = Screen::handle_event(event, elapsed_time);
 
-	if (current_mode) {
-		current_mode->handle_event(event, elapsed_time);
-		return nullptr;
-	}
-
 	// TODO: correct mouse event handling.
 	if (event.type != sf::Event::MouseButtonPressed)
 		if (interacted_component)
 			return nullptr;
 	
-	if (block_input)
+	if (block_input) {
+		Log(" --- GameScreen: input blocked");
 		return nullptr;
+	}
+	Log(" --- GameScreen: Free");
+
+	if (current_mode) {
+		current_mode->handle_event(event, elapsed_time);
+		return nullptr;
+	}
+
 
 	if (!player_busy) {
 		switch (InputHandler::get_control_input(event)) {
@@ -569,7 +573,9 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			Log("Start");
 			// open menu
 			block_input = true;
+			unblock_input = false;
 			CharacterMenu::show(*this, player_character, [&](Component *) {
+				Log(" --- unblock_input");
 				block_input = false;
 				return true;
 			});

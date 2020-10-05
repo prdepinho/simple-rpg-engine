@@ -147,7 +147,7 @@ function rules.new_character()
     weapon = {code = "", name = "unarmed", type = "weapon"},
     armor =  {code = "", name = "unarmored", type = "armor"},
     shield = {code = "", name = "no_shield", type = "shield"},
-    ammo   = {code = "", name = "no_ammo", type = "ammo"},
+    ammo   = {code = "", name = "no_ammo", type = "ammo", quantity = 0},
     inventory = { 
       {code = "", name = "no_item", type = "item"}, 
       {code = "", name = "no_item", type = "item"}, 
