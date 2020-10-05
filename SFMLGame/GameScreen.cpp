@@ -573,7 +573,6 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			Log("Start");
 			// open menu
 			block_input = true;
-			unblock_input = false;
 			CharacterMenu::show(*this, player_character, [&](Component *) {
 				Log(" --- unblock_input");
 				block_input = false;
