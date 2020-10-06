@@ -9,22 +9,16 @@ local Control = require "control"
 local magic = require "magic"
 
 
-local control = Control:new {
-  character_data = {},
-  character_modules = {},
-  map_data = {},
-  map_module = {},
-  current_map = "",
-}
+local control = Control:new(nil) 
 
 
-function print_character_data(character_name)
-  print('print character data: ' .. character_name)
-  control:print_character_data(character_name)
+
+
+
+function cast_magic(magic_name, caster, targets)
+  save.print_data(targets)
+  control:cast_magic(magic_name, caster, targets)
 end
-
-
-
 
 function set_ability_scores(name, str, dex, con, int, wis, cha)
   control:set_ability_scores(name, str, dex, con, int, wis, cha)
@@ -192,7 +186,6 @@ end
 function version()
   io.write(string.format("Lua Version: %s\n", _VERSION))
 end
-
 
 
 -- -- -- -- -- --

@@ -494,6 +494,37 @@ bool Lua::inventory_stack_pop(int index, std::string character_name, int how_muc
 	return rval;
 }
 
+void Lua::cast_magic(std::string magic_name, std::string caster_name, std::vector<sf::Vector2i> targets) {
+	lua_getglobal(state, "cast_magic");
+	lua_pushstring(state, magic_name.c_str());
+	lua_pushstring(state, caster_name.c_str());
+
+	int i = 1;
+	lua_newtable(state);
+	for (auto &pos : targets) {
+		lua_pushinteger(state, i++);
+		lua_newtable(state);
+		{
+			lua_pushliteral(state, "x");
+			lua_pushnumber(state, pos.x);
+			lua_settable(state, -3);
+
+			lua_pushliteral(state, "y");
+			lua_pushnumber(state, pos.y);
+			lua_settable(state, -3);
+		}
+		lua_settable(state, -3);
+	}
+
+	int result = lua_pcall(state, 3, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	lua_pop(state, 1);
+}
+
 void Lua::reset_data() {
 	lua_getglobal(state, "reset_data");
 	int result = lua_pcall(state, 0, 1, 0);

@@ -27,7 +27,7 @@ function M.create()
   M.data.items["room_w10"] = {name = "short_bow", type = "weapon", x = 3, y = 2}
   M.data.items["room_m2"] = {name = "arrow", type = "ammo", x = 2, y = 2, quantity = 15}
   M.data.items["room_m3"] = {name = "arrow", type = "ammo", x = 2, y = 2, quantity = 17}
-  M.data.items["room_s1"] = {name = "magic_missile", type = "spell", x = 2, y = 2, quantity = 2}
+  M.data.items["room_s1"] = {name = "magic_missile", type = "spell", x = 2, y = 2, quantity = 12}
   M.data.items["room_s2"] = {name = "cure_wounds", type = "spell", x = 2, y = 2, quantity = 2}
 end
 

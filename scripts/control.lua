@@ -4,6 +4,7 @@ package.path = package.path .. ";../scripts/?.lua"
 package.path = package.path .. ";../saves/?.lua"
 local rules = require "rules"
 local save = require "save"
+local Magic = require "magic"
 
 local Control = {
   character_data = {},
@@ -11,22 +12,24 @@ local Control = {
   map_data = {},
   map_module = {},
   current_map = "",
+  magic = {},
 }
 
 function Control:new(o)
   o = o or {}
   setmetatable(o, self)
   self.__index = self
+  self.magic = Magic:new(nil, o)
   return o
 end
 
-function Control:print_character_data(character_name)
-  local character = self.character_data[character_name]
-  -- save.print_data(character.stats.ability)
-  save.print_data(character)
+
+
+
+
+function Control:cast_magic(magic_name, caster, targets)
+  self.magic[magic_name](self.magic, caster, targets)
 end
-
-
 
 function Control:set_ability_scores(name, str, dex, con, int, wis, cha)
   local character = self.character_data[name]

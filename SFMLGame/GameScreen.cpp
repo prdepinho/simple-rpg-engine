@@ -665,9 +665,6 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			case sf::Keyboard::N:
 				change_map("room", 4, 2);
 				break;
-			case sf::Keyboard::P:
-				_game.get_lua()->print_character_data(*player_character);
-				break;
 			case sf::Keyboard::G:
 				std::cout << _game.get_lua()->stack_dump() << std::endl;
 				break;
@@ -1173,6 +1170,7 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 void GameScreen::cast_magic(Character &caster, std::vector<sf::Vector2i> targets, std::string magic_name, int inventory_index) {
 	Log(" ++++ Cast magic: %s", magic_name.c_str());
 	_game.get_lua()->inventory_stack_pop(inventory_index + 1, caster.get_name(), 1);
+	_game.get_lua()->cast_magic(magic_name, caster.get_name(), targets);
 }
 
 inline sf::Vector2i GameScreen::character_position(Character &character) {
@@ -1222,6 +1220,17 @@ Character* GameScreen::get_character_on_tile(int tile_x, int tile_y) {
 		}
 	}
 	return nullptr;
+}
+
+std::vector<Character*> GameScreen::get_characters_on_tile(int tile_x, int tile_y) {
+	std::vector<Character*> characters_on_tile;
+	for (Character *character : characters) {
+		auto position = map.get_tile_coord(character->get_x(), character->get_y());
+		if (position.x == tile_x && position.y == tile_y) {
+			characters_on_tile.push_back(character);
+		}
+	}
+	return characters_on_tile;
 }
 
 std::vector<Item*> GameScreen::get_items_on_tile(int tile_x, int tile_y) {

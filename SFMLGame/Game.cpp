@@ -820,6 +820,25 @@ public:
 		return 1;
 	}
 
+	static int sfml_get_characters_on_tile(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		int tile_x = (int)lua_tointeger(state, -2);
+		int tile_y = (int)lua_tointeger(state, -1);
+		auto characters = screen->get_characters_on_tile(tile_x, tile_y);
+
+		lua_newtable(state);
+		{
+			int i = 1;
+			for (Character *character : characters) {
+				auto pos = screen->character_position(*character);
+				lua_pushnumber(state, i++);
+				lua_pushstring(state, character->get_name().c_str());
+				lua_settable(state, -3);
+			}
+		}
+		return 1;
+	}
+
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -861,5 +880,7 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_show_floating_message", LuaFunction::sfml_show_floating_message);
 	lua_register(lua.get_state(), "sfml_push_log", LuaFunction::sfml_push_log);
 	lua_register(lua.get_state(), "sfml_push_character_to_bottom", LuaFunction::sfml_push_character_to_bottom);
+	lua_register(lua.get_state(), "sfml_get_characters_on_tile", LuaFunction::sfml_get_characters_on_tile);
+
 
 }

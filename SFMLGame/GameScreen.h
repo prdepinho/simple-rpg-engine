@@ -97,6 +97,7 @@ public:
 
 	bool can_move(Character &character, Direction direction);
 	Character* get_character_on_tile(int tile_x, int tile_y);
+	std::vector<Character*> get_characters_on_tile(int tile_x, int tile_y);
 	Character* get_character_by_id(long id);
 	Character *get_character_by_name(std::string name);
 	void put_character_on_tile(Character &character, int x, int y);
