@@ -87,13 +87,13 @@ public:
 	void schedule_character_movement(Character &character, int tile_x, int tile_y);
 	void schedule_character_interaction(Character &character, int tile_x, int tile_y);
 	void schedule_character_attack(Character &attacker, Character &defender);
-	void schedule_character_cast_magic(std::string magic_name, Character &caster, std::vector<sf::Vector2i> targets);
+	void schedule_character_cast_magic(std::string magic_name, Character &caster, std::vector<sf::Vector2i> targets, int inventory_index);
 
 	void move_character(Character &character, Direction direction);
 	void wait_character(Character &character);
 	void attack_character(Character &attacker, Character &defender);
 	void interact_character(Character &character, int tile_x, int tile_y);
-	void cast_magic(Character &caster, std::vector<sf::Vector2i> targets, std::string magic_name);
+	void cast_magic(Character &caster, std::vector<sf::Vector2i> targets, std::string magic_name, int inventory_index);
 
 	bool can_move(Character &character, Direction direction);
 	Character* get_character_on_tile(int tile_x, int tile_y);

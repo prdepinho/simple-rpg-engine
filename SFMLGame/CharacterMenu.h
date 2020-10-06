@@ -110,6 +110,7 @@ public:
 	Character *get_character() { return character; }
 	static void refresh_stats();
 	void exit();
+	Inventory &get_inventory() { return inventory; }
 private:
 	Character *character;
 	StatsPanel stats_panel;

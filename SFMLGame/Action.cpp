@@ -22,6 +22,5 @@ void AttackAction::execute(GameScreen *screen) {
 }
 
 void MagicAction::execute(GameScreen *screen) {
-	Log("MagicAction::execute");
-	screen->cast_magic(*caster, targets, magic_name);
+	screen->cast_magic(*caster, targets, magic_name, inventory_index);
 }

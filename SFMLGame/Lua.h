@@ -46,6 +46,7 @@ public:
 	
 	void start_game();
 	
+	void print_character_data(Character &character);
 
 	void on_idle(Character &character);
 	void on_turn(Character &character);

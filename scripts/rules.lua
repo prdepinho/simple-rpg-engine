@@ -209,7 +209,7 @@ function rules.set_max_hit_points(stats, total_hp)
 
   -- if decreased, then check current hp is not greater than total hp
   elseif stats.current_hp > stats.total_hp then
-    stats.current_hp = stats.total_hep
+    stats.current_hp = stats.total_hp
   end
 end
 

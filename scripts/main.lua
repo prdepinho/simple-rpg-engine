@@ -5,6 +5,8 @@ package.path = package.path .. ";../scripts/?.lua"
 package.path = package.path .. ";../saves/?.lua"
 local rules = require "rules"
 local save = require "save"
+local Control = require "control"
+local magic = require "magic"
 
 
 local character_data = {}
@@ -12,6 +14,22 @@ local character_modules = {}
 local map_data = {}
 local map_module = {}
 local current_map = ''
+
+local control = Control:new {
+  character_data = character_data,
+  character_modules = character_modules,
+  map_data = map_data,
+  map_module = map_module,
+}
+
+magic.control = control
+
+
+function print_character_data(character_name)
+  print('print character data: ' .. character_name)
+
+  control:print_character_data(character_name)
+end
 
 
 function set_ability_scores(name, str, dex, con, int, wis, cha)

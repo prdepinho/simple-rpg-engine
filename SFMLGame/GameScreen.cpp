@@ -665,6 +665,9 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			case sf::Keyboard::N:
 				change_map("room", 4, 2);
 				break;
+			case sf::Keyboard::P:
+				_game.get_lua()->print_character_data(*player_character);
+				break;
 			case sf::Keyboard::G:
 				std::cout << _game.get_lua()->stack_dump() << std::endl;
 				break;
@@ -962,9 +965,9 @@ void GameScreen::schedule_character_attack(Character &attacker, Character &defen
 	attacker.schedule_action(action);
 }
 
-void GameScreen::schedule_character_cast_magic(std::string magic_name, Character &caster, std::vector<sf::Vector2i> targets) {
+void GameScreen::schedule_character_cast_magic(std::string magic_name, Character &caster, std::vector<sf::Vector2i> targets, int inventory_index) {
 	Log("schedule_character_cast_magic");
-	auto *action = new MagicAction(magic_name, &caster, targets);
+	auto *action = new MagicAction(magic_name, &caster, targets, inventory_index);
 	caster.schedule_action(action);
 }
 
@@ -1167,8 +1170,9 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 
 }
 
-void GameScreen::cast_magic(Character &caster, std::vector<sf::Vector2i> targets, std::string magic_name) {
+void GameScreen::cast_magic(Character &caster, std::vector<sf::Vector2i> targets, std::string magic_name, int inventory_index) {
 	Log(" ++++ Cast magic: %s", magic_name.c_str());
+	_game.get_lua()->inventory_stack_pop(inventory_index + 1, caster.get_name(), 1);
 }
 
 inline sf::Vector2i GameScreen::character_position(Character &character) {
@@ -1558,7 +1562,8 @@ void GameScreen::select_tile_to_cast(int range_radius, int effect_radius, std::s
 	selected_magic = magic_name;
 	select_tile(center, range_radius, effect_radius, [&](std::vector<sf::Vector2i> &selected) {
 		Log("on select end");
-		schedule_character_cast_magic(selected_magic, *player_character, selected);
+		int inventory_index = CharacterMenu::get().get_inventory().get_cursor();
+		schedule_character_cast_magic(selected_magic, *player_character, selected, inventory_index);
 		return true;
 	});
 }

@@ -59,7 +59,6 @@ void ItemContextMenu::create() {
 						call_functions(this);
 						get_screen()->remove_component(*this);
 						CharacterMenu::get().exit();
-						_game.get_lua()->inventory_stack_pop(inventory->get_cursor() + 1, player_character->get_name(), 1);
 
 						int range_radius = item_stats.get_int("range_radius");
 						int effect_radius = item_stats.get_int("effect_radius");
