@@ -28,8 +28,11 @@ Component *Mode::handle_event(sf::Event &event, float elapsed_time) { return nul
 
 
 SelectTileMode::SelectTileMode(GameScreen *game_screen, sf::Vector2i center, int range_radius, int effect_radius, 
-	std::function<bool(std::vector<sf::Vector2i>&)> on_select, std::function<void()> on_end)
-	: Mode(), shape_size(16), game_screen(game_screen), center(center), cursor(center), range_radius(range_radius), effect_radius(effect_radius), on_select(on_select), on_end(on_end) {}
+	std::function<bool(sf::Vector2i, std::vector<sf::Vector2i>&)> on_select, std::function<void()> on_end)
+	: Mode(), shape_size(16), game_screen(game_screen), center(center), cursor(center), range_radius(range_radius),
+	effect_radius(effect_radius), 
+	on_select(on_select), 
+	on_end(on_end) {}
 
 SelectTileMode::~SelectTileMode() { Mode::~Mode(); }
 
@@ -132,7 +135,7 @@ Component *SelectTileMode::handle_event(sf::Event &event, float elapsed_time) {
 	case Control::A:
 		Log("SelectTileMode - A");
 		{
-			if (on_select(effect_tiles)) {
+			if (on_select(cursor, effect_tiles)) {
 				Resources::get_sound("crrreee.wav")->play();
 				exit();
 			}

@@ -13,7 +13,8 @@ function Magic:new(o, control)
   return o
 end
 
-function Magic:magic_missile(user, targets)
+
+function Magic:magic_missile(user, center, targets)
   print('pew')
   local magic_name = rules.spell.magic_missile.name
   sfml_push_log(user .. ' - casts ' .. magic_name)
@@ -39,8 +40,18 @@ function Magic:magic_missile(user, targets)
   end
 end
 
-function Magic:cure_wounds(user, targets)
+function Magic:cure_wounds(user, center, targets)
   print('plim')
+end
+
+
+function Magic:fire_ball(user, center, targets)
+  print('Magic:fire_ball')
+  sfml_cast_spell_missile('fire_ball', src.x, src.y, dst.x, dst.y, 'fire_ball_blast')
+end
+
+function Magic:fire_ball_blast(user, center, targets)
+  print('Magic:fire_ball_blast')
 end
 
 return Magic

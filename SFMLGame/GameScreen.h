@@ -87,13 +87,13 @@ public:
 	void schedule_character_movement(Character &character, int tile_x, int tile_y);
 	void schedule_character_interaction(Character &character, int tile_x, int tile_y);
 	void schedule_character_attack(Character &attacker, Character &defender);
-	void schedule_character_cast_magic(std::string magic_name, Character &caster, std::vector<sf::Vector2i> targets, int inventory_index);
+	void schedule_character_cast_magic(std::string magic_name, Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> targets, int inventory_index);
 
 	void move_character(Character &character, Direction direction);
 	void wait_character(Character &character);
 	void attack_character(Character &attacker, Character &defender);
 	void interact_character(Character &character, int tile_x, int tile_y);
-	void cast_magic(Character &caster, std::vector<sf::Vector2i> targets, std::string magic_name, int inventory_index);
+	void cast_magic(Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> targets, std::string magic_name, int inventory_index);
 
 	bool can_move(Character &character, Direction direction);
 	Character* get_character_on_tile(int tile_x, int tile_y);
@@ -159,7 +159,7 @@ public:
 
 	void select_tile_to_shoot();
 	void select_tile_to_cast(int range_radius, int effect_radius, std::string magic_name);
-	void select_tile(sf::Vector2i center, int range_radius, int effect_radius, std::function<bool(std::vector<sf::Vector2i>&)> on_select);
+	void select_tile(sf::Vector2i center, int range_radius, int effect_radius, std::function<bool(sf::Vector2i center, std::vector<sf::Vector2i>&)> on_select);
 
 private:
 

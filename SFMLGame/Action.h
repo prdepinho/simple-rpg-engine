@@ -72,13 +72,14 @@ private:
 
 class MagicAction : public Action {
 public:
-	MagicAction(std::string magic_name, Character *caster = nullptr, std::vector<sf::Vector2i> targets = {}, int inventory_index = 0)
-		: magic_name(magic_name), caster(caster), targets(targets), inventory_index(inventory_index) {}
+	MagicAction(std::string magic_name, Character *caster = nullptr, sf::Vector2i center = {}, std::vector<sf::Vector2i> targets = {}, int inventory_index = 0)
+		: magic_name(magic_name), caster(caster), targets(targets), center(center), inventory_index(inventory_index) {}
 	virtual void execute(GameScreen *screen) override;
 	virtual std::string to_string() const override { return "MagicAction"; }
 private:
 	std::string magic_name;
 	Character *caster;
+	sf::Vector2i center;
 	std::vector<sf::Vector2i> targets;
 	int inventory_index;
 };

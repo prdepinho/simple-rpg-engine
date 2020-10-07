@@ -22,5 +22,5 @@ void AttackAction::execute(GameScreen *screen) {
 }
 
 void MagicAction::execute(GameScreen *screen) {
-	screen->cast_magic(*caster, targets, magic_name, inventory_index);
+	screen->cast_magic(*caster, center, targets, magic_name, inventory_index);
 }

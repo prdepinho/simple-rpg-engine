@@ -584,7 +584,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				int range_radius = 3;
 				int effect_radius = 1;
 				select_tile_mode = SelectTileMode(this, center, range_radius, effect_radius, 
-					[&](std::vector<sf::Vector2i> &selected_tiles) {
+					[&](sf::Vector2i center, std::vector<sf::Vector2i> &selected_tiles) {
 						Log("On ok");
 						for (auto tile : selected_tiles) {
 							Log("%d, %d", tile.x, tile.y);
@@ -962,9 +962,9 @@ void GameScreen::schedule_character_attack(Character &attacker, Character &defen
 	attacker.schedule_action(action);
 }
 
-void GameScreen::schedule_character_cast_magic(std::string magic_name, Character &caster, std::vector<sf::Vector2i> targets, int inventory_index) {
+void GameScreen::schedule_character_cast_magic(std::string magic_name, Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> targets, int inventory_index) {
 	Log("schedule_character_cast_magic");
-	auto *action = new MagicAction(magic_name, &caster, targets, inventory_index);
+	auto *action = new MagicAction(magic_name, &caster, center, targets, inventory_index);
 	caster.schedule_action(action);
 }
 
@@ -1167,10 +1167,10 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 
 }
 
-void GameScreen::cast_magic(Character &caster, std::vector<sf::Vector2i> targets, std::string magic_name, int inventory_index) {
+void GameScreen::cast_magic(Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> targets, std::string magic_name, int inventory_index) {
 	Log(" ++++ Cast magic: %s", magic_name.c_str());
 	_game.get_lua()->inventory_stack_pop(inventory_index + 1, caster.get_name(), 1);
-	_game.get_lua()->cast_magic(magic_name, caster.get_name(), targets);
+	_game.get_lua()->cast_magic(magic_name, caster.get_name(), center, targets);
 }
 
 inline sf::Vector2i GameScreen::character_position(Character &character) {
@@ -1519,7 +1519,7 @@ bool GameScreen::is_dead(Character *character) {
 	return false;
 }
 
-void GameScreen::select_tile(sf::Vector2i center, int range_radius, int effect_radius, std::function<bool(std::vector<sf::Vector2i>&)> on_select) {
+void GameScreen::select_tile(sf::Vector2i center, int range_radius, int effect_radius, std::function<bool(sf::Vector2i center, std::vector<sf::Vector2i>&)> on_select) {
 	select_tile_mode = SelectTileMode(this, center, range_radius, effect_radius, on_select, [&]() { current_mode = nullptr; });
 	select_tile_mode.create();
 	current_mode = &select_tile_mode;
@@ -1543,7 +1543,7 @@ void GameScreen::select_tile_to_shoot() {
 			auto center = character_position(*player_character);
 			int range_radius = equipped_weapon_range(*player_character);
 			int effect_radius = 0;
-			select_tile(center, range_radius, effect_radius, [&](std::vector<sf::Vector2i> &selected) {
+			select_tile(center, range_radius, effect_radius, [&](sf::Vector2i center, std::vector<sf::Vector2i> &selected) {
 				for (auto tile : selected) {
 					Log("Target selected");
 					Character *character = get_character_on_tile(tile.x, tile.y);
@@ -1567,12 +1567,12 @@ void GameScreen::select_tile_to_shoot() {
 }
 
 void GameScreen::select_tile_to_cast(int range_radius, int effect_radius, std::string magic_name) {
-	auto center = character_position(*player_character);
+	auto src = character_position(*player_character);
 	selected_magic = magic_name;
-	select_tile(center, range_radius, effect_radius, [&](std::vector<sf::Vector2i> &selected) {
+	select_tile(src, range_radius, effect_radius, [&](sf::Vector2i center, std::vector<sf::Vector2i> &selected) {
 		Log("on select end");
 		int inventory_index = CharacterMenu::get().get_inventory().get_cursor();
-		schedule_character_cast_magic(selected_magic, *player_character, selected, inventory_index);
+		schedule_character_cast_magic(selected_magic, *player_character, center, selected, inventory_index);
 		return true;
 	});
 }

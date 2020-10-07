@@ -27,8 +27,8 @@ end
 
 
 
-function Control:cast_magic(magic_name, caster, targets)
-  self.magic[magic_name](self.magic, caster, targets)
+function Control:cast_magic(magic_name, caster, center, targets)
+  self.magic[magic_name](self.magic, caster, center, targets)
 end
 
 function Control:set_ability_scores(name, str, dex, con, int, wis, cha)

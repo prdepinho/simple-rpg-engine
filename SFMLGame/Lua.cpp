@@ -494,11 +494,24 @@ bool Lua::inventory_stack_pop(int index, std::string character_name, int how_muc
 	return rval;
 }
 
-void Lua::cast_magic(std::string magic_name, std::string caster_name, std::vector<sf::Vector2i> targets) {
+void Lua::cast_magic(std::string magic_name, std::string caster_name, sf::Vector2i center, std::vector<sf::Vector2i> targets) {
 	lua_getglobal(state, "cast_magic");
 	lua_pushstring(state, magic_name.c_str());
 	lua_pushstring(state, caster_name.c_str());
 
+	// center
+	lua_newtable(state);
+	{
+		lua_pushliteral(state, "x");
+		lua_pushnumber(state, center.x);
+		lua_settable(state, -3);
+
+		lua_pushliteral(state, "y");
+		lua_pushnumber(state, center.y);
+		lua_settable(state, -3);
+	}
+
+	// targets
 	int i = 1;
 	lua_newtable(state);
 	for (auto &pos : targets) {
@@ -516,7 +529,7 @@ void Lua::cast_magic(std::string magic_name, std::string caster_name, std::vecto
 		lua_settable(state, -3);
 	}
 
-	int result = lua_pcall(state, 3, 1, 0);
+	int result = lua_pcall(state, 4, 1, 0);
 	if (result != LUA_OK) {
 		std::stringstream ss;
 		ss << get_error(state);
