@@ -70,7 +70,7 @@ public:
 	int get_src_y() const { return src_y; }
 	int get_dst_x() const { return dst_x; }
 	int get_dst_y() const { return dst_y; }
-private:
+protected:
 	std::function<void(MissileEffect*)> callback;
 	int src_x;
 	int src_y;
@@ -78,6 +78,21 @@ private:
 	int dst_y;
 };
 
+class MagicMissileEffect : public MissileEffect {
+public:
+	MagicMissileEffect(float seconds=0.f, Entity *entity=nullptr, int src_x=0, int src_y=0, int dst_x=0, int dst_y=0,
+		std::vector<sf::Vector2i> targets={}, sf::Vector2i center={}, std::string blast_name="", std::string caster_name=""
+	);
+	std::vector<sf::Vector2i> &get_targets() { return targets; }
+	sf::Vector2i get_center() const { return center; }
+	std::string get_blast_name() const { return blast_name; }
+	std::string get_caster_name() const { return caster_name; }
+private:
+	std::vector<sf::Vector2i> targets;
+	sf::Vector2i center;
+	std::string blast_name;
+	std::string caster_name;
+};
 
 class MoveEffect : public Effect {
 public:

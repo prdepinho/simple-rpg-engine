@@ -129,8 +129,9 @@ rules.item = {
 }
 
 rules.spell = {
-  magic_missile = { name = "Magic Missile", category = "arcane", stack_capacity = 10, icon = {x = 16*0, y = 16*6}, range_radius = 6, effect_radius = 0, usable = true, use = "magic_missile"},
-  cure_wounds   = { name = "Cure Wounds",   category = "divine", stack_capacity = 10, icon = {x = 16*0, y = 16*8}, range_radius = 6, effect_radius = 0, usable = true, use = "cure_wounds"},
+  magic_missile = { name = "Magic Missile", category = "arcane", stack_capacity = 10, icon = {x = 16*0, y = 16*6}, range_radius = 6, effect_radius = 0, usable = true, use = "magic_missile" },
+  fireball      = { name = "Fireball",      category = "arcane", stack_capacity = 10, icon = {x = 16*9, y = 16*6}, range_radius = 6, effect_radius = 2, usable = true, use = "fireball" },
+  cure_wounds   = { name = "Cure Wounds",   category = "divine", stack_capacity = 10, icon = {x = 16*0, y = 16*8}, range_radius = 6, effect_radius = 0, usable = true, use = "cure_wounds" },
 }
 
 
@@ -179,23 +180,23 @@ function rules.set_ability_scores(stats, str, dex, con, int, wis, cha)
   stats.ability.wis = wis
   stats.ability.cha = cha
 
-  local previous_hp_bonus = stats.level * rules.ability_modifier[1][previous_con]
-  local new_hp_bonus = stats.level * rules.ability_modifier[1][stats.ability.con]
+  local previous_hp_bonus = stats.level * rules.ability_modifier[previous_con]
+  local new_hp_bonus = stats.level * rules.ability_modifier[stats.ability.con]
   local diff_bonus = new_hp_bonus - previous_hp_bonus
   rules.set_max_hit_points(stats, stats.total_hp + diff_bonus)
 end
 
 function rules.level_up(stats)
   if hit_die == "d12" then
-    rules.set_max_hit_points(stats, stats.total_hp + 7 + rules.ability_modifier[1][stats.ability.con])
+    rules.set_max_hit_points(stats, stats.total_hp + 7 + rules.ability_modifier[stats.ability.con])
   elseif hit_die == "d10" then
-    rules.set_max_hit_points(stats, stats.total_hp + 6 + rules.ability_modifier[1][stats.ability.con])
+    rules.set_max_hit_points(stats, stats.total_hp + 6 + rules.ability_modifier[stats.ability.con])
   elseif hit_die == "d8" then
-    rules.set_max_hit_points(stats, stats.total_hp + 5 + rules.ability_modifier[1][stats.ability.con])
+    rules.set_max_hit_points(stats, stats.total_hp + 5 + rules.ability_modifier[stats.ability.con])
   elseif hit_die == "d6" then
-    rules.set_max_hit_points(stats, stats.total_hp + 4 + rules.ability_modifier[1][stats.ability.con])
+    rules.set_max_hit_points(stats, stats.total_hp + 4 + rules.ability_modifier[stats.ability.con])
   elseif hit_die == "d4" then
-    rules.set_max_hit_points(stats, stats.total_hp + 3 + rules.ability_modifier[1][stats.ability.con])
+    rules.set_max_hit_points(stats, stats.total_hp + 3 + rules.ability_modifier[stats.ability.con])
   end
 end
 
@@ -217,13 +218,13 @@ end
 -- ability modifiers
 rules.ability_modifier = {
   --  1,   2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
-  { -21, -13, -8, -5, -3, -2, -1, -1,  0,  0,  0,  0,  1,  1,  2,  3,  5,  8,  13, 21 },  -- 1. middle fibonacci
-  { -13, -8,  -5, -3, -2, -1, -1,  0,  0,  0,  0,  0,  0,  1,  1,  2,  3,  5,  8,  13 },  -- 2. late fibonacci
-  { -34, -21, -13,-8, -5, -3, -2, -1, -1,  0,  0,  1,  1,  2,  3,  5,  8,  13, 21, 34 },  -- 3. early fibonacci
-  { -9,  -8,  -7, -6, -5, -4, -3, -2, -1,  0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10 },  -- 4. linear
-  { -5,  -4,  -4, -3, -3, -2, -2, -1, -1,  0,  0,  1,  1,  2,  2,  3,  3,  4,  4,  5  },  -- 5. linear stepped
-  {  1,   2,   3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 },  -- 6. linear mirror
-  {  20,  19,  18, 17, 16, 15, 14, 13, 12, 11, 10, 9,  8,  7,  6,  5,  4,  3,  2,  1  },  -- 7. inverse mirror
+    -21, -13, -8, -5, -3, -2, -1, -1,  0,  0,  0,  0,  1,  1,  2,  3,  5,  8,  13, 21,  -- 1. middle fibonacci
+--  -13, -8,  -5, -3, -2, -1, -1,  0,  0,  0,  0,  0,  0,  1,  1,  2,  3,  5,  8,  13,  -- 2. late fibonacci
+--  -34, -21, -13,-8, -5, -3, -2, -1, -1,  0,  0,  1,  1,  2,  3,  5,  8,  13, 21, 34,  -- 3. early fibonacci
+--  -9,  -8,  -7, -6, -5, -4, -3, -2, -1,  0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,  -- 4. linear
+--  -5,  -4,  -4, -3, -3, -2, -2, -1, -1,  0,  0,  1,  1,  2,  2,  3,  3,  4,  4,  5 ,  -- 5. linear stepped
+--   1,   2,   3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,  -- 6. linear mirror
+--   20,  19,  18, 17, 16, 15, 14, 13, 12, 11, 10, 9,  8,  7,  6,  5,  4,  3,  2,  1 ,  -- 7. inverse mirror
 }
 
 rules.creation_rules = {
@@ -250,45 +251,45 @@ rules.ability_score_description = {
   str = function(score)
     local desc = "Strength is your overall physical strength and fighting ability. "
     desc = desc .. "Strength " .. tostring(score) .. " gives you "
-    desc = desc .. tostring(rules.ability_modifier[1][score]) .. " bonus damage with any weapon, "
-    desc = desc .. tostring(rules.ability_modifier[2][score]) .. " bonus to hit with melee weapons, and "
-    desc = desc .. tostring(rules.ability_modifier[2][score]) .. " to save vs hold."
+    desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus damage with any weapon, "
+    desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus to hit with melee weapons, and "
+    desc = desc .. tostring(rules.ability_modifier[score]) .. " to save vs hold."
     return desc
   end,
   dex = function(score)
     local desc = "Dexterity is your agility and the ability to handle delicate things. "
     desc = desc .. "Agility " .. tostring(score) .. " gives you "
-    desc = desc .. tostring(rules.ability_modifier[1][score]) .. " bonus to hit with ranged weapons, "
-    desc = desc .. tostring(rules.ability_modifier[2][score]) .. " bonus armor class, and "
-    desc = desc .. tostring(rules.ability_modifier[2][score]) .. " to save vs breath attacks."
+    desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus to hit with ranged weapons, "
+    desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus armor class, and "
+    desc = desc .. tostring(rules.ability_modifier[score]) .. " to save vs breath attacks."
     return desc
   end,
   con = function(score)
     local desc = "Constitution is your physical health and hardiness. "
     desc = desc .. "Constitution " .. tostring(score) .. " gives you "
-    desc = desc .. tostring(rules.ability_modifier[1][score]) .. " bonus hit points, and "
-    desc = desc .. tostring(rules.ability_modifier[2][score]) .. " to save vs poison."
+    desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus hit points, and "
+    desc = desc .. tostring(rules.ability_modifier[score]) .. " to save vs poison."
     return desc
   end,
   int = function(score)
     local desc = "Intelligence is your intellect, memory and the capacity to meddle with the elements. "
     desc = desc .. "Intelligence " .. tostring(score) .. " gives you "
-    desc = desc .. tostring(rules.ability_modifier[1][score]) .. " bonus arcane spells you can cast, and "
-    desc = desc .. tostring(rules.ability_modifier[2][score]) .. " to save vs illusions."
+    desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus arcane spells you can cast, and "
+    desc = desc .. tostring(rules.ability_modifier[score]) .. " to save vs illusions."
     return desc
   end,
   wis = function(score)
     local desc = "Wisdom is your perception of the world and syntony with the forces that rule it. "
     desc = desc .. "Wisdom " .. tostring(score) .. " gives you "
-    desc = desc .. tostring(rules.ability_modifier[1][score]) .. " bonus divine spells you can cast, and "
-    desc = desc .. tostring(rules.ability_modifier[2][score]) .. " to save vs fear."
+    desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus divine spells you can cast, and "
+    desc = desc .. tostring(rules.ability_modifier[score]) .. " to save vs fear."
     return desc
   end,
   cha = function(score)
     local desc = "Charisma is your personality and ability to handle with people and lead them. "
     desc = desc .. "Wisdom " .. tostring(score) .. " gives you "
-    desc = desc .. tostring(rules.ability_modifier[1][score]) .. " companions who can follow you, and "
-    desc = desc .. tostring(rules.ability_modifier[2][score]) .. " to save vs charm."
+    desc = desc .. tostring(rules.ability_modifier[score]) .. " companions who can follow you, and "
+    desc = desc .. tostring(rules.ability_modifier[score]) .. " to save vs charm."
     return desc
   end,
 }
@@ -302,7 +303,7 @@ function rules.base_armor_class(defender)
   local ac = armor.ac
   ac = ac + shield.ac_bonus
   ac = ac + weapon.ac_bonus
-  ac = ac + rules.ability_modifier[1][defender.ability.dex]
+  ac = ac + rules.ability_modifier[defender.ability.dex]
   return ac
 end
 
@@ -310,16 +311,16 @@ function rules.base_to_hit(attacker)
   local weapon = rules.weapon[attacker.weapon.name]
   local to_hit = weapon.to_hit_bonus
   if weapon.ranged then
-    to_hit = to_hit + rules.ability_modifier[2][attacker.ability.dex]
+    to_hit = to_hit + rules.ability_modifier[attacker.ability.dex]
   else
-    to_hit = to_hit + rules.ability_modifier[2][attacker.ability.str]
+    to_hit = to_hit + rules.ability_modifier[attacker.ability.str]
   end
 
   return to_hit
 end
 
 function rules.base_damage_bonus(attacker)
-  return rules.ability_modifier[1][attacker.ability.str]
+  return rules.ability_modifier[attacker.ability.str]
 end
 
 function rules.attack_armor_class(attacker, defender)
@@ -388,7 +389,7 @@ function rules.roll_attack(attacker, defender)
 
 
   -- armor class calculation
-  local ac_dex = 10 + rules.ability_modifier[2][defender.ability.dex]
+  local ac_dex = 10 + rules.ability_modifier[defender.ability.dex]
   local ac_weapon = ac_dex + defender_weapon.ac_bonus
   if defender_weapon.weight < attacker_weapon.weight then
     ac_weapon = ac_weapon + 1
@@ -500,30 +501,59 @@ function rules.roll_damage(attacker, defender, hit_result)
 end
 
 
+function rules.arcane_spell_bonus(stats)
+  return rules.ability_modifier[stats.ability.int]
+end
+
+function rules.divine_spell_bonus(stats)
+  return rules.ability_modifier[stats.ability.wis]
+end
+
+function rules.arcane_spell_challenge(stats)
+  return 10 + rules.arcane_spell_bonus(stats)
+end
+
+function rules.divine_spell_challenge(stats)
+  return 10 + rules.divine_spell_bonus(stats)
+end
+
 -- saves
 
-function rules.save_vs_hold(stats)
-  return rules.ability_modifier[2][stats.ability['str']]
+function rules.save(ability_score, challenge)
+  local result = {
+    challenge = challenge,
+    roll = 0,
+    bonus = 0,
+    success = false,
+  }
+  result.bonus = rules.ability_modifier[ability_score]
+  result.roll = rules.roll_dice("d20")
+  result.success = result.roll + result.bonus >= challenge
+  return result
 end
 
-function rules.save_vs_breath(stats)
-  return rules.ability_modifier[2][stats.ability['dex']]
+function rules.save_vs_hold(stats, challenge)
+  return rules.save(stats.ability.str, challenge)
 end
 
-function rules.save_vs_poison(stats)
-  return rules.ability_modifier[2][stats.ability['con']]
+function rules.save_vs_breath(stats, challenge)
+  return rules.save(stats.ability.dex, challenge)
 end
 
-function rules.save_vs_illusion(stats)
-  return rules.ability_modifier[2][stats.ability['int']]
+function rules.save_vs_poison(stats, challenge)
+  return rules.save(stats.ability.con, challenge)
 end
 
-function rules.save_vs_fear(stats)
-  return rules.ability_modifier[2][stats.ability['wis']]
+function rules.save_vs_illusion(stats, challenge)
+  return rules.save(stats.ability.int, challenge)
 end
 
-function rules.save_vs_charm(stats)
-  return rules.ability_modifier[2][stats.ability['cha']]
+function rules.save_vs_fear(stats, challenge)
+  return rules.save(stats.ability.wis, challenge)
+end
+
+function rules.save_vs_charm(stats, challenge)
+  return rules.save(stats.ability.cha, challenge)
 end
 
 return rules

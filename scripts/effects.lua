@@ -13,9 +13,25 @@ local defaults = {
 }
 
 animations.types = {
+
+  fireball = {
+    basic = defaults,
+    duration = 1 / (turns_per_second * 2),
+    sound = "",
+    oriented = true,
+    coordinates = {
+      x = 16 * 14,
+      y = 16 * 4,
+    },
+    animation = {
+      fps = 1,
+      frames = {0},
+    },
+  },
+
   fireball_blast = {
     basic = defaults,
-    duration = 1 / turns_per_second,
+    duration = 2 / turns_per_second,
     sound = "tcsh.wav",
     coordinates = {
       x = 0,
@@ -27,9 +43,24 @@ animations.types = {
     },
   },
 
-  magic_missle_blast = {
+  magic_missile = {
     basic = defaults,
-    duration = 1 / turns_per_second,
+    duration = 1 / (turns_per_second * 2),
+    sound = "",
+    oriented = true,
+    coordinates = {
+      x = 16 * 11,
+      y = 16 * 4,
+    },
+    animation = {
+      fps = 1,
+      frames = {0},
+    },
+  },
+
+  magic_missile_blast = {
+    basic = defaults,
+    duration = 2 / turns_per_second,
     sound = "tcsh.wav",
     coordinates = {
       x = 0,

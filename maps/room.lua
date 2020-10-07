@@ -29,11 +29,12 @@ function M.create()
   M.data.items["room_m3"] = {name = "arrow", type = "ammo", x = 2, y = 2, quantity = 17}
   M.data.items["room_s1"] = {name = "magic_missile", type = "spell", x = 2, y = 2, quantity = 12}
   M.data.items["room_s2"] = {name = "cure_wounds", type = "spell", x = 2, y = 2, quantity = 2}
+  M.data.items["room_s3"] = {name = "fireball", type = "spell", x = 2, y = 2, quantity = 2}
 end
 
 function M.enter()
   if M.data.door_locked == false then
-    sfml_lock_door(false, "north_door")
+    sfml_lock_door(false, "south_door")
     print('remove obstacle')
   end
   if M.data.key_chest_open then
@@ -75,6 +76,15 @@ function M.key_chest(event, x, y, character_name)
 end
 
 function M.north_door(event, x, y, character_name)
+  print('++++north door')
+  M.door(event, x, y)
+  if event == 'step_on' then
+    sfml_change_map('arena', 10, 19)
+  end
+end
+
+function M.south_door(event, x, y, character_name)
+  print('++++south door')
   M.door(event, x, y)
   if event == 'interact' then
     if M.data.door_locked then

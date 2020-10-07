@@ -69,8 +69,16 @@ function Control:attack(attacker_name, defender_name)
   if hit_result.hit_rolls[2] then
     hit_msg = hit_msg .. ', ' .. tostring(hit_result.hit_rolls[2])
   end
-  hit_msg = hit_msg .. ") + " .. tostring(hit_result.hit_bonus) .. " vs. " .. tostring(hit_result.ac) .. ': '
+  local sign = ''
+  if hit_result.hit_bonus >= 0 then
+    sign = '+'
+  end
+  hit_msg = hit_msg .. ") " .. sign .. tostring(hit_result.hit_bonus) .. " vs. " .. tostring(hit_result.ac) .. ': '
 
+  sign = ''
+  if damage_result.damage_bonus >= 0 then
+    sign = '+ '
+  end
 
   if hit_result.critical_hit then
     fmsg = "Critical: " .. tostring(damage_result.total_damage)
@@ -80,7 +88,7 @@ function Control:attack(attacker_name, defender_name)
     dmg_msg = dmg_msg .. 'has taken '
     dmg_msg = dmg_msg .. tostring(damage_result.total_damage)
     dmg_msg = dmg_msg .. ' = (' .. tostring(damage_result.dice_results[1]) .. ' + '
-    dmg_msg = dmg_msg .. tostring(damage_result.dice_results[2]) .. ') + '
+    dmg_msg = dmg_msg .. tostring(damage_result.dice_results[2]) .. ') ' .. sign
     dmg_msg = dmg_msg .. tostring(damage_result.damage_bonus)
     dmg_msg = dmg_msg .. ' damage '
 
@@ -112,7 +120,7 @@ function Control:attack(attacker_name, defender_name)
 
     dmg_msg = dmg_msg .. 'has taken '
     dmg_msg = dmg_msg .. tostring(damage_result.total_damage)
-    dmg_msg = dmg_msg .. ' = (' .. tostring(damage_result.dice_results[1]) .. ') + '
+    dmg_msg = dmg_msg .. ' = (' .. tostring(damage_result.dice_results[1]) .. ') ' .. sign
     dmg_msg = dmg_msg .. tostring(damage_result.damage_bonus)
     dmg_msg = dmg_msg .. ' damage '
 

@@ -1472,6 +1472,47 @@ void GameScreen::cast_missile(std::string firework_type, int tile_src_x, int til
 	add_effect(effect);
 }
 
+void GameScreen::cast_magic_missile(std::string effect_type, std::string caster_name, sf::Vector2i tile_src, sf::Vector2i tile_dst, std::vector<sf::Vector2i> targets, std::string blast_spell_name) {
+	sf::Vector2f src_pix_coords = map.get_tile_pix_coords(tile_src.x, tile_src.y);
+	sf::Vector2f dst_pix_coords = map.get_tile_pix_coords(tile_dst.x, tile_dst.y);
+
+	Direction direction = Consts::figure_orientation(tile_src.x, tile_src.y, tile_dst.x, tile_dst.y);
+	Fireworks *fireworks = new Fireworks();
+	fireworks->create(effect_type, direction);
+	fireworks->set_position(map.get_x() + (int)src_pix_coords.x, map.get_y() + (int)src_pix_coords.y);
+	add_entity(fireworks);
+
+	float duration = fireworks->get_duration();
+
+	std::string sound = fireworks->get_sound();
+	if (sound != "")
+		Resources::play_sound(sound);
+
+	MagicMissileEffect *effect = new MagicMissileEffect(duration, fireworks, 
+		map.get_x() + src_pix_coords.x, map.get_y() + src_pix_coords.y, 
+		map.get_x() + dst_pix_coords.x, map.get_y() + dst_pix_coords.y,
+		targets, tile_dst, blast_spell_name, caster_name
+	);
+
+	auto on_end = [&](MissileEffect* e) {
+		MagicMissileEffect *m = dynamic_cast<MagicMissileEffect*>(e);
+		// auto tile_coords = map.get_tile_coord(e->get_dst_x(), e->get_dst_y());
+		// start_firework(m->get_blast_name(), tile_coords.x, tile_coords.y);
+		_game.get_lua()->cast_magic(m->get_blast_name(), m->get_caster_name(), m->get_center(), m->get_targets());
+	};
+
+	effect->set_callback(on_end);
+	auto callback = ([&](Effect *e) {
+		MissileEffect *me = dynamic_cast<MissileEffect*>(e);
+		me->get_callback()(me);
+		remove_entity(me->get_entity());
+		delete me->get_entity();
+	});
+	effect->set_on_end(callback);
+	effect->set_on_interrupt(callback);
+	add_effect(effect);
+}
+
 bool GameScreen::is_equipped_with_ranged_weapon(Character &character) {
 	LuaObject character_stats = _game.get_lua()->character_stats(character.get_name());
 	std::string item_name = character_stats.get_string("weapon.name");

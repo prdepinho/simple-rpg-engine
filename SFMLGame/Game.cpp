@@ -760,7 +760,7 @@ public:
 		std::string code = lua_tostring(state, -6);
 		std::string name = lua_tostring(state, -5);
 		std::string type = lua_tostring(state, -4);
-		int quantity = lua_tointeger(state, -3);
+		int quantity = (int)lua_tointeger(state, -3);
 		int x = (int) lua_tointeger(state, -2);
 		int y = (int) lua_tointeger(state, -1);
 		screen->add_item(code, name, type, quantity, x, y);
@@ -839,6 +839,36 @@ public:
 		return 1;
 	}
 
+	static int sfml_cast_magic_missile(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		std::string effect_type = lua_tostring(state, -8);
+		std::string caster_name = lua_tostring(state, -7);
+		int src_x = (int)lua_tointeger(state, -6);
+		int src_y = (int)lua_tointeger(state, -5);
+		int dst_x = (int)lua_tointeger(state, -4);
+		int dst_y = (int)lua_tointeger(state, -3);
+		std::string blast_spell_name = lua_tostring(state, -2);
+
+		std::vector<sf::Vector2i> targets;
+		LuaObject obj = _game.get_lua()->read_top_table();
+		for (auto it = obj.begin(); it != obj.end(); ++it) {
+			int x = it->second.get_int("x");
+			int y = it->second.get_int("y");
+			targets.push_back({ x, y });
+		}
+
+		screen->cast_magic_missile(effect_type, caster_name, { src_x, src_y }, { dst_x, dst_y }, targets, blast_spell_name);
+		return 1;
+	}
+
+	static int sfml_start_fireworks(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		std::string type = lua_tostring(state, -3);
+		int tile_x = (int)lua_tointeger(state, -2);
+		int tile_y = (int)lua_tointeger(state, -1);
+		screen->start_firework(type, tile_x, tile_y);
+		return 1;
+	}
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -881,6 +911,8 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_push_log", LuaFunction::sfml_push_log);
 	lua_register(lua.get_state(), "sfml_push_character_to_bottom", LuaFunction::sfml_push_character_to_bottom);
 	lua_register(lua.get_state(), "sfml_get_characters_on_tile", LuaFunction::sfml_get_characters_on_tile);
+	lua_register(lua.get_state(), "sfml_cast_magic_missile", LuaFunction::sfml_cast_magic_missile);
+	lua_register(lua.get_state(), "sfml_start_fireworks", LuaFunction::sfml_start_fireworks);
 
 
 }

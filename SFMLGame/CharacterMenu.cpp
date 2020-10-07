@@ -48,13 +48,16 @@ void ItemContextMenu::create() {
 				if (screen->is_equipped_with_ranged_weapon(*player_character) && item.get_code() == character_stats.get_string("weapon.code")) {
 					Log("This weapon is the same equipped ranged weapon");
 					CharacterMenu::get().exit();
+
+					call_functions(this);
+					get_screen()->remove_component(*this);
 					screen->select_tile_to_shoot();
 					return true;
 				}
 
 				LuaObject item_stats = _game.get_lua()->item_stats(item.get_name(), item.get_type());
 				// use usable items
-				if (item_stats.get_boolean("usable")) {
+				if (item_stats.get_boolean("usable", false)) {
 					if (item.get_quantity() > 0) {
 						call_functions(this);
 						get_screen()->remove_component(*this);
@@ -63,6 +66,9 @@ void ItemContextMenu::create() {
 						int range_radius = item_stats.get_int("range_radius");
 						int effect_radius = item_stats.get_int("effect_radius");
 						std::string magic_name = item_stats.get_string("use");
+
+						call_functions(this);
+						get_screen()->remove_component(*this);
 						screen->select_tile_to_cast(range_radius, effect_radius, magic_name);
 
 						// item_stats.call_function("use");

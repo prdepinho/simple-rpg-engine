@@ -26,7 +26,7 @@ function M.north_door(event, x, y, character_name)
     door_open = true
 
   elseif event == "step_on" then
-    sfml_change_map("room", 4, 1)
+    sfml_change_map("room", 4, 7)
   end
 end
 
