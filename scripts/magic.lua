@@ -24,7 +24,6 @@ end
 function Magic:magic_missile_blast(caster, center, targets)
   local damage = rules.roll_dice("1d4+1")
   for index, position in ipairs(targets) do
-    sfml_play_sound("tcsh.wav")
     sfml_start_fireworks("magic_missile_blast", position.x, position.y)
 
     local characters = sfml_get_characters_on_tile(position.x, position.y)
@@ -58,10 +57,18 @@ function Magic:cure_wounds(caster, center, targets)
       local stats = self.control.character_data[character_name].stats
       if not stats.status.dead then
 
-        local heal = rules.roll_dice('2d4+' .. tostring(rules.divine_spell_bonus(stats)))
+        local bonus = rules.divine_spell_bonus(stats)
+        local roll = rules.roll_dice('2d4')
+        local heal = roll + bonus
 
+        local sign = ''
+        if bonus >= 0 then
+          sign = '+ '
+        end
         local msg = character_name .. ' - has recovered '
-        msg = msg .. heal .. ' hit points'
+        msg = msg .. tostring(heal) .. ' = '
+        msg = msg .. tostring(roll) .. ' ' .. sign .. tostring(bonus)
+        msg = msg .. ' hit points = '
         sfml_push_log(msg)
 
         local fmsg = '+' .. tostring(heal)
@@ -84,7 +91,6 @@ end
 function Magic:fireball_blast(caster, center, targets)
   local base_damage = rules.roll_dice("6d6")
   for index, position in ipairs(targets) do
-    sfml_play_sound("tcsh.wav")
     sfml_start_fireworks("fireball_blast", position.x, position.y)
 
     local characters = sfml_get_characters_on_tile(position.x, position.y)
