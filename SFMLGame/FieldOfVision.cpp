@@ -23,7 +23,7 @@ struct Vector2iCompare {
 // calculating the field of vision of two additional circles, one bigger and
 // one smaller, and merging the results.  Since this algorithm fills the area
 // of a circle, it is of exponential complexity over the radius. Keep it small.
-std::vector<sf::Vector2i> generate_field_of_vision(Tilemap &map, sf::Vector2i center, int radius) {
+std::vector<sf::Vector2i> generate_field_of_vision(Tilemap &map, sf::Vector2i center, int radius, bool stop_on_invisible) {
 	std::vector<sf::Vector2i> field;
 	std::vector<sf::Vector2i> outer_circle = midpoint_circle(center.x, center.y, radius + 1);
 	std::vector<sf::Vector2i> right_circle = midpoint_circle(center.x, center.y, radius);
@@ -36,7 +36,8 @@ std::vector<sf::Vector2i> generate_field_of_vision(Tilemap &map, sf::Vector2i ce
 		for (size_t i = 0; i < line.size() -1; i++) {
 			sf::Vector2i line_point = line[i];
 			field.push_back(line_point);
-			if (line_point != center && map.get_tile(line_point.x, line_point.y).obstacle)
+			bool stop = stop_on_invisible ? (map.get_tile(line_point.x, line_point.y).invisible) : (map.get_tile(line_point.x, line_point.y).obstacle);
+			if (line_point != center && stop)
 				break;
 		}
 	}
@@ -48,7 +49,8 @@ std::vector<sf::Vector2i> generate_field_of_vision(Tilemap &map, sf::Vector2i ce
 		for (size_t i = 0; i < line.size(); i++) {
 			sf::Vector2i line_point = line[i];
 			field.push_back(line_point);
-			if (line_point != center && map.get_tile(line_point.x, line_point.y).obstacle)
+			bool stop = stop_on_invisible ? (map.get_tile(line_point.x, line_point.y).invisible) : (map.get_tile(line_point.x, line_point.y).obstacle);
+			if (line_point != center && stop)
 				break;
 		}
 	}
@@ -60,7 +62,8 @@ std::vector<sf::Vector2i> generate_field_of_vision(Tilemap &map, sf::Vector2i ce
 		for (size_t i = 0; i < line.size(); i++) {
 			sf::Vector2i line_point = line[i];
 			field.push_back(line_point);
-			if (line_point != center && map.get_tile(line_point.x, line_point.y).obstacle)
+			bool stop = stop_on_invisible ? (map.get_tile(line_point.x, line_point.y).invisible) : (map.get_tile(line_point.x, line_point.y).obstacle);
+			if (line_point != center && stop)
 				break;
 		}
 	}

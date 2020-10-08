@@ -119,6 +119,7 @@ void TiledTilemapDAO::load_map(GameScreen *game_screen, std::string filename, Ti
 	// get layers (I'm sure there is a better way of doing this.)
 	tmx::TileLayer *floor_layer = nullptr;
 	tmx::TileLayer *obstacle_layer = nullptr;
+	tmx::TileLayer *invisible_layer = nullptr;
 	tmx::ObjectGroup *object_layer = nullptr;
 	tmx::TileLayer *furniture_layer = nullptr;
 	tmx::TileLayer *overfloor_layer = nullptr;
@@ -132,6 +133,9 @@ void TiledTilemapDAO::load_map(GameScreen *game_screen, std::string filename, Ti
 			}
 			else if (layerptr->getName() == "obstacle") {
 				obstacle_layer = &layerptr->getLayerAs<tmx::TileLayer>();
+			}
+			else if (layerptr->getName() == "invisible") {
+				invisible_layer = &layerptr->getLayerAs<tmx::TileLayer>();
 			}
 			else if (layerptr->getName() == "objects") {
 				object_layer = &layerptr->getLayerAs<tmx::ObjectGroup>();
@@ -154,6 +158,8 @@ void TiledTilemapDAO::load_map(GameScreen *game_screen, std::string filename, Ti
 		throw TilemapDAOException("Layer floor not found");
 	if (!obstacle_layer)
 		throw TilemapDAOException("Layer obstacle not found");
+	if (!invisible_layer)
+		throw TilemapDAOException("Layer invisible not found");
 	if (!object_layer)
 		throw TilemapDAOException("Layer objects not found");
 	if (!furniture_layer)
@@ -189,6 +195,8 @@ void TiledTilemapDAO::load_map(GameScreen *game_screen, std::string filename, Ti
 			bool obstacle = obstacle_layer->getTiles()[y * width + x].ID > 0;
 			map.get_tile(x, y).obstacle = obstacle;
 
+			bool invisible = invisible_layer->getTiles()[y * width + x].ID > 0;
+			map.get_tile(x, y).invisible = invisible;
 
 			// floor layers
 			for (unsigned z = 0; z < floor_layers; z++) {
