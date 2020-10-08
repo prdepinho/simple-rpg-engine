@@ -1617,3 +1617,7 @@ void GameScreen::select_tile_to_cast(int range_radius, int effect_radius, std::s
 		return true;
 	});
 }
+
+void GameScreen::refresh_overlay() {
+	Overlay::refresh(*this, player_character);
+}

@@ -869,6 +869,12 @@ public:
 		screen->start_firework(type, tile_x, tile_y);
 		return 1;
 	}
+
+	static int sfml_refresh_overlay(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		screen->refresh_overlay();
+		return 1;
+	}
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -913,6 +919,7 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_get_characters_on_tile", LuaFunction::sfml_get_characters_on_tile);
 	lua_register(lua.get_state(), "sfml_cast_magic_missile", LuaFunction::sfml_cast_magic_missile);
 	lua_register(lua.get_state(), "sfml_start_fireworks", LuaFunction::sfml_start_fireworks);
+	lua_register(lua.get_state(), "sfml_refresh_overlay", LuaFunction::sfml_refresh_overlay);
 
 
 }

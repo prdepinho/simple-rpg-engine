@@ -16,7 +16,7 @@ animations.types = {
 
   fireball = {
     basic = defaults,
-    duration = 1 / (turns_per_second * 2),
+    duration = 1 / turns_per_second,
     sound = "",
     oriented = true,
     coordinates = {
@@ -45,7 +45,7 @@ animations.types = {
 
   magic_missile = {
     basic = defaults,
-    duration = 1 / (turns_per_second * 2),
+    duration = 1 / turns_per_second,
     sound = "",
     oriented = true,
     coordinates = {
@@ -72,9 +72,23 @@ animations.types = {
     },
   },
 
+  healing = {
+    basic = defaults,
+    duration = 2 / turns_per_second,
+    sound = "plim.wav",
+    coordinates = {
+      x = 0,
+      y = 16 * 2
+    },
+    animation = {
+      fps = 2 * turns_per_second,
+      frames = {0, 1, 2, 3},
+    },
+  },
+
   bullet = {
     basic = defaults,
-    duration = 1 / (turns_per_second * 2),
+    duration = 1 / turns_per_second,
     sound = "",
     coordinates = {
       x = 16 * 8,
@@ -88,7 +102,8 @@ animations.types = {
 
   arrow = {
     basic = defaults,
-    duration = 1 / (turns_per_second * 2),
+    -- duration = 1 / (turns_per_second * 2),
+    duration = 1 / turns_per_second,
     sound = "",
     oriented = true, -- oriented fireworks have a sprite for each of the eight directions it might face.
     coordinates = {  -- coordinates for the tranparent square in the middle of the sprites.
@@ -103,7 +118,7 @@ animations.types = {
 
   bolt = {
     basic = defaults,
-    duration = 1 / (turns_per_second * 2),
+    duration = 1 / turns_per_second,
     sound = "",
     oriented = true,
     coordinates = {

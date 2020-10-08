@@ -49,7 +49,28 @@ end
 
 function Magic:cure_wounds(caster, center, targets)
   sfml_push_log(caster .. ' - casts ' .. rules.spell.cure_wounds.name)
-  print('plim')
+
+  for index, position in ipairs(targets) do 
+    sfml_start_fireworks("healing", position.x, position.y)
+
+    local characters = sfml_get_characters_on_tile(position.x, position.y)
+    for index, character_name in ipairs(characters) do
+      local stats = self.control.character_data[character_name].stats
+      if not stats.status.dead then
+
+        local heal = rules.roll_dice('2d4+' .. tostring(rules.divine_spell_bonus(stats)))
+
+        local msg = character_name .. ' - has recovered '
+        msg = msg .. heal .. ' hit points'
+        sfml_push_log(msg)
+
+        local fmsg = '+' .. tostring(heal)
+        sfml_show_floating_message(fmsg, position.x, position.y)
+
+        self.control:heal_character(character_name, heal)
+      end
+    end
+  end
 end
 
 

@@ -176,6 +176,7 @@ end
 
 function Control:damage_character(character_name, damage)
   local character = self.character_data[character_name]
+  save.print_data(character.stats)
   character.stats.current_hp = character.stats.current_hp - damage
 
   print(character.stats.name .. ' hp: ' .. tostring(character.stats.current_hp))
@@ -184,6 +185,23 @@ function Control:damage_character(character_name, damage)
   if character.stats.current_hp <= 0 then
     character.stats.current_hp = 0
     self:kill_character(character_name)
+  end
+
+  if character_name == "player" then
+    sfml_refresh_overlay()
+  end
+end
+
+function Control:heal_character(character_name, heal)
+  local character = self.character_data[character_name]
+  character.stats.current_hp = character.stats.current_hp + heal
+
+  if character.stats.current_hp > character.stats.total_hp then
+    character.stats.current_hp = character.stats.total_hp
+  end
+
+  if character_name == "player" then
+    sfml_refresh_overlay()
   end
 end
 
