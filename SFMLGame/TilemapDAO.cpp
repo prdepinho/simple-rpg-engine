@@ -350,7 +350,6 @@ void TiledTilemapDAO::load_characters(GameScreen *game_screen, std::string filen
 			else
 			// characters
 			{
-				Log("Character: %s, type: %s (%d, %d)", code.c_str(), type.c_str(), x, y);
 				if (code == "player") {
 					// game_screen->put_character_on_tile(*game_screen->get_player_character(), x, y);
 					game_screen->set_player_new_tile_position(x, y);

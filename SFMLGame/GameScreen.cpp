@@ -347,12 +347,7 @@ void GameScreen::control_wait() {
 
 
 void GameScreen::control_loot(int tile_x, int tile_y) {
-	Log("Loot");
 	std::vector<Item*> items_on_tile = get_items_on_tile(tile_x, tile_y);
-	for (Item *item : items_on_tile) {
-		Log("%s: %s (%s)", item->get_code().c_str(), item->get_name().c_str(), item->get_type().c_str());
-	}
-	Log("items: %d", items_on_tile.size());
 	if (items_on_tile.size() > 0) {
 		block_input = true;
 		LootMenu::show(*this, player_character, items_on_tile, [&](Component*) {
@@ -551,7 +546,6 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	if (!player_busy) {
 		switch (InputHandler::get_control_input(event)) {
 		case Control::A:
-			Log("A");
 			// do
 			{
 				auto position = character_position(*player_character);
@@ -562,13 +556,11 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			}
 			break;
 		case Control::B: 
-			Log("B");
 			{
 				select_tile_to_shoot();
 			}
 			break;
 		case Control::START:
-			Log("Start");
 			// open menu
 			block_input = true;
 			CharacterMenu::show(*this, player_character, [&](Component *) {
@@ -578,7 +570,6 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			break;
 		case Control::SELECT:
 			{
-				Log("Select");
 				// select tile
 				auto center = character_position(*player_character);
 				int range_radius = 3;
@@ -963,7 +954,6 @@ void GameScreen::schedule_character_attack(Character &attacker, Character &defen
 }
 
 void GameScreen::schedule_character_cast_magic(std::string magic_name, Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> targets, int inventory_index) {
-	Log("schedule_character_cast_magic");
 	auto *action = new MagicAction(magic_name, &caster, center, targets, inventory_index);
 	caster.schedule_action(action);
 }
@@ -977,7 +967,6 @@ void GameScreen::move_character(Character &character, Direction direction) {
 			TileData &original_tile = map.get_tile(position.x, position.y);
 			original_tile.obstacle = false;
 		}
-		Log("move_character: %d (%d, %d)", character.get_id(), position.x, position.y);
 		switch (direction) {
 		case Direction::UP: position.y--; break;
 		case Direction::DOWN: position.y++; break;
@@ -1057,20 +1046,15 @@ void GameScreen::wait_character(Character &character) {
 }
 
 void GameScreen::attack_character(Character &attacker, Character &defender) {
-	Log("Attack: %s attacks %s", attacker.get_name().c_str(), defender.get_name().c_str());
 	if (is_equipped_with_ranged_weapon(attacker)) {
-		Log("Ranged attack");
 		if (has_ammo(attacker)) {
-			Log("Has ammo");
 			if (is_in_range(attacker, defender)) {
 				_game.get_lua()->ammo_stack_pop(attacker.get_name(), 1);
-				Log("Is in range.");
 				if (&attacker == player_character) {
 					Effect *effect = new RangedAttackEffect(&attacker, &defender, turn_duration);
 					effect->set_on_update([&](Effect*) {
 					});
 					effect->set_on_end([&](Effect*) {
-						Log("On end attack");
 						player_busy = false;
 					});
 					add_effect(effect);
@@ -1090,13 +1074,11 @@ void GameScreen::attack_character(Character &attacker, Character &defender) {
 		}
 	}
 	else {
-		Log("Melee attack");
 		if (&attacker == player_character) {
 			Effect *effect = new AttackEffect(&attacker, &defender, turn_duration);
 			effect->set_on_update([&](Effect*) {
 			});
 			effect->set_on_end([&](Effect*) {
-				Log("On end attack");
 				player_busy = false;
 			});
 			add_effect(effect);
@@ -1110,8 +1092,6 @@ void GameScreen::attack_character(Character &attacker, Character &defender) {
 }
 
 void GameScreen::interact_character(Character &character, int tile_x, int tile_y) {
-	Log("Interaction: %s (%d, %d)", character.get_name().c_str(), tile_x, tile_y);
-
 	auto pos = character_position(character);
 
 	if (std::abs(pos.x - tile_x) <= 1 && std::abs(pos.y - tile_y) <= 1) {  // is adjacent
@@ -1168,7 +1148,6 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 }
 
 void GameScreen::cast_magic(Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> targets, std::string magic_name, int inventory_index) {
-	Log(" ++++ Cast magic: %s", magic_name.c_str());
 	_game.get_lua()->inventory_stack_pop(inventory_index + 1, caster.get_name(), 1);
 	_game.get_lua()->cast_magic(magic_name, caster.get_name(), center, targets);
 }
@@ -1274,7 +1253,6 @@ void GameScreen::show_dialogue_box(LuaObject dialogue) {
 	block_input = true;
 	DialogueBox::show(dialogue, *this, [&](Component *c) {
 		block_input = false;
-		Log("block_input: %s", block_input ? "true" : "false");
 		return true;
 	});
 }
@@ -1302,7 +1280,6 @@ void GameScreen::pan_foreground(LuaObject data) {
 	block_input = true;
 
 	if (foreground.data.size() > 0) {
-		std::cout << "delete function" << std::endl;
 		foreground.data.delete_functions();
 	}
 
@@ -1329,7 +1306,6 @@ void GameScreen::pan_foreground(LuaObject data) {
 void GameScreen::pan_game_view(sf::Vector2f v) {
 	game_view.move(v);
 	for (FloatingMessage *floating_message : floating_messages) {
-		Log("Moving floating message %f, %f", v.x, v.y);
 		floating_message->move(-v.x, -v.y);
 		floating_message->create();
 	}
@@ -1531,7 +1507,6 @@ int GameScreen::equipped_weapon_range(Character &character) {
 }
 
 void GameScreen::target_character(Character &character) {
-	Log("Targeting character %s", character.get_name().c_str());
 	clear_target();
 	target = &character;
 	target->show_outline(1, 0, sf::Color::Red);
@@ -1539,7 +1514,6 @@ void GameScreen::target_character(Character &character) {
 
 void GameScreen::clear_target() {
 	if (target) {
-		Log("Untargeting character %s", target->get_name().c_str());
 		target->hide_outline();
 		target = nullptr;
 	}
@@ -1569,24 +1543,20 @@ void GameScreen::select_tile(sf::Vector2i center, int range_radius, int effect_r
 bool GameScreen::has_ammo(Character &character) {
 	LuaObject stats = _game.get_lua()->character_stats(character.get_name());
 	int quantity = stats.get_int("ammo.quantity");
-	Log("Quantity: %d", quantity)
 	return quantity > 0;
 }
 
 void GameScreen::select_tile_to_shoot() {
 	// if equipped with ranged weapon:
 	if (is_equipped_with_ranged_weapon(*player_character)) {
-		Log("Is equipped with ranged weapons");
 		//	if target_character == nullptr
 		if (target == nullptr) {
-			Log("there is no target");
 			//    select target
 			auto center = character_position(*player_character);
 			int range_radius = equipped_weapon_range(*player_character);
 			int effect_radius = 0;
 			select_tile(center, range_radius, effect_radius, [&](sf::Vector2i center, std::vector<sf::Vector2i> &selected) {
 				for (auto tile : selected) {
-					Log("Target selected");
 					Character *character = get_character_on_tile(tile.x, tile.y);
 					if (character) {
 						target_character(*character);
@@ -1611,7 +1581,6 @@ void GameScreen::select_tile_to_cast(int range_radius, int effect_radius, std::s
 	auto src = character_position(*player_character);
 	selected_magic = magic_name;
 	select_tile(src, range_radius, effect_radius, [&](sf::Vector2i center, std::vector<sf::Vector2i> &selected) {
-		Log("on select end");
 		int inventory_index = CharacterMenu::get().get_inventory().get_cursor();
 		schedule_character_cast_magic(selected_magic, *player_character, center, selected, inventory_index);
 		return true;

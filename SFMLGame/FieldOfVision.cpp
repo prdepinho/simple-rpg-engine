@@ -146,6 +146,7 @@ std::vector<sf::Vector2i> bresenham_line (int x0, int y0, int x1, int y1) {
 }
 
 // return the coordinates in the line if is in sight, else return an empty vector.
+// despite what the name suggests, the line of sight stops on obstacles, not on invisible tiles.
 std::vector<sf::Vector2i> generate_line_of_sight(Tilemap &map, sf::Vector2i src, sf::Vector2i dst, int radius) {
 	std::vector<sf::Vector2i> rval;
 	std::vector<sf::Vector2i> line = bresenham_line(src.x, src.y, dst.x, dst.y);

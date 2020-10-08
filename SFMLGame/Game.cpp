@@ -418,7 +418,6 @@ public:
 		int x = (int) lua_tointeger(state, -2);
 		int y = (int) lua_tointeger(state, -1);
 		screen->get_map().get_tile(x, y).obstacle = obstacle;
-		Log("Set obstacle (%d, %d): %s", x, y, (obstacle ? "true" : "false"));
 		return 1;
 	}
 
@@ -434,7 +433,6 @@ public:
 				TileData tile = screen->get_map().get_tile(x, y);
 				if (tile.object_name == door_name) {
 					screen->get_map().get_tile(x, y).obstacle = obstacle;
-					Log("Set obstacle (%d, %d): %s", x, y, (obstacle ? "true" : "false"));
 				}
 			}
 		}
@@ -447,7 +445,6 @@ public:
 		int x = (int)lua_tointeger(state, -2);
 		int y = (int)lua_tointeger(state, -1);
 		screen->get_map().get_tile(x, y).open = open;
-		Log("Open tile (%d, %d): %s", x, y, (open ? "true" : "false"));
 		return 1;
 	}
 
@@ -472,7 +469,6 @@ public:
 		int coords_x = (int)lua_tointeger(state, -2);
 		int coords_y = (int)lua_tointeger(state, -1);
 		screen->get_map().change_floor_texture(x, y, layer, coords_x, coords_y);
-		Log("Change floor tile texture from layer %d: (%d, %d) to (%d, %d)", layer, x, y, coords_x, coords_y);
 		return 1;
 	}
 
@@ -485,7 +481,6 @@ public:
 		int coords_x = (int)lua_tointeger(state, -2);
 		int coords_y = (int)lua_tointeger(state, -1);
 		screen->get_map().change_ceiling_texture(x, y, layer, coords_x, coords_y);
-		Log("Change ceiling tile texture from layer %d: (%d, %d) to (%d, %d)", layer, x, y, coords_x, coords_y);
 		return 1;
 	}
 
@@ -583,7 +578,6 @@ public:
 
 	static int sfml_test(lua_State *state) {
 		std::string str = lua_tostring(state, -2);
-		Log("sfml_test: %s", str.c_str());
 		lua_CFunction func = lua_tocfunction(state, -1);
 		lua_pushnumber(state, 1);
 		return 1;

@@ -34,7 +34,7 @@ function M.on_turn(id)
 end
 
 function M.on_idle(id)
-  -- commons.idle_walk(M.name)
+  commons.idle_walk(M.name)
 
   if commons.is_player_in_sight(M.name, 4) then
     -- print('Player is in sight')

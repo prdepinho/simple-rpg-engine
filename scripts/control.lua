@@ -176,10 +176,8 @@ end
 
 function Control:damage_character(character_name, damage)
   local character = self.character_data[character_name]
-  save.print_data(character.stats)
   character.stats.current_hp = character.stats.current_hp - damage
 
-  print(character.stats.name .. ' hp: ' .. tostring(character.stats.current_hp))
   sfml_start_animation(character_name, "hurt")
 
   if character.stats.current_hp <= 0 then
@@ -211,7 +209,6 @@ function Control:kill_character(character_name)
     character.stats.status[key] = false
   end
   character.stats.status.dead = true
-  print('dead')
   sfml_push_log(character.stats.name .. ' - Dead!')
   sfml_loop_animation(character_name, 'dead')
   sfml_push_character_to_bottom(character_name)
@@ -260,12 +257,6 @@ function Control:equip_item(item_index, character_name)
 end
 
 function Control:does_ammo_match_weapon(ammo_name, character_name)
-  print('++++++++++++++++++')
-  save.print_data(self)
-  print('-')
-  save.print_data(self.character_data)
-  print('ammo_name: ' .. ammo_name)
-  print('character_name: ' .. character_name)
   local ammo = rules.ammo[ammo_name]
   local weapon_name = self.character_data[character_name].stats.weapon.name
   local weapon = rules.weapon[weapon_name]
@@ -277,7 +268,6 @@ function Control:loot_item(item_code, character_name)
   local item = self.map_data[self.current_map].items[item_code]
   for index, item_data in ipairs(self.character_data[character_name].stats.inventory) do
     if item_data.code == '' then
-      save.print_data(item)
       self.character_data[character_name].stats.inventory[index] = {
         code = item_code,
         name = item.name,
@@ -338,11 +328,9 @@ function Control:inventory_exchange_items(index_a, index_b, character_name)
   local item_b = self.character_data[character_name].stats.inventory[index_b]
 
   if item_a.name == item_b.name and rules[item_a.type][item_a.name].stack_capacity then
-    print("Stack: " .. tostring(index_a) .. ' -> ' .. index_b .. ' (' .. character_name .. ')')
     self:stack_items(item_a, item_b)
 
   else
-    print("Exchange: " .. tostring(index_a) .. ' -> ' .. index_b .. ' (' .. character_name .. ')')
     local tmp = self.character_data[character_name].stats.inventory[index_a]
     self.character_data[character_name].stats.inventory[index_a] = self.character_data[character_name].stats.inventory[index_b]
     self.character_data[character_name].stats.inventory[index_b] = tmp
@@ -509,7 +497,6 @@ function Control:add_character(script, name)
 end
 
 function Control:remove_character(name)
-  print(name .. ' is removed')
   self.character_data[name].removed = true
 end
 
@@ -518,12 +505,10 @@ function Control:is_character_removed(name)
   if self.character_data[name] then
     removed = self.character_data[name].removed
   end
-  print(name .. ' has been previously removed')
   return removed
 end
 
 function Control:character_on_interact(target_name, interactor_name)
-  print('target_name: ' .. target_name)
   if self.character_modules[target_name] ~= nil then
     local character = self.character_modules[target_name].data
     if character.stats.status.dead then

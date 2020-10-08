@@ -36,7 +36,6 @@ end
 function M.enter()
   if M.data.door_locked == false then
     sfml_lock_door(false, "south_door")
-    print('remove obstacle')
   end
   if M.data.key_chest_open then
     local coords = M.data.objects["key_chest"][1]
@@ -46,7 +45,6 @@ function M.enter()
 end
 
 function M.exit()
-  print('room.map: exit')
 end
 
 function M.empty_chest(event, x, y, character_name)
