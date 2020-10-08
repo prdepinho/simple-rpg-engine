@@ -32,10 +32,10 @@ void MissileEffect::update(float elapsed_time) {
 
 
 MagicMissileEffect::MagicMissileEffect(float seconds, Entity *entity, int src_x, int src_y, int dst_x, int dst_y,
-	std::vector<sf::Vector2i> targets, sf::Vector2i center, std::string blast_name, std::string caster_name
+	std::vector<std::string> targets, std::vector<sf::Vector2i> tiles, sf::Vector2i center, std::string blast_name, std::string caster_name
 ) 
 	: MissileEffect(seconds, entity, src_x, src_y, dst_x, dst_y),
-	targets(targets), center(center), blast_name(blast_name), caster_name(caster_name)
+	targets(targets), tiles(tiles), center(center), blast_name(blast_name), caster_name(caster_name)
 {}
 
 

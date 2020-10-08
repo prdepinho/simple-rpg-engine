@@ -87,16 +87,17 @@ public:
 	void schedule_character_movement(Character &character, int tile_x, int tile_y);
 	void schedule_character_interaction(Character &character, int tile_x, int tile_y);
 	void schedule_character_attack(Character &attacker, Character &defender);
-	void schedule_character_cast_magic(std::string magic_name, Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> targets, int inventory_index);
+	void schedule_character_cast_magic(std::string magic_name, Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> tiles, std::vector<std::string> targets, int inventory_index);
 
 	void move_character(Character &character, Direction direction);
 	void wait_character(Character &character);
 	void attack_character(Character &attacker, Character &defender);
 	void interact_character(Character &character, int tile_x, int tile_y);
-	void cast_magic(Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> targets, std::string magic_name, int inventory_index);
+	void cast_magic(Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> tiles, std::vector<std::string> targets, std::string magic_name, int inventory_index);
 
 	bool can_move(Character &character, Direction direction);
 	Character* get_character_on_tile(int tile_x, int tile_y);
+	Character* get_live_character_on_tile(int tile_x, int tile_y);
 	std::vector<Character*> get_characters_on_tile(int tile_x, int tile_y);
 	Character* get_character_by_id(long id);
 	Character *get_character_by_name(std::string name);
@@ -143,7 +144,7 @@ public:
 
 	void start_firework(std::string type, int tile_x, int tile_y);
 	void cast_missile(std::string firework_type, int tile_src_x, int tile_src_y, int tile_dst_x, int tile_dst_y, std::function<void(MissileEffect*)> on_end = [&](MissileEffect*) {});
-	void cast_magic_missile(std::string effect_type, std::string caster_name, sf::Vector2i tile_src, sf::Vector2i tile_dst, std::vector<sf::Vector2i> targets, std::string blast_spell_name);
+	void cast_magic_missile(std::string effect_type, std::string caster_name, sf::Vector2i tile_src, sf::Vector2i tile_dst, std::vector<sf::Vector2i> tiles, std::string blast_spell_name);
 
 	void pan_foreground(std::string filename, int x, int y, float speed_x, float speed_y, float total_time, float still_time);
 	void pan_foreground(LuaObject data);

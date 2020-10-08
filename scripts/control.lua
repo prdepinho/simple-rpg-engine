@@ -30,8 +30,8 @@ end
 
 
 
-function Control:cast_magic(magic_name, caster, center, targets)
-  self.magic[magic_name](self.magic, caster, center, targets)
+function Control:cast_magic(magic_name, caster, center, tiles, targets)
+  self.magic[magic_name](self.magic, caster, center, tiles, targets)
 end
 
 function Control:set_ability_scores(name, str, dex, con, int, wis, cha)
@@ -488,8 +488,6 @@ function Control:character_base_damage_bonus(name)
 end
 
 function Control:add_character(script, name)
-  print('add character: ' .. name)
-
   if self.character_modules[name] == nil then
     self.character_modules[name] = require(script)
   end
@@ -549,7 +547,6 @@ function Control:remove_character(name)
 end
 
 function Control:is_character_removed(name)
-  print('is character removed: ' .. name)
   local removed = false
   if self.characters[name] then
     removed = self.characters[name].data.removed

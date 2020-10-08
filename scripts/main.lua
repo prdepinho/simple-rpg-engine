@@ -15,8 +15,8 @@ local control = Control:new(nil)
 
 
 
-function cast_magic(magic_name, caster, center, targets)
-  control:cast_magic(magic_name, caster, center, targets)
+function cast_magic(magic_name, caster, center, tiles, targets)
+  control:cast_magic(magic_name, caster, center, tiles, targets)
 end
 
 function set_ability_scores(name, str, dex, con, int, wis, cha)

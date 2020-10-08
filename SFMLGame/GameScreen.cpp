@@ -368,10 +368,6 @@ void GameScreen::control_mouse_move() {
 		int tile_x = tile_coord.x;
 		int tile_y = tile_coord.y;
 
-		Character* character = get_character_on_tile(tile_x, tile_y);
-
-		// Log("Click: (x: %d, y: %d), Tile: (x: %d, y: %d), Character: %d", x, y, tile_x, tile_y, (character ? character->get_id() : 0l));
-
 		player_character->clear_schedule();
 		schedule_character_movement(*player_character, tile_x, tile_y);
 		schedule_character_interaction(*player_character, tile_x, tile_y);
@@ -953,8 +949,8 @@ void GameScreen::schedule_character_attack(Character &attacker, Character &defen
 	attacker.schedule_action(action);
 }
 
-void GameScreen::schedule_character_cast_magic(std::string magic_name, Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> targets, int inventory_index) {
-	auto *action = new MagicAction(magic_name, &caster, center, targets, inventory_index);
+void GameScreen::schedule_character_cast_magic(std::string magic_name, Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> tiles, std::vector<std::string> targets, int inventory_index) {
+	auto *action = new MagicAction(magic_name, &caster, center, tiles, targets, inventory_index);
 	caster.schedule_action(action);
 }
 
@@ -1147,9 +1143,9 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 
 }
 
-void GameScreen::cast_magic(Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> targets, std::string magic_name, int inventory_index) {
+void GameScreen::cast_magic(Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> tiles, std::vector<std::string> targets, std::string magic_name, int inventory_index) {
 	_game.get_lua()->inventory_stack_pop(inventory_index + 1, caster.get_name(), 1);
-	_game.get_lua()->cast_magic(magic_name, caster.get_name(), center, targets);
+	_game.get_lua()->cast_magic(magic_name, caster.get_name(), center, tiles, targets);
 }
 
 inline sf::Vector2i GameScreen::character_position(Character &character) {
@@ -1196,6 +1192,18 @@ Character* GameScreen::get_character_on_tile(int tile_x, int tile_y) {
 		sf::Vector2i position = character_position(*character);
 		if (position.x == tile_x && position.y == tile_y) {
 			return character;
+		}
+	}
+	return nullptr;
+}
+
+Character* GameScreen::get_live_character_on_tile(int tile_x, int tile_y) {
+	for (Character *character : characters) {
+		sf::Vector2i position = character_position(*character);
+		if (position.x == tile_x && position.y == tile_y) {
+			if (_game.get_lua()->character_stats(character->get_name()).get_boolean("status.dead") == false) {
+				return character;
+			}
 		}
 	}
 	return nullptr;
@@ -1448,7 +1456,7 @@ void GameScreen::cast_missile(std::string firework_type, int tile_src_x, int til
 	add_effect(effect);
 }
 
-void GameScreen::cast_magic_missile(std::string effect_type, std::string caster_name, sf::Vector2i tile_src, sf::Vector2i tile_dst, std::vector<sf::Vector2i> targets, std::string blast_spell_name) {
+void GameScreen::cast_magic_missile(std::string effect_type, std::string caster_name, sf::Vector2i tile_src, sf::Vector2i tile_dst, std::vector<sf::Vector2i> tiles, std::string blast_spell_name) {
 	sf::Vector2f src_pix_coords = map.get_tile_pix_coords(tile_src.x, tile_src.y);
 	sf::Vector2f dst_pix_coords = map.get_tile_pix_coords(tile_dst.x, tile_dst.y);
 
@@ -1464,17 +1472,24 @@ void GameScreen::cast_magic_missile(std::string effect_type, std::string caster_
 	if (sound != "")
 		Resources::play_sound(sound);
 
+	std::vector<std::string> targets;
+	for (auto &tile : tiles) {
+		Character *character = get_live_character_on_tile(tile.x, tile.y);
+		if (character)
+			targets.push_back(character->get_name());
+	}
+
 	MagicMissileEffect *effect = new MagicMissileEffect(duration, fireworks, 
 		map.get_x() + src_pix_coords.x, map.get_y() + src_pix_coords.y, 
 		map.get_x() + dst_pix_coords.x, map.get_y() + dst_pix_coords.y,
-		targets, tile_dst, blast_spell_name, caster_name
+		targets, tiles, tile_dst, blast_spell_name, caster_name
 	);
 
 	auto on_end = [&](MissileEffect* e) {
 		MagicMissileEffect *m = dynamic_cast<MagicMissileEffect*>(e);
 		// auto tile_coords = map.get_tile_coord(e->get_dst_x(), e->get_dst_y());
 		// start_firework(m->get_blast_name(), tile_coords.x, tile_coords.y);
-		_game.get_lua()->cast_magic(m->get_blast_name(), m->get_caster_name(), m->get_center(), m->get_targets());
+		_game.get_lua()->cast_magic(m->get_blast_name(), m->get_caster_name(), m->get_center(), m->get_tiles(), m->get_targets());
 	};
 
 	effect->set_callback(on_end);
@@ -1557,7 +1572,8 @@ void GameScreen::select_tile_to_shoot() {
 			int effect_radius = 0;
 			select_tile(center, range_radius, effect_radius, [&](sf::Vector2i center, std::vector<sf::Vector2i> &selected) {
 				for (auto tile : selected) {
-					Character *character = get_character_on_tile(tile.x, tile.y);
+					// Character *character = get_character_on_tile(tile.x, tile.y);
+					Character *character = get_live_character_on_tile(tile.x, tile.y);
 					if (character) {
 						target_character(*character);
 						schedule_character_attack(*player_character, *target);
@@ -1581,8 +1597,16 @@ void GameScreen::select_tile_to_cast(int range_radius, int effect_radius, std::s
 	auto src = character_position(*player_character);
 	selected_magic = magic_name;
 	select_tile(src, range_radius, effect_radius, [&](sf::Vector2i center, std::vector<sf::Vector2i> &selected) {
+
+		std::vector<std::string> targets;
+		for (auto &tile : selected) {
+			Character *character = get_live_character_on_tile(tile.x, tile.y);
+			if (character)
+				targets.push_back(character->get_name());
+		}
+
 		int inventory_index = CharacterMenu::get().get_inventory().get_cursor();
-		schedule_character_cast_magic(selected_magic, *player_character, center, selected, inventory_index);
+		schedule_character_cast_magic(selected_magic, *player_character, center, selected, targets, inventory_index);
 		return true;
 	});
 }

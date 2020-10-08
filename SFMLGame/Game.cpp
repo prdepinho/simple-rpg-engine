@@ -833,6 +833,19 @@ public:
 		return 1;
 	}
 
+	static int sfml_get_live_character_on_tile(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		int tile_x = (int)lua_tointeger(state, -2);
+		int tile_y = (int)lua_tointeger(state, -1);
+		Character *character = screen->get_live_character_on_tile(tile_x, tile_y);
+		if (character)
+			lua_pushstring(state, character->get_name().c_str());
+		else
+			lua_pushstring(state, "");
+
+		return 1;
+	}
+
 	static int sfml_cast_magic_missile(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		std::string effect_type = lua_tostring(state, -8);
@@ -911,6 +924,7 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_push_log", LuaFunction::sfml_push_log);
 	lua_register(lua.get_state(), "sfml_push_character_to_bottom", LuaFunction::sfml_push_character_to_bottom);
 	lua_register(lua.get_state(), "sfml_get_characters_on_tile", LuaFunction::sfml_get_characters_on_tile);
+	lua_register(lua.get_state(), "sfml_get_live_character_on_tile", LuaFunction::sfml_get_live_character_on_tile);
 	lua_register(lua.get_state(), "sfml_cast_magic_missile", LuaFunction::sfml_cast_magic_missile);
 	lua_register(lua.get_state(), "sfml_start_fireworks", LuaFunction::sfml_start_fireworks);
 	lua_register(lua.get_state(), "sfml_refresh_overlay", LuaFunction::sfml_refresh_overlay);

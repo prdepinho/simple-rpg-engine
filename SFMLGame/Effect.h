@@ -81,14 +81,16 @@ protected:
 class MagicMissileEffect : public MissileEffect {
 public:
 	MagicMissileEffect(float seconds=0.f, Entity *entity=nullptr, int src_x=0, int src_y=0, int dst_x=0, int dst_y=0,
-		std::vector<sf::Vector2i> targets={}, sf::Vector2i center={}, std::string blast_name="", std::string caster_name=""
+		std::vector<std::string> targets={}, std::vector<sf::Vector2i> tiles={}, sf::Vector2i center={}, std::string blast_name="", std::string caster_name=""
 	);
-	std::vector<sf::Vector2i> &get_targets() { return targets; }
+	std::vector<std::string> &get_targets() { return targets; }
+	std::vector<sf::Vector2i> &get_tiles() { return tiles; }
 	sf::Vector2i get_center() const { return center; }
 	std::string get_blast_name() const { return blast_name; }
 	std::string get_caster_name() const { return caster_name; }
 private:
-	std::vector<sf::Vector2i> targets;
+	std::vector<std::string> targets;
+	std::vector<sf::Vector2i> tiles;
 	sf::Vector2i center;
 	std::string blast_name;
 	std::string caster_name;

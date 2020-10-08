@@ -494,7 +494,7 @@ bool Lua::inventory_stack_pop(int index, std::string character_name, int how_muc
 	return rval;
 }
 
-void Lua::cast_magic(std::string magic_name, std::string caster_name, sf::Vector2i center, std::vector<sf::Vector2i> targets) {
+void Lua::cast_magic(std::string magic_name, std::string caster_name, sf::Vector2i center, std::vector<sf::Vector2i> tiles, std::vector<std::string> targets) {
 	lua_getglobal(state, "cast_magic");
 	lua_pushstring(state, magic_name.c_str());
 	lua_pushstring(state, caster_name.c_str());
@@ -511,10 +511,10 @@ void Lua::cast_magic(std::string magic_name, std::string caster_name, sf::Vector
 		lua_settable(state, -3);
 	}
 
-	// targets
+	// tiles
 	int i = 1;
 	lua_newtable(state);
-	for (auto &pos : targets) {
+	for (auto &pos : tiles) {
 		lua_pushinteger(state, i++);
 		lua_newtable(state);
 		{
@@ -529,7 +529,16 @@ void Lua::cast_magic(std::string magic_name, std::string caster_name, sf::Vector
 		lua_settable(state, -3);
 	}
 
-	int result = lua_pcall(state, 4, 1, 0);
+	// targets
+	i = 1;
+	lua_newtable(state);
+	for (std::string &name : targets) {
+		lua_pushinteger(state, i++);
+		lua_pushstring(state, name.c_str());
+		lua_settable(state, -3);
+	}
+
+	int result = lua_pcall(state, 5, 1, 0);
 	if (result != LUA_OK) {
 		std::stringstream ss;
 		ss << get_error(state);
