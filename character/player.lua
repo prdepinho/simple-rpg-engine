@@ -1,35 +1,39 @@
 
 package.path = package.path .. ";../character/?.lua"
 package.path = package.path .. ";../scripts/?.lua"
-local animations = require "animations"
-local commons = require "commons"
 local rules = require "rules"
+local animations = require "animations"
+local Character = require "character"
 
-local M = {}
+local Player = Character:new()
+
+function Player:new(o, control)
+  o = o or Character:new(o, control)
+  setmetatable(o, self)
+  self.__index = self
+  return o
+end
 
 animation = animations.types.cat_girl
 
-function M.create()
-  M.data.enemy = false
-  M.data.stats = rules.new_character()
-  M.data.stats.portrait = {x = 0, y = 224}
-  M.data.stats.name = "Mumu"
-end
-
-function M.enter()
+function Player:create()
+  self.data.enemy = false
+  self.data.stats = rules.new_character()
+  self.data.stats.portrait = {x = 0, y = 224}
+  self.data.stats.name = "Mumu"
 end
 
 
-function M.on_turn(id)
+function Player:on_turn()
   -- local position = sfml_get_character_position(M.name)
   -- print('mumu position: x: ' .. tostring(position.x) .. ', y: ' .. tostring(position.y))
 end
 
-function M.on_idle(id)
+function Player:on_idle()
 end
 
-function M.on_interact(interactor_name)
+function Player:on_interact(interactor_name)
   -- print('interact with mumu')
 end
 
-return M
+return Player

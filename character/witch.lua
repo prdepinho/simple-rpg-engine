@@ -2,35 +2,38 @@
 package.path = package.path .. ";../character/?.lua"
 package.path = package.path .. ";../scripts/?.lua"
 local animations = require "animations"
-local commons = require "commons"
 local rules = require "rules"
+local Character = require "character"
 
-local M = {}
+local Witch = Character:new()
+
+function Witch:new(o, control)
+  o = o or Character:new(o, control)
+  setmetatable(o, self)
+  self.__index = self
+  return o
+end
 
 animation = animations.types.witch
 
-function M.create()
-  M.data.enemy = false
-  M.data.stats = rules.new_character()
-end
-
-function M.enter()
-  print('witch enter')
+function Witch:create()
+  self.data.enemy = false
+  self.data.stats = rules.new_character()
 end
 
 
-function M.on_turn(id)
+function Witch:on_turn()
   -- is player character in vision
   -- -- attack
 end
 
-function M.on_idle(id)
+function Witch:on_idle()
   -- local fov = sfml_get_field_of_vision(id)
   -- sfml_wait(id, 1);
   -- commons.idle_walk(M.name)
 end
 
-function M.on_interact(interactor_name)
+function Witch:on_interact(interactor_name)
   -- print('interact with witch')
   local dialogue = {
     start = {
@@ -85,4 +88,4 @@ function M.on_interact(interactor_name)
  sfml_dialogue(dialogue)
 end
 
-return M
+return Witch

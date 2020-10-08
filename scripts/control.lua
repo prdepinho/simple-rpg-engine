@@ -5,10 +5,12 @@ package.path = package.path .. ";../saves/?.lua"
 local rules = require "rules"
 local save = require "save"
 local Magic = require "magic"
+local Character = require "character"
 
 local Control = {
-  character_data = {},
+  characters = {},
   character_modules = {},
+  loaded_character_data = {},
   map_data = {},
   map_module = {},
   current_map = "",
@@ -33,30 +35,30 @@ function Control:cast_magic(magic_name, caster, center, targets)
 end
 
 function Control:set_ability_scores(name, str, dex, con, int, wis, cha)
-  local character = self.character_data[name]
+  local character = self.characters[name].data
   rules.set_ability_scores(character.stats, str, dex, con, int, wis, cha)
 end
 
 function Control:level_up(name, total_hp)
-  local character = self.character_data[name]
+  local character = self.characters[name].data
   rules.level_up(character.stats)
 end
 
 
 function Control:is_equipped_with_ranged_weapon(character_name)
-  local stats = self.character_data[character_name].stats
+  local stats = self.characters[character_name].data.stats
   return rules.weapon[stats.weapon.name].ranged
 end
 
 function Control:equipped_weapon_range(character_name)
-  local stats = self.character_data[character_name].stats
+  local stats = self.characters[character_name].data.stats
   return rules.weapon[stats.weapon.name].range + rules.ammo[stats.ammo.name].bonus_range
 end
 
 
 function Control:attack(attacker_name, defender_name)
-  local attacker = self.character_data[attacker_name]
-  local defender = self.character_data[defender_name]
+  local attacker = self.characters[attacker_name].data
+  local defender = self.characters[defender_name].data
   local hit_result = rules.roll_attack(attacker.stats, defender.stats)
   local damage_result = rules.roll_damage(attacker.stats, defender.stats, hit_result)
 
@@ -175,7 +177,7 @@ function Control:attack(attacker_name, defender_name)
 end  
 
 function Control:damage_character(character_name, damage)
-  local character = self.character_data[character_name]
+  local character = self.characters[character_name].data
   character.stats.current_hp = character.stats.current_hp - damage
 
   sfml_start_animation(character_name, "hurt")
@@ -191,7 +193,7 @@ function Control:damage_character(character_name, damage)
 end
 
 function Control:heal_character(character_name, heal)
-  local character = self.character_data[character_name]
+  local character = self.characters[character_name].data
   character.stats.current_hp = character.stats.current_hp + heal
 
   if character.stats.current_hp > character.stats.total_hp then
@@ -204,7 +206,7 @@ function Control:heal_character(character_name, heal)
 end
 
 function Control:kill_character(character_name)
-  local character = self.character_data[character_name]
+  local character = self.characters[character_name].data
   for key, status in pairs(character.stats.status) do
     character.stats.status[key] = false
   end
@@ -219,24 +221,24 @@ end
 
 -- Equip an item from character inventory. Return false if item is not equipable.
 function Control:equip_item(item_index, character_name)
-  local item = self.character_data[character_name].stats.inventory[item_index]
+  local item = self.characters[character_name].data.stats.inventory[item_index]
   if item.type == "weapon" then
-    self.character_data[character_name].stats.weapon = item
+    self.characters[character_name].data.stats.weapon = item
     if rules.weapon[item.name].hands > 1 then
-      self.character_data[character_name].stats.shield = {code = "", name = "no_shield", type = "shield"}
+      self.characters[character_name].data.stats.shield = {code = "", name = "no_shield", type = "shield"}
       print("Shield has been unequipped")
     end
-    if not self:does_ammo_match_weapon(self.character_data[character_name].stats.ammo.name, character_name) then
-      self.character_data[character_name].stats.ammo = {code = "", name = "no_ammo", type = "ammo", quantity = 0}
+    if not self:does_ammo_match_weapon(self.characters[character_name].data.stats.ammo.name, character_name) then
+      self.characters[character_name].data.stats.ammo = {code = "", name = "no_ammo", type = "ammo", quantity = 0}
       print("Unequipped ammo that does not match new weapon")
     end
 
   elseif item.type == "armor" then
-    self.character_data[character_name].stats.armor = item
+    self.characters[character_name].data.stats.armor = item
 
   elseif item.type == "shield" then
-    if rules.weapon[self.character_data[character_name].stats.weapon.name].hands <= 1 then
-      self.character_data[character_name].stats.shield = item
+    if rules.weapon[self.characters[character_name].data.stats.weapon.name].hands <= 1 then
+      self.characters[character_name].data.stats.shield = item
     else
       print("Shield cannot be equipped with two handed weapons")
       return false
@@ -244,7 +246,7 @@ function Control:equip_item(item_index, character_name)
 
   elseif item.type == "ammo" then
     if self:does_ammo_match_weapon(item.name, character_name) then
-      self.character_data[character_name].stats.ammo = item
+      self.characters[character_name].data.stats.ammo = item
     else
       print("Ammo does not match equipped weapon")
       return false
@@ -258,7 +260,7 @@ end
 
 function Control:does_ammo_match_weapon(ammo_name, character_name)
   local ammo = rules.ammo[ammo_name]
-  local weapon_name = self.character_data[character_name].stats.weapon.name
+  local weapon_name = self.characters[character_name].data.stats.weapon.name
   local weapon = rules.weapon[weapon_name]
   return ammo.category == weapon.ammo_category
 end
@@ -266,9 +268,9 @@ end
 -- Loot item from the ground. Returns false if character inventory is full.
 function Control:loot_item(item_code, character_name)
   local item = self.map_data[self.current_map].items[item_code]
-  for index, item_data in ipairs(self.character_data[character_name].stats.inventory) do
+  for index, item_data in ipairs(self.characters[character_name].data.stats.inventory) do
     if item_data.code == '' then
-      self.character_data[character_name].stats.inventory[index] = {
+      self.characters[character_name].data.stats.inventory[index] = {
         code = item_code,
         name = item.name,
         type = item.type,
@@ -284,7 +286,7 @@ end
 
 -- Drops an item from character's inventory. Returns false if item was not in the inventory.
 function Control:drop_item(item_code, character_name, x, y)
-  for index, item_data in ipairs(self.character_data[character_name].stats.inventory) do
+  for index, item_data in ipairs(self.characters[character_name].data.stats.inventory) do
     if item_data.code == item_code then
       self.map_data[self.current_map].items[item_code] = {
         name = item_data.name,
@@ -294,17 +296,17 @@ function Control:drop_item(item_code, character_name, x, y)
         quantity = item_data.quantity,
       }
 
-      if item_code == self.character_data[character_name].stats.weapon.code then
-        self.character_data[character_name].stats.weapon = {code = "", name = "unarmed", type = "weapon"}
-      elseif item_code == self.character_data[character_name].stats.armor.code then
-        self.character_data[character_name].stats.armor = {code = "", name = "unarmored", type = "armor"}
-      elseif item_code == self.character_data[character_name].stats.shield.code then
-        self.character_data[character_name].stats.shield = {code = "", name = "no_shield", type = "shield"}
-      elseif item_code == self.character_data[character_name].stats.ammo.code then
-        self.character_data[character_name].stats.ammo = {code = "", name = "no_ammo", type = "ammo", quantity = 0}
+      if item_code == self.characters[character_name].data.stats.weapon.code then
+        self.characters[character_name].data.stats.weapon = {code = "", name = "unarmed", type = "weapon"}
+      elseif item_code == self.characters[character_name].data.stats.armor.code then
+        self.characters[character_name].data.stats.armor = {code = "", name = "unarmored", type = "armor"}
+      elseif item_code == self.characters[character_name].data.stats.shield.code then
+        self.characters[character_name].data.stats.shield = {code = "", name = "no_shield", type = "shield"}
+      elseif item_code == self.characters[character_name].data.stats.ammo.code then
+        self.characters[character_name].data.stats.ammo = {code = "", name = "no_ammo", type = "ammo", quantity = 0}
       end
 
-      self.character_data[character_name].stats.inventory[index] = {code = "", name = "no_item", type = "item"}
+      self.characters[character_name].data.stats.inventory[index] = {code = "", name = "no_item", type = "item"}
       sfml_add_item(item_code, item_data.name, item_data.type, item_data.quantity or 0, x, y)
 
       return true
@@ -314,7 +316,7 @@ function Control:drop_item(item_code, character_name, x, y)
 end
 
 function Control:strip_character_items(character_name)
-  local character = self.character_data[character_name]
+  local character = self.characters[character_name].data
   local position = sfml_get_character_position(character_name)
   for index, item in ipairs(character.stats.inventory) do
     if item.code ~= "" then
@@ -324,16 +326,16 @@ function Control:strip_character_items(character_name)
 end
 
 function Control:inventory_exchange_items(index_a, index_b, character_name)
-  local item_a = self.character_data[character_name].stats.inventory[index_a]
-  local item_b = self.character_data[character_name].stats.inventory[index_b]
+  local item_a = self.characters[character_name].data.stats.inventory[index_a]
+  local item_b = self.characters[character_name].data.stats.inventory[index_b]
 
   if item_a.name == item_b.name and rules[item_a.type][item_a.name].stack_capacity then
     self:stack_items(item_a, item_b)
 
   else
-    local tmp = self.character_data[character_name].stats.inventory[index_a]
-    self.character_data[character_name].stats.inventory[index_a] = self.character_data[character_name].stats.inventory[index_b]
-    self.character_data[character_name].stats.inventory[index_b] = tmp
+    local tmp = self.characters[character_name].data.stats.inventory[index_a]
+    self.characters[character_name].data.stats.inventory[index_a] = self.characters[character_name].data.stats.inventory[index_b]
+    self.characters[character_name].data.stats.inventory[index_b] = tmp
 
   end
 end
@@ -350,7 +352,7 @@ function Control:stack_items(src, dst)
 end
 
 function Control:ammo_stack_pop(character_name, how_much)
-  local stats = self.character_data[character_name].stats
+  local stats = self.characters[character_name].data.stats
   local ammo = stats.ammo
   local inventory_item = {}
 
@@ -374,7 +376,7 @@ function Control:ammo_stack_pop(character_name, how_much)
 end
 
 function Control:inventory_stack_pop(index, character_name, how_much)
-  local item = self.character_data[character_name].stats.inventory[index]
+  local item = self.characters[character_name].data.stats.inventory[index]
   if rules[item.type][item.name].stack_capacity then
     item.quantity = item.quantity - how_much
     if item.quantity < 0 then
@@ -387,7 +389,7 @@ function Control:inventory_stack_pop(index, character_name, how_much)
 end
 
 function Control:reset_data()
-  self.character_data = {}
+  self.characters = {}
   self.map_data = {}
 end
 
@@ -426,7 +428,13 @@ function Control:save_game(filename, title)
   data.title = title
   -- data.player_position = sfml_get_player_position()
   data.map_data = self.map_data
-  data.character_data = self.character_data
+  data.character_data = {}
+
+  for name, character in pairs(self.characters) do
+    data.character_data[name] = character.data
+  end
+
+  -- data.character_data = self.character_data
   save.save_data(filename, data)
 end
 
@@ -434,7 +442,14 @@ function Control:load_game(filename)
   print('load game: ' .. filename)
   local module = require(filename)
   self.map_data = module.data.map_data
-  self.character_data = module.data.character_data
+
+  -- for name, data in pairs(module.data.character_data) do
+  --   print(self.characters[name])
+  --   self.characters[name].data = data
+  -- end
+
+  self.loaded_character_data = module.data.character_data
+
 end
 
 function Control:delete_save_game(filename)
@@ -454,69 +469,103 @@ function Control:item_stats(name, item_type)
 end
 
 function Control:character_stats(name)
-  return self.character_data[name].stats
+  return self.characters[name].data.stats
 end
 
 function Control:character_base_ac(name)
-  local stats = self.character_modules[name].data.stats
+  local stats = self.characters[name].data.stats
   return rules.base_armor_class(stats)
 end
 
 function Control:character_base_to_hit(name)
-  local stats = self.character_modules[name].data.stats
+  local stats = self.characters[name].data.stats
   return rules.base_to_hit(stats)
 end
 
 function Control:character_base_damage_bonus(name)
-  local stats = self.character_modules[name].data.stats
+  local stats = self.characters[name].data.stats
   return rules.base_damage_bonus(stats)
 end
 
 function Control:add_character(script, name)
-  if self.character_data[name] == nil then
-    self.character_data[name] = {}
+  print('add character: ' .. name)
+
+  if self.character_modules[name] == nil then
+    self.character_modules[name] = require(script)
   end
 
-  self.character_modules[name] = require(script)
-  self.character_modules[name].data = self.character_data[name]
-  self.character_modules[name].name = name
 
-  if not self.character_data[name].created then
-    self.character_data[name].removed = false
-    self.character_data[name].created = true
-    self.character_modules[name].create()
+  if self.characters[name] == nil then
+    self.characters[name] = self.character_modules[name]:new(nil, self)
+
+    if self.loaded_character_data[name] ~= nil then
+      self.characters[name].data = self.loaded_character_data[name]
+    else
+      self.characters[name].data = {}
+    end
+
+    self.characters[name].name = name
+  end
+
+  if not self.characters[name].data.created then
+    self.characters[name].data.removed = false
+    self.characters[name].data.created = true
+    self.characters[name]:create()
   else
-    if self.character_data[name].stats.status.dead then
+    if self.characters[name].data.stats.status.dead then
       local position = sfml_get_character_position(name)
       sfml_set_obstacle(false, position.x, position.y)
       sfml_loop_animation(name, 'dead')
       sfml_push_character_to_bottom(name)
     end
   end
-  self.character_modules[name].enter()
+
+
+  -- if self.character_data[name] == nil then
+  --   self.character_data[name] = {}
+  -- end
+
+  -- self.character_modules[name] = require(script)
+  -- self.character_modules[name].data = self.character_data[name]
+  -- self.character_modules[name].name = name
+
+  -- if not self.character_data[name].created then
+  --   self.character_data[name].removed = false
+  --   self.character_data[name].created = true
+  --   self.character_modules[name].create()
+  -- else
+  --   if self.character_data[name].stats.status.dead then
+  --     local position = sfml_get_character_position(name)
+  --     sfml_set_obstacle(false, position.x, position.y)
+  --     sfml_loop_animation(name, 'dead')
+  --     sfml_push_character_to_bottom(name)
+  --   end
+  -- end
+  -- self.character_modules[name].enter()
 end
 
 function Control:remove_character(name)
-  self.character_data[name].removed = true
+  self.characters[name].data.removed = true
 end
 
 function Control:is_character_removed(name)
+  print('is character removed: ' .. name)
   local removed = false
-  if self.character_data[name] then
-    removed = self.character_data[name].removed
+  if self.characters[name] then
+    removed = self.characters[name].data.removed
   end
   return removed
 end
 
 function Control:character_on_interact(target_name, interactor_name)
-  if self.character_modules[target_name] ~= nil then
-    local character = self.character_modules[target_name].data
+  if self.characters[target_name] ~= nil then
+    local character = self.characters[target_name].data
     if character.stats.status.dead then
       print(target_name .. ' is dead')
     elseif character.enemy then
       sfml_attack(interactor_name, target_name)
     else
-      self.character_modules[target_name].on_interact(interactor_name)
+      self.characters[target_name]:on_interact(interactor_name)
     end
   else
     print('character module ' .. target_name .. ' is nil')
@@ -524,9 +573,9 @@ function Control:character_on_interact(target_name, interactor_name)
 end
 
 function Control:character_on_turn(name, id)
-  if self.character_modules[name] ~= nil then
-    if not self.character_modules[name].data.stats.status.dead then
-      self.character_modules[name].on_turn(id)
+  if self.characters[name] ~= nil then
+    if not self.characters[name].data.stats.status.dead then
+      self.characters[name]:on_turn()
     end
   else
     print('character module ' .. name .. ' is nil')
@@ -534,9 +583,9 @@ function Control:character_on_turn(name, id)
 end
 
 function Control:character_on_idle(name, id)
-  if self.character_modules[name] ~= nil then
-    if not self.character_modules[name].data.stats.status.dead then
-      self.character_modules[name].on_idle(id)
+  if self.characters[name] ~= nil then
+    if not self.characters[name].data.stats.status.dead then
+      self.characters[name]:on_idle()
     end
   else
     print('character module ' .. name .. ' is nil')

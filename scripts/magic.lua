@@ -29,7 +29,7 @@ function Magic:magic_missile_blast(caster, center, targets)
     local characters = sfml_get_characters_on_tile(position.x, position.y)
     for index, character_name in ipairs(characters) do
 
-      local stats = self.control.character_data[character_name].stats
+      local stats = self.control.characters[character_name].data.stats
       if not stats.status.dead then
 
         local hit_msg = character_name .. ' - has taken '
@@ -54,7 +54,7 @@ function Magic:cure_wounds(caster, center, targets)
 
     local characters = sfml_get_characters_on_tile(position.x, position.y)
     for index, character_name in ipairs(characters) do
-      local stats = self.control.character_data[character_name].stats
+      local stats = self.control.characters[character_name].data.stats
       if not stats.status.dead then
 
         local bonus = rules.divine_spell_bonus(stats)
@@ -97,7 +97,7 @@ function Magic:fireball_blast(caster, center, targets)
     for index, character_name in ipairs(characters) do
       local damage = base_damage
 
-      local stats = self.control.character_data[character_name].stats
+      local stats = self.control.characters[character_name].data.stats
       local challenge = rules.arcane_spell_challenge(stats)
       local save = rules.save_vs_breath(stats, challenge)
 
