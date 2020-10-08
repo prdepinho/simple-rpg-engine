@@ -31,7 +31,7 @@ function M.on_idle(id)
 end
 
 function M.on_interact(interactor_name)
-  print('interact with witch')
+  -- print('interact with witch')
   local dialogue = {
     start = {
       text = "A wild maid appear, and she sais the following:",

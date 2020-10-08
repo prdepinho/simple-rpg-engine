@@ -23,29 +23,29 @@ function M.create()
 end
 
 function M.enter()
-  print('ranger enter')
+  -- print('ranger enter')
 end
 
 
 function M.on_turn(id)
   -- local position = sfml_get_character_position(M.name)
   -- print('ranger position: x: ' .. tostring(position.x) .. ', y: ' .. tostring(position.y))
-  print('Ranger on turn')
+  -- print('Ranger on turn')
 end
 
 function M.on_idle(id)
   -- commons.idle_walk(M.name)
 
   if commons.is_player_in_sight(M.name, 4) then
-    print('Player is in sight')
+    -- print('Player is in sight')
   else
-    print('I cannot see you')
+    -- print('I cannot see you')
   end
-  print('Ranger on idle')
+  -- print('Ranger on idle')
 end
 
 function M.on_interact(interactor_name)
-  print('interact with ranger')
+  -- print('interact with ranger')
 end
 
 return M

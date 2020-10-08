@@ -200,7 +200,7 @@
    </properties>
    <point/>
   </object>
-  <object id="10" name="door" x="124.583" y="307.167" width="9.75" height="11.25"/>
+  <object id="10" name="door" x="148.25" y="307.167" width="9.75" height="11.25"/>
   <object id="11" name="entrance" x="162.25" y="308" width="10.75" height="10"/>
  </objectgroup>
 </map>

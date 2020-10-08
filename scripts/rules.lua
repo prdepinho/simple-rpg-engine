@@ -35,7 +35,7 @@ function rules.roll_dice(formula)
 
   local result = 0
   for i = 1, quantity do
-    local die = math.random(quantity, faces)
+    local die = math.random(1, faces)
     result = result + die
   end
   return result + sum

@@ -113,13 +113,15 @@ void RangedAttackEffect::update(float elapsed_time) {
 		auto src = screen->character_position(*attacker);
 		auto dst = screen->character_position(*defender);
 		screen->cast_missile("arrow", src.x, src.y, dst.x, dst.y, [&](MissileEffect*e) {
-			Log("Missle end, effect stop running.");
+			Log("Missle end.");
 			_game.get_lua()->attack(attacker->get_name(), defender->get_name());
+			stop_running();
 		});
 	}
 	else {
 		if (time_count >= seconds) {
-			stop_running();
+			// Log("Stop running");
+			// stop_running();
 		}
 	}
 }

@@ -17,20 +17,19 @@ function M.create()
 end
 
 function M.enter()
-  print('mumu enter')
 end
 
 
 function M.on_turn(id)
-  local position = sfml_get_character_position(M.name)
-  print('mumu position: x: ' .. tostring(position.x) .. ', y: ' .. tostring(position.y))
+  -- local position = sfml_get_character_position(M.name)
+  -- print('mumu position: x: ' .. tostring(position.x) .. ', y: ' .. tostring(position.y))
 end
 
 function M.on_idle(id)
 end
 
 function M.on_interact(interactor_name)
-  print('interact with mumu')
+  -- print('interact with mumu')
 end
 
 return M

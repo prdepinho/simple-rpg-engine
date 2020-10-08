@@ -76,7 +76,6 @@ function M.key_chest(event, x, y, character_name)
 end
 
 function M.north_door(event, x, y, character_name)
-  print('++++north door')
   M.door(event, x, y)
   if event == 'step_on' then
     sfml_change_map('arena', 10, 19)
@@ -84,7 +83,6 @@ function M.north_door(event, x, y, character_name)
 end
 
 function M.south_door(event, x, y, character_name)
-  print('++++south door')
   M.door(event, x, y)
   if event == 'interact' then
     if M.data.door_locked then
