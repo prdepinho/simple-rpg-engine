@@ -130,8 +130,8 @@ rules.item = {
 
 rules.spell = {
   magic_missile = { name = "Magic Missile", category = "arcane", stack_capacity = 10, icon = {x = 16*0, y = 16*6}, range_radius = 6, effect_radius = 0, usable = true, use = "magic_missile" },
-  fireball      = { name = "Fireball",      category = "arcane", stack_capacity = 10, icon = {x = 16*9, y = 16*6}, range_radius = 6, effect_radius = 2, usable = true, use = "fireball" },
-  cure_wounds   = { name = "Cure Wounds",   category = "divine", stack_capacity = 10, icon = {x = 16*0, y = 16*8}, range_radius = 6, effect_radius = 0, usable = true, use = "cure_wounds" },
+  fireball      = { name = "Fireball",      category = "arcane", stack_capacity = 10, icon = {x = 16*9, y = 16*6}, range_radius = 6, effect_radius = 3, usable = true, use = "fireball" },
+  cure_wounds   = { name = "Cure Wounds",   category = "divine", stack_capacity = 10, icon = {x = 16*0, y = 16*8}, range_radius = 1, effect_radius = 0, usable = true, use = "cure_wounds" },
 }
 
 

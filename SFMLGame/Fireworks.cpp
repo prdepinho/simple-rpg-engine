@@ -2,10 +2,12 @@
 #include "Lua.h"
 #include "consts.h"
 #include "Resources.h"
+#include "Game.h"
 
 Fireworks::Fireworks() {}
 
 void Fireworks::create(std::string type, Direction direction) {
+#if true
 	Lua script(Config::EFFECTS);
 	LuaObject animations = script.read_top_table();
 	// animations.dump_map();
@@ -67,10 +69,67 @@ void Fireworks::create(std::string type, Direction direction) {
 	LuaObject *frame_indices = animation->get_object("animation.frames");
 	float fps = animation->get_float("animation.fps");
 
-	std::vector<sf::VertexArray> frames(frame_indices->size());
+	// costly: load at boot
+	{
+		std::vector<sf::VertexArray> frames(frame_indices->size());
+		int i = 0;
+		for (auto it = frame_indices->begin(); it != frame_indices->end(); ++it) {
+			int frame_index = it->second.get_int();
+			int texture_x = origin_x + sprite_width * frame_index;
+			int texture_y = origin_y;
+
+			sf::VertexArray vertices;
+			vertices.setPrimitiveType(sf::Quads);
+			vertices.resize(4 * 1);
+			set_quad(&vertices[0], 0.f, 0.f,
+				(float)sprite_width, (float)sprite_height,
+				(float)texture_x, (float)texture_y,
+				(float)sprite_width, (float)sprite_height
+			);
+			frames[i++] = vertices;
+		}
+		AnimatedEntity::set_animation(frames, fps);
+		set_dimensions(sprite_height, sprite_width);
+	}
+	
+#else
+
+#if false
+	sf::VertexArray vertices;
+	vertices.setPrimitiveType(sf::Quads);
+	vertices.resize(4 * 1);
+	set_quad(&vertices[0], 0.f, 0.f,
+		0.f, 0.f, 0.f, 0.f, 0.f, 0.f
+	);
+	std::vector<sf::VertexArray> frames(1);
+	frames[0] = vertices;
+	AnimatedEntity::set_animation(frames, 0.4);
+
+#else
+
+
+
+	Lua script(Config::EFFECTS);
+	LuaObject animations = script.read_top_table();
+	// animations.dump_map();
+
+	std::string sprite_sheet = "effects";
+	int sprite_height = 16;
+	int sprite_width = 16;
+	int origin_x = 0;
+	int origin_y = 0;
+
+	duration = 2 / (1 / _game.get_turn_duration());
+
+	set_texture(Resources::get_texture(sprite_sheet));
+
+	std::vector<int> frame_indices = { 0, 1, 2, 3 };
+	float fps = 4 * (1 / _game.get_turn_duration());
+
+	std::vector<sf::VertexArray> frames(frame_indices.size());
 	int i = 0;
-	for (auto it = frame_indices->begin(); it != frame_indices->end(); ++it) {
-		int frame_index = it->second.get_int();
+	for (auto it = frame_indices.begin(); it != frame_indices.end(); ++it) {
+		int frame_index = *it;
 		int texture_x = origin_x + sprite_width * frame_index;
 		int texture_y = origin_y;
 
@@ -87,4 +146,7 @@ void Fireworks::create(std::string type, Direction direction) {
 	
 	AnimatedEntity::set_animation(frames, fps);
 	set_dimensions(sprite_height, sprite_width);
+
+#endif
+#endif
 }

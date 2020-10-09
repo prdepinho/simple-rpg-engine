@@ -37,12 +37,11 @@ function Ranger:on_turn()
 end
 
 function Ranger:on_idle()
-  self:idle_walk(self.name)
-
-  if self:is_player_in_sight(self.name, 4) then
-    -- print('Player is in sight')
+  if self:is_player_in_sight(4) then
+    local pos = sfml_get_player_position()
+    sfml_move(self.name, pos.x, pos.y)
   else
-    -- print('I cannot see you')
+    self:idle_walk(self.name)
   end
   -- print('Ranger on idle')
 end

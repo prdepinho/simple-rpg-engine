@@ -159,8 +159,9 @@ std::vector<sf::Vector2i> generate_line_of_sight(Tilemap &map, sf::Vector2i src,
 			break;
 		}
 	}
-	if (rval.size() > radius)
+	if (rval.size() > radius) {
 		rval.clear();
+	}
 	return rval;
 }
 

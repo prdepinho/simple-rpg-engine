@@ -565,6 +565,8 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			});
 			break;
 		case Control::SELECT:
+			schedule_character_wait(*player_character, 1);
+#if false
 			{
 				// select tile
 				auto center = character_position(*player_character);
@@ -592,6 +594,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				select_tile_mode.create();
 				current_mode = &select_tile_mode;
 			}
+#endif
 			break;
 		}
 	}
@@ -957,30 +960,36 @@ void GameScreen::schedule_character_cast_magic(std::string magic_name, Character
 // effects
 
 void GameScreen::move_character(Character &character, Direction direction) {
+	sf::Vector2i src;
+	sf::Vector2i dst;
 	try {
 		sf::Vector2i position = character_position(character);
-		{
-			TileData &original_tile = map.get_tile(position.x, position.y);
-			original_tile.obstacle = false;
-		}
+		src = position;
+		//TileData &original_tile = map.get_tile(position.x, position.y);
+//*--*/	original_tile.obstacle = false;
 		switch (direction) {
 		case Direction::UP: position.y--; break;
 		case Direction::DOWN: position.y++; break;
 		case Direction::LEFT: position.x--; break;
 		case Direction::RIGHT: position.x++; break;
 		}
+		dst = position;
 		TileData &tile = map.get_tile(position.x, position.y);
-		tile.obstacle = true;
-		// map.get_script()->call_event(tile.object_name, "enter_tile", position.x, position.y, character.get_id());
+//*--*/	tile.obstacle = true;
 		_game.get_lua()->call_event(tile.object_name, "enter_tile", position.x, position.y, character.get_name());
 	}
 	catch (LuaException &e) {
 		// Log("Lua Error: %s", e.what());
 	}
 
+	{
+		map.get_tile(src.x, src.y).obstacle = true;
+		map.get_tile(dst.x, dst.y).obstacle = true;
+	}
+
 	// player character
 	if (&character == player_character) {
-		Effect *effect = new MoveEffect(player_character, direction, 16  / turn_duration);
+		Effect *effect = new MoveEffect(player_character, direction, 16  / turn_duration, src, dst);
 		effect->set_on_update([&](Effect*) {
 			// update camera
 			if (camera_follow) {
@@ -988,11 +997,15 @@ void GameScreen::move_character(Character &character, Direction direction) {
 			}
 
 		});
-		effect->set_on_end([&](Effect*) {
+		effect->set_on_end([&](Effect* e) {
+			{
+				MoveEffect *m = dynamic_cast<MoveEffect*>(e);
+				auto src = m->get_src();
+				map.get_tile(src.x, src.y).obstacle = false;
+			}
 			sf::Vector2i position = character_position(*player_character);
 			TileData tile = map.get_tile(position.x, position.y);
 			try {
-				// map.get_script()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_id());
 				_game.get_lua()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_name());
 			}
 			catch (LuaException &e) {
@@ -1009,12 +1022,16 @@ void GameScreen::move_character(Character &character, Direction direction) {
 
 	// non-player character
 	else {
-		Effect *effect = new MoveEffect(&character, direction, 16 / turn_duration);
-		effect->set_on_end([&](Effect*) {
+		Effect *effect = new MoveEffect(&character, direction, 16 / turn_duration, src, dst);
+		effect->set_on_end([&](Effect* e) {
+			{
+				MoveEffect *m = dynamic_cast<MoveEffect*>(e);
+				auto src = m->get_src();
+				map.get_tile(src.x, src.y).obstacle = false;
+			}
 			sf::Vector2i position = character_position(character);
 			TileData tile = map.get_tile(position.x, position.y);
 			try {
-				// map.get_script()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_id());
 				_game.get_lua()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_name());
 			}
 			catch (LuaException &e) {
@@ -1093,15 +1110,13 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 	if (std::abs(pos.x - tile_x) <= 1 && std::abs(pos.y - tile_y) <= 1) {  // is adjacent
 		if (map.in_tile_bounds(tile_x, tile_y)) {
 			try {
-				Character *target_character = get_character_on_tile(tile_x, tile_y);
+				Character *target_character = get_npc_on_tile(tile_x, tile_y);
+
 				std::vector<Item*> target_items = get_items_on_tile(tile_x, tile_y);
-				// loot if this is the same tile as player character
-				if (target_character == player_character) {
-					control_loot(tile_x, tile_y);
-				}
 				// if it is another character, interact with that character
-				else if (target_character != nullptr) {
-					bool target_dead = _game.get_lua()->character_stats(target_character->get_name()).get_boolean("status.dead");
+				if (target_character != nullptr) {
+					// bool target_dead = _game.get_lua()->character_stats(target_character->get_name()).get_boolean("status.dead");
+					bool target_dead = is_dead(target_character);
 					if (!target_dead) {
 						_game.get_lua()->character_interaction(target_character->get_name(), character.get_name());
 					}
@@ -1112,6 +1127,10 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 						control_loot(tile_x, tile_y);
 					}
 				}
+				// loot if this is the same tile as player character
+				// else if (sf::Vector2i{ tile_x, tile_y } == character_position(*player_character)) {
+				// 	control_loot(tile_x, tile_y);
+				// }
 				// if there are no characters, but there are items, loot
 				else if (target_items.size() > 0) {
 					control_loot(tile_x, tile_y);
@@ -1188,7 +1207,9 @@ bool GameScreen::can_move(Character &character, Direction direction) {
 }
 
 Character* GameScreen::get_character_on_tile(int tile_x, int tile_y) {
-	for (Character *character : characters) {
+	for (auto it = characters.rbegin(); it != characters.rend(); ++it) {
+		Character *character = (*it);
+	// for (Character *character : characters) {
 		sf::Vector2i position = character_position(*character);
 		if (position.x == tile_x && position.y == tile_y) {
 			return character;
@@ -1201,7 +1222,8 @@ Character* GameScreen::get_live_character_on_tile(int tile_x, int tile_y) {
 	for (Character *character : characters) {
 		sf::Vector2i position = character_position(*character);
 		if (position.x == tile_x && position.y == tile_y) {
-			if (_game.get_lua()->character_stats(character->get_name()).get_boolean("status.dead") == false) {
+			// if (_game.get_lua()->character_stats(character->get_name()).get_boolean("status.dead") == false) {
+			if (!is_dead(character)) {
 				return character;
 			}
 		}
@@ -1247,6 +1269,16 @@ Character *GameScreen::get_character_by_name(std::string name) {
 		}
 	}
 	return nullptr;
+}
+
+Character *GameScreen::get_npc_on_tile(int tile_x, int tile_y) {
+	for (auto it = characters.rbegin(); it != characters.rend(); ++it) {
+		Character *character = (*it);
+		auto position = map.get_tile_coord(character->get_x(), character->get_y());
+		if (character != player_character && position.x == tile_x && position.y == tile_y) {
+			return character;
+		}
+	}
 }
 
 void GameScreen::show_text_box(std::string text) {
@@ -1543,8 +1575,9 @@ bool GameScreen::is_in_range(Character &attacker, Character &defender) {
 
 bool GameScreen::is_dead(Character *character) {
 	if (character) {
-		LuaObject character_stats = _game.get_lua()->character_stats(character->get_name());
-		return character_stats.get_boolean("status.dead");
+		return !character->is_active();
+		// LuaObject character_stats = _game.get_lua()->character_stats(character->get_name());
+		// return character_stats.get_boolean("status.dead");
 	}
 	return false;
 }

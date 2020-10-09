@@ -101,6 +101,7 @@ public:
 	std::vector<Character*> get_characters_on_tile(int tile_x, int tile_y);
 	Character* get_character_by_id(long id);
 	Character *get_character_by_name(std::string name);
+	Character *get_npc_on_tile(int tile_x, int tile_y);
 	void put_character_on_tile(Character &character, int x, int y);
 	sf::Vector2i character_position(Character &character);
 	void push_character_to_bottom(Character &character);
@@ -187,7 +188,7 @@ private:
 	std::vector<Entity*> entities;
 	std::vector<FloatingMessage*> floating_messages;
 
-	std::vector<Character*> characters;
+	std::vector<Character*> characters;  // the first characters in the vector are dead characters, the live characters are after them.
 	Character *player_character;
 	bool player_busy;
 	sf::Keyboard::Key player_input;

@@ -513,34 +513,12 @@ function Control:add_character(script, name)
   else
     if self.characters[name].data.stats.status.dead then
       local position = sfml_get_character_position(name)
+      sfml_character_set_active(name, false)
       sfml_set_obstacle(false, position.x, position.y)
       sfml_loop_animation(name, 'dead')
       sfml_push_character_to_bottom(name)
     end
   end
-
-
-  -- if self.character_data[name] == nil then
-  --   self.character_data[name] = {}
-  -- end
-
-  -- self.character_modules[name] = require(script)
-  -- self.character_modules[name].data = self.character_data[name]
-  -- self.character_modules[name].name = name
-
-  -- if not self.character_data[name].created then
-  --   self.character_data[name].removed = false
-  --   self.character_data[name].created = true
-  --   self.character_modules[name].create()
-  -- else
-  --   if self.character_data[name].stats.status.dead then
-  --     local position = sfml_get_character_position(name)
-  --     sfml_set_obstacle(false, position.x, position.y)
-  --     sfml_loop_animation(name, 'dead')
-  --     sfml_push_character_to_bottom(name)
-  --   end
-  -- end
-  -- self.character_modules[name].enter()
 end
 
 function Control:remove_character(name)

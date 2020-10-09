@@ -98,17 +98,23 @@ private:
 
 class MoveEffect : public Effect {
 public:
-	MoveEffect(Character *character = nullptr, Direction direction = Direction::UP, float speed = 1.f)
+	MoveEffect(Character *character = nullptr, Direction direction = Direction::UP, float speed = 1.f, sf::Vector2i src = {}, sf::Vector2i dst = {})
 		: Effect(true),
 		character(character),
 		direction(direction),
 		speed(speed),
-		moved_pixels(0)
+		moved_pixels(0),
+		src(src),
+		dst(dst)
 	{ }
 	virtual void update(float elapsed_time) override;
+	sf::Vector2i get_src() const { return src; }
+	sf::Vector2i get_dst() const { return dst; }
 protected:
 	Character *character;
 	Direction direction;
+	sf::Vector2i src;
+	sf::Vector2i dst;
 	float speed;  // pixels per second
 	float moved_pixels;
 };
