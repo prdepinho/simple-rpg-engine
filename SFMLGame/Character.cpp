@@ -9,6 +9,7 @@ Character::~Character() {
 }
 
 void Character::create(std::string filename) {
+#if false
 	Lua script(Path::CHARACTERS + filename + ".lua");
 	this->filename = filename;
 	LuaObject animation = script.get_object("animation");
@@ -26,11 +27,7 @@ void Character::create(std::string filename) {
 		std::string name = pair.first;
 		int activation_frame = pair.second.get_int("activation_frame", -1);
 		LuaObject *frame_indices = pair.second.get_object("frames");
-#if true
 		float fps = pair.second.get_float("fps");
-#else
-		float fps = frame_indices->size() / _game.get_turn_duration();
-#endif
 
 		std::vector<sf::VertexArray> frames(frame_indices->size());
 
@@ -59,6 +56,20 @@ void Character::create(std::string filename) {
 
 	set_dimensions(sprite_height, sprite_width);
 	setOrigin(sf::Vector2f((float) sprite_height / 2, (float) sprite_width / 2));
+#else
+	Lua script(Path::CHARACTERS + filename + ".lua");
+	this->filename = filename;
+	this->name = filename;
+
+	std::string animation_type = script.get_string("animation");
+	AnimationResources animation_resources = Resources::get_animation(animation_type);
+	animations = animation_resources.animations;
+
+	set_texture(Resources::get_texture(animation_resources.sprite_sheet));
+
+	set_dimensions(animation_resources.sprite_height, animation_resources.sprite_width);
+	setOrigin(sf::Vector2f((float) animation_resources.sprite_height / 2, (float) animation_resources.sprite_width / 2));
+#endif
 }
 
 void Character::set_animation(std::string type, bool loop) {

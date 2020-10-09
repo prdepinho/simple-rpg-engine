@@ -40,6 +40,7 @@ const std::string Config::CHARACTERS = Path::CONFIG + "characters.json";
 const std::string Config::SOUNDS = Path::CONFIG + "sounds.lua";
 const std::string Config::MUSIC = Path::CONFIG + "music.lua";
 const std::string Config::EFFECTS = Path::SCRIPTS + "effects.lua";
+const std::string Config::ANIMATIONS = Path::CHARACTERS + "animations.lua";
 
 const std::string Script::LUA_MAIN = Path::SCRIPTS + "main.lua";
 

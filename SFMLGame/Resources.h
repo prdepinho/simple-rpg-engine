@@ -12,7 +12,23 @@ public:
 	ResourcesException(std::string msg = "") : std::exception(msg.c_str()) { }
 };
 
-struct AnimationResource {
+class Animation {
+public:
+	std::string type;
+	std::vector<sf::VertexArray> frames;
+	float fps;
+	int activation_frame;
+};
+
+struct AnimationResources {
+	std::map<std::string, Animation> animations;
+	int sprite_height;
+	int sprite_width;
+	std::string sprite_sheet;
+};
+
+
+struct FireworksResources {
 	std::vector<sf::VertexArray> frames;
 	float fps;
 	float duration;
@@ -45,7 +61,11 @@ public:
 		 return music;
 	}
 
-	static AnimationResource get_animation(std::string name) {
+	static FireworksResources get_fireworks(std::string name) {
+		return get().fireworks_map[name];
+	}
+
+	static AnimationResources get_animation(std::string name) {
 		return get().animation_map[name];
 	}
 
@@ -58,6 +78,7 @@ public:
 	static void load_textures();
 	static void load_sounds();
 	static void load_music();
+	static void load_fireworks();
 	static void load_animations();
 
 	struct SaveFile {
@@ -83,7 +104,8 @@ private:
 	std::map<std::string, sf::Texture> texture_map;
 	std::map<std::string, sf::Music*> music_map;
 	std::map<std::string, sf::Sound*> sound_map;
-	std::map<std::string, AnimationResource> animation_map;
+	std::map<std::string, FireworksResources> fireworks_map;
+	std::map<std::string, AnimationResources> animation_map;
 	std::vector<sf::SoundBuffer*> sound_buffers;
 
 	sf::Music *playing_music = nullptr;

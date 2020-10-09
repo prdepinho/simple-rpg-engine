@@ -11,10 +11,12 @@ function Ranger:new(o, control)
   o = o or Character:new(o, control)
   setmetatable(o, self)
   self.__index = self
+  o.animation = "ranger"
   return o
 end
 
-animation = animations.types.ranger
+-- animation = animations.types.ranger
+animation = 'ranger'
 
 function Ranger:create()
   self.data.enemy = true

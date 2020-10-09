@@ -31,6 +31,9 @@ void Game::init()
 	Log("Loading music...");
 	Resources::load_music();
 
+	Log("Loading fireworks...");
+	Resources::load_fireworks();
+
 	Log("Loading animations...");
 	Resources::load_animations();
 

@@ -13,14 +13,6 @@
 class Action;
 
 
-class Animation {
-public:
-	std::string type;
-	std::vector<sf::VertexArray> frames;
-	float fps;
-	int activation_frame;
-};
-
 class Character : public AnimatedEntity {
 public:
 	Character(bool permanent=false);
