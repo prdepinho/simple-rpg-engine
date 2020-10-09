@@ -55,6 +55,9 @@ public:
 	std::vector<sf::Vector2i> get_field_of_vision() { return field_of_vision; }
 	void set_field_of_vision(std::vector<sf::Vector2i> fov) { field_of_vision = fov; }
 
+	void set_active(bool active);
+	bool is_active() const { return active; }
+
 private:
 	std::queue<Action*> schedule;  // actions are created and deleted by GameScreen class, unless all schedule is discarted or character deleted.
 
@@ -72,5 +75,7 @@ private:
 
 	bool permanent;
 	std::vector<sf::Vector2i> field_of_vision;
+
+	bool active = true;
 
 };

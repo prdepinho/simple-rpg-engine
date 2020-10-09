@@ -211,6 +211,7 @@ function Control:kill_character(character_name)
     character.stats.status[key] = false
   end
   character.stats.status.dead = true
+  sfml_character_set_active(character_name, false)
   sfml_push_log(character.stats.name .. ' - Dead!')
   sfml_loop_animation(character_name, 'dead')
   sfml_push_character_to_bottom(character_name)

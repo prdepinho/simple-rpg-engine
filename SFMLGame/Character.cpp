@@ -131,3 +131,8 @@ void Character::clear_schedule() {
 		schedule.pop();
 	}
 }
+
+void Character::set_active(bool active) { 
+	clear_schedule();
+	this->active = active; 
+}
