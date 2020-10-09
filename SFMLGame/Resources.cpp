@@ -43,6 +43,54 @@ void Resources::load_sounds() {
 	}
 }
 
+void Resources::load_animations() {
+	Lua lua(Config::EFFECTS);
+	LuaObject obj = lua.read_top_table();
+	LuaObject *animations = obj.get_object("types");
+
+	for (auto it = animations->begin(); it != animations->end(); ++it) {
+		std::string key = it->first;
+		LuaObject animation = it->second;
+
+		AnimationResource animation_resource;
+		{
+			int sprite_height = animation.get_int("basic.size.height");
+			int sprite_width = animation.get_int("basic.size.width");
+			int origin_x = animation.get_int("coordinates.x");
+			int origin_y = animation.get_int("coordinates.y");
+
+			animation_resource.sprite_sheet = animation.get_string("basic.file");
+			animation_resource.duration = animation.get_float("duration");
+			animation_resource.sound = animation.get_string("sound", "");
+			animation_resource.oriented = animation.get_boolean("oriented", false);
+			animation_resource.fps = animation.get_float("animation.fps");
+			animation_resource.sprite_height = sprite_height;
+			animation_resource.sprite_width = sprite_width;
+
+			LuaObject *frame_indices = animation.get_object("animation.frames");
+			std::vector<sf::VertexArray> frames(frame_indices->size());
+			int i = 0;
+			for (auto it = frame_indices->begin(); it != frame_indices->end(); ++it) {
+				int frame_index = it->second.get_int();
+				int texture_x = origin_x + sprite_width * frame_index;
+				int texture_y = origin_y;
+
+				sf::VertexArray vertices;
+				vertices.setPrimitiveType(sf::Quads);
+				vertices.resize(4 * 1);
+				Entity::set_quad(&vertices[0], 0.f, 0.f,
+					(float)sprite_width, (float)sprite_height,
+					(float)texture_x, (float)texture_y,
+					(float)sprite_width, (float)sprite_height
+				);
+				frames[i++] = vertices;
+			}
+			animation_resource.frames = frames;
+		}
+		get().animation_map[key] = animation_resource;
+	}
+}
+
 void Resources::play_sound(std::string filename) {
 	sf::Sound *loaded_sound = Resources::get_sound(filename);
 	sf::Sound *sound = new sf::Sound(*loaded_sound);
@@ -64,7 +112,6 @@ void Resources::load_music() {
 		music->openFromFile(Path::MUSIC + name);
 		music->setLoop(true);
 		get().music_map[name] = music;
-		// Log("music: %s", name.c_str());
 	}
 }
 

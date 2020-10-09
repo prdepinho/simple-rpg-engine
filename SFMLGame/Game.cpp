@@ -17,10 +17,24 @@ Game::~Game() {
 void Game::init()
 {
 	std::srand((unsigned int)std::time(NULL));
+
 	lua.load(Script::LUA_MAIN);
+
+	Log("Start loading assets:")
+
+	Log("Loading textures...");
 	Resources::load_textures();
+
+	Log("Loading sounds...");
 	Resources::load_sounds();
+
+	Log("Loading music...");
 	Resources::load_music();
+
+	Log("Loading animations...");
+	Resources::load_animations();
+
+	Log("Finished loading assests.")
 }
 
 void Game::start() {

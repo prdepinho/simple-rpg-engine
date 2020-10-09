@@ -34,6 +34,17 @@ void Entity::set_quad(
 	quad[3].texCoords = sf::Vector2f( tex_posX,              tex_posY + tex_height);
 }
 
+void Entity::offset_tex_pos(sf::Vertex *quad, float delta_x, float delta_y) {
+	quad[0].texCoords.x += delta_x;
+	quad[0].texCoords.y += delta_y;
+	quad[1].texCoords.x += delta_x;
+	quad[1].texCoords.y += delta_y;
+	quad[2].texCoords.x += delta_x;
+	quad[2].texCoords.y += delta_y;
+	quad[3].texCoords.x += delta_x;
+	quad[3].texCoords.y += delta_y;
+}
+
 void Entity::set_quad_tex_coords(
 	sf::Vertex *quad,
 	float tex_posX, float tex_posY,

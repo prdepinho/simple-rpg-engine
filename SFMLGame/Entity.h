@@ -41,14 +41,16 @@ public:
 	void show_outline(int thickness, int size_adjustment, sf::Color color);
 	void hide_outline();
 
-	void set_quad(
+	static void set_quad(
 		sf::Vertex *quad,
 		float posX, float posY,
 		float width, float height,
 		float tex_posX, float tex_posY,
 		float tex_width, float tex_height);
+
+	static void offset_tex_pos(sf::Vertex *quad, float delta_x, float delta_y);
 	
-	void set_quad_tex_coords(
+	static void set_quad_tex_coords(
 		sf::Vertex *quad,
 		float tex_posX, float tex_posY,
 		float tex_width, float tex_height);

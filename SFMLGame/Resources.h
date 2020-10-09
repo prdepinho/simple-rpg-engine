@@ -12,6 +12,17 @@ public:
 	ResourcesException(std::string msg = "") : std::exception(msg.c_str()) { }
 };
 
+struct AnimationResource {
+	std::vector<sf::VertexArray> frames;
+	float fps;
+	float duration;
+	std::string sound;
+	bool oriented;
+	std::string sprite_sheet;
+	int sprite_height;
+	int sprite_width;
+};
+
 class Resources
 {
 public:
@@ -34,6 +45,10 @@ public:
 		 return music;
 	}
 
+	static AnimationResource get_animation(std::string name) {
+		return get().animation_map[name];
+	}
+
 	static void play_music(std::string filename);
 	static void loop_music(std::string filename);
 	static void stop_music();
@@ -43,6 +58,7 @@ public:
 	static void load_textures();
 	static void load_sounds();
 	static void load_music();
+	static void load_animations();
 
 	struct SaveFile {
 		std::string filename;
@@ -67,6 +83,7 @@ private:
 	std::map<std::string, sf::Texture> texture_map;
 	std::map<std::string, sf::Music*> music_map;
 	std::map<std::string, sf::Sound*> sound_map;
+	std::map<std::string, AnimationResource> animation_map;
 	std::vector<sf::SoundBuffer*> sound_buffers;
 
 	sf::Music *playing_music = nullptr;
