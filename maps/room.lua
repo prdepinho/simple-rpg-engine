@@ -77,7 +77,9 @@ end
 function M.north_door(event, x, y, character_name)
   M.door(event, x, y)
   if event == 'step_on' then
-    sfml_change_map('arena', 10, 19)
+    if character_name == 'player' then
+      sfml_change_map('arena', 10, 19)
+    end
   end
 end
 
@@ -100,7 +102,9 @@ function M.south_door(event, x, y, character_name)
     end
 
   elseif event == 'step_on' then
-    sfml_change_map("room2", 8, 1)
+    if character_name == 'player' then
+      sfml_change_map("room2", 8, 1)
+    end
   end
 end
 

@@ -19,7 +19,9 @@ end
 function M.entrance(event, x, y, character_name)
   M.door(event, x, y)
   if event == 'step_on' then
-    sfml_change_map("room", 4, 1)
+    if character_name == 'player' then
+      sfml_change_map("room", 4, 1)
+    end
   end
 end
 
