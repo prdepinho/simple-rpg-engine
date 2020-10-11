@@ -331,9 +331,6 @@ public:
 		std::string name = lua_tostring(state, -3);
 		int x = (int) lua_tointeger(state, -2);
 		int y = (int) lua_tointeger(state, -1);
-#if false
-		_game.log("sfml_move (" + std::to_string(id) + ") x: " + std::to_string(x) + ", y: " + std::to_string(y));
-#endif
 
 		Character *character = screen->get_character_by_name(name);
 		screen->schedule_character_movement(*character, x, y);
@@ -345,9 +342,6 @@ public:
 
 		std::string name = lua_tostring(state, -2);
 		int turns = (int) lua_tointeger(state, -1);
-#if false
-		_game.log("sfml_wait (" + std::to_string(id) + ") turns: " + std::to_string(turns));
-#endif
 
 		Character *character = screen->get_character_by_name(name);
 		screen->schedule_character_wait(*character, turns);
@@ -741,6 +735,14 @@ public:
 		return 1;
 	}
 
+	static int sfml_illustrated_dialogue(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		LuaObject dialogue = _game.get_lua()->read_top_table();
+		screen->show_illustrated_dialogue_box(dialogue);
+		std::cout << "sfml_dialogue return" << std::endl;
+		return 1;
+	}
+
 	static int sfml_pan_image(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		// std::string filename = lua_tostring(state, -7);
@@ -942,6 +944,7 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_loop_animation", LuaFunction::sfml_loop_animation);
 	lua_register(lua.get_state(), "sfml_start_animation", LuaFunction::sfml_start_animation);
 	lua_register(lua.get_state(), "sfml_dialogue", LuaFunction::sfml_dialogue);
+	lua_register(lua.get_state(), "sfml_illustrated_dialogue", LuaFunction::sfml_illustrated_dialogue);
 	lua_register(lua.get_state(), "sfml_pan_image", LuaFunction::sfml_pan_image);
 	lua_register(lua.get_state(), "sfml_add_item", LuaFunction::sfml_add_item);
 	lua_register(lua.get_state(), "sfml_remove_item", LuaFunction::sfml_remove_item);

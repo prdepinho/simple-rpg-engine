@@ -129,7 +129,6 @@ function M.step_floor(event, x, y, character_name)
       -- sfml_pan_image(pan_image_data)
       local cinematics_data = {
         start = {
-          show_foreground = true,
           foreground = {
             image = "lady.png",
             origin = {
@@ -143,27 +142,31 @@ function M.step_floor(event, x, y, character_name)
             total_duration = 2,
             still_duration = 1,
           },
-          position = "down",
           text = "A lady appears from the chamber.",
           -- go_to = "result",
           options = {
             {
               text = "Option 1",
-              go_to = "result",
+              go_to = "middle",
             },
             {
               text = "Option 2",
-              go_to = "result",
+              go_to = "middle",
             },
             {
               text = "Option 3",
-              go_to = "result",
+              go_to = "middle",
             },
           }
         },
 
+        middle = {
+          -- foreground = {},
+          text = "Middle message",
+          go_to = "result",
+        },
+
         result = {
-          show_foreground = true,
           foreground = {
             image = "main_screen_art.png",
             origin = {
@@ -171,14 +174,13 @@ function M.step_floor(event, x, y, character_name)
               y = 0,
             },
           },
-          position = "down",
           text = "End of cinematics.",
           callback = function() print('result') end,
           go_to = "end"
         },
       }
       -- sfml_play_cinematics(cinematics_data)
-      sfml_dialogue(cinematics_data)
+      sfml_illustrated_dialogue(cinematics_data)
     end
   elseif event == "exit_tile" then
   elseif event == "interact" then

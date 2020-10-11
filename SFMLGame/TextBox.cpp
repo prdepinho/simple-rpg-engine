@@ -491,9 +491,8 @@ Component *DialogueBox::on_pressed(int x, int y) {
 	return this;
 }
 
-void DialogueBox::show(LuaObject dialogue, Screen &screen, Callback callback) {
+void DialogueBox::show(LuaObject dialogue, Screen &screen, Callback callback, bool illustrated, bool box_at_bottom) {
 	DialogueBox &dialogue_box = get();
-	dialogue_box.dialogue.delete_functions();
 
 	Lua lua(Config::SETTINGS);
 	int height = (int) lua.get_float("text_box_lines");
@@ -501,10 +500,12 @@ void DialogueBox::show(LuaObject dialogue, Screen &screen, Callback callback) {
 	float speed = lua.get_float("text_box_speed");
 
 	dialogue_box = DialogueBox(0, 0, width, height, speed);
+	dialogue_box.box_at_bottom = box_at_bottom;
+	dialogue_box.illustrated = illustrated;
 	dialogue_box.add_function(callback);
 	dialogue_box.add_function([&](Component *c) {
 		GameScreen *game_screen = dynamic_cast<GameScreen*>(c->get_screen());
-		game_screen->hide_foregound();
+		get().dialogue.delete_functions();
 		return true;
 	});
 	dialogue_box.dialogue = dialogue;
@@ -512,6 +513,9 @@ void DialogueBox::show(LuaObject dialogue, Screen &screen, Callback callback) {
 
 	int x = (_game.get_resolution_width() / 2) - (dialogue_box.get_width() / 2);
 	int y = x;
+	if (box_at_bottom) {
+		y = _game.get_resolution_height() - dialogue_box.total_height;
+	}
 	dialogue_box.set_position(x, y);
 	screen.add_component(dialogue_box);
 
@@ -522,38 +526,15 @@ void DialogueBox::update_view() {
 	TextBox::update_view();
 }
 
-void DialogueBox::change_position(std::string position) {
-	this->position = position;
-	if (position == "up") {
-		int x = (_game.get_resolution_width() / 2) - (get_width() / 2);
-		int y = x;
-		set_position(x, y);
-	}
-	else if (position == "down") {
-		int x = (_game.get_resolution_width() / 2) - (get_width() / 2);
-		int y = (_game.get_resolution_height()) - total_height;
-		set_position(x, y);
-	}
-}
-
 void DialogueBox::next() {
 	if (go_to != "end") {
 		LuaObject *block = dialogue.get_object(go_to);
 
-		// position
-		{
-			std::string position = block->get_string("position", "up");
-			change_position(position);
-		}
-
 		// show foreground
-		if (block->get_boolean("show_foreground", false))
-		{
+		if (illustrated) {
 			LuaObject *foreground = block->get_object("foreground");
-			if (foreground != nullptr) {
-				GameScreen *game_screen = dynamic_cast<GameScreen*>(get_screen());
-				game_screen->pan_foreground(*foreground);
-			}
+			GameScreen *game_screen = dynamic_cast<GameScreen*>(get_screen());
+			game_screen->pan_foreground(*foreground);
 		}
 
 		// show text
@@ -581,10 +562,8 @@ void DialogueBox::next() {
 			{
 				int x = get_x();
 				int y = get_y() + get_height();
-				if (position == "down") {
-					std::cout << options->size() << std::endl;
+				if (box_at_bottom)
 					y = get_y() - (options->size() * 19);
-				}
 				options_panel = OptionsPanel(x, y, get_width());
 			}
 

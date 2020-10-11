@@ -966,8 +966,6 @@ void GameScreen::move_character(Character &character, Direction direction) {
 	try {
 		sf::Vector2i position = character_position(character);
 		src = position;
-		//TileData &original_tile = map.get_tile(position.x, position.y);
-//*--*/	original_tile.obstacle = false;
 		switch (direction) {
 		case Direction::UP: position.y--; break;
 		case Direction::DOWN: position.y++; break;
@@ -976,7 +974,6 @@ void GameScreen::move_character(Character &character, Direction direction) {
 		}
 		dst = position;
 		TileData &tile = map.get_tile(position.x, position.y);
-//*--*/	tile.obstacle = true;
 		_game.get_lua()->call_event(tile.object_name, "enter_tile", position.x, position.y, character.get_name());
 	}
 	catch (LuaException &e) {
@@ -1298,6 +1295,16 @@ void GameScreen::show_dialogue_box(LuaObject dialogue) {
 	});
 }
 
+void GameScreen::show_illustrated_dialogue_box(LuaObject dialogue) {
+	block_input = true;
+	show_foreground();
+	DialogueBox::show(dialogue, *this, [&](Component *c) {
+		block_input = false;
+		hide_foreground();
+		return true;
+	}, true, true);
+}
+
 void GameScreen::update_field_of_vision(Character *character) {
 	std::vector<sf::Vector2i> fov;
 	// fov.push_back(character_position(*character));
@@ -1306,36 +1313,41 @@ void GameScreen::update_field_of_vision(Character *character) {
 }
 
 
-
-void GameScreen::pan_foreground(LuaObject data) {
-// 	if (foreground.data.size() > 0) {
-// 		foreground.data.delete_functions();
-// 	}
-// 
-	std::string filename = data.get_string("image");
-	int x = data.get_int("origin.x", 0);
-	int y = data.get_int("origin.y", 0);
-	float speed_x = data.get_float("pan_speed.x", 0.f);
-	float speed_y = data.get_float("pan_speed.y", 0.f);
-	float total_time = data.get_float("total_duration", 0.f);
-	float still_time = data.get_float("still_duration", 0.f);
-
-	foreground.texture.loadFromFile(Path::ASSETS + filename);
-	foreground.sprite = sf::Sprite(foreground.texture);
-	foreground.sprite.setPosition((float)x, (float)y);
-	foreground.pan_speed.x = speed_x;
-	foreground.pan_speed.y = speed_y;
-	foreground.total_time = total_time;
-	foreground.still_time = still_time;
-	foreground.running = true;
-	foreground.data = data;
-
+void GameScreen::show_foreground() {
+	gui_status.showing_overlay = Overlay::get().is_visible();
+	gui_status.showing_log = log_box.is_visible();
 	Overlay::get().hide();
+	log_box.hide();
 }
 
-void GameScreen::hide_foregound() {
+void GameScreen::pan_foreground(LuaObject data) {
+	std::string filename = data.get_string("image", "");
+	if (filename != "") {
+		int x = data.get_int("origin.x", 0);
+		int y = data.get_int("origin.y", 0);
+		float speed_x = data.get_float("pan_speed.x", 0.f);
+		float speed_y = data.get_float("pan_speed.y", 0.f);
+		float total_time = data.get_float("total_duration", 0.f);
+		float still_time = data.get_float("still_duration", 0.f);
+
+		foreground.texture.loadFromFile(Path::ASSETS + filename);
+		foreground.sprite = sf::Sprite(foreground.texture);
+		foreground.sprite.setPosition((float)x, (float)y);
+		foreground.pan_speed.x = speed_x;
+		foreground.pan_speed.y = speed_y;
+		foreground.total_time = total_time;
+		foreground.still_time = still_time;
+		foreground.running = true;
+		foreground.data = data;
+	}
+}
+
+void GameScreen::hide_foreground() {
 	foreground.running = false;
-	Overlay::get().show();
+	if (gui_status.showing_overlay)
+		Overlay::get().show();
+	if (gui_status.showing_log)
+		log_box.show();
 }
 
 

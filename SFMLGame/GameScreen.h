@@ -114,6 +114,7 @@ public:
 
 	void show_text_box(std::string text);
 	void show_dialogue_box(LuaObject dialogue);
+	void show_illustrated_dialogue_box(LuaObject dialogue);
 
 	void clean_temporary_characters();
 	void add_character(std::string type, std::string name, int tile_x, int tile_y);
@@ -150,8 +151,9 @@ public:
 	void cast_missile(std::string firework_type, int tile_src_x, int tile_src_y, int tile_dst_x, int tile_dst_y, std::function<void(MissileEffect*)> on_end = [&](MissileEffect*) {});
 	void cast_magic_missile(std::string effect_type, std::string caster_name, sf::Vector2i tile_src, sf::Vector2i tile_dst, std::vector<sf::Vector2i> tiles, std::string blast_spell_name);
 
+	void show_foreground();
 	void pan_foreground(LuaObject data);
-	void hide_foregound();
+	void hide_foreground();
 
 	LogBox &get_log_box() { return log_box; }
 
@@ -208,6 +210,11 @@ private:
 
 	int vision_radius = 5;
 	bool show_fog_of_war = true;
+
+	struct {
+		bool showing_overlay = false;
+		bool showing_log = false;
+	} gui_status;
 
 	LogBox log_box;
 

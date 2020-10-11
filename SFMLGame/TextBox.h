@@ -82,10 +82,9 @@ public:
 	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
 	virtual Component *on_pressed(int x, int y) override;
 
-	static void show(LuaObject dialog_object, Screen &screen, Callback callback=Callback());
+	static void show(LuaObject dialog_object, Screen &screen, Callback callback=Callback(), bool illustrated=false, bool box_at_bottom=false);
 	static DialogueBox &get() { static DialogueBox box; return box; }
 
-	void change_position(std::string position);
 protected:
 	virtual void update_view();
 	void next();
@@ -96,5 +95,6 @@ protected:
 private:
 	std::string go_to = "start";
 	LuaObject dialogue;
-	std::string position = "up";
+	bool box_at_bottom = false;
+	bool illustrated = false;
 };
