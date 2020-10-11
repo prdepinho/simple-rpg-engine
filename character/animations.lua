@@ -88,7 +88,55 @@ animations.types = {
       y = 16 * 4
     },
     animations = basic_animation
-  }
+  },
+  evana = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 5,
+    },
+    animations = basic_animation
+  },
+  bunny_girl = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 6,
+    },
+    animations = basic_animation
+  },
+  rat = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 8
+    },
+    animations = basic_animation
+  },
+  elf = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 9,
+    },
+    animations = basic_animation
+  },
+  imp = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 10,
+    },
+    animations = basic_animation
+  },
+  strawberry_monster = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 11
+    },
+    animations = basic_animation
+  },
 }
 
 return animations

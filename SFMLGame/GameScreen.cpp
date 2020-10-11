@@ -185,9 +185,11 @@ bool GameScreen::update(float elapsed_time) {
 
 	}
 
+
 	if (is_dead(target)) {
 		clear_target();
 	}
+
 
 	// change map here
 	if (next_map != "")
@@ -199,14 +201,15 @@ bool GameScreen::update(float elapsed_time) {
 			++turn;
 			turn_count = 0.f;
 
-			// Log("turn: %d", turn);
+			Log("---- turn: %d ---------------------------------", turn);
+
+			picked_tiles.clear();
 
 			// execute scheduled actions.
 			for (Character *character : characters) {
+
 				if (character != player_character) {
 					try {
-						// get_game()->get_lua()->on_turn(character);
-						// character->get_script()->on_turn(*character);
 						_game.get_lua()->on_turn(*character);
 					}
 					catch (LuaException &e) {
@@ -221,30 +224,20 @@ bool GameScreen::update(float elapsed_time) {
 						get_game()->log("Character " + std::to_string(character.get_id()) + " is idle");
 #endif
 						try {
-							// get_game()->get_lua()->on_idle(character);
-							// character->get_script()->on_idle(*character);
 							_game.get_lua()->on_idle(*character);
 						}
 						catch (LuaException &e) {
-							Log("ua Error: %s", e.what());
+							Log("Lua Error: %s", e.what());
 						}
 						action = character->next_action();
 					}
 				}
 
 				if (action != nullptr) {
-
-					// if (&character == player_character) {
-					// 	Log("Player action: %s", action->to_string().c_str());
-					// }
-
 					action->execute(this);
 					delete action;
-
-
 				}
 			}
-
 		}
 
 	}
@@ -407,10 +400,6 @@ void GameScreen::control_mouse_info() {
 #endif
 #if false
 		{
-			start_firework("fireball_blast", tile_x, tile_y);
-		}
-#else
-		{
 			auto callback = [&](MissileEffect* e) {
 				Log("CALLBACK");
 				auto tile_coords = map.get_tile_coord(e->get_dst_x(), e->get_dst_y());
@@ -453,6 +442,8 @@ void GameScreen::control_mouse_wheel_zoom(float delta, int x, int y) {
 
 
 void GameScreen::poll_events(float elapsed_time) {
+	if (!window->hasFocus())
+		return;
 	Screen::poll_events(elapsed_time);
 	if (current_mode) {
 		current_mode->poll_events(elapsed_time);
@@ -523,6 +514,9 @@ void GameScreen::poll_events(float elapsed_time) {
 }
 
 Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
+	if (!window->hasFocus())
+		return nullptr;
+
 	Component *interacted_component = Screen::handle_event(event, elapsed_time);
 
 	// TODO: correct mouse event handling.
@@ -961,18 +955,29 @@ void GameScreen::schedule_character_cast_magic(std::string magic_name, Character
 // effects
 
 void GameScreen::move_character(Character &character, Direction direction) {
+	character_face(character, direction);
 	sf::Vector2i src;
 	sf::Vector2i dst;
+
+	sf::Vector2i position = character_position(character);
+	src = position;
+	switch (direction) {
+	case Direction::UP: position.y--; break;
+	case Direction::DOWN: position.y++; break;
+	case Direction::LEFT: position.x--; break;
+	case Direction::RIGHT: position.x++; break;
+	}
+	dst = position;
+
+	pick_tile(character, position);
+	if (!can_move(character, position.x, position.y)) {
+		character.clear_schedule();
+		Log("%s Clear", character.get_name().c_str());
+		return;
+	}
+
+
 	try {
-		sf::Vector2i position = character_position(character);
-		src = position;
-		switch (direction) {
-		case Direction::UP: position.y--; break;
-		case Direction::DOWN: position.y++; break;
-		case Direction::LEFT: position.x--; break;
-		case Direction::RIGHT: position.x++; break;
-		}
-		dst = position;
 		TileData &tile = map.get_tile(position.x, position.y);
 		_game.get_lua()->call_event(tile.object_name, "enter_tile", position.x, position.y, character.get_name());
 	}
@@ -1202,6 +1207,19 @@ bool GameScreen::can_move(Character &character, Direction direction) {
 	if (map.in_tile_bounds(dst_x, dst_y)) {
 		TileData &tile = map.get_tile(dst_x, dst_y);
 		return !tile.obstacle;
+		// bool obstacle = tile.obstacle;
+		// bool picked = !is_picked_by_me(character, { dst_x, dst_y });
+		// return !(obstacle || picked);
+	}
+	return false;
+}
+
+bool GameScreen::can_move(Character &character, int dst_x, int dst_y) {
+	if (map.in_tile_bounds(dst_x, dst_y)) {
+		TileData &tile = map.get_tile(dst_x, dst_y);
+		bool obstacle = tile.obstacle;
+		bool picked = !is_picked_by_me(character, { dst_x, dst_y });
+		return !(obstacle || picked);
 	}
 	return false;
 }
@@ -1705,3 +1723,21 @@ void GameScreen::character_face(Character &actor, Character &target) {
 }
 
 
+bool GameScreen::pick_tile(Character &character, sf::Vector2i tile) {
+	if (picked_tiles[tile].character == nullptr) {
+		picked_tiles[tile].character = &character;
+		Log("%s picked (%d, %d)", character.get_name().c_str(), tile.x, tile.y);
+		return true;
+	}
+	else {
+		Log("%s cannot pick (%d, %d)", character.get_name().c_str(), tile.x, tile.y);
+	}
+	return false;
+}
+
+bool GameScreen::is_picked_by_me(Character &actor, sf::Vector2i tile) {
+	bool rval = picked_tiles[tile].character == &actor;
+	if (!rval)
+		Log("%s cannot move to (%d, %d)", actor.get_name().c_str(), tile.x, tile.y);
+	return rval;
+}

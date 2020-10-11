@@ -4,6 +4,15 @@
 
 void MoveAction::execute(GameScreen *screen) {
 	if (character) {
+
+		sf::Vector2i position = screen->character_position(*character);
+		switch (direction) {
+		case Direction::UP: position.y--; break;
+		case Direction::DOWN: position.y++; break;
+		case Direction::LEFT: position.x--; break;
+		case Direction::RIGHT: position.x++; break;
+		}
+		// screen->pick_tile(*character, position);
 		screen->move_character(*character, direction);
 	}
 }

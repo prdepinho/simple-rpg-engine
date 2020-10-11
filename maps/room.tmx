@@ -92,7 +92,7 @@
 </data>
  </layer>
  <objectgroup id="5" name="objects">
-  <object id="11" name="door" x="1.75" y="50.25" width="11" height="12"/>
+  <object id="11" name="left_door" x="1.75" y="50.25" width="11" height="12"/>
   <object id="12" name="south_door" x="66.5" y="115.25" width="11.25" height="11.75"/>
   <object id="13" name="door" x="113.5" y="65.5" width="12.25" height="12"/>
   <object id="14" name="empty_chest" x="98.25" y="33.5" width="12" height="12"/>
@@ -110,16 +110,9 @@
    </properties>
    <point/>
   </object>
-  <object id="25" name="long_sword_1" x="87.25" y="86.5">
-   <properties>
-    <property name="name" value="long_sword"/>
-    <property name="type" value="weapon"/>
-   </properties>
-   <point/>
-  </object>
   <object id="27" name="key_chest" x="100" y="53" width="9.25" height="7.25"/>
   <object id="28" name="north_door" x="66.25" y="18.75" width="11" height="11.5"/>
-  <object id="29" name="witch" x="40.25" y="57.25">
+  <object id="29" name="witch" x="88.5" y="92">
    <properties>
     <property name="type" value="witch"/>
    </properties>

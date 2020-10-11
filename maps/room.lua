@@ -74,6 +74,15 @@ function M.key_chest(event, x, y, character_name)
   end
 end
 
+function M.left_door(event, x, y, character_name)
+  M.door(event, x, y)
+  if event == 'step_on' then
+    if character_name == 'player' then
+      sfml_change_map('small_room', 7, 3)
+    end
+  end
+end
+
 function M.north_door(event, x, y, character_name)
   M.door(event, x, y)
   if event == 'step_on' then

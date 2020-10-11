@@ -126,6 +126,8 @@ sf::Vector2f Screen::get_gui_position_over_game(float x, float y) {
 
 void Screen::poll_events(float elapsed_time)
 {
+	if (!window->hasFocus())
+		return;
 	try {
 		sf::Event event;
 		while (window->pollEvent(event)) {
@@ -141,6 +143,8 @@ void Screen::poll_events(float elapsed_time)
 }
 
 Component *Screen::handle_event(sf::Event &event, float elapsed_time) {
+	if (!window->hasFocus())
+		return nullptr;
 	Component *interacted_component = nullptr;
 
 	switch (event.type) {

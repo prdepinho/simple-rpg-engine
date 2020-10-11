@@ -63,11 +63,11 @@ void MoveEffect::update(float elapsed_time) {
 			break;
 		case Direction::LEFT:
 			character->move(-pixels_to_move, 0.f);
-			character->face_left();
+			// character->face_left();
 			break;
 		case Direction::RIGHT:
 			character->move(pixels_to_move, 0.f);
-			character->face_right();
+			// character->face_right();
 			break;
 		}
 	}

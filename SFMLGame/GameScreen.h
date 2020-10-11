@@ -27,7 +27,6 @@
 #include "SelectTileMode.h"
 #include "CinematicsMode.h"
 
-
 class GameScreen : public Screen
 {
 public:
@@ -99,6 +98,7 @@ public:
 	void cast_magic(Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> tiles, std::vector<std::string> targets, std::string magic_name, int inventory_index);
 
 	bool can_move(Character &character, Direction direction);
+	bool can_move(Character &character, int tile_x, int tile_y);
 	Character* get_character_on_tile(int tile_x, int tile_y);
 	Character* get_live_character_on_tile(int tile_x, int tile_y);
 	std::vector<Character*> get_characters_on_tile(int tile_x, int tile_y);
@@ -174,6 +174,9 @@ public:
 	void character_face(Character &character, Direction direction);
 	void character_face(Character &character, int dst_x, int dst_y);
 	void character_face(Character &actor, Character &target);
+
+	bool pick_tile(Character &character, sf::Vector2i tile);
+	bool is_picked_by_me(Character &actor, sf::Vector2i tile);
 private:
 
 	std::string selected_magic = "";
@@ -189,6 +192,15 @@ private:
 	std::string next_map = "";
 	sf::Vector2i new_tile_position = { 0, 0 };
 
+	struct PickedTilesOperator {
+		bool operator() (const sf::Vector2i& lhs, const sf::Vector2i& rhs) const {
+			return (lhs.x + lhs.y * 10000) < (rhs.x + rhs.y * 10000);
+		}
+	};
+	struct PikedTilesValue {
+		Character *character = nullptr;
+	};
+	std::map<sf::Vector2i, PikedTilesValue, PickedTilesOperator> picked_tiles;  // characters take turn picking the tile they want to move to before moving, to prevent multiple characters in the same tile.// characters take turn picking the tile they want to move to before moving, to prevent multiple characters in the same tile.// characters take turn picking the tile they want to move to before moving, to prevent multiple characters in the same tile.// characters take turn picking the tile they want to move to before moving, to prevent multiple characters in the same tile.
 	Tilemap map;
 
 	std::vector<Item*> items;
