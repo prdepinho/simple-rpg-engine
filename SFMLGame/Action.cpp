@@ -3,13 +3,15 @@
 #include "Game.h"
 
 void MoveAction::execute(GameScreen *screen) {
-	if(character)
+	if (character) {
 		screen->move_character(*character, direction);
+	}
 }
 
 void WaitAction::execute(GameScreen *screen) {
-	if (character)
+	if (character) {
 		screen->wait_character(*character);
+	}
 }
 
 void InteractionAction::execute(GameScreen *screen) {

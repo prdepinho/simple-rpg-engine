@@ -119,7 +119,7 @@
   </object>
   <object id="27" name="key_chest" x="100" y="53" width="9.25" height="7.25"/>
   <object id="28" name="north_door" x="66.25" y="18.75" width="11" height="11.5"/>
-  <object id="29" name="witch" x="40.25" y="45">
+  <object id="29" name="witch" x="40.25" y="57.25">
    <properties>
     <property name="type" value="witch"/>
    </properties>

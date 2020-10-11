@@ -1057,6 +1057,7 @@ void GameScreen::wait_character(Character &character) {
 }
 
 void GameScreen::attack_character(Character &attacker, Character &defender) {
+	character_face(attacker, defender);
 	if (is_equipped_with_ranged_weapon(attacker)) {
 		if (has_ammo(attacker)) {
 			if (is_in_range(attacker, defender)) {
@@ -1117,26 +1118,26 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 					bool target_dead = is_dead(target_character);
 					if (!target_dead) {
 						_game.get_lua()->character_interaction(target_character->get_name(), character.get_name());
+						character_face(character, *target_character);
 					}
 					else {
 						_game.get_lua()->strip_character_items(target_character->get_name());
 						_game.get_lua()->remove_character(target_character->get_name());
 						remove_character(target_character);
 						control_loot(tile_x, tile_y);
+						character_face(character, tile_x, tile_y);
 					}
 				}
-				// loot if this is the same tile as player character
-				// else if (sf::Vector2i{ tile_x, tile_y } == character_position(*player_character)) {
-				// 	control_loot(tile_x, tile_y);
-				// }
 				// if there are no characters, but there are items, loot
 				else if (target_items.size() > 0) {
 					control_loot(tile_x, tile_y);
+					character_face(character, tile_x, tile_y);
 				}
 				// if nothing is there, interact with the map
 				else {
 					TileData tile = map.get_tile(tile_x, tile_y);
 					_game.get_lua()->call_event(tile.object_name, "interact", tile_x, tile_y, character.get_name());
+					character_face(character, tile_x, tile_y);
 				}
 			}
 			catch (LuaException &e) {
@@ -1161,6 +1162,7 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 }
 
 void GameScreen::cast_magic(Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> tiles, std::vector<std::string> targets, std::string magic_name, int inventory_index) {
+	character_face(caster, center.x, center.y);
 	_game.get_lua()->inventory_stack_pop(inventory_index + 1, caster.get_name(), 1);
 	_game.get_lua()->cast_magic(magic_name, caster.get_name(), center, tiles, targets);
 }
@@ -1655,4 +1657,51 @@ void GameScreen::select_tile_to_cast(int range_radius, int effect_radius, std::s
 void GameScreen::refresh_overlay() {
 	Overlay::refresh(*this, player_character);
 }
+
+
+
+void GameScreen::character_face(Character &character, Direction direction) {
+	switch (direction) {
+	case Direction::LEFT:
+	case Direction::DOWN_LEFT:
+	case Direction::UP_LEFT:
+		character.face_left();
+		break;
+	case Direction::RIGHT:
+	case Direction::DOWN_RIGHT:
+	case Direction::UP_RIGHT:
+		character.face_right();
+		break;
+	}
+}
+
+void GameScreen::character_face(Character &character, int dst_x, int dst_y) {
+	auto pos = character_position(character);
+	if (pos.x > dst_x)
+		character.face_left();
+	if (pos.x < dst_x)
+		character.face_right();
+}
+
+void GameScreen::character_face(Character &actor, Character &target) {
+	auto actor_pos = character_position(actor);
+	auto target_pos = character_position(target);
+
+	Log("Characer face:");
+
+	if (actor_pos.x > target_pos.x) {
+		Log(" - actor: face left");
+		Log(" - target: face right");
+		actor.face_left();
+		target.face_right();
+	}
+
+	if (actor_pos.x < target_pos.x) {
+		Log(" - actor: face left");
+		Log(" - target: face right");
+		actor.face_right();
+		target.face_left();
+	}
+}
+
 

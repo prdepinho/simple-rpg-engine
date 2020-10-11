@@ -170,6 +170,10 @@ public:
 	void select_tile(sf::Vector2i center, int range_radius, int effect_radius, std::function<bool(sf::Vector2i center, std::vector<sf::Vector2i>&)> on_select);
 
 	void refresh_overlay();
+
+	void character_face(Character &character, Direction direction);
+	void character_face(Character &character, int dst_x, int dst_y);
+	void character_face(Character &actor, Character &target);
 private:
 
 	std::string selected_magic = "";
