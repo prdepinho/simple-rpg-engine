@@ -134,6 +134,7 @@
     <ClCompile Include="CharacterEditPanel.cpp" />
     <ClCompile Include="CharacterMenu.cpp" />
     <ClCompile Include="CheckButton.cpp" />
+    <ClCompile Include="CinematicsMode.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="consts.cpp" />
     <ClCompile Include="CustomPanel.cpp" />
@@ -188,6 +189,7 @@
     <ClCompile Include="lua5.3.5\lzio.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapEditorScreen.cpp" />
+    <ClCompile Include="Mode.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Resources.cpp" />
     <ClCompile Include="SavePanel.cpp" />
@@ -221,6 +223,7 @@
     <ClInclude Include="CharacterEditPanel.h" />
     <ClInclude Include="CharacterMenu.h" />
     <ClInclude Include="CheckButton.h" />
+    <ClInclude Include="CinematicsMode.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="consts.h" />
     <ClInclude Include="CustomPanel.h" />
@@ -268,6 +271,7 @@
     <ClInclude Include="lua5.3.5\lvm.h" />
     <ClInclude Include="lua5.3.5\lzio.h" />
     <ClInclude Include="MapEditorScreen.h" />
+    <ClInclude Include="Mode.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Resources.h" />

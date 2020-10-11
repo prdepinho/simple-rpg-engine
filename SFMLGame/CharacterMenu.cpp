@@ -1047,7 +1047,7 @@ void Overlay::create() {
 }
 
 void Overlay::refresh(Screen &screen, Character *character) {
-	static Overlay overlay;
+	Overlay &overlay = get();
 	overlay = Overlay();
 	overlay.create();
 

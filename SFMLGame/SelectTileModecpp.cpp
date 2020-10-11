@@ -5,28 +5,6 @@
 #include "GameScreen.h"
 #include "Resources.h"
 
-Mode::Mode() : Screen() {}
-
-Mode::~Mode() { Screen::~Screen(); }
-
-void Mode::create() {}
-
-void Mode::destroy() {
-}
-
-void Mode::draw() {}
-
-bool Mode::update(float elapsed_time) { return true; }
-
-void Mode::poll_events(float elased_time) {}
-
-Component *Mode::handle_event(sf::Event &event, float elapsed_time) { return nullptr; }
-
-
-
-
-
-
 SelectTileMode::SelectTileMode(GameScreen *game_screen, sf::Vector2i center, int range_radius, int effect_radius, 
 	std::function<bool(sf::Vector2i, std::vector<sf::Vector2i>&)> on_select, std::function<void()> on_end)
 	: Mode(), shape_size(16), game_screen(game_screen), center(center), cursor(center), range_radius(range_radius),

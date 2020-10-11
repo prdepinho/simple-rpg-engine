@@ -9,54 +9,6 @@ Character::~Character() {
 }
 
 void Character::create(std::string filename) {
-#if false
-	Lua script(Path::CHARACTERS + filename + ".lua");
-	this->filename = filename;
-	LuaObject animation = script.get_object("animation");
-
-	std::string sprite_sheet = animation.get_string("basic.file");
-	int sprite_height = animation.get_int("basic.size.height");
-	int sprite_width = animation.get_int("basic.size.width");
-	int origin_x = animation.get_int("coordinates.x");
-	int origin_y = animation.get_int("coordinates.y");
-	std::map<std::string, LuaObject> animation_map = animation.get_map("animations");
-
-	set_texture(Resources::get_texture(sprite_sheet));
-
-	for (auto &pair : animation_map) {
-		std::string name = pair.first;
-		int activation_frame = pair.second.get_int("activation_frame", -1);
-		LuaObject *frame_indices = pair.second.get_object("frames");
-		float fps = pair.second.get_float("fps");
-
-		std::vector<sf::VertexArray> frames(frame_indices->size());
-
-		int i = 0;
-		for (auto it = frame_indices->begin(); it != frame_indices->end(); ++it) {
-			int frame_index = it->second.get_int();
-
-			int texture_x = origin_x + sprite_width * frame_index;
-			int texture_y = origin_y;
-
-			sf::VertexArray vertices;
-			vertices.setPrimitiveType(sf::Quads);
-			vertices.resize(4 * 1);
-			set_quad(&vertices[0], 0.f, 0.f,
-				(float) sprite_width, (float) sprite_height,
-				(float) texture_x, (float) texture_y,
-				(float) sprite_width, (float) sprite_height
-			);
-			frames[i++] = vertices;
-		}
-
-		animations[name] = Animation{ name, frames, fps, activation_frame };
-	}
-
-	this->name = filename;
-
-	set_dimensions(sprite_height, sprite_width);
-	setOrigin(sf::Vector2f((float) sprite_height / 2, (float) sprite_width / 2));
-#else
 	Lua script(Path::CHARACTERS + filename + ".lua");
 	this->filename = filename;
 	this->name = filename;
@@ -69,7 +21,6 @@ void Character::create(std::string filename) {
 
 	set_dimensions(animation_resources.sprite_height, animation_resources.sprite_width);
 	setOrigin(sf::Vector2f((float) animation_resources.sprite_height / 2, (float) animation_resources.sprite_width / 2));
-#endif
 }
 
 void Character::set_animation(std::string type, bool loop) {

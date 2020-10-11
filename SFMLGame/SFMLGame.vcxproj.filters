@@ -290,6 +290,12 @@
     <ClCompile Include="SelectTileModecpp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Mode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CinematicsMode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lua5.3.5\lapi.h">
@@ -506,6 +512,12 @@
       <Filter>gui</Filter>
     </ClInclude>
     <ClInclude Include="SelectTileMode.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mode.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CinematicsMode.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

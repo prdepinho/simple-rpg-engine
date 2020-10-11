@@ -167,6 +167,7 @@ public:
 	~Overlay();
 	virtual void create() override;
 	static void refresh(Screen &screen, Character *character);
+	static Overlay &get() { static Overlay overlay; return overlay; }
 private:
 	Font hp;
 	Font ac;

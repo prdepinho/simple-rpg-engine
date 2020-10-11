@@ -492,7 +492,7 @@ Component *DialogueBox::on_pressed(int x, int y) {
 }
 
 void DialogueBox::show(LuaObject dialogue, Screen &screen, Callback callback) {
-	static DialogueBox dialogue_box;
+	DialogueBox &dialogue_box = get();
 	dialogue_box.dialogue.delete_functions();
 
 	Lua lua(Config::SETTINGS);
@@ -502,8 +502,14 @@ void DialogueBox::show(LuaObject dialogue, Screen &screen, Callback callback) {
 
 	dialogue_box = DialogueBox(0, 0, width, height, speed);
 	dialogue_box.add_function(callback);
+	dialogue_box.add_function([&](Component *c) {
+		GameScreen *game_screen = dynamic_cast<GameScreen*>(c->get_screen());
+		game_screen->hide_foregound();
+		return true;
+	});
 	dialogue_box.dialogue = dialogue;
 	dialogue_box.create();
+
 	int x = (_game.get_resolution_width() / 2) - (dialogue_box.get_width() / 2);
 	int y = x;
 	dialogue_box.set_position(x, y);
@@ -516,62 +522,79 @@ void DialogueBox::update_view() {
 	TextBox::update_view();
 }
 
+void DialogueBox::change_position(std::string position) {
+	this->position = position;
+	if (position == "up") {
+		int x = (_game.get_resolution_width() / 2) - (get_width() / 2);
+		int y = x;
+		set_position(x, y);
+	}
+	else if (position == "down") {
+		int x = (_game.get_resolution_width() / 2) - (get_width() / 2);
+		int y = (_game.get_resolution_height()) - total_height;
+		set_position(x, y);
+	}
+}
 
-#if true
 void DialogueBox::next() {
-	std::cout << "NEXT. show_options: " << show_options << std::endl;
-	// TextBox::show("Hello world", screen, callback);
-	std::cout << "next (goto: " << go_to << "): " << _game.get_lua()->stack_dump().c_str() << std::endl;
 	if (go_to != "end") {
 		LuaObject *block = dialogue.get_object(go_to);
 
-		std::string text = "";
-		switch (block->get_token("text")->get_type()) {
-		case LuaObject::Type::FUNCTION:
-			text = _game.get_lua()->call_table_function(block, "text");
-			break;
-		case LuaObject::Type::STRING:
-			text = block->get_string("text");
-			break;
+		// position
+		{
+			std::string position = block->get_string("position", "up");
+			change_position(position);
 		}
 
-		std::cout << " + block: " << text << std::endl;
-		push_text(text);
-
-		// std::cout << "block path: " << block->get_path() << std::endl;
-#if false
-		if (block->get_token("callback")->get_type() == LuaObject::Type::FUNCTION) {
-			std::string rval = _game.get_lua()->call_table_function(block, "callback");
-			std::cout << "rval: [" << rval << "]" << std::endl;
+		// show foreground
+		if (block->get_boolean("show_foreground", false))
+		{
+			LuaObject *foreground = block->get_object("foreground");
+			if (foreground != nullptr) {
+				GameScreen *game_screen = dynamic_cast<GameScreen*>(get_screen());
+				game_screen->pan_foreground(*foreground);
+			}
 		}
-#else
+
+		// show text
+		{
+			std::string text = "";
+			switch (block->get_token("text")->get_type()) {
+			case LuaObject::Type::FUNCTION:
+				text = _game.get_lua()->call_table_function(block, "text");
+				break;
+			case LuaObject::Type::STRING:
+				text = block->get_string("text");
+				break;
+			}
+			push_text(text);
+		}
+
+		// call callback
 		if (block->get_token("callback")->get_type() == LuaObject::Type::FUNCTION) {
 			std::string rval = block->call_function("callback");
-			std::cout << "rval: [" << rval << "]" << std::endl;
 		}
-#endif
 
+		// show options
 		LuaObject *options = block->get_object("options");
 		if (options->size() > 0) {
 			{
 				int x = get_x();
 				int y = get_y() + get_height();
+				if (position == "down") {
+					std::cout << options->size() << std::endl;
+					y = get_y() - (options->size() * 19);
+				}
 				options_panel = OptionsPanel(x, y, get_width());
 			}
 
 			for (auto it = options->begin(); it != options->end(); ++it) {
-				std::cout << "   - option ";
-				std::cout << it->first << ": ";
-				std::cout << it->second.get_string("text");
-				std::cout << " [" << it->second.get_string("go_to") << "]";
-				std::cout << std::endl;
 				std::string text = it->second.get_string("text");
 				std::string dst = it->second.get_string("go_to");
 				options_panel.add_option(text, dst, [&](Component* c) {
 					OptionButton *button = dynamic_cast<OptionButton*>(c);
 					push_text(button->get_label());
 					go_to = button->get_dst();
-					Log(" Next: %s", go_to.c_str());
 					next();
 					get_screen()->remove_component(options_panel);
 					get_screen()->select(*this);
@@ -580,79 +603,13 @@ void DialogueBox::next() {
 				});
 			}
 
-			{
-				show_options = true;
-				// get_screen()->add_component(options_panel);
-				// options_panel.create();
-				// options_panel.set_visible(false);
-			}
+			show_options = true;
 		}
 		else {
 			this->go_to = block->get_string("go_to");
-			Log(" Next: %s", this->go_to.c_str());
+			std::cout << "goto: " << go_to << std::endl;
 		}
 	}
-	std::cout << "after next (goto: " << go_to << "): " << _game.get_lua()->stack_dump().c_str() << std::endl;
 }
-#else
-void DialogueBox::next() {
-	// TextBox::show("Hello world", screen, callback);
-	std::string go_to = "start";
-	while (go_to != "end") {
-		std::cout << _game.get_lua()->stack_dump().c_str() << std::endl;
-		LuaObject *block = dialogue.get_object(go_to);
-
-		std::string text = "";
-		switch (block->get_token("text")->get_type()) {
-		case LuaObject::Type::FUNCTION:
-			text = _game.get_lua()->call_table_function(block, "text");
-			break;
-		case LuaObject::Type::STRING:
-			text = block->get_string("text");
-			break;
-		}
-
-		std::cout << " + block: " << text << std::endl;
-
-		// std::cout << "block path: " << block->get_path() << std::endl;
-		std::string rval = _game.get_lua()->call_table_function(block, "callback");
-		std::cout << "rval: [" << rval << "]" << std::endl;
-
-		LuaObject *options = block->get_object("options");
-		if (options->size() > 0) {
-			for (auto it = options->begin(); it != options->end(); ++it) {
-				std::cout << "   - option ";
-				std::cout << it->first << ": ";
-				std::cout << it->second.get_string("text");
-				std::cout << " [" << it->second.get_string("go_to") << "]";
-				std::cout << std::endl;
-			}
-			std::string i;
-			std::cin >> i;
-			go_to = options->get_object(i)->get_string("go_to");
-
-		}
-		else {
-			go_to = block->get_string("go_to");
-			std::cout << "press enter" << std::endl;
-		}
-		std::getchar();
-	}
-}
-#endif
-
-#if false
-void DialogueBox::show_option_panel() {
-	int x = get_x();
-	int y = get_y() + get_height();
-	options = OptionsPanel(x, y, get_width());
-	options.add_option("Foobar", [&](Component*) { Log("foo"); return true; });
-	options.add_option("Spameggs", [&](Component*) { Log("spam"); return true; });
-	options.add_option("Woopaloopa", [&](Component*) { Log("woopa"); return true; });
-	get_screen()->add_component(options);
-	options.create();
-	options.set_visible(true);
-}
-#endif
 
 

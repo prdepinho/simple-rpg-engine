@@ -109,23 +109,77 @@ function M.south_door(event, x, y, character_name)
 end
 
 
-function M.step_floor(event, x, y)
+function M.step_floor(event, x, y, character_name)
   if event == "enter_tile" then
-    pan_image_data = {
-      image = "lady.png",
-      origin = {
-        x = 0,
-        y = -100,
-      },
-      pan_speed = {
-        x = 0,
-        y = 0.1,
-      },
-      total_duration = 2,
-      still_duration = 1,
-      callback = function() print('callback') end,
-    }
-    -- sfml_pan_image(pan_image_data)
+    if character_name == 'player' then
+      -- pan_image_data = {
+      --   image = "lady.png",
+      --   origin = {
+      --     x = 0,
+      --     y = -100,
+      --   },
+      --   pan_speed = {
+      --     x = 0,
+      --     y = 0.1,
+      --   },
+      --   total_duration = 2,
+      --   still_duration = 1,
+      --   callback = function() print('callback') end,
+      -- }
+      -- sfml_pan_image(pan_image_data)
+      local cinematics_data = {
+        start = {
+          show_foreground = true,
+          foreground = {
+            image = "lady.png",
+            origin = {
+              x = 0,
+              y = -100,
+            },
+            pan_speed = {
+              x = 0,
+              y = 0.1,
+            },
+            total_duration = 2,
+            still_duration = 1,
+          },
+          position = "down",
+          text = "A lady appears from the chamber.",
+          -- go_to = "result",
+          options = {
+            {
+              text = "Option 1",
+              go_to = "result",
+            },
+            {
+              text = "Option 2",
+              go_to = "result",
+            },
+            {
+              text = "Option 3",
+              go_to = "result",
+            },
+          }
+        },
+
+        result = {
+          show_foreground = true,
+          foreground = {
+            image = "main_screen_art.png",
+            origin = {
+              x = 0,
+              y = 0,
+            },
+          },
+          position = "down",
+          text = "End of cinematics.",
+          callback = function() print('result') end,
+          go_to = "end"
+        },
+      }
+      -- sfml_play_cinematics(cinematics_data)
+      sfml_dialogue(cinematics_data)
+    end
   elseif event == "exit_tile" then
   elseif event == "interact" then
   elseif event == "step_on" then

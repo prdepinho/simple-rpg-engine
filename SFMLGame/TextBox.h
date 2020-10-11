@@ -83,6 +83,9 @@ public:
 	virtual Component *on_pressed(int x, int y) override;
 
 	static void show(LuaObject dialog_object, Screen &screen, Callback callback=Callback());
+	static DialogueBox &get() { static DialogueBox box; return box; }
+
+	void change_position(std::string position);
 protected:
 	virtual void update_view();
 	void next();
@@ -93,4 +96,5 @@ protected:
 private:
 	std::string go_to = "start";
 	LuaObject dialogue;
+	std::string position = "up";
 };
