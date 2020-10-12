@@ -56,7 +56,7 @@ void MessagePanel::create() {
 	get_screen()->select(ok_button);
  }
 
-void MessagePanel::show(std::string msg, Screen &screen) {
+void MessagePanel::show(std::string msg, Screen &screen, std::function<void()> callback) {
 	static MessagePanel message_panel;
 	int h = 60;
 	int w = 100;
@@ -65,8 +65,10 @@ void MessagePanel::show(std::string msg, Screen &screen) {
 	message_panel = MessagePanel(msg, x, y, w, h);
 	screen.add_component(message_panel);
 	message_panel.create();
+	message_panel.callback = callback;
 	message_panel.ok_button.set_function([&](Component *) {
 		message_panel.get_screen()->remove_component(message_panel);
+		message_panel.callback();
 		return true;
 	});
 }

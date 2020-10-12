@@ -191,6 +191,7 @@ bool GameScreen::update(float elapsed_time) {
 	}
 
 
+
 	// change map here
 	if (next_map != "")
 		load_map();
@@ -200,6 +201,7 @@ bool GameScreen::update(float elapsed_time) {
 
 		// new turn
 		if (turn_actions.empty() && player_character->schedule_size() > 0) {
+
 			++turn;
 			turn_count = 0.f;
 
@@ -268,7 +270,18 @@ bool GameScreen::update(float elapsed_time) {
 
 		}
 
+		else {
+			if (!player_character->is_active()) {
+				MessagePanel::show("You died.", *this, [&]() {
+					_game.get_lua()->reset_data();
+					_game.change_to_main_menu_screen();
+				});
+			}
+		}
+
 	}
+
+
 
 	return true;
 }
@@ -1004,7 +1017,8 @@ void GameScreen::schedule_character_cast_magic(std::string magic_name, Character
 	caster.schedule_action(action);
 }
 
-// effects
+
+// Character actions. These methods are called by scheduled Action objects and create an effect and don't take place if the character is inactive.
 
 void GameScreen::move_character(Character &character, Direction direction) {
 	if (!character.is_active())
@@ -1234,9 +1248,17 @@ void GameScreen::cast_magic(Character &caster, sf::Vector2i center, std::vector<
 	_game.get_lua()->cast_magic(magic_name, caster.get_name(), center, tiles, targets);
 }
 
+
+
+
+
+
+
+
 inline sf::Vector2i GameScreen::character_position(Character &character) {
 	return map.get_tile_coord(character.get_x(), character.get_y());
 }
+
 
 // print the character first so that it is not on top of others.
 void GameScreen::push_character_to_bottom(Character &character) {

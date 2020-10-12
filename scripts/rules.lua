@@ -14,7 +14,7 @@ function rules.roll_dice(formula)
 
   -- dice quantity (optional)
   quantity = tonumber(formula:sub(0, d-1))
-  if quantity == nil then
+  if quantity == nil or quantity <= 0 then
     quantity = 1
   end
 
@@ -250,46 +250,38 @@ rules.creation_rules = {
 rules.ability_score_description = {
   str = function(score)
     local desc = "Strength is your overall physical strength and fighting ability. "
-    desc = desc .. "Strength " .. tostring(score) .. " gives you "
-    desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus damage with any weapon, "
-    desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus to hit with melee weapons, and "
-    desc = desc .. tostring(rules.ability_modifier[score]) .. " to save vs hold."
+    desc = desc .. "Strength score " .. tostring(score) .. " gives you "
+    desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus to damage with any weapon, to hit with melee weapons, and to save vs hold."
     return desc
   end,
   dex = function(score)
     local desc = "Dexterity is your agility and the ability to handle delicate things. "
     desc = desc .. "Agility " .. tostring(score) .. " gives you "
-    desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus to hit with ranged weapons, "
-    desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus armor class, and "
-    desc = desc .. tostring(rules.ability_modifier[score]) .. " to save vs breath attacks."
+    desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus to hit with ranged weapons, to armor class, and to save vs breath weapons."
     return desc
   end,
   con = function(score)
     local desc = "Constitution is your physical health and hardiness. "
     desc = desc .. "Constitution " .. tostring(score) .. " gives you "
-    desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus hit points, and "
-    desc = desc .. tostring(rules.ability_modifier[score]) .. " to save vs poison."
+    desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus to hit points, and to save vs poison."
     return desc
   end,
   int = function(score)
     local desc = "Intelligence is your intellect, memory and the capacity to meddle with the elements. "
     desc = desc .. "Intelligence " .. tostring(score) .. " gives you "
-    desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus arcane spells you can cast, and "
-    desc = desc .. tostring(rules.ability_modifier[score]) .. " to save vs illusions."
+    desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus to cast arcane spells, and to save vs illusions."
     return desc
   end,
   wis = function(score)
     local desc = "Wisdom is your perception of the world and syntony with the forces that rule it. "
     desc = desc .. "Wisdom " .. tostring(score) .. " gives you "
-    desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus divine spells you can cast, and "
-    desc = desc .. tostring(rules.ability_modifier[score]) .. " to save vs fear."
+    desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus to cast divine spells, and to save vs fear."
     return desc
   end,
   cha = function(score)
     local desc = "Charisma is your personality and ability to handle with people and lead them. "
     desc = desc .. "Wisdom " .. tostring(score) .. " gives you "
-    desc = desc .. tostring(rules.ability_modifier[score]) .. " companions who can follow you, and "
-    desc = desc .. tostring(rules.ability_modifier[score]) .. " to save vs charm."
+    desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus to save vs charm."
     return desc
   end,
 }

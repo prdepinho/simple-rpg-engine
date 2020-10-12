@@ -26,9 +26,10 @@ public:
 		: Panel(x, y, width, height), message(msg) { }
 	virtual ~MessagePanel() {}
 
-	static void show(std::string msg, Screen &screen);
+	static void show(std::string msg, Screen &screen, std::function<void()> callback = []() {});
 	virtual void create() override;
 private:
+	std::function<void()> callback;
 	Button ok_button;
 	Font font;
 	std::string message;
