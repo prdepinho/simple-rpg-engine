@@ -177,7 +177,11 @@ public:
 
 	bool pick_tile(Character &character, sf::Vector2i tile);
 	bool is_picked_by_me(Character &actor, sf::Vector2i tile);
+
+	bool is_enemy(Character &character);
 private:
+
+	std::priority_queue<Action*, std::vector<Action*>, ActionComparison> turn_actions; // the actions that take place in a single turn
 
 	std::string selected_magic = "";
 	Character *target = nullptr;

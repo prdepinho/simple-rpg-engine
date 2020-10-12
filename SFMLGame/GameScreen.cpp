@@ -196,16 +196,19 @@ bool GameScreen::update(float elapsed_time) {
 		load_map();
 
 	// Turn handling. Wait player input to process the next turn.
-	if ((turn_count += elapsed_time) >= turn_duration) {
-		if (player_character->schedule_size() > 0) {
+	if ((turn_count += elapsed_time) >= turn_duration && effects.empty()) {
+
+		// new turn
+		if (turn_actions.empty() && player_character->schedule_size() > 0) {
 			++turn;
 			turn_count = 0.f;
 
 			Log("---- turn: %d ---------------------------------", turn);
+			log_box.push_line("Turn " + std::to_string(turn));
 
 			picked_tiles.clear();
 
-			// execute scheduled actions.
+			// determine the scheduled actions that take place this turn
 			for (Character *character : characters) {
 
 				if (character != player_character) {
@@ -220,9 +223,6 @@ bool GameScreen::update(float elapsed_time) {
 
 				if (character != player_character) {
 					if (action == nullptr) {  // character is idle.
-#if false
-						get_game()->log("Character " + std::to_string(character.get_id()) + " is idle");
-#endif
 						try {
 							_game.get_lua()->on_idle(*character);
 						}
@@ -232,12 +232,40 @@ bool GameScreen::update(float elapsed_time) {
 						action = character->next_action();
 					}
 				}
-
-				if (action != nullptr) {
-					action->execute(this);
-					delete action;
-				}
+				if (action)
+					turn_actions.push(action);
 			}
+
+		}
+
+		// execute the actions
+		if (!turn_actions.empty()) {
+
+			std::vector<Action*> round_actions;
+			int current_priority = 0;
+
+			// get actions of the same priority
+			while (!turn_actions.empty()) {
+				Action *action = turn_actions.top();
+
+				if (action->get_priority() >= current_priority) {
+					current_priority = action->get_priority();
+					round_actions.push_back(action);
+					turn_actions.pop();
+				}
+				else {
+					break;
+				}
+
+			}
+
+			// execute them
+			for (Action *action : round_actions) {
+				Log("Executing action: %s", action->to_string().c_str());
+				action->execute(this);
+				delete action;
+			}
+
 		}
 
 	}
@@ -259,9 +287,15 @@ void GameScreen::control_move_up() {
 		auto pos = character_position(*player_character);
 		int dst_x = pos.x;
 		int dst_y = pos.y - 1;
-		auto *action = new InteractionAction(player_character, dst_x, dst_y);
-		player_character->schedule_action(action);
-		player_busy = true;
+		Character *target = get_live_character_on_tile(dst_x, dst_y);
+		if (target != nullptr && is_enemy(*target)) {
+			schedule_character_attack(*player_character, *target);
+		}
+		else {
+			auto *action = new InteractionAction(player_character, dst_x, dst_y);
+			player_character->schedule_action(action);
+			player_busy = true;
+		}
 	}
 }
 
@@ -276,9 +310,15 @@ void GameScreen::control_move_down() {
 		auto pos = character_position(*player_character);
 		int dst_x = pos.x;
 		int dst_y = pos.y + 1;
-		auto *action = new InteractionAction(player_character, dst_x, dst_y);
-		player_character->schedule_action(action);
-		player_busy = true;
+		Character *target = get_live_character_on_tile(dst_x, dst_y);
+		if (target != nullptr && is_enemy(*target)) {
+			schedule_character_attack(*player_character, *target);
+		}
+		else {
+			auto *action = new InteractionAction(player_character, dst_x, dst_y);
+			player_character->schedule_action(action);
+			player_busy = true;
+		}
 	}
 }
 
@@ -293,9 +333,15 @@ void GameScreen::control_move_left() {
 		auto pos = character_position(*player_character);
 		int dst_x = pos.x - 1;
 		int dst_y = pos.y;
-		auto *action = new InteractionAction(player_character, dst_x, dst_y);
-		player_character->schedule_action(action);
-		player_busy = true;
+		Character *target = get_live_character_on_tile(dst_x, dst_y);
+		if (target != nullptr && is_enemy(*target)) {
+			schedule_character_attack(*player_character, *target);
+		}
+		else {
+			auto *action = new InteractionAction(player_character, dst_x, dst_y);
+			player_character->schedule_action(action);
+			player_busy = true;
+		}
 	}
 }
 
@@ -310,9 +356,15 @@ void GameScreen::control_move_right() {
 		auto pos = character_position(*player_character);
 		int dst_x = pos.x + 1;
 		int dst_y = pos.y;
-		auto *action = new InteractionAction(player_character, dst_x, dst_y);
-		player_character->schedule_action(action);
-		player_busy = true;
+		Character *target = get_live_character_on_tile(dst_x, dst_y);
+		if (target != nullptr && is_enemy(*target)) {
+			schedule_character_attack(*player_character, *target);
+		}
+		else {
+			auto *action = new InteractionAction(player_character, dst_x, dst_y);
+			player_character->schedule_action(action);
+			player_busy = true;
+		}
 	}
 }
 
@@ -955,6 +1007,8 @@ void GameScreen::schedule_character_cast_magic(std::string magic_name, Character
 // effects
 
 void GameScreen::move_character(Character &character, Direction direction) {
+	if (!character.is_active())
+		return;
 	character_face(character, direction);
 	sf::Vector2i src;
 	sf::Vector2i dst;
@@ -1047,6 +1101,8 @@ void GameScreen::move_character(Character &character, Direction direction) {
 }
 
 void GameScreen::wait_character(Character &character) {
+	if (!character.is_active())
+		return;
 	if (&character == player_character) {
 		Effect *effect = new WaitEffect(player_character, turn_duration);
 		effect->set_on_end([&](Effect*) {
@@ -1062,6 +1118,8 @@ void GameScreen::wait_character(Character &character) {
 }
 
 void GameScreen::attack_character(Character &attacker, Character &defender) {
+	if (!attacker.is_active())
+		return;
 	character_face(attacker, defender);
 	if (is_equipped_with_ranged_weapon(attacker)) {
 		if (has_ammo(attacker)) {
@@ -1109,6 +1167,8 @@ void GameScreen::attack_character(Character &attacker, Character &defender) {
 }
 
 void GameScreen::interact_character(Character &character, int tile_x, int tile_y) {
+	if (!character.is_active())
+		return;
 	auto pos = character_position(character);
 
 	if (std::abs(pos.x - tile_x) <= 1 && std::abs(pos.y - tile_y) <= 1) {  // is adjacent
@@ -1167,6 +1227,8 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 }
 
 void GameScreen::cast_magic(Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> tiles, std::vector<std::string> targets, std::string magic_name, int inventory_index) {
+	if (!caster.is_active())
+		return;
 	character_face(caster, center.x, center.y);
 	_game.get_lua()->inventory_stack_pop(inventory_index + 1, caster.get_name(), 1);
 	_game.get_lua()->cast_magic(magic_name, caster.get_name(), center, tiles, targets);
@@ -1705,18 +1767,12 @@ void GameScreen::character_face(Character &actor, Character &target) {
 	auto actor_pos = character_position(actor);
 	auto target_pos = character_position(target);
 
-	Log("Characer face:");
-
 	if (actor_pos.x > target_pos.x) {
-		Log(" - actor: face left");
-		Log(" - target: face right");
 		actor.face_left();
 		target.face_right();
 	}
 
 	if (actor_pos.x < target_pos.x) {
-		Log(" - actor: face left");
-		Log(" - target: face right");
 		actor.face_right();
 		target.face_left();
 	}
@@ -1726,18 +1782,16 @@ void GameScreen::character_face(Character &actor, Character &target) {
 bool GameScreen::pick_tile(Character &character, sf::Vector2i tile) {
 	if (picked_tiles[tile].character == nullptr) {
 		picked_tiles[tile].character = &character;
-		Log("%s picked (%d, %d)", character.get_name().c_str(), tile.x, tile.y);
 		return true;
-	}
-	else {
-		Log("%s cannot pick (%d, %d)", character.get_name().c_str(), tile.x, tile.y);
 	}
 	return false;
 }
 
 bool GameScreen::is_picked_by_me(Character &actor, sf::Vector2i tile) {
 	bool rval = picked_tiles[tile].character == &actor;
-	if (!rval)
-		Log("%s cannot move to (%d, %d)", actor.get_name().c_str(), tile.x, tile.y);
 	return rval;
+}
+
+bool GameScreen::is_enemy(Character &character) {
+	return _game.get_lua()->is_enemy(character);
 }

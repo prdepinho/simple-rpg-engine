@@ -78,7 +78,9 @@ public:
 	bool ammo_stack_pop(std::string character_name, int how_much);
 	bool inventory_stack_pop(int index, std::string character_name, int how_much);
 
-void cast_magic(std::string magic_name, std::string caster_name, sf::Vector2i center, std::vector<sf::Vector2i> tiles, std::vector<std::string> targets);
+	void cast_magic(std::string magic_name, std::string caster_name, sf::Vector2i center, std::vector<sf::Vector2i> tiles, std::vector<std::string> targets);
+
+	bool is_enemy(Character &character);
 
 
 

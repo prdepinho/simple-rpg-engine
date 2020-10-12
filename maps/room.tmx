@@ -98,9 +98,9 @@
   <object id="14" name="empty_chest" x="98.25" y="33.5" width="12" height="12"/>
   <object id="15" name="step_floor" x="18.25" y="67.5" width="90" height="11.5"/>
   <object id="16" name="player_position" x="65" y="82" width="13" height="11.5"/>
-  <object id="22" name="ranger" x="36.75" y="89.5">
+  <object id="22" name="bob" x="36.75" y="89.5">
    <properties>
-    <property name="type" value="ranger"/>
+    <property name="type" value="imp"/>
    </properties>
    <point/>
   </object>

@@ -350,9 +350,8 @@ public:
 
 	static int sfml_clear_schedule(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
-
-		int id = (int) lua_tointeger(state, -1);
-		Character *character = screen->get_character_by_id(id);
+		std::string name = lua_tostring(state, -1);
+		Character *character = screen->get_character_by_name(name);
 		character->clear_schedule();
 		return 0;
 	}

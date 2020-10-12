@@ -547,6 +547,20 @@ void Lua::cast_magic(std::string magic_name, std::string caster_name, sf::Vector
 	lua_pop(state, 1);
 }
 
+bool Lua::is_enemy(Character &character) {
+	lua_getglobal(state, "is_enemy");
+	lua_pushstring(state, character.get_name().c_str());
+	int result = lua_pcall(state, 1, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	bool rval = lua_toboolean(state, -1);
+	lua_pop(state, 1);
+	return rval;
+}
+
 void Lua::reset_data() {
 	lua_getglobal(state, "reset_data");
 	int result = lua_pcall(state, 0, 1, 0);

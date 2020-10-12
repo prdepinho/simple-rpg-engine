@@ -29,6 +29,9 @@ end
 
 
 
+function Control:is_enemy(character_name)
+  return self.characters[character_name].data.enemy
+end
 
 function Control:cast_magic(magic_name, caster, center, tiles, targets)
   self.magic[magic_name](self.magic, caster, center, tiles, targets)
@@ -53,6 +56,28 @@ end
 function Control:equipped_weapon_range(character_name)
   local stats = self.characters[character_name].data.stats
   return rules.weapon[stats.weapon.name].range + rules.ammo[stats.ammo.name].bonus_range
+end
+
+function Control:is_in_range(attacker_name, defender_name)
+  local attacker = self.characters[attacker_name].data
+
+  local atk_pos = sfml_get_character_position(attacker_name)
+  local def_pos = sfml_get_character_position(defender_name)
+
+  local weapon = rules.weapon[attacker.stats.weapon.name]
+
+  -- ranged weapons use the range value
+  if weapon.ranged then
+    local range = weapon.range
+    return sfml_is_in_line_of_sight(atk_pos.x, atk_pos.y, def_pos.x, def_pos.y, range)
+
+  -- melee weapons reach only adjacent orthogonal tiles
+  else
+    local delta_x = math.abs(atk_pos.x - def_pos.x)
+    local delta_y = math.abs(atk_pos.y - def_pos.y)
+    return delta_x + delta_y == 1
+  end
+
 end
 
 
@@ -212,6 +237,7 @@ function Control:kill_character(character_name)
   end
   character.stats.status.dead = true
   sfml_character_set_active(character_name, false)
+  sfml_clear_schedule(character_name)
   sfml_push_log(character.stats.name .. ' - Dead!')
   sfml_loop_animation(character_name, 'dead')
   sfml_push_character_to_bottom(character_name)
@@ -538,8 +564,8 @@ function Control:character_on_interact(target_name, interactor_name)
     local character = self.characters[target_name].data
     if character.stats.status.dead then
       print(target_name .. ' is dead')
-    elseif character.enemy then
-      sfml_attack(interactor_name, target_name)
+    -- elseif character.enemy then
+    --   sfml_attack(interactor_name, target_name)
     else
       self.characters[target_name]:on_interact(interactor_name)
     end

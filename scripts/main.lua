@@ -13,6 +13,9 @@ local control = Control:new(nil)
 
 
 
+function is_enemy(character_name)
+  return control:is_enemy(character_name)
+end
 
 
 function cast_magic(magic_name, caster, center, tiles, targets)

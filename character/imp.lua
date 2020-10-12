@@ -24,6 +24,7 @@ end
 
 
 function Imp:on_turn()
+  Character.on_turn(self)
 end
 
 function Imp:on_idle()

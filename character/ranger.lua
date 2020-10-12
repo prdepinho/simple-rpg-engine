@@ -33,9 +33,11 @@ end
 
 
 function Ranger:on_turn()
-  -- local position = sfml_get_character_position(M.name)
-  -- print('ranger position: x: ' .. tostring(position.x) .. ', y: ' .. tostring(position.y))
-  -- print('Ranger on turn')
+  if self.data.enemy then
+    if self:is_player_in_sight(4) then
+      self:attack("player")
+    end
+  end
 end
 
 function Ranger:on_idle()
@@ -45,11 +47,9 @@ function Ranger:on_idle()
   else
     self:idle_walk(self.name)
   end
-  -- print('Ranger on idle')
 end
 
 function Ranger:on_interact(interactor_name)
-  -- print('interact with ranger')
 end
 
 return Ranger
