@@ -54,7 +54,7 @@ void InteractionAction::execute(GameScreen *screen) {
 
 
 AttackAction::AttackAction(Character *attacker, Character *defender)
-	: Action(3), attacker(attacker), defender(defender) {}
+	: Action(4), attacker(attacker), defender(defender) {}
 
 void AttackAction::execute(GameScreen *screen) {
 	if (attacker && defender) {
@@ -65,7 +65,7 @@ void AttackAction::execute(GameScreen *screen) {
 
 
 MagicAction::MagicAction(std::string magic_name, Character *caster, sf::Vector2i center, std::vector<sf::Vector2i> tiles, std::vector<std::string> targets, int inventory_index)
-	: Action(4), magic_name(magic_name), caster(caster), tiles(tiles), targets(targets), center(center), inventory_index(inventory_index) {}
+	: Action(3), magic_name(magic_name), caster(caster), tiles(tiles), targets(targets), center(center), inventory_index(inventory_index) {}
 
 void MagicAction::execute(GameScreen *screen) {
 	if (caster) {

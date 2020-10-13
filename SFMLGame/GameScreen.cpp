@@ -213,24 +213,12 @@ bool GameScreen::update(float elapsed_time) {
 			// determine the scheduled actions that take place this turn
 			for (Character *character : characters) {
 
-				// if (character != player_character) {
-					try {
-						_game.get_lua()->on_turn(*character);
-					}
-					catch (LuaException &e) {
-						Log("Lua Error: %s", e.what());
-					}
-				// }
+				_game.get_lua()->on_turn(*character);
 				Action *action = character->next_action();
 
 				if (character != player_character) {
 					if (action == nullptr) {  // character is idle.
-						try {
-							_game.get_lua()->on_idle(*character);
-						}
-						catch (LuaException &e) {
-							Log("Lua Error: %s", e.what());
-						}
+						_game.get_lua()->on_idle(*character);
 						action = character->next_action();
 					}
 				}
@@ -250,15 +238,11 @@ bool GameScreen::update(float elapsed_time) {
 			while (!turn_actions.empty()) {
 				Action *action = turn_actions.top();
 
-				if (action->get_priority() >= current_priority) {
-					current_priority = action->get_priority();
-					round_actions.push_back(action);
-					turn_actions.pop();
-				}
-				else {
+				round_actions.push_back(action);
+				turn_actions.pop();
+				if (action->get_priority() > 1) {
 					break;
 				}
-
 			}
 
 			// execute them
@@ -515,8 +499,12 @@ void GameScreen::poll_events(float elapsed_time) {
 		return;
 	}
 
-	if (block_input)
+	if (block_input) {
 		return;
+	}
+	if (player_busy) {
+		Log("Player busy");
+	}
 	try {
 		// constant input handler
 		if (!player_busy) {
@@ -591,6 +579,9 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	
 	if (block_input) {
 		return nullptr;
+	}
+	if (player_busy) {
+		Log("Player busy");
 	}
 
 	if (current_mode) {
@@ -1041,6 +1032,9 @@ void GameScreen::move_character(Character &character, Direction direction) {
 	if (!can_move(character, position.x, position.y)) {
 		character.clear_schedule();
 		Log("%s Clear", character.get_name().c_str());
+		if (&character == player_character) {
+			player_busy = false;
+		}
 		return;
 	}
 
