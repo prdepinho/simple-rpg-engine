@@ -238,7 +238,7 @@ void ItemButton::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 
 StatsPanel::StatsPanel(int x, int y) {
 	set_position(x, y);
-	set_dimensions(150, (32 * 2) + 2);
+	set_dimensions(130, (32 * 2) + 2);
 }
 
 void StatsPanel::create() {
@@ -283,7 +283,9 @@ void StatsPanel::refresh(Character *character) {
 	int y = get_y() + margin;
 
 	std::string character_name = stats.get_string("name");
-	fonts.back().draw_line(x, y, character_name, sf::Color::Black);
+	int level = stats.get_int("level");
+
+	fonts.back().draw_line(x, y, character_name + ", level " + std::to_string(level), sf::Color::Black);
 
 	y += fonts.back().line_height();
 
@@ -321,7 +323,8 @@ void StatsPanel::refresh(Character *character) {
 	}
 	
 
-	y = get_x() + margin;
+	// y = get_x() + margin * 3;
+	y = portrait.get_y();
 	x += 40;
 	{
 		std::string item_name = stats.get_string("weapon.name");
