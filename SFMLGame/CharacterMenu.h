@@ -7,6 +7,7 @@
 #include "font.h"
 #include "consts.h"
 #include "Item.h"
+#include "TextArea.h"
 
 class Inventory;
 class CharacterMenu;
@@ -111,10 +112,14 @@ public:
 	static void refresh_stats();
 	void exit();
 	Inventory &get_inventory() { return inventory; }
+	void display_info(Item item);
 private:
 	Character *character;
 	StatsPanel stats_panel;
 	Inventory inventory;
+	TextArea name_area;
+	TextArea info_area;
+	int margin = 5;
 };
 
 

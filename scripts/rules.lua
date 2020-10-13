@@ -45,18 +45,18 @@ end
 -- weapons & armor
 
 rules.armor = {
-  unarmored         = { name = "Unarmored",       ac = 10, type = "unarmored", icon = {x = 16*0, y = 16*4} },
+  unarmored         = { name = "Unarmored",       ac = 10, type = "unarmored", icon = {x = 16*0, y = 16*4}, desc = "" },
 
-  gambeson          = { name = "Gambeson",        ac = 14, type = "padded", icon = {x = 16*1, y = 16*4} },
-  leather_armor     = { name = "Leather Armor",   ac = 14, type = "padded", icon = {x = 16*2, y = 16*4} },
+  gambeson          = { name = "Gambeson",        ac = 14, type = "padded", icon = {x = 16*1, y = 16*4}, desc = "Textile armor made of many layers of linen." },
+  leather_armor     = { name = "Leather Armor",   ac = 14, type = "padded", icon = {x = 16*2, y = 16*4}, desc = "Boiled hardened leather plates." },
 
-  chain_mail        = { name = "Hauberk",         ac = 16, type = "chain", icon = {x = 16*3, y = 16*4} },
-  scale_mail        = { name = "Scale Armor",     ac = 16, type = "chain", icon = {x = 16*4, y = 16*4} },
+  chain_mail        = { name = "Hauberk",         ac = 16, type = "chain", icon = {x = 16*3, y = 16*4}, desc = "Riveted chain armor worn over padding." },
+  scale_mail        = { name = "Scale Armor",     ac = 16, type = "chain", icon = {x = 16*4, y = 16*4}, desc = "Armor made of bronze scales." },
 
-  brigantine        = { name = "Brigantine",      ac = 18, type = "plate", icon = {x = 16*6, y = 16*4} },
-  lamellar_armor    = { name = "Lamellar Armor",  ac = 18, type = "plate", icon = {x = 16*7, y = 16*4} },
-  cuirass           = { name = "Cuirass",         ac = 18, type = "plate", icon = {x = 16*8, y = 16*4} },
-  full_plate_mail   = { name = "Full Plate Mail", ac = 20, type = "plate", icon = {x = 16*9, y = 16*4} },
+  brigantine        = { name = "Brigantine",      ac = 18, type = "plate", icon = {x = 16*6, y = 16*4}, desc = "Steel plates attached to a textile cover." },
+  lamellar_armor    = { name = "Lamellar Armor",  ac = 18, type = "plate", icon = {x = 16*7, y = 16*4}, desc = "Armor made of square steel parts sown together." },
+  cuirass           = { name = "Cuirass",         ac = 18, type = "plate", icon = {x = 16*8, y = 16*4}, desc = "Steel armor for the breast and the back." },
+  full_plate_mail   = { name = "Full Plate Mail", ac = 20, type = "plate", icon = {x = 16*9, y = 16*4}, desc = "Complete steel knightly armor." },
 }
 
 rules.shield = {
@@ -84,54 +84,54 @@ rules.shield = {
 -- gun: guns ignore some armor class when attacking.
 -- cutthroat: may be used to inflict coup de grace.
 rules.weapon = {
-  unarmed       = { name = "Unarmed",       damage = "1d1",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, bulk = 0, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*0, y = 16*0} },
+  unarmed       = { name = "Unarmed",       damage = "1d1",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, bulk = 0, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*0, y = 16*0}, desc = "" },
 
-  hammer        = { name = "Warhammer",     damage = "1d4",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 4, plate = 4 }, hands = 1, ac_bonus = 0, size = 2, weight = 3, bulk = 2, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*1, y = 16*1} },
-  dagger        = { name = "Dagger",        damage = "1d4",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, bulk = 1, ranged = false, range = 0, gun = false, cutthroat = true , ammo_category = "",              icon = {x = 16*1, y = 16*0} },
+  hammer        = { name = "Warhammer",     damage = "1d4",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 4, plate = 4 }, hands = 1, ac_bonus = 0, size = 2, weight = 3, bulk = 2, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*1, y = 16*1}, desc = "Bludgeoning weapon with a sharp tip effective against armor." },
+  dagger        = { name = "Dagger",        damage = "1d4",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, bulk = 1, ranged = false, range = 0, gun = false, cutthroat = true , ammo_category = "",              icon = {x = 16*1, y = 16*0}, desc = "A small, handy blade." },
 
-  mace          = { name = "Mace",          damage = "1d6",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 2, plate = 2 }, hands = 1, ac_bonus = 0, size = 2, weight = 2, bulk = 2, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*4, y = 16*1} },
-  spear         = { name = "Spear",         damage = "1d6",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 3, weight = 1, bulk = 3, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*1, y = 16*2} },
-  quarterstaff  = { name = "Quarterstaff",  damage = "1d6",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 3, weight = 1, bulk = 3, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*5, y = 16*1} },
+  mace          = { name = "Mace",          damage = "1d6",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 2, plate = 2 }, hands = 1, ac_bonus = 0, size = 2, weight = 2, bulk = 2, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*4, y = 16*1}, desc = "A steel bludgeon with knobs to penetrate armor." },
+  spear         = { name = "Spear",         damage = "1d6",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 3, weight = 1, bulk = 3, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*1, y = 16*2}, desc = "Two handed thrusting weapon." },
+  quarterstaff  = { name = "Quarterstaff",  damage = "1d6",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 3, weight = 1, bulk = 3, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*5, y = 16*1}, desc = "Bludgeoning two handed weapon." },
 
-  axe           = { name = "Axe",           damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 0 }, hands = 1, ac_bonus = 0, size = 2, weight = 3, bulk = 2, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*3, y = 16*1} },
-  arming_sword  = { name = "Arming Sword",  damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 1, size = 2, weight = 1, bulk = 2, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*2, y = 16*0} },
-  falcion       = { name = "Falcion",       damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 4, chain = 0, plate = 0 }, hands = 1, ac_bonus = 1, size = 2, weight = 1, bulk = 2, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*5, y = 16*0} },
-  morning_star  = { name = "Morning Star",  damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 0 }, hands = 2, ac_bonus = 0, size = 3, weight = 3, bulk = 2, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*2, y = 16*1} },
-  maul          = { name = "Maul",          damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 2, plate = 2 }, hands = 2, ac_bonus = 0, size = 3, weight = 3, bulk = 3, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*3, y = 16*2} },
-  estoc         = { name = "Estoc",         damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 4, chain = 4, plate = 2 }, hands = 2, ac_bonus = 1, size = 3, weight = 1, bulk = 2, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*6, y = 16*0} },
-  pike          = { name = "Pike",          damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 4, weight = 2, bulk = 3, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*2, y = 16*2} },
+  axe           = { name = "Axe",           damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 0 }, hands = 1, ac_bonus = 0, size = 2, weight = 3, bulk = 2, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*3, y = 16*1}, desc = "A top-heavy bladed weapon." },
+  arming_sword  = { name = "Arming Sword",  damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 1, size = 2, weight = 1, bulk = 2, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*2, y = 16*0}, desc = "Knightly one handed sword." },
+  falcion       = { name = "Falcion",       damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 4, chain = 0, plate = 0 }, hands = 1, ac_bonus = 1, size = 2, weight = 1, bulk = 2, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*5, y = 16*0}, desc = "Broad, sharp, single-edged blade." },
+  morning_star  = { name = "Morning Star",  damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 0 }, hands = 2, ac_bonus = 0, size = 3, weight = 3, bulk = 2, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*2, y = 16*1}, desc = "A mace with spikes." },
+  maul          = { name = "Maul",          damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 2, plate = 2 }, hands = 2, ac_bonus = 0, size = 3, weight = 3, bulk = 3, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*3, y = 16*2}, desc = "A two handed hammer." },
+  estoc         = { name = "Estoc",         damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 4, chain = 4, plate = 2 }, hands = 2, ac_bonus = 1, size = 3, weight = 1, bulk = 2, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*6, y = 16*0}, desc = "A long sword with a sharp point used for thrusting" },
+  pike          = { name = "Pike",          damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 4, weight = 2, bulk = 3, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*2, y = 16*2}, desc = "A long spear." },
 
-  long_sword    = { name = "Long Sword",    damage = "1d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 2 }, hands = 2, ac_bonus = 1, size = 3, weight = 1, bulk = 2, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*3, y = 16*0} },
-  bill          = { name = "Bill",          damage = "1d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 4, weight = 2, bulk = 3, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*4, y = 16*2} },
-  halberd       = { name = "Halberd",       damage = "1d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 0 }, hands = 2, ac_bonus = 0, size = 4, weight = 2, bulk = 3, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*5, y = 16*2} },
-  pollaxe       = { name = "Pollaxe",       damage = "1d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 4 }, hands = 2, ac_bonus = 0, size = 4, weight = 3, bulk = 3, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*6, y = 16*2} },
-  bec_de_corbin = { name = "Bec de Corbin", damage = "1d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 4 }, hands = 2, ac_bonus = 0, size = 4, weight = 3, bulk = 3, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*7, y = 16*2} },
+  long_sword    = { name = "Long Sword",    damage = "1d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 2 }, hands = 2, ac_bonus = 1, size = 3, weight = 1, bulk = 2, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*3, y = 16*0}, desc = "Long, two-handed knightly sword." },
+  bill          = { name = "Bill",          damage = "1d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 4, weight = 2, bulk = 3, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*4, y = 16*2}, desc = "Bladed pole arm with a hook." },
+  halberd       = { name = "Halberd",       damage = "1d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 0 }, hands = 2, ac_bonus = 0, size = 4, weight = 2, bulk = 3, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*5, y = 16*2}, desc = "Bladed pole arm with a lance point." },
+  pollaxe       = { name = "Pollaxe",       damage = "1d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 4 }, hands = 2, ac_bonus = 0, size = 4, weight = 3, bulk = 3, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*6, y = 16*2}, desc = "Knightly pole arm with a hammer head and an axe head." },
+  bec_de_corbin = { name = "Bec de Corbin", damage = "1d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 4 }, hands = 2, ac_bonus = 0, size = 4, weight = 3, bulk = 3, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*7, y = 16*2}, desc = "Pole arm with a hammer head and a long sharp tip." },
 
-  sling         = { name = "Sling",         damage = "1d4",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 1, ranged = true,  range = 6, gun = false, cutthroat = false, ammo_category = "sling_bullet",  icon = {x = 16*1, y = 16*3} },
-  short_bow     = { name = "Short Bow",     damage = "1d6",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 3, ranged = true,  range = 6, gun = false, cutthroat = false, ammo_category = "arrow",         icon = {x = 16*2, y = 16*3} },
-  long_bow      = { name = "Long Bow",      damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 3, ranged = true,  range = 6, gun = false, cutthroat = false, ammo_category = "arrow",         icon = {x = 16*3, y = 16*3} },
-  crossbow      = { name = "Crossbow",      damage = "1d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 3, ranged = true,  range = 6, gun = false, cutthroat = false, ammo_category = "bolt",          icon = {x = 16*4, y = 16*3} },
-  pistol        = { name = "Pistol",        damage = "1d12", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 0, weight = 0, bulk = 2, ranged = true,  range = 6, gun = true,  cutthroat = false, ammo_category = "gun_bullet",    icon = {x = 16*5, y = 16*3} },
-  arquebus      = { name = "Arquebus",      damage = "1d12", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 3, ranged = true,  range = 6, gun = true,  cutthroat = false, ammo_category = "gun_bullet",    icon = {x = 16*6, y = 16*3} },
+  sling         = { name = "Sling",         damage = "1d4",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 1, ranged = true,  range = 6, gun = false, cutthroat = false, ammo_category = "sling_bullet",  icon = {x = 16*1, y = 16*3}, desc = "Ranged weapon that shoots sling bullets." },
+  short_bow     = { name = "Short Bow",     damage = "1d6",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 3, ranged = true,  range = 6, gun = false, cutthroat = false, ammo_category = "arrow",         icon = {x = 16*2, y = 16*3}, desc = "Ranged weapon that shoots arrows." },
+  long_bow      = { name = "Long Bow",      damage = "1d8",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 3, ranged = true,  range = 6, gun = false, cutthroat = false, ammo_category = "arrow",         icon = {x = 16*3, y = 16*3}, desc = "Powerful ranged weapon that shoots arrows." },
+  crossbow      = { name = "Crossbow",      damage = "1d10", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 3, ranged = true,  range = 6, gun = false, cutthroat = false, ammo_category = "bolt",          icon = {x = 16*4, y = 16*3}, desc = "Ranged weapon that shoots crossbow bolts." },
+  pistol        = { name = "Pistol",        damage = "1d12", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 0, weight = 0, bulk = 2, ranged = true,  range = 6, gun = true,  cutthroat = false, ammo_category = "gun_bullet",    icon = {x = 16*5, y = 16*3}, desc = "One handed weapon that shoots gun bullets." },
+  arquebus      = { name = "Arquebus",      damage = "1d12", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 3, ranged = true,  range = 6, gun = true,  cutthroat = false, ammo_category = "gun_bullet",    icon = {x = 16*6, y = 16*3}, desc = "Two handed weapon that shoots gun bullets." },
 }
 
 rules.ammo = {
-  no_ammo       = { name = "No ammo",       category = "",              damage_bonus = 0, range_bonus = 0, stack_capacity = 20, icon = {x = 16*0, y = 16*1}, projectile_effect = "" },
-  arrow         = { name = "Arrow",         category = "arrow",         damage_bonus = 0, range_bonus = 0, stack_capacity = 20, icon = {x = 16*2, y = 16*5}, projectile_effect = "arrow" },
-  bolt          = { name = "Bolt",          category = "bolt",          damage_bonus = 0, range_bonus = 0, stack_capacity = 20, icon = {x = 16*3, y = 16*0}, projectile_effect = "bolt" },
-  sling_bullet  = { name = "Sling Bullet",  category = "sling_bullet",  damage_bonus = 0, range_bonus = 0, stack_capacity = 20, icon = {x = 16*4, y = 16*0}, projectile_effect = "bullet" },
-  gun_bullet    = { name = "Gun Bullet",    category = "gun_bullet",    damage_bonus = 0, range_bonus = 0, stack_capacity = 20, icon = {x = 16*5, y = 16*0}, projectile_effect = "bullet" },
+  no_ammo       = { name = "No ammo",       category = "",              damage_bonus = 0, range_bonus = 0, stack_capacity = 20, icon = {x = 16*0, y = 16*1}, projectile_effect = "",       desc = "" },
+  arrow         = { name = "Arrow",         category = "arrow",         damage_bonus = 0, range_bonus = 0, stack_capacity = 20, icon = {x = 16*2, y = 16*5}, projectile_effect = "arrow",  desc = "Arrows for bows." },
+  bolt          = { name = "Bolt",          category = "bolt",          damage_bonus = 0, range_bonus = 0, stack_capacity = 20, icon = {x = 16*3, y = 16*0}, projectile_effect = "bolt",   desc = "Crossbow bolts." },
+  sling_bullet  = { name = "Sling Bullet",  category = "sling_bullet",  damage_bonus = 0, range_bonus = 0, stack_capacity = 20, icon = {x = 16*4, y = 16*0}, projectile_effect = "bullet", desc = "Bullets for the sling." },
+  gun_bullet    = { name = "Gun Bullet",    category = "gun_bullet",    damage_bonus = 0, range_bonus = 0, stack_capacity = 20, icon = {x = 16*5, y = 16*0}, projectile_effect = "bullet", desc = "Bullets and gunpowder for guns." },
 }
 
 rules.item = {
-  no_item = { name = "No item", icon = {x = 16*0, y = 16*3}},
-  key = {name = "Key", icon = {x = 16*0, y = 16*9}},
+  no_item = { name = "No item", icon = {x = 16*0, y = 16*3}, desc = "" },
+  key = {name = "Key", icon = {x = 16*0, y = 16*9},          desc = "" },
 }
 
 rules.spell = {
-  magic_missile = { name = "Magic Missile", category = "arcane", stack_capacity = 10, icon = {x = 16*0, y = 16*6}, range_radius = 6, effect_radius = 0, usable = true, use = "magic_missile" },
-  fireball      = { name = "Fireball",      category = "arcane", stack_capacity = 10, icon = {x = 16*9, y = 16*6}, range_radius = 6, effect_radius = 3, usable = true, use = "fireball" },
-  cure_wounds   = { name = "Cure Wounds",   category = "divine", stack_capacity = 10, icon = {x = 16*0, y = 16*8}, range_radius = 1, effect_radius = 0, usable = true, use = "cure_wounds" },
+  magic_missile = { name = "Magic Missile", category = "arcane", stack_capacity = 10, icon = {x = 16*0, y = 16*6}, range_radius = 6, effect_radius = 0, usable = true, use = "magic_missile", desc = "Cast an energy missile that causes 1d4+1 damage to a target." },
+  fireball      = { name = "Fireball",      category = "arcane", stack_capacity = 10, icon = {x = 16*9, y = 16*6}, range_radius = 6, effect_radius = 3, usable = true, use = "fireball",      desc = "Cast a fire projectile that explodes causing 6d6 damage to an area." },
+  cure_wounds   = { name = "Cure Wounds",   category = "divine", stack_capacity = 10, icon = {x = 16*0, y = 16*8}, range_radius = 1, effect_radius = 0, usable = true, use = "cure_wounds",   desc = "Recover hit points to the amount of 2d4 + wisdom modifier." },
 }
 
 

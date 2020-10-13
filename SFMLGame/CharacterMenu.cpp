@@ -532,6 +532,7 @@ void Inventory::create() {
 		k++;
 	}
 }
+
 Component *Inventory::on_key_pressed(sf::Keyboard::Key key) {
 	Component *interacted = Panel::on_key_pressed(key);
 	if (interacted) {
@@ -575,6 +576,10 @@ Component *Inventory::on_key_pressed(sf::Keyboard::Key key) {
 void Inventory::set_cursor(int i) {
 	get_screen()->select(buttons[i]);
 	cursor = i;
+
+	Item item = buttons[i].get_item();
+	CharacterMenu &menu = CharacterMenu::get();
+	menu.display_info(item);
 }
 
 void Inventory::move_cursor(Direction direction) {
@@ -749,6 +754,24 @@ void CharacterMenu::show(Screen &screen, Character *character, Callback callback
 	menu.add_component(menu.inventory);
 
 
+	x = menu.margin * 2 + menu.get_x();
+	y = menu.margin * 2 + menu.get_y() + menu.get_height() - 9 * 7;
+	int w = menu.get_width() - 70;
+	int lines = 1;
+	int max_lines = 1;
+	menu.name_area = TextArea(x, y, w, lines, max_lines);
+	menu.name_area.create();
+	menu.add_component(menu.name_area);
+
+	x = menu.margin + menu.get_x();
+	y = menu.margin + menu.get_y() + menu.get_height() - 8 * 5;
+	w = menu.get_width() - 50;
+	lines = 4;
+	max_lines = 10;
+	menu.info_area = TextArea(x, y, w, lines, max_lines);
+	menu.info_area.create();
+	menu.add_component(menu.info_area);
+
 	screen.add_component(menu);
 
 	menu.inventory.set_cursor(0);
@@ -766,6 +789,14 @@ void CharacterMenu::exit() {
 	call_functions(this);
 }
 
+void CharacterMenu::display_info(Item item) {
+	auto stats = _game.get_lua()->item_stats(item.get_name(), item.get_type());
+	name_area.clear();
+	name_area.push_line(stats.get_string("name", "noname"));
+
+	info_area.clear();
+	info_area.push_line(stats.get_string("desc", "nodescription"));
+}
 
 
 
