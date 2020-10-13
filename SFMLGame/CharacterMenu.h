@@ -177,4 +177,5 @@ private:
 	Font hp;
 	Font ac;
 	Font status;
+	std::vector<Icon> status_icons;
 };

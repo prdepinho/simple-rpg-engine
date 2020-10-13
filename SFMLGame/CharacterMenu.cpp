@@ -1108,27 +1108,28 @@ void Overlay::refresh(Screen &screen, Character *character) {
 	}
 
 	// status
-#if false
-	{
-		LuaObject *status = stats.get_object("status");
-		std::stringstream ss;
-		if (status->get_boolean("hold"))
-			ss << "hold ";
-		if (status->get_boolean("poison"))
-			ss << "posn ";
-		if (status->get_boolean("invisible"))
-			ss << "invs ";
-		if (status->get_boolean("fear"))
-			ss << "fear ";
-		if (status->get_boolean("charm"))
-			ss << "chrm ";
-		if (status->get_boolean("dead"))
-			ss << "dead ";
-		y += overlay.ac.line_height();
-		overlay.status.draw_line(x, y, ss.str(), sf::Color::Black);
-	}
-#endif
 
+	for (Icon &icon : overlay.status_icons) {
+		overlay.remove_component(icon);
+	}
+
+	y += overlay.ac.line_height();
+	LuaObject *status_list = stats.get_object("status");
+	for (auto it = status_list->begin(); it != status_list->end(); ++it) {
+		std::string status_name = it->first;
+		LuaObject character_status = it->second;
+
+		LuaObject status = _game.get_lua()->item_stats(status_name, "status");
+		std::string name = status.get_string("name");
+		int pix_x = status.get_int("icon.x");
+		int pix_y = status.get_int("icon.y");
+
+		;
+		overlay.status_icons.push_back(Icon(x, y, 8, 8, pix_x, pix_y));
+		overlay.status_icons.back().create();
+		overlay.add_component(overlay.status_icons.back());
+		x += 9;
+	}
 
 	screen.add_component(overlay);
 }

@@ -116,7 +116,6 @@ Component* Button::on_click() {
 		rval = rval || function(this);
 		// function(this);
 	}
-	std::cout << "Rval: " << rval << std::endl;
 	if (rval) {
 		Resources::get_sound("crrreee.wav")->play();
 	}

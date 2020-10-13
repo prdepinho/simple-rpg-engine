@@ -964,7 +964,6 @@ std::string Lua::call_function_recursive(std::vector<std::string> path, std::str
 
 					if (lua_isstring(state, -1)) {
 						rval = lua_tostring(state, -1);
-						std::cout << "rval: " << rval << std::endl;
 					}
 					lua_pop(state, 1);
 
@@ -1125,7 +1124,6 @@ std::string LuaObject::call_function(std::string name, LuaObject arg) {
 
 			if (lua_isstring(state, -1)) {
 				rval = lua_tostring(state, -1);
-				// std::cout << "rval: " << rval << std::endl;
 			}
 			lua_pop(state, 1);
 			lua_pop(state, 1);
@@ -1141,7 +1139,6 @@ std::string LuaObject::call_function(std::string name, LuaObject arg) {
 
 			if (lua_isstring(state, -1)) {
 				rval = lua_tostring(state, -1);
-				std::cout << "rval: " << rval << std::endl;
 			}
 			lua_pop(state, 1);
 		}

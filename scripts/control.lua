@@ -67,6 +67,7 @@ function Control:set_status(target_name, status_name, challenge_level, duration)
     msg = msg .. ' (' .. duration .. ' turns)'
   end
   sfml_push_log(msg)
+  sfml_refresh_overlay()
 end
 
 function Control:remove_status(character, status_name)
@@ -88,6 +89,7 @@ function Control:remove_status(character, status_name)
     end
   end
   sfml_loop_animation(character, animation)
+  sfml_refresh_overlay()
 end
 
 function Control:update_status(name)
@@ -280,6 +282,9 @@ function Control:attack(attacker_name, defender_name)
 end  
 
 function Control:damage_character(character_name, damage)
+  if damage < 0 then
+    damage = 0
+  end
   local character = self.characters[character_name].data
   character.stats.current_hp = character.stats.current_hp - damage
 
@@ -296,6 +301,9 @@ function Control:damage_character(character_name, damage)
 end
 
 function Control:heal_character(character_name, heal)
+  if heal < 0 then
+    heal = 0
+  end
   local character = self.characters[character_name].data
   character.stats.current_hp = character.stats.current_hp + heal
 
@@ -313,7 +321,7 @@ function Control:kill_character(character_name)
   for key, status in pairs(character.stats.status) do
     character.stats.status[key] = false
   end
-  character.stats.status.dead = { duration = -1, challenge_level = 0 }
+  self:set_status(character_name, 'dead', 0, -1)
   sfml_character_set_active(character_name, false)
   sfml_clear_schedule(character_name)
   sfml_push_log(character.stats.name .. ' - Dead!')

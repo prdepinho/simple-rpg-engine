@@ -130,16 +130,16 @@ rules.item = {
 
 rules.spell = {
   magic_missile = { name = "Magic Missile", category = "arcane", stack_capacity = 10, icon = {x = 16*0,  y = 16*6}, range_radius = 6, effect_radius = 0, usable = true, use = "magic_missile", desc = "Cast an energy missile that causes 1d4+1 damage to a target. No Save." },
-  fireball      = { name = "Fireball",      category = "arcane", stack_capacity = 10, icon = {x = 16*9,  y = 16*6}, range_radius = 6, effect_radius = 3, usable = true, use = "fireball",      desc = "Cast a fire projectile that explodes causing 6d6 damage to an area. Dexterity Save to halve." },
-  poison        = { name = "Poison",        category = "arcane", stack_capacity = 10, icon = {x = 16*14, y = 16*6}, range_radius = 6, effect_radius = 2, usable = true, use = "poison"     ,   desc = "Cast a poisonous gas to an area. The poison does 1d4 damage each turn. Constitution Save to negate." },
+  fireball      = { name = "Fireball",      category = "arcane", stack_capacity = 10, icon = {x = 16*9,  y = 16*6}, range_radius = 6, effect_radius = 3, usable = true, use = "fireball",      desc = "Cast a projectile that explodes causing 6d6 damage to an area. Dex save to halve." },
+  poison        = { name = "Poison",        category = "arcane", stack_capacity = 10, icon = {x = 16*14, y = 16*6}, range_radius = 6, effect_radius = 2, usable = true, use = "poison"     ,   desc = "Cast a poisonous gas to an area. Does 1 damage each turn. Con save to negate." },
   cure_wounds   = { name = "Cure Wounds",   category = "divine", stack_capacity = 10, icon = {x = 16*0,  y = 16*8}, range_radius = 1, effect_radius = 0, usable = true, use = "cure_wounds",   desc = "Recover hit points to the amount of 2d4 + Wisdom Modifier." },
 }
 
 
 rules.status = {
   hold          = {name = "Hold",           on_start = "",              on_end = "",            on_update = "",               character_animation = "stand",  icon = { x = 8*26, y = 8*0 } },
-  poison        = {name = "Poison",         on_start = "poison_start",  on_end = "poison_end",  on_update = "poison_update",  character_animation = "down",   icon = { x = 8*27, y = 8*0 } },
-  invisible     = {name = "Invisible",      on_start = "",              on_end = "",            on_update = "",               character_animation = "",       icon = { x = 8*28, y = 8*0 } },
+  invisible     = {name = "Invisible",      on_start = "",              on_end = "",            on_update = "",               character_animation = "",       icon = { x = 8*27, y = 8*0 } },
+  poison        = {name = "Poison",         on_start = "poison_start",  on_end = "poison_end",  on_update = "poison_update",  character_animation = "down",   icon = { x = 8*28, y = 8*0 } },
   fear          = {name = "Fear",           on_start = "",              on_end = "",            on_update = "",               character_animation = "down",   icon = { x = 8*29, y = 8*0 } },
   charm         = {name = "Charm",          on_start = "",              on_end = "",            on_update = "",               character_animation = "down",   icon = { x = 8*30, y = 8*0 } },
   dead          = {name = "Dead",           on_start = "",              on_end = "",            on_update = "",               character_animation = "dead",   icon = { x = 8*31, y = 8*0 } },

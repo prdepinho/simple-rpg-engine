@@ -162,7 +162,7 @@ end
 function Magic:poison_update(character)
   print('on poison update')
   local position = sfml_get_character_position(character)
-  local damage = rules.roll_dice('1d4')
+  local damage = rules.roll_dice('1d1')
   self.control:damage_character(character, damage)
   sfml_push_log(character .. ' - received ' .. tostring(damage) .. ' damage')
   sfml_show_floating_message(tostring(damage), position.x, position.y)
