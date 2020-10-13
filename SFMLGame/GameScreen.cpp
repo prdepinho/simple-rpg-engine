@@ -83,7 +83,7 @@ void GameScreen::create() {
 		log_box = LogBox(8);
 		log_box.create();
 		add_component(log_box);
-		log_box.hide();
+		// log_box.hide();
 	}
 
 	state = CHARACTER_CONTROL;
@@ -213,14 +213,14 @@ bool GameScreen::update(float elapsed_time) {
 			// determine the scheduled actions that take place this turn
 			for (Character *character : characters) {
 
-				if (character != player_character) {
+				// if (character != player_character) {
 					try {
 						_game.get_lua()->on_turn(*character);
 					}
 					catch (LuaException &e) {
 						Log("Lua Error: %s", e.what());
 					}
-				}
+				// }
 				Action *action = character->next_action();
 
 				if (character != player_character) {

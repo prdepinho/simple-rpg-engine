@@ -75,7 +75,6 @@ function Magic:cure_wounds(caster, center, tiles, targets)
       self.control:heal_character(character_name, heal)
     end
   end
-
 end
 
 
@@ -99,23 +98,13 @@ function Magic:fireball_blast(caster, center, tiles, targets)
 
     local stats = self.control.characters[character_name].data.stats
     local challenge = rules.arcane_spell_challenge(stats)
-    local save = rules.save_vs_breath(stats, challenge)
+    local save = rules.roll_dex_save(stats, challenge)
 
-    local sign = ''
-    if save.bonus >= 0 then
-      sign = '+ '
-    end
+    self.control:log_save(character_name, 'Dex', save)
 
-    local save_msg = character_name .. ' - save vs. breath:'
-    save_msg = save_msg .. ' (' .. save.roll .. ') ' .. sign .. save.bonus
-    save_msg = save_msg .. ' vs. ' .. challenge
     if save.success then
-      save_msg = save_msg .. ' Passed!'
       damage = math.ceil(damage / 2)
-    else
-      save_msg = save_msg .. ' Failed!'
     end
-    sfml_push_log(save_msg)
 
     local hit_msg = character_name .. ' - has taken '
     hit_msg = hit_msg .. damage .. ' damage'
@@ -126,6 +115,57 @@ function Magic:fireball_blast(caster, center, tiles, targets)
 
     self.control:damage_character(character_name, damage)
   end
+end
+
+
+function Magic:poison(caster, center, tiles, targets)
+  sfml_push_log(caster .. ' - casts ' .. rules.spell.poison.name)
+  local caster_stats = self.control.characters[caster].data.stats
+
+  for index, character_name in ipairs(targets) do
+
+    local position = sfml_get_character_position(character_name)
+    sfml_start_fireworks("poison", position.x, position.y)
+
+    local stats = self.control.characters[character_name].data.stats
+    if not stats.status.dead then
+
+      local challenge = rules.arcane_spell_challenge(caster_stats)
+      local save = rules.roll_con_save(stats, challenge)
+
+      self.control:log_save(character_name, 'Con', save)
+
+      if save.success then
+        sfml_show_floating_message("saved", position.x, position.y)
+      else 
+        sfml_show_floating_message(rules.status.poison.name, position.x, position.y)
+
+        local duration = rules.roll_dice("3d6")
+        duration = duration + rules.arcane_spell_bonus(caster_stats)
+        duration = 2
+
+        self.control:set_status(character_name, "poison", challange, duration)
+      end
+
+    end
+  end
+end
+
+function Magic:poison_start(character)
+  print('on poison start')
+end
+
+function Magic:poison_end(character)
+  print('on poison end')
+end
+
+function Magic:poison_update(character)
+  print('on poison update')
+  local position = sfml_get_character_position(character)
+  local damage = rules.roll_dice('1d4')
+  self.control:damage_character(character, damage)
+  sfml_push_log(character .. ' - received ' .. tostring(damage) .. ' damage')
+  sfml_show_floating_message(tostring(damage), position.x, position.y)
 end
 
 return Magic

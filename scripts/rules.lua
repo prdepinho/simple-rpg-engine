@@ -129,11 +129,27 @@ rules.item = {
 }
 
 rules.spell = {
-  magic_missile = { name = "Magic Missile", category = "arcane", stack_capacity = 10, icon = {x = 16*0, y = 16*6}, range_radius = 6, effect_radius = 0, usable = true, use = "magic_missile", desc = "Cast an energy missile that causes 1d4+1 damage to a target." },
-  fireball      = { name = "Fireball",      category = "arcane", stack_capacity = 10, icon = {x = 16*9, y = 16*6}, range_radius = 6, effect_radius = 3, usable = true, use = "fireball",      desc = "Cast a fire projectile that explodes causing 6d6 damage to an area." },
-  cure_wounds   = { name = "Cure Wounds",   category = "divine", stack_capacity = 10, icon = {x = 16*0, y = 16*8}, range_radius = 1, effect_radius = 0, usable = true, use = "cure_wounds",   desc = "Recover hit points to the amount of 2d4 + wisdom modifier." },
+  magic_missile = { name = "Magic Missile", category = "arcane", stack_capacity = 10, icon = {x = 16*0,  y = 16*6}, range_radius = 6, effect_radius = 0, usable = true, use = "magic_missile", desc = "Cast an energy missile that causes 1d4+1 damage to a target. No Save." },
+  fireball      = { name = "Fireball",      category = "arcane", stack_capacity = 10, icon = {x = 16*9,  y = 16*6}, range_radius = 6, effect_radius = 3, usable = true, use = "fireball",      desc = "Cast a fire projectile that explodes causing 6d6 damage to an area. Dexterity Save to halve." },
+  poison        = { name = "Poison",        category = "arcane", stack_capacity = 10, icon = {x = 16*14, y = 16*6}, range_radius = 6, effect_radius = 2, usable = true, use = "poison"     ,   desc = "Cast a poisonous gas to an area. The poison does 1d4 damage each turn. Constitution Save to negate." },
+  cure_wounds   = { name = "Cure Wounds",   category = "divine", stack_capacity = 10, icon = {x = 16*0,  y = 16*8}, range_radius = 1, effect_radius = 0, usable = true, use = "cure_wounds",   desc = "Recover hit points to the amount of 2d4 + Wisdom Modifier." },
 }
 
+
+rules.status = {
+  hold          = {name = "Hold",           on_start = "",              on_end = "",            on_update = "",               character_animation = "stand",  icon = { x = 8*26, y = 8*0 } },
+  poison        = {name = "Poison",         on_start = "poison_start",  on_end = "poison_end",  on_update = "poison_update",  character_animation = "down",   icon = { x = 8*27, y = 8*0 } },
+  invisible     = {name = "Invisible",      on_start = "",              on_end = "",            on_update = "",               character_animation = "",       icon = { x = 8*28, y = 8*0 } },
+  fear          = {name = "Fear",           on_start = "",              on_end = "",            on_update = "",               character_animation = "down",   icon = { x = 8*29, y = 8*0 } },
+  charm         = {name = "Charm",          on_start = "",              on_end = "",            on_update = "",               character_animation = "down",   icon = { x = 8*30, y = 8*0 } },
+  dead          = {name = "Dead",           on_start = "",              on_end = "",            on_update = "",               character_animation = "dead",   icon = { x = 8*31, y = 8*0 } },
+  bless         = {name = "Bless",          on_start = "",              on_end = "",            on_update = "",               character_animation = "",       icon = { x = 8*26, y = 8*1 } },
+  true_seeing   = {name = "True Seeing",    on_start = "",              on_end = "",            on_update = "",               character_animation = "",       icon = { x = 8*27, y = 8*1 } },
+  resist_poison = {name = "Resist Poison",  on_start = "",              on_end = "",            on_update = "",               character_animation = "",       icon = { x = 8*28, y = 8*1 } },
+  courage       = {name = "Courage",        on_start = "",              on_end = "",            on_update = "",               character_animation = "",       icon = { x = 8*29, y = 8*1 } },
+  armor         = {name = "Armor",          on_start = "",              on_end = "",            on_update = "",               character_animation = "",       icon = { x = 8*30, y = 8*1 } },
+  strength      = {name = "Strength",       on_start = "",              on_end = "",            on_update = "",               character_animation = "",       icon = { x = 8*31, y = 8*1 } },
+}
 
 function rules.new_character() 
   local stats = {
@@ -164,12 +180,24 @@ function rules.new_character()
       {code = "", name = "no_item", type = "item"}, 
       {code = "", name = "no_item", type = "item"}, 
     },
-    status = { hold = false, poison = false, invisible = false, fear = false, charm = false, dead = false },
+    status = { 
+      hold                  = nil,  -- vs str
+      poison                = nil,  -- vs con
+      invisible             = nil,  -- vs int
+      fear                  = nil,  -- vs wis
+      charm                 = nil,  -- vs cha
+      dead                  = nil,
+      bless                 = nil,
+      true_seeing           = nil,
+      resist_poison         = nil,
+      courage               = nil,
+      armor                 = nil,
+      strength              = nil,
+    },
     portrait = {x = 0, y = 192},
   }
   return stats
 end
-
 
 function rules.set_ability_scores(stats, str, dex, con, int, wis, cha)
   local previous_con = stats.ability.con
@@ -524,27 +552,27 @@ function rules.save(ability_score, challenge)
   return result
 end
 
-function rules.save_vs_hold(stats, challenge)
+function rules.roll_str_save(stats, challenge)
   return rules.save(stats.ability.str, challenge)
 end
 
-function rules.save_vs_breath(stats, challenge)
+function rules.roll_dex_save(stats, challenge)
   return rules.save(stats.ability.dex, challenge)
 end
 
-function rules.save_vs_poison(stats, challenge)
+function rules.roll_con_save(stats, challenge)
   return rules.save(stats.ability.con, challenge)
 end
 
-function rules.save_vs_illusion(stats, challenge)
+function rules.roll_int_save(stats, challenge)
   return rules.save(stats.ability.int, challenge)
 end
 
-function rules.save_vs_fear(stats, challenge)
+function rules.roll_wis_save(stats, challenge)
   return rules.save(stats.ability.wis, challenge)
 end
 
-function rules.save_vs_charm(stats, challenge)
+function rules.roll_cha_save(stats, challenge)
   return rules.save(stats.ability.cha, challenge)
 end
 

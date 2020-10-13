@@ -27,15 +27,15 @@ end
 
 
 function Player:on_turn()
-  -- local position = sfml_get_character_position(M.name)
-  -- print('mumu position: x: ' .. tostring(position.x) .. ', y: ' .. tostring(position.y))
+  -- overwrite and do nothing, I'm the player character
 end
 
 function Player:on_idle()
+  -- overwrite and do nothing, I'm the player character
 end
 
 function Player:on_interact(interactor_name)
-  -- print('interact with mumu')
+  -- overwrite and do nothing, I'm the player character
 end
 
 return Player

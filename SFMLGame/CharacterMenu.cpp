@@ -1108,6 +1108,7 @@ void Overlay::refresh(Screen &screen, Character *character) {
 	}
 
 	// status
+#if false
 	{
 		LuaObject *status = stats.get_object("status");
 		std::stringstream ss;
@@ -1126,6 +1127,7 @@ void Overlay::refresh(Screen &screen, Character *character) {
 		y += overlay.ac.line_height();
 		overlay.status.draw_line(x, y, ss.str(), sf::Color::Black);
 	}
+#endif
 
 
 	screen.add_component(overlay);

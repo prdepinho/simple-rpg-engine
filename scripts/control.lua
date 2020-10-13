@@ -27,7 +27,85 @@ function Control:new(o)
 end
 
 
+function Control:log_save(character, type, result)
+  local sign = ''
+  if result.bonus >= 0 then
+    sign = "+"
+  end
+  local msg = character .. ' - ' .. type .. ' save: ' .. tostring(result.roll)
+  msg = msg .. ' ' .. sign .. tostring(result.bonus)
+  msg = msg .. ' vs. ' .. tostring(result.challenge) .. '. '
 
+  if result.success then
+    msg = msg .. 'Passed!'
+  else
+    msg = msg .. 'Failed!'
+  end
+  
+  sfml_push_log(msg)
+end
+
+
+function Control:set_status(target_name, status_name, challenge_level, duration)
+  self.characters[target_name].data.stats.status[status_name] = { 
+    duration = duration,
+    challenge_level = challenge_level,
+  }
+  local status = rules.status[status_name]
+
+  local animation = status.character_animation
+  if animation ~= "" then
+    sfml_loop_animation(target_name, animation)
+  end
+
+  if status.on_start ~= '' then
+    self.magic[status.on_start](self.magic, name)
+  end
+
+  local msg = target_name .. ' - ' .. status.name
+  if duration > 0 then
+    msg = msg .. ' (' .. duration .. ' turns)'
+  end
+  sfml_push_log(msg)
+end
+
+function Control:remove_status(character, status_name)
+  print('remove status: ' .. status_name)
+
+  local status = rules.status[status_name]
+  if status.on_end ~= "" then
+    self.magic[status.on_end](self.magic, name)
+  end
+
+  local stats = self.characters[character].data.stats
+  stats.status[status_name] = nil
+
+  local animation = 'walk'
+  for status_name, character_status in pairs(stats.status) do
+    if rules.status[status_name].character_animation ~= "" then
+      animation = rules.status[status_name].character_animation
+      break
+    end
+  end
+  sfml_loop_animation(character, animation)
+end
+
+function Control:update_status(name)
+  local stats = self.characters[name].data.stats
+  if not stats.status.dead then
+    for status_name, character_status in pairs(stats.status) do
+      local status = rules.status[status_name]
+      if status.on_update ~= '' then
+        self.magic[status.on_update](self.magic, name)
+      end
+      character_status.duration = character_status.duration - 1
+      if character_status.duration == 0 then
+        self:remove_status(name, status_name)
+      else
+      end
+    end
+  end
+end
 
 function Control:is_enemy(character_name)
   return self.characters[character_name].data.enemy
@@ -235,7 +313,7 @@ function Control:kill_character(character_name)
   for key, status in pairs(character.stats.status) do
     character.stats.status[key] = false
   end
-  character.stats.status.dead = true
+  character.stats.status.dead = { duration = -1, challenge_level = 0 }
   sfml_character_set_active(character_name, false)
   sfml_clear_schedule(character_name)
   sfml_push_log(character.stats.name .. ' - Dead!')
@@ -577,6 +655,7 @@ end
 function Control:character_on_turn(name, id)
   if self.characters[name] ~= nil then
     if not self.characters[name].data.stats.status.dead then
+      self:update_status(name)
       self.characters[name]:on_turn()
     end
   else

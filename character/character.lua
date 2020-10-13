@@ -18,6 +18,10 @@ end
 
 -- called every turn
 function Character:on_turn()
+  if self.data.stats.status.poison then
+
+  end
+
   if self.data.enemy then
     if self:is_player_in_sight(4) then
       self:attack("player")
