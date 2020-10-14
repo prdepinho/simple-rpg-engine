@@ -8,7 +8,7 @@
 
 class FloatingMessage : public Component {
 public:
-	FloatingMessage(std::string message = "", int tile_x=0, int tile_y=0, sf::Color color=sf::Color::White);
+	FloatingMessage(std::string message = "", int tile_x=0, int tile_y=0, float speed=0.05f, sf::Color color=sf::Color::White);
 	virtual ~FloatingMessage();
 	virtual void create() override;
 	virtual void update(float elapsed_time) override;
@@ -19,6 +19,6 @@ private:
 	Font font;
 	sf::Color color;
 	float count = 0.f;
-	float speed = 0.05f; // seconds for update
+	float speed; // seconds for update
 };
 

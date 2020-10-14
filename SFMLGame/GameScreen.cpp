@@ -247,7 +247,7 @@ bool GameScreen::update(float elapsed_time) {
 
 			// execute them
 			for (Action *action : round_actions) {
-				Log("Executing action: %s", action->to_string().c_str());
+				// Log("Executing action: %s", action->to_string().c_str());
 				action->execute(this);
 				delete action;
 			}
@@ -502,9 +502,6 @@ void GameScreen::poll_events(float elapsed_time) {
 	if (block_input) {
 		return;
 	}
-	if (player_busy) {
-		Log("Player busy");
-	}
 	try {
 		// constant input handler
 		if (!player_busy) {
@@ -579,9 +576,6 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	
 	if (block_input) {
 		return nullptr;
-	}
-	if (player_busy) {
-		Log("Player busy");
 	}
 
 	if (current_mode) {
@@ -1031,7 +1025,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 	pick_tile(character, position);
 	if (!can_move(character, position.x, position.y)) {
 		character.clear_schedule();
-		Log("%s Clear", character.get_name().c_str());
+		// Log("%s Clear", character.get_name().c_str());
 		if (&character == player_character) {
 			player_busy = false;
 		}
@@ -1481,8 +1475,9 @@ void GameScreen::add_floating_message(std::string message, int tile_x, int tile_
 	int x = coords.x;
 	int y = coords.y;
 	sf::Color color = sf::Color::White;
+	float speed = 0.05f;
 
-	FloatingMessage *floating_message = new FloatingMessage(message, x, y, color);
+	FloatingMessage *floating_message = new FloatingMessage(message, x, y, speed, color);
 	{
 		floating_message->disactivate();
 

@@ -742,7 +742,7 @@ public:
 		std::string message = lua_tostring(state, -3);
 		int tile_x = (int)lua_tointeger(state, -2);
 		int tile_y = (int)lua_tointeger(state, -1);
-		screen->add_floating_message(message, tile_x, tile_y, _game.get_turn_duration() * 5);
+		screen->add_floating_message(message, tile_x, tile_y, _game.get_turn_duration());
 		return 1;
 	}
 
