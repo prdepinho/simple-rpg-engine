@@ -100,6 +100,20 @@ animations.types = {
     },
   },
 
+  invisibility = {
+    basic = defaults,
+    duration = 2 / turns_per_second,
+    sound = "crrreee.wav",
+    coordinates = {
+      x = 0,
+      y = 16 * 4
+    },
+    animation = {
+      fps = 2 * turns_per_second,
+      frames = {0, 1, 2, 3},
+    },
+  },
+
   bullet = {
     basic = defaults,
     duration = 1 / turns_per_second,

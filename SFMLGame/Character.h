@@ -50,6 +50,8 @@ public:
 	void set_active(bool active);
 	bool is_active() const { return active; }
 
+	void set_transparency(int value);
+
 private:
 	std::queue<Action*> schedule;  // actions are created and deleted by GameScreen class, unless all schedule is discarted or character deleted.
 

@@ -18,10 +18,6 @@ end
 
 -- called every turn
 function Character:on_turn()
-  if self.data.stats.status.poison then
-
-  end
-
   if self.data.enemy then
     if self:is_player_in_sight(4) then
       self:attack("player")
@@ -61,6 +57,11 @@ function Character:idle_walk(radius)
 end
 
 function Character:is_player_in_sight(radius)
+  
+  if self.control.characters.player.data.stats.status.invisible then
+    radius = 0
+  end
+
   local src = sfml_get_character_position(self.name)
   local dst = sfml_get_player_position()
   return sfml_is_in_line_of_sight(src.x, src.y, dst.x, dst.y, radius)

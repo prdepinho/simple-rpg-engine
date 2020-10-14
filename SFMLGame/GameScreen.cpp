@@ -700,6 +700,18 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			case sf::Keyboard::N:
 				change_map("room", 4, 2);
 				break;
+			case sf::Keyboard::B: {
+					static bool flag = true;
+					if (flag) {
+						player_character->set_transparency(127);
+						flag = false;
+					}
+					else {
+						player_character->set_transparency(255);
+						flag = true;
+					}
+				}
+				break;
 			case sf::Keyboard::G:
 				std::cout << _game.get_lua()->stack_dump() << std::endl;
 				break;
@@ -729,7 +741,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				if (camera_follow) {
 					center_game_view(player_character->getPosition());
 				}
-				update_field_of_vision(player_character);
+				//update_field_of_vision(player_character);
 				// update fog of war
 				map.get_fog_of_war().update_fog(player_character->get_field_of_vision());
 				Log("Vision radius: %d", vision_radius);
@@ -741,7 +753,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				if (camera_follow) {
 					center_game_view(player_character->getPosition());
 				}
-				update_field_of_vision(player_character);
+				// update_field_of_vision(player_character);
 				// update fog of war
 				map.get_fog_of_war().update_fog(player_character->get_field_of_vision());
 				Log("Vision radius: %d", vision_radius);
@@ -1805,4 +1817,15 @@ bool GameScreen::is_picked_by_me(Character &actor, sf::Vector2i tile) {
 
 bool GameScreen::is_enemy(Character &character) {
 	return _game.get_lua()->is_enemy(character);
+}
+
+void GameScreen::set_vision_radius(int radius) {
+	vision_radius = radius;
+	update_field_of_vision(player_character);
+	// update camera
+	if (camera_follow) {
+		center_game_view(player_character->getPosition());
+	}
+	// update fog of war
+	map.get_fog_of_war().update_fog(player_character->get_field_of_vision());
 }

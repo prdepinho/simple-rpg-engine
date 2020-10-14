@@ -59,7 +59,7 @@ function Control:set_status(target_name, status_name, challenge_level, duration)
   end
 
   if status.on_start ~= '' then
-    self.magic[status.on_start](self.magic, name)
+    self.magic[status.on_start](self.magic, target_name)
   end
 
   local msg = target_name .. ' - ' .. status.name
@@ -75,7 +75,7 @@ function Control:remove_status(character, status_name)
 
   local status = rules.status[status_name]
   if status.on_end ~= "" then
-    self.magic[status.on_end](self.magic, name)
+    self.magic[status.on_end](self.magic, character)
   end
 
   local stats = self.characters[character].data.stats

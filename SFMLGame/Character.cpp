@@ -98,3 +98,21 @@ void Character::set_active(bool active) {
 	clear_schedule();
 	this->active = active; 
 }
+
+
+void Character::set_transparency(int value) {
+	for (auto &frame : frames) {
+		frame[0].color = sf::Color(255, 255, 255, value);
+		frame[1].color = sf::Color(255, 255, 255, value);
+		frame[2].color = sf::Color(255, 255, 255, value);
+		frame[3].color = sf::Color(255, 255, 255, value);
+	}
+	for (auto it = animations.begin(); it != animations.end(); ++it) {
+		for (auto &frame : it->second.frames) {
+			frame[0].color = sf::Color(255, 255, 255, value);
+			frame[1].color = sf::Color(255, 255, 255, value);
+			frame[2].color = sf::Color(255, 255, 255, value);
+			frame[3].color = sf::Color(255, 255, 255, value);
+		}
+	}
+}

@@ -142,7 +142,6 @@ function Magic:poison(caster, center, tiles, targets)
 
         local duration = rules.roll_dice("3d6")
         duration = duration + rules.arcane_spell_bonus(caster_stats)
-        duration = 2
 
         self.control:set_status(character_name, "poison", challange, duration)
       end
@@ -152,20 +151,61 @@ function Magic:poison(caster, center, tiles, targets)
 end
 
 function Magic:poison_start(character)
-  print('on poison start')
 end
 
 function Magic:poison_end(character)
-  print('on poison end')
 end
 
 function Magic:poison_update(character)
-  print('on poison update')
   local position = sfml_get_character_position(character)
   local damage = rules.roll_dice('1d1')
   self.control:damage_character(character, damage)
   sfml_push_log(character .. ' - received ' .. tostring(damage) .. ' damage')
   sfml_show_floating_message(tostring(damage), position.x, position.y)
+end
+
+
+function Magic:invisibility(caster, center, tiles, targets)
+  sfml_push_log(caster .. ' - casts ' .. rules.spell.invisibility.name)
+  local caster_stats = self.control.characters[caster].data.stats
+
+  for index, character_name in ipairs(targets) do
+    local position = sfml_get_character_position(character_name)
+    sfml_start_fireworks("invisibility", position.x, position.y)
+
+    sfml_show_floating_message(rules.status.invisible.name, position.x, position.y)
+    
+    local duration = rules.roll_dice("3d6")
+    duration = duration + rules.arcane_spell_bonus(caster_stats)
+
+    self.control:set_status(character_name, "invisible", 0, duration)
+  end
+end
+
+function Magic:invisible_start(character)
+  print(character)
+  local stats = self.control.characters[character].data.stats
+  stats.bonus.ac = stats.bonus.ac + 2
+  stats.bonus.to_hit = stats.bonus.to_hit + 2
+  if character == 'player' then
+    sfml_character_set_transparency(character, 127)
+    sfml_refresh_overlay()
+  else
+    sfml_character_set_transparency(character, 0)
+  end
+end
+
+function Magic:invisible_end(character)
+  local stats = self.control.characters[character].data.stats
+  stats.bonus.ac = stats.bonus.ac - 2
+  stats.bonus.to_hit = stats.bonus.to_hit - 2
+  if character == 'player' then
+    sfml_refresh_overlay()
+  end
+  sfml_character_set_transparency(character, 255)
+end
+
+function Magic:invisible_update(character)
 end
 
 return Magic

@@ -179,6 +179,8 @@ public:
 	bool is_picked_by_me(Character &actor, sf::Vector2i tile);
 
 	bool is_enemy(Character &character);
+
+	void set_vision_radius(int radius);
 private:
 
 	std::priority_queue<Action*, std::vector<Action*>, ActionComparison> turn_actions; // the actions that take place in a single turn

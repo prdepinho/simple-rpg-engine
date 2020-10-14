@@ -839,6 +839,23 @@ public:
 			character->set_active(active);
 		return 1;
 	}
+
+	static int sfml_character_set_transparency(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		std::string character_name = lua_tostring(state, -2);
+		int value = (int)lua_tointeger(state, -1);
+		Character *character = screen->get_character_by_name(character_name);
+		if (character)
+			character->set_transparency(value);
+		return 1;
+	}
+
+	static int sfml_set_player_vision_radius(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		int radius = (int)lua_tointeger(state, -1);
+		screen->set_vision_radius(radius);
+		return 1;
+	}
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -887,6 +904,8 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_start_fireworks", LuaFunction::sfml_start_fireworks);
 	lua_register(lua.get_state(), "sfml_refresh_overlay", LuaFunction::sfml_refresh_overlay);
 	lua_register(lua.get_state(), "sfml_character_set_active", LuaFunction::sfml_character_set_active);
+	lua_register(lua.get_state(), "sfml_character_set_transparency", LuaFunction::sfml_character_set_transparency);
+	lua_register(lua.get_state(), "sfml_set_player_vision_radius", LuaFunction::sfml_set_player_vision_radius);
 
 
 }
