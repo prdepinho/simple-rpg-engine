@@ -207,6 +207,12 @@ public:
 		return 1;
 	}
 
+	static int sfml_game_end(lua_State *state) {
+		_game.get_lua()->reset_data();
+		_game.change_to_main_menu_screen();
+		return 1;
+	}
+
 	static int sfml_get_map_width(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		lua_pushnumber(state, screen->get_map().get_tile_width());
@@ -462,6 +468,30 @@ public:
 		try {
 			std::string filename = lua_tostring(state, -1);
 			Resources::play_sound(filename);
+		}
+		catch (ResourcesException &e) {
+			Log(e.what());
+			Resources::play_sound(Default::SOUND);
+		}
+		return 1;
+	}
+
+	static int sfml_play_music(lua_State *state) {
+		try {
+			std::string filename = lua_tostring(state, -1);
+			Resources::play_music(filename);
+		}
+		catch (ResourcesException &e) {
+			Log(e.what());
+			Resources::play_sound(Default::SOUND);
+		}
+		return 1;
+	}
+
+	static int sfml_loop_music(lua_State *state) {
+		try {
+			std::string filename = lua_tostring(state, -1);
+			Resources::loop_music(filename);
 		}
 		catch (ResourcesException &e) {
 			Log(e.what());
@@ -856,6 +886,45 @@ public:
 		screen->set_vision_radius(radius);
 		return 1;
 	}
+
+	static int sfml_put_character_on_tile(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		std::string name = lua_tostring(state, -3);
+		int x = (int)lua_tointeger(state, -2);
+		int y = (int)lua_tointeger(state, -1);
+		Character *character = screen->get_character_by_name(name);
+		if (character)
+			screen->put_character_on_tile(*character, x, y);
+		return 1;
+	}
+
+	static int sfml_add_icon(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		std::string key = lua_tostring(state, -5);
+		int pix_x = (int)lua_tointeger(state, -4);
+		int pix_y = (int)lua_tointeger(state, -3);
+		int dst_x = (int)lua_tointeger(state, -2);
+		int dst_y = (int)lua_tointeger(state, -1);
+		screen->add_icon(key, pix_x, pix_y, dst_x, dst_y);
+		return 1;
+	}
+
+	static int sfml_write_line(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		std::string key = lua_tostring(state, -4);
+		std::string line = lua_tostring(state, -3);
+		int dst_x = (int)lua_tointeger(state, -2);
+		int dst_y = (int)lua_tointeger(state, -1);
+		screen->write_line(key, line, dst_x, dst_y);
+		return 1;
+	}
+
+	static int sfml_remove_mapped_component(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		std::string key = lua_tostring(state, -1);
+		screen->remove_mapped_component(key);
+		return 1;
+	}
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -863,6 +932,7 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_test", LuaFunction::sfml_test);
 
 	lua_register(lua.get_state(), "sfml_game_start", LuaFunction::sfml_game_start);
+	lua_register(lua.get_state(), "sfml_game_end", LuaFunction::sfml_game_end);
 	lua_register(lua.get_state(), "sfml_get_map_width", LuaFunction::sfml_get_map_width);
 	lua_register(lua.get_state(), "sfml_get_map_height", LuaFunction::sfml_get_map_height);
 	lua_register(lua.get_state(), "sfml_get_map", LuaFunction::sfml_get_map);
@@ -879,6 +949,8 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_lock_door", LuaFunction::sfml_lock_door);
 	lua_register(lua.get_state(), "sfml_set_open_tile", LuaFunction::sfml_set_open_tile);
 	lua_register(lua.get_state(), "sfml_play_sound", LuaFunction::sfml_play_sound);
+	lua_register(lua.get_state(), "sfml_play_music", LuaFunction::sfml_play_music);
+	lua_register(lua.get_state(), "sfml_loop_music", LuaFunction::sfml_loop_music);
 	lua_register(lua.get_state(), "sfml_change_floor_texture", LuaFunction::sfml_change_floor_texture);
 	lua_register(lua.get_state(), "sfml_change_ceiling_texture", LuaFunction::sfml_change_ceiling_texture);
 	lua_register(lua.get_state(), "sfml_text_box", LuaFunction::sfml_text_box);
@@ -906,6 +978,10 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_character_set_active", LuaFunction::sfml_character_set_active);
 	lua_register(lua.get_state(), "sfml_character_set_transparency", LuaFunction::sfml_character_set_transparency);
 	lua_register(lua.get_state(), "sfml_set_player_vision_radius", LuaFunction::sfml_set_player_vision_radius);
+	lua_register(lua.get_state(), "sfml_put_character_on_tile", LuaFunction::sfml_put_character_on_tile);
+	lua_register(lua.get_state(), "sfml_add_icon", LuaFunction::sfml_add_icon);
+	lua_register(lua.get_state(), "sfml_remove_mapped_component", LuaFunction::sfml_remove_mapped_component);
+	lua_register(lua.get_state(), "sfml_write_line", LuaFunction::sfml_write_line);
 
 
 }

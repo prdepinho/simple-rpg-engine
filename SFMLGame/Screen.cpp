@@ -29,10 +29,11 @@ void Screen::draw()
 	window->draw(container);
 }
 
-void Screen::add_component(Component &component) {
+void Screen::add_component(Component &component, bool select_component) {
 	container.add_component(component);
 	component.set_screen(this);
-	select(component);
+	if (select_component)
+		select(component);
 }
 
 void Screen::remove_component(Component &component) {

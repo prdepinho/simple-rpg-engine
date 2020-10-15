@@ -178,6 +178,7 @@ void Resources::play_music(std::string filename) {
 void Resources::loop_music(std::string filename) {
 	stop_music();
 	sf::Music *music = get_music(filename);
+	music->play();
 	music->setLoop(true);
 	get().playing_music = music;
 }

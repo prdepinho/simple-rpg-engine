@@ -3,4 +3,6 @@ music = {
   "happy.wav",
   "mendelssohn.wav",
   "theme.wav",
+  "marching.wav",
+  "dungeon.wav",
 }

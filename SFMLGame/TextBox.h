@@ -6,7 +6,8 @@
 
 class OptionButton : public Button {
 public:
-	OptionButton(std::string name = "", std::string dst = "") : Button(name), dst(dst) {}
+	OptionButton(std::string name = "", std::string dst = "")
+		: Button(name), dst(dst)  {}
 	std::string get_dst() const { return dst; }
 private:
 	std::string dst;

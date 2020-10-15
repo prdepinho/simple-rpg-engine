@@ -22,7 +22,7 @@ public:
 	virtual void draw();
 	virtual void destroy();
 
-	void add_component(Component &component);
+	void add_component(Component &component, bool select_component = true);
 	void remove_component(Component &component);
 
 	void select(Component &component);

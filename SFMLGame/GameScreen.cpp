@@ -59,11 +59,12 @@ void GameScreen::create() {
 		characters.push_back(player_character);
 	}
 
-	// load map
+	// log box
 	{
-		std::string filename = json.get_string("map");
-		next_map = filename;
-		load_map();
+		log_box = LogBox(8);
+		log_box.create();
+		add_component(log_box);
+		log_box.hide();
 	}
 
 	// debug console
@@ -78,21 +79,20 @@ void GameScreen::create() {
 		debug_console.hide();
 	}
 
-	// log box
-	{
-		log_box = LogBox(8);
-		log_box.create();
-		add_component(log_box);
-		// log_box.hide();
-	}
-
 	state = CHARACTER_CONTROL;
-	Overlay::refresh(*this, player_character);
+	// Overlay::refresh(*this, player_character);
+
+	select(container);
+
+	// load map
+	{
+		std::string filename = json.get_string("map");
+		next_map = filename;
+		load_map();
+	}
 
 	// update fog of war
 	map.get_fog_of_war().update_fog(player_character->get_field_of_vision()); // doesn't have to be here. It only update once a turn.
-
-	select(container);
 
 	game_view.setSize(sf::Vector2f((float) game->get_resolution_width(), (float) game->get_resolution_height()));
 	game_view.setCenter(sf::Vector2f((float) player_character->get_x(), (float) player_character->get_y()));
@@ -1828,4 +1828,24 @@ void GameScreen::set_vision_radius(int radius) {
 	}
 	// update fog of war
 	map.get_fog_of_war().update_fog(player_character->get_field_of_vision());
+}
+
+void GameScreen::add_icon(std::string key, int pix_x, int pix_y, int dst_x, int dst_y) {
+	mapped_components[key] = new Icon(dst_x, dst_y, 16, 16, pix_x, pix_y);
+	mapped_components[key]->create();
+	add_component(*mapped_components[key], false);
+}
+
+void GameScreen::write_line(std::string key, std::string line, int dst_x, int dst_y) {
+	Font *font = new Font();
+	font->set_texture(Resources::get_texture("gui"));
+	font->draw_line(dst_x, dst_y, line, sf::Color::White);
+	add_component(*font, false);
+	mapped_components[key] = font;
+}
+
+void GameScreen::remove_mapped_component(std::string key) {
+	remove_component(*mapped_components[key]);
+	delete mapped_components[key];
+	mapped_components[key] = nullptr;
 }

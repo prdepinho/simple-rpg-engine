@@ -26,10 +26,11 @@ TextBox::TextBox(std::string text, int x, int y, int width, int height, float sp
 	text_width = width;
 	text_lines = font.split_lines(text, text_width);
 	visible_lines = std::vector<std::string>(text_lines.size());
-	font_lines = std::vector<Font>(height, Font());
 
 
 	page_lines = (size_t) height;
+	font_lines = std::vector<Font>(page_lines, Font());
+
 	start_line = 0;
 	end_line = std::min(visible_lines.size(), page_lines);
 }
@@ -41,7 +42,7 @@ void TextBox::create() {
 	font.set_texture(Resources::get_texture("gui"));
 	add_component(font);
 
-	total_height = (font.line_height() * page_lines) + (vertical_margin * 3);
+	total_height = (font.line_height() * (page_lines - 1)) + (vertical_margin * 3);
 
 	for (Font &font_line : font_lines) {
 		font_line.set_texture(Resources::get_texture("gui"));
@@ -77,11 +78,11 @@ void TextBox::update(float elapsed_time) {
 	// open window vertically
 	if (!completely_open) {
 		int increase = (int)std::ceil(open_speed * elapsed_time);
-		// Log("height: %d, increase: %d", get_height(), increase);
+		//Log("height: %d, increase: %d", get_height(), increase);
 
 		if (increase + get_height() >= total_height) {
 			completely_open = true;
-			set_dimensions(get_width(), get_height());
+			set_dimensions(get_width(), total_height);
 		}
 		else
 			set_dimensions(get_width(), get_height() + increase);
@@ -368,11 +369,11 @@ void DialogueBox::update(float elapsed_time) {
 	// open window vertically
 	if (!completely_open) {
 		int increase = (int)std::ceil(open_speed * elapsed_time);
-		// Log("height: %d, increase: %d", get_height(), increase);
+		Log("height: %d, increase: %d", get_height(), increase);
 
 		if (increase + get_height() >= total_height) {
 			completely_open = true;
-			set_dimensions(get_width(), get_height());
+			set_dimensions(get_width(), total_height);
 		}
 		else
 			set_dimensions(get_width(), get_height() + increase);
@@ -514,7 +515,7 @@ void DialogueBox::show(LuaObject dialogue, Screen &screen, Callback callback, bo
 	int x = (_game.get_resolution_width() / 2) - (dialogue_box.get_width() / 2);
 	int y = x;
 	if (box_at_bottom) {
-		y = _game.get_resolution_height() - dialogue_box.total_height;
+		y = _game.get_resolution_height() - dialogue_box.total_height - dialogue_box.vertical_margin;
 	}
 	dialogue_box.set_position(x, y);
 	screen.add_component(dialogue_box);
@@ -542,7 +543,8 @@ void DialogueBox::next() {
 			std::string text = "";
 			switch (block->get_token("text")->get_type()) {
 			case LuaObject::Type::FUNCTION:
-				text = _game.get_lua()->call_table_function(block, "text");
+				// text = _game.get_lua()->call_table_function(block, "text");
+				text = block->call_function("text");
 				break;
 			case LuaObject::Type::STRING:
 				text = block->get_string("text");
@@ -585,8 +587,22 @@ void DialogueBox::next() {
 			show_options = true;
 		}
 		else {
+#if false
 			this->go_to = block->get_string("go_to");
-			std::cout << "goto: " << go_to << std::endl;
+#else
+			// go_to
+			{
+				switch (block->get_token("go_to")->get_type()) {
+				case LuaObject::Type::FUNCTION:
+					this->go_to = block->call_function("go_to");
+					break;
+				case LuaObject::Type::STRING:
+					this->go_to = block->get_string("go_to");
+					break;
+				}
+			}
+#endif
+			std::cout << "goto: " << this->go_to << std::endl;
 		}
 	}
 }

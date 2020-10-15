@@ -181,6 +181,10 @@ public:
 	bool is_enemy(Character &character);
 
 	void set_vision_radius(int radius);
+
+	void add_icon(std::string key, int pix_x, int pix_y, int dst_x, int dst_y);
+	void write_line(std::string key, std::string line, int dst_x, int dst_y);
+	void remove_mapped_component(std::string key);
 private:
 
 	std::priority_queue<Action*, std::vector<Action*>, ActionComparison> turn_actions; // the actions that take place in a single turn
@@ -239,6 +243,8 @@ private:
 	} gui_status;
 
 	LogBox log_box;
+
+	std::map<std::string, Component*> mapped_components;
 
 	enum {
 		CHARACTER_CONTROL,
