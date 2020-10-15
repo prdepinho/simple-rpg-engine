@@ -539,6 +539,7 @@ void GameScreen::poll_events(float elapsed_time) {
 			}
 		}
 
+#if false
 		if (selected_component == &container) {
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
 				auto mouse_position = get_mouse_game_position();
@@ -555,6 +556,7 @@ void GameScreen::poll_events(float elapsed_time) {
 				control_mouse_pan_move();
 			}
 		}
+#endif
 
 		window->setView(game_view);
 	}
@@ -597,17 +599,21 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			}
 			break;
 		case Control::B: 
+#if false
 			{
 				select_tile_to_shoot();
 			}
+#endif
 			break;
 		case Control::START:
 			// open menu
+#if false
 			block_input = true;
 			CharacterMenu::show(*this, player_character, [&](Component *) {
 				block_input = false;
 				return true;
 			});
+#endif
 			break;
 		case Control::SELECT:
 			schedule_character_wait(*player_character, 1);
@@ -644,6 +650,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		}
 	}
 
+#if false
 	switch (event.type) {
 	case sf::Event::MouseButtonPressed:
 		if (selected_component == &container) {
@@ -806,6 +813,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		}
 		break;
 	}
+#endif
 	return interacted_component;
 }
 
@@ -1381,6 +1389,7 @@ Character *GameScreen::get_npc_on_tile(int tile_x, int tile_y) {
 			return character;
 		}
 	}
+	return nullptr;
 }
 
 void GameScreen::show_text_box(std::string text) {
@@ -1845,7 +1854,10 @@ void GameScreen::write_line(std::string key, std::string line, int dst_x, int ds
 }
 
 void GameScreen::remove_mapped_component(std::string key) {
-	remove_component(*mapped_components[key]);
-	delete mapped_components[key];
-	mapped_components[key] = nullptr;
+	Component *component = mapped_components[key];
+	if (component) {
+		remove_component(*component);
+		delete component;
+		mapped_components[key] = nullptr;
+	}
 }

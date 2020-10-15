@@ -5,4 +5,5 @@ music = {
   "theme.wav",
   "marching.wav",
   "dungeon.wav",
+  "death.wav",
 }

@@ -28,12 +28,46 @@ function M.is_equipped(item_code)
   return false
 end
 
+function M.steal_items()
+  if #M.stolen_items == 0 and #M.equipment > 0 then
+    print('steal items')
+    for index, item in ipairs(M.equipment) do
+      print('remove ' .. item.name)
+      sfml_remove_mapped_component(item.name)
+    end
+    M.stolen_items = M.equipment
+    M.equipment = {}
+    return true
+  end
+  return false
+end
+
+function M.get_items_back()
+  if #M.stolen_items > 0 then
+    print('get items back')
+    M.equipment = M.stolen_items
+    M.stolen_items = {}
+    for index, item in ipairs(M.equipment) do
+      print('recover ' .. item.name)
+      sfml_add_icon(item.name,
+          item.image.x,
+          item.image.y,
+          0,
+          16 * index
+        )
+    end
+    return true
+  end
+  return false
+end
+
 function M.create()
 
   M.life = 6
   sfml_write_line("life", "Life: " .. M.life, 0, 0)
   M.combat_target = 4
   M.flight_target = 3
+  M.stolen_items = {}
 
   local monsters = {
     {
@@ -160,14 +194,6 @@ function M.create()
   end
 
 
-  for index, monster in ipairs(M.monsters) do
-    print(monster.name)
-    if not monster.no_monster then
-      print(monster.treasure.name)
-    end
-    print(' ')
-  end
-
   M.equipment = {}
 
   sfml_loop_music("dungeon.wav")
@@ -270,11 +296,27 @@ function M.show_monster(lair)
         end,
         go_to = function() 
           if M.result >= M.combat_target then
+            if monster.swallows and M.get_items_back() then
+              return 'get_items_back'
+            end
             return 'victory'
           else
+            if monster.swallows and M.steal_items() then
+              return 'defeat_steal_items'
+            end
             return 'defeat'
           end
         end
+      },
+
+      get_items_back = {
+        text = 'You get your items back.',
+        go_to = 'victory'
+      },
+
+      defeat_steal_items = {
+        text = 'The monster eats your equipment!',
+        go_to = 'defeat'
       },
 
       victory = {
@@ -338,9 +380,17 @@ function M.show_monster(lair)
           if M.result >= M.flight_target then
             return 'escaped'
           else
+            if monster.swallows and M.steal_items() then
+              return 'caught_steal_items'
+            end
             return 'caught'
           end
         end
+      },
+
+      caught_steal_items = {
+        text = 'The monster eats your equipment!',
+        go_to = 'caught'
       },
 
       escaped = {
@@ -367,6 +417,9 @@ function M.show_monster(lair)
 
       dead = {
         text = "You died.",
+        callback = function() 
+          sfml_play_music("death.wav")
+        end,
         go_to = "end_game"
       },
 

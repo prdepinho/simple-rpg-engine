@@ -32,6 +32,7 @@ void ScreenMainMenu::create()
 		i++;
 	}
 
+#if false
 	{
 		Button &button = buttons[i];
 		int y = (10 + i * (button.get_height() + 1));
@@ -46,6 +47,7 @@ void ScreenMainMenu::create()
 		button.create();
 		i++;
 	}
+#endif
 
 #if false
 	{
