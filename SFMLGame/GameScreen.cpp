@@ -491,9 +491,9 @@ void GameScreen::control_mouse_wheel_zoom(float delta, int x, int y) {
 
 
 void GameScreen::poll_events(float elapsed_time) {
+	Screen::poll_events(elapsed_time);
 	if (!window->hasFocus())
 		return;
-	Screen::poll_events(elapsed_time);
 	if (current_mode) {
 		current_mode->poll_events(elapsed_time);
 		return;
@@ -1058,7 +1058,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 		_game.get_lua()->call_event(tile.object_name, "enter_tile", position.x, position.y, character.get_name());
 	}
 	catch (LuaException &e) {
-		// Log("Lua Error: %s", e.what());
+		Log("Lua Error: %s", e.what());
 	}
 
 	{
@@ -1088,7 +1088,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 				_game.get_lua()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_name());
 			}
 			catch (LuaException &e) {
-				// Log("Lua Error: %s", e.what());
+				Log("Lua Error: %s", e.what());
 			}
 			player_busy = false;
 			update_field_of_vision(player_character);
@@ -1114,7 +1114,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 				_game.get_lua()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_name());
 			}
 			catch (LuaException &e) {
-				// Log("Lua Error: %s", e.what());
+				Log("Lua Error: %s", e.what());
 			}
 			update_field_of_vision(&character);
 		});
@@ -1271,7 +1271,7 @@ inline sf::Vector2i GameScreen::character_position(Character &character) {
 // print the character first so that it is not on top of others.
 void GameScreen::push_character_to_bottom(Character &character) {
 	int i = 0;
-	for (; i < characters.size(); i++) {
+	for (; i < (int)characters.size(); i++) {
 		if (characters[i] == &character) {
 			break;
 		}
@@ -1492,9 +1492,9 @@ void GameScreen::add_floating_message(FloatingMessage *fm) {
 
 void GameScreen::add_floating_message(std::string message, int tile_x, int tile_y, float duration) {
 	auto tile_pix_coords = map.get_tile_pix_coords(tile_x, tile_y);
-	auto coords = get_gui_position_over_game(map.get_x() + tile_pix_coords.x, map.get_y() + tile_pix_coords.y);
-	int x = coords.x;
-	int y = coords.y;
+	sf::Vector2f coords = get_gui_position_over_game(map.get_x() + tile_pix_coords.x, map.get_y() + tile_pix_coords.y);
+	int x = (int)coords.x;
+	int y = (int)coords.y;
 	sf::Color color = sf::Color::White;
 	float speed = 0.05f;
 
@@ -1596,8 +1596,8 @@ void GameScreen::cast_missile(std::string firework_type, int tile_src_x, int til
 		Resources::play_sound(sound);
 
 	MissileEffect *effect = new MissileEffect(duration, fireworks, 
-		map.get_x() + src_pix_coords.x, map.get_y() + src_pix_coords.y, 
-		map.get_x() + dst_pix_coords.x, map.get_y() + dst_pix_coords.y);
+		map.get_x() + (int)src_pix_coords.x, map.get_y() + (int)src_pix_coords.y, 
+		map.get_x() + (int)dst_pix_coords.x, map.get_y() + (int)dst_pix_coords.y);
 	effect->set_callback(on_end);
 	auto callback = ([&](Effect *e) {
 		MissileEffect *me = dynamic_cast<MissileEffect*>(e);
@@ -1634,8 +1634,8 @@ void GameScreen::cast_magic_missile(std::string effect_type, std::string caster_
 	}
 
 	MagicMissileEffect *effect = new MagicMissileEffect(duration, fireworks, 
-		map.get_x() + src_pix_coords.x, map.get_y() + src_pix_coords.y, 
-		map.get_x() + dst_pix_coords.x, map.get_y() + dst_pix_coords.y,
+		map.get_x() + (int)src_pix_coords.x, map.get_y() + (int)src_pix_coords.y, 
+		map.get_x() + (int)dst_pix_coords.x, map.get_y() + (int)dst_pix_coords.y,
 		targets, tiles, tile_dst, blast_spell_name, caster_name
 	);
 

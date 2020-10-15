@@ -127,12 +127,11 @@ sf::Vector2f Screen::get_gui_position_over_game(float x, float y) {
 
 void Screen::poll_events(float elapsed_time)
 {
-	if (!window->hasFocus())
-		return;
 	try {
 		sf::Event event;
 		while (window->pollEvent(event)) {
-			handle_event(event, elapsed_time);
+			if (window->hasFocus())
+				handle_event(event, elapsed_time);
 		}
 
 		auto mouse_position = sf::Mouse::getPosition();

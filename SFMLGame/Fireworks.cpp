@@ -23,28 +23,28 @@ void Fireworks::create(std::string type, Direction direction) {
 		for (auto &vertices : frames) {
 			switch (direction) {
 			case Direction::UP:
-				offset_tex_pos(&vertices[0], 0, -fireworks_resources.sprite_height);
+				offset_tex_pos(&vertices[0], 0.f, (float)-fireworks_resources.sprite_height);
 				break;
 			case Direction::DOWN:
-				offset_tex_pos(&vertices[0], 0, fireworks_resources.sprite_height);
+				offset_tex_pos(&vertices[0], 0.f, (float)fireworks_resources.sprite_height);
 				break;
 			case Direction::LEFT:
-				offset_tex_pos(&vertices[0], -fireworks_resources.sprite_width, 0);
+				offset_tex_pos(&vertices[0], (float)-fireworks_resources.sprite_width, 0.f);
 				break;
 			case Direction::RIGHT:
-				offset_tex_pos(&vertices[0], fireworks_resources.sprite_width, 0);
+				offset_tex_pos(&vertices[0], (float)fireworks_resources.sprite_width, 0.f);
 				break;
 			case Direction::UP_RIGHT:
-				offset_tex_pos(&vertices[0], fireworks_resources.sprite_width, -fireworks_resources.sprite_height);
+				offset_tex_pos(&vertices[0], (float)fireworks_resources.sprite_width, (float)-fireworks_resources.sprite_height);
 				break;
 			case Direction::UP_LEFT:
-				offset_tex_pos(&vertices[0], -fireworks_resources.sprite_width, -fireworks_resources.sprite_height);
+				offset_tex_pos(&vertices[0], (float)-fireworks_resources.sprite_width, (float)-fireworks_resources.sprite_height);
 				break;
 			case Direction::DOWN_RIGHT:
-				offset_tex_pos(&vertices[0], fireworks_resources.sprite_width, fireworks_resources.sprite_height);
+				offset_tex_pos(&vertices[0], (float)fireworks_resources.sprite_width, (float)fireworks_resources.sprite_height);
 				break;
 			case Direction::DOWN_LEFT:
-				offset_tex_pos(&vertices[0], -fireworks_resources.sprite_width, fireworks_resources.sprite_height);
+				offset_tex_pos(&vertices[0], (float)-fireworks_resources.sprite_width, (float)fireworks_resources.sprite_height);
 				break;
 			}
 		}

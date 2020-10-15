@@ -110,6 +110,6 @@ void AnimatedEntity::set_animation(std::vector<sf::VertexArray> animation, float
 	vertices = animation[0];
 	frame = 0;
 	count = 0.f;
-	seconds_per_frame = 1 / fps;
+	seconds_per_frame = (fps > 0.f) ? (1.f / fps) : (0.1f);
 }
 
