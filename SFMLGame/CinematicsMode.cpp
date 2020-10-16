@@ -10,7 +10,6 @@ CinematicsMode::CinematicsMode(GameScreen *game_screen, LuaObject dada, std::fun
 	: Mode(), data(data), on_end(on_end) {}
 
 CinematicsMode::~CinematicsMode() {
-	Mode::~Mode(); 
 	if (data.size() > 0) {
 		data.delete_functions();
 	}

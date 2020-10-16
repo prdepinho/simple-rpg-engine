@@ -12,7 +12,7 @@ SelectTileMode::SelectTileMode(GameScreen *game_screen, sf::Vector2i center, int
 	on_select(on_select), 
 	on_end(on_end) {}
 
-SelectTileMode::~SelectTileMode() { Mode::~Mode(); }
+SelectTileMode::~SelectTileMode() {}
 
 void SelectTileMode::create() {
 	create_range_shapes();

@@ -2,7 +2,7 @@
 
 Mode::Mode() : Screen() {}
 
-Mode::~Mode() { Screen::~Screen(); }
+Mode::~Mode() {}
 
 void Mode::create() {}
 

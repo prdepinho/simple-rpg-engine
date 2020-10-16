@@ -350,7 +350,6 @@ DialogueBox::DialogueBox(int x, int y, int width, int height, float speed)
 }
 
 DialogueBox::~DialogueBox() {
-	// TextBox::~TextBox();
 	// dialogue.delete_functions();
 }
 
