@@ -5,7 +5,7 @@
 #include "Screen.h"
 #include "Character.h"
 #include "Tilemap.h"
-#include "Font.h"
+#include "font.h"
 #include "Label.h"
 #include "Button.h"
 #include "Resources.h"

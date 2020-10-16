@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "Callback.h"
-#include "Font.h"
+#include "font.h"
 #include "Json.h"
 #include "Resources.h"
 #include "consts.h"
