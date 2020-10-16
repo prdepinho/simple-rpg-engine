@@ -472,7 +472,7 @@ public:
 			Resources::play_sound(filename);
 		}
 		catch (ResourcesException &e) {
-			Log(e.what());
+			Log("%s", e.what());
 			Resources::play_sound(Default::SOUND);
 		}
 		return 1;
@@ -484,7 +484,7 @@ public:
 			Resources::play_music(filename);
 		}
 		catch (ResourcesException &e) {
-			Log(e.what());
+			Log("%s", e.what());
 			Resources::play_sound(Default::SOUND);
 		}
 		return 1;
@@ -496,7 +496,7 @@ public:
 			Resources::loop_music(filename);
 		}
 		catch (ResourcesException &e) {
-			Log(e.what());
+			Log("%s", e.what());
 			Resources::play_sound(Default::SOUND);
 		}
 		return 1;
