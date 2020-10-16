@@ -142,7 +142,6 @@
     <ClCompile Include="CharacterEditPanel.cpp" />
     <ClCompile Include="CharacterMenu.cpp" />
     <ClCompile Include="CheckButton.cpp" />
-    <ClCompile Include="CinematicsMode.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="consts.cpp" />
     <ClCompile Include="CustomPanel.cpp" />
@@ -231,7 +230,6 @@
     <ClInclude Include="CharacterEditPanel.h" />
     <ClInclude Include="CharacterMenu.h" />
     <ClInclude Include="CheckButton.h" />
-    <ClInclude Include="CinematicsMode.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="consts.h" />
     <ClInclude Include="CustomPanel.h" />

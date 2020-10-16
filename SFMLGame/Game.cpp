@@ -10,7 +10,8 @@ Game::Game() : screen(nullptr), to_change_screen(nullptr) {
 Game::~Game() {
 	if (screen != nullptr) {
 		screen->destroy();
-		delete screen;
+		if (screen != &game_screen)
+			delete screen;
 	}
 }
 
