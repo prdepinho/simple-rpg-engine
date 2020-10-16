@@ -24,6 +24,8 @@ public:
 	Game();
 	~Game();
 
+	GameScreen game_screen;
+
 	void log(std::string text) { lua.log(text); }
 	Lua* get_lua() { return &lua; }
 

@@ -87,9 +87,16 @@ void Game::change_to_map_editor_screen() {
 }
 
 void Game::change_to_game_screen() {
+#if false
 	Resources::stop_music();
 	to_change_screen = new GameScreen();
 	to_change_screen->config_filename = Path::SCREENS + "game.json";
+#else
+	Resources::stop_music();
+	game_screen = GameScreen();
+	to_change_screen = &game_screen;
+	to_change_screen->config_filename = Path::SCREENS + "game.json";
+#endif
 }
 
 void Game::change_to_load_game_screen() {
@@ -99,7 +106,8 @@ void Game::change_to_load_game_screen() {
 void Game::change_screen() {
 	if (screen != nullptr) {
 		screen->destroy();
-		delete screen;
+		if (screen != &game_screen)
+			delete screen;
 	}
 	screen = to_change_screen;
 	screen->set_window(&window);
