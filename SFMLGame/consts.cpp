@@ -1,4 +1,3 @@
-#pragma once
 #include "consts.h"
 
 sf::Color Color::BLACK = sf::Color::Black;
