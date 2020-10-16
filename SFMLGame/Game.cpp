@@ -3,6 +3,8 @@
 #include "Json.h"
 #include "Lua.h"
 #include "FieldOfVision.h"
+#include <thread>
+#include <chrono>
 
 Game::Game() : screen(nullptr), to_change_screen(nullptr) {
 }
@@ -13,6 +15,7 @@ Game::~Game() {
 		if (screen != &game_screen)
 			delete screen;
 	}
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
 void Game::init()

@@ -10,7 +10,10 @@ Resources::Resources() {
 }
 
 Resources::~Resources() {
+	Resources::stop_music();
 	for (auto it = sound_map.begin(); it != sound_map.end(); ++it)
+		delete it->second;
+	for (auto it = music_map.begin(); it != music_map.end(); ++it)
 		delete it->second;
 	for (sf::SoundBuffer *buffer : sound_buffers)
 		delete buffer;
