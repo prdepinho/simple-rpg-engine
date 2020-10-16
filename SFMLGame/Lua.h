@@ -13,7 +13,10 @@ class Character;
 
 class LuaException : public std::exception {
 public: 
-	LuaException(std::string msg = "") : std::exception(msg.c_str()) { }
+	LuaException(std::string msg = "") : std::exception(msg.c_str()), msg("LuaException: " + msg) { }
+	virtual const char *what() const noexcept { return msg.c_str(); }
+protected:
+	std::string msg;
 };
 
 class LuaObject;

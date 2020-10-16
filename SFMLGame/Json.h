@@ -9,7 +9,10 @@
 
 class JsonException : public std::exception {
 public:
-	JsonException(std::string msg = "") : std::exception(msg.c_str()) {}
+	JsonException(std::string msg = "") : std::exception(), msg("JsonException: " + msg) {}
+	virtual const char *what() const noexcept { return msg.c_str(); }
+protected:
+	std::string msg;
 };
 
 class JsonParseException : public JsonException { 
@@ -18,7 +21,7 @@ public:
 		: JsonException(std::string(index + ": " + token + ". " + msg).c_str()), filename(filename), index(index), line_number(line_number), token(token), msg(msg)
 	{ }
 
-	const char *what() const;
+	virtual const char *what() const noexcept;
 
 	std::string filename;
 	int index;

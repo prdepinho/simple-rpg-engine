@@ -2,7 +2,7 @@
 #include "Game.h"
 
 
-const char *JsonParseException::what() const {
+const char *JsonParseException::what() const noexcept {
 	std::string _msg = "File: " + filename + ", line: " + std::to_string(line_number) + ", column: " + std::to_string(index) + ", token: `" + token + "'. " + msg;
 	return _msg.c_str();
 }

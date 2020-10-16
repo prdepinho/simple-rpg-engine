@@ -13,7 +13,10 @@ class GameScreen;
 
 class TilemapDAOException : public std::exception {
 public:
-	TilemapDAOException(std::string msg) : std::exception(msg.c_str()) {}
+	TilemapDAOException(std::string msg) : std::exception(), msg("TilemapDAOException: " + msg) {}
+	virtual const char *what() const noexcept { return msg.c_str(); }
+protected:
+	std::string msg;
 };
 
 

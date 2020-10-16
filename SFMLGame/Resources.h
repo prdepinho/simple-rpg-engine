@@ -9,7 +9,10 @@
 
 class ResourcesException : public std::exception {
 public: 
-	ResourcesException(std::string msg = "") : std::exception(msg.c_str()) { }
+	ResourcesException(std::string msg = "") : std::exception(), msg("ResourcesException: " + msg) { }
+	virtual const char *what() const noexcept { return msg.c_str(); }
+protected:
+	std::string msg;
 };
 
 class Animation {
