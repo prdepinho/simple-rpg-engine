@@ -24,7 +24,7 @@ void ItemContextMenu::create() {
 	buttons = std::vector<Button>(buttons_total);
 
 	int w = button_length + margin * 2;
-	int h = (buttons.size() * button_height) + (margin * 2);
+	int h = ((int)buttons.size() * (int)button_height) + (margin * 2);
 	int x = (_game.get_resolution_width() / 2) - (w / 2);
 	int y = (_game.get_resolution_height() / 2) - (h / 2);
 	set_position(x, y);
@@ -177,7 +177,7 @@ Component *ItemContextMenu::on_key_pressed(sf::Keyboard::Key key) {
 		if (cursor > 0)
 			cursor--;
 		else
-			cursor = buttons.size() - 1;
+			cursor = (int)buttons.size() - 1;
 		get_screen()->select(buttons[cursor]);
 		return this;
 
@@ -590,7 +590,7 @@ void Inventory::move_cursor(Direction direction) {
 	switch (direction) {
 	case Direction::UP:
 		if (cursor < inventory_width)
-			set_cursor(buttons.size() - 1);
+			set_cursor((int)buttons.size() - 1);
 		else if (cursor < inventory_size)
 			set_cursor(cursor - inventory_width);
 		else
@@ -606,7 +606,7 @@ void Inventory::move_cursor(Direction direction) {
 		break;
 	case Direction::LEFT:
 		if (cursor == 0)
-			set_cursor(buttons.size() - 1);
+			set_cursor((int)buttons.size() - 1);
 		else
 			set_cursor(cursor - 1);
 		break;
@@ -878,7 +878,7 @@ void Loot::move_cursor(Direction direction) {
 	switch (direction) {
 	case Direction::UP:
 		if (cursor < loot_width)
-			set_cursor(buttons.size() - 1);
+			set_cursor((int)buttons.size() - 1);
 		else if (cursor < inventory_size)
 			set_cursor(cursor - loot_width);
 		else
@@ -894,7 +894,7 @@ void Loot::move_cursor(Direction direction) {
 		break;
 	case Direction::LEFT:
 		if (cursor == 0)
-			set_cursor(buttons.size() - 1);
+			set_cursor((int)buttons.size() - 1);
 		else
 			set_cursor(cursor - 1);
 		break;

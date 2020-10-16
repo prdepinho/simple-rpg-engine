@@ -22,6 +22,6 @@ private:
 	std::vector<Button> buttons;
 	sf::Texture texture;
 	sf::Sprite sprite;
-	int button_index = 0;
+	size_t button_index = 0;
 };
 

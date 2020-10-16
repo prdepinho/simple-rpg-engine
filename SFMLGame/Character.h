@@ -33,7 +33,7 @@ public:
 	bool is_permanent() const { return permanent; }
 	void set_permanent(bool permanent) { this->permanent = permanent; }
 
-	int schedule_size() const;
+	size_t schedule_size() const;
 	void schedule_action(Action *action);
 	Action *next_action();
 	void clear_schedule();

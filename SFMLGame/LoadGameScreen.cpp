@@ -16,11 +16,11 @@ void LoadGameScreen::create() {
 	std::vector<Resources::SaveFile> save_files = Resources::get_save_files();
 	buttons = std::vector<LoadButton>(save_files.size() + 1);
 
-	size_t i = 0;
-	for (i = 0; i < save_files.size(); i++)
+	int i = 0;
+	for (i = 0; i < (int)save_files.size(); i++)
 	{
 		LoadButton &button = buttons[i];
-		int y = (10 + i * (button.get_height() + 1));
+		int y = (10 + i * ((int)button.get_height() + 1));
 		button = LoadButton(save_files[i].title, x, y, button_length, button_height);
 		button.set_function([&](Component* c) {
 			LoadButton *b = dynamic_cast<LoadButton*>(c);
@@ -43,7 +43,7 @@ void LoadGameScreen::create() {
 
 	{
 		LoadButton &button = buttons.back();
-		int y = (10 + i * (button.get_height() + 1));
+		int y = (10 + i * ((int)button.get_height() + 1));
 		button = LoadButton("Back", x, y, button_length, button_height);
 		button.set_function([&](Component*) {
 			game->change_to_main_menu_screen();

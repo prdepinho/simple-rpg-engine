@@ -28,7 +28,7 @@ private:
 	int border = 5;
 	int button_height = 20;
 	int button_length = 50;
-	int button_index = 0;
+	size_t button_index = 0;
 	std::vector<Button> buttons;
 	Resources::SaveFile save_file;
 	bool allow_save = false;
@@ -50,5 +50,5 @@ private:
 	int button_height = 20;
 	int button_length = 150;
 	std::vector<LoadButton> buttons;
-	int button_index = 0;
+	size_t button_index = 0;
 };

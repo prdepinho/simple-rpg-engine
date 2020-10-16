@@ -176,8 +176,8 @@ void TiledTilemapDAO::load_map(GameScreen *game_screen, std::string filename, Ti
 
 	unsigned width = tmx_map.getTileCount().x;
 	unsigned height = tmx_map.getTileCount().y;
-	unsigned floor_layers = floor_layer_ptrs.size();
-	unsigned ceiling_layers = ceiling_layer_ptrs.size();
+	unsigned floor_layers = (unsigned)floor_layer_ptrs.size();
+	unsigned ceiling_layers = (unsigned)ceiling_layer_ptrs.size();
 
 	std::vector<int> tiles(width * height * floor_layers, 0);
 	map = Tilemap();
@@ -210,22 +210,22 @@ void TiledTilemapDAO::load_map(GameScreen *game_screen, std::string filename, Ti
 					// animated tile
 					if (tile->animation.frames.size() > 0) {
 						size_t frames_limit = std::min((size_t)2, tile->animation.frames.size());
-						for (size_t frame_count = 0; frame_count < frames_limit; frame_count++) {
+						for (unsigned frame_count = 0; frame_count < (unsigned)frames_limit; frame_count++) {
 							const auto &frame = tile->animation.frames[frame_count];
 							const auto *frame_tile = tileset.getTile(frame.tileID);
 							unsigned texX = frame_tile->imagePosition.x;
 							unsigned texY = frame_tile->imagePosition.y;
-							floor_map.set_texture_coords(frame_count, x, y, z, (float)texX, (float)texY);
+							floor_map.set_texture_coords((int)frame_count, x, y, z, (float)texX, (float)texY);
 						}
 					}
 					// not animated tile
 					else
 					{
 						size_t frames_limit = 2;
-						for (size_t frame_count = 0; frame_count < frames_limit; frame_count++) {
+						for (size_t frame_count = 0; frame_count < (unsigned)frames_limit; frame_count++) {
 							unsigned texX = tile->imagePosition.x;
 							unsigned texY = tile->imagePosition.y;
-							floor_map.set_texture_coords(frame_count, x, y, z, (float)texX, (float)texY);
+							floor_map.set_texture_coords((int)frame_count, x, y, z, (float)texX, (float)texY);
 						}
 					}
 				}
@@ -249,7 +249,7 @@ void TiledTilemapDAO::load_map(GameScreen *game_screen, std::string filename, Ti
 							const auto *frame_tile = tileset.getTile(frame.tileID);
 							unsigned texX = frame_tile->imagePosition.x;
 							unsigned texY = frame_tile->imagePosition.y;
-							ceiling_map.set_texture_coords(frame_count, x, y, z, (float)texX, (float)texY);
+							ceiling_map.set_texture_coords((int)frame_count, x, y, z, (float)texX, (float)texY);
 						}
 					}
 					// not animated tile
@@ -259,7 +259,7 @@ void TiledTilemapDAO::load_map(GameScreen *game_screen, std::string filename, Ti
 						for (size_t frame_count = 0; frame_count < frames_limit; frame_count++) {
 							unsigned texX = tile->imagePosition.x;
 							unsigned texY = tile->imagePosition.y;
-							ceiling_map.set_texture_coords(frame_count, x, y, z, (float)texX, (float)texY);
+							ceiling_map.set_texture_coords((int)frame_count, x, y, z, (float)texX, (float)texY);
 						}
 					}
 				}

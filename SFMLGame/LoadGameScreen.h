@@ -20,6 +20,6 @@ public:
 
 private:
 	std::vector<LoadButton> buttons;
-	int button_index = 0;
+	size_t button_index = 0;
 };
 

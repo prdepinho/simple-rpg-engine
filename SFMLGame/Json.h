@@ -143,7 +143,7 @@ public:
 	std::vector<Json> &get_vector() { return get_vector(""); }
 
 	/// Return the number of children of the token, if it is a list or an object.
-	unsigned int length() const;
+	size_t length() const;
 
 	/// Get the token at index.
 	Json &operator[](unsigned int index) { return list[index]; }

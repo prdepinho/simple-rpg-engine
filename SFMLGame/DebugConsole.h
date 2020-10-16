@@ -40,7 +40,7 @@ public:
 private:
 	int width;
 	DebugTextField text_field;
-	int history_cursor;
+	size_t history_cursor;
 	std::vector<std::string> history;
 };
 

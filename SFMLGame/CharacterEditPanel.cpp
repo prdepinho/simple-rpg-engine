@@ -323,7 +323,7 @@ void CharacterEditPanel::move_cursor(Direction direction) {
 	switch (direction) {
 	case Direction::UP:
 		if (cursor < buttons_width)
-			set_cursor(buttons.size() - 1);
+			set_cursor((int)buttons.size() - 1);
 		else if (cursor < ability_size)
 			set_cursor(cursor - buttons_width);
 		else
@@ -339,7 +339,7 @@ void CharacterEditPanel::move_cursor(Direction direction) {
 		break;
 	case Direction::LEFT:
 		if (cursor == 0)
-			set_cursor(buttons.size() - 1);
+			set_cursor((int)buttons.size() - 1);
 		else
 			set_cursor(cursor - 1);
 		break;

@@ -448,9 +448,9 @@ public:
 		size_t height = screen->get_map().get_tile_height();
 		for (size_t x = 0; x < width; x++) {
 			for (size_t y = 0; y < height; y++) {
-				TileData tile = screen->get_map().get_tile(x, y);
+				TileData tile = screen->get_map().get_tile((int)x, (int)y);
 				if (tile.object_name == door_name) {
-					screen->get_map().get_tile(x, y).obstacle = obstacle;
+					screen->get_map().get_tile((int)x, (int)y).obstacle = obstacle;
 				}
 			}
 		}

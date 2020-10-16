@@ -42,7 +42,7 @@ void TextBox::create() {
 	font.set_texture(Resources::get_texture("gui"));
 	add_component(font);
 
-	total_height = (font.line_height() * (page_lines - 1)) + (vertical_margin * 3);
+	total_height = (font.line_height() * ((int)page_lines - 1)) + (vertical_margin * 3);
 
 	for (Font &font_line : font_lines) {
 		font_line.set_texture(Resources::get_texture("gui"));
@@ -261,7 +261,7 @@ void TextBox::update_view() {
 
 
 void OptionsPanel::add_option(std::string text, Callback callback) {
-	int n = buttons.size() + 1;
+	int n = (int)buttons.size() + 1;
 	buttons.push_back(OptionButton(std::to_string(n) + ". " + text));
 	buttons.back().set_function(callback);
 	buttons.back().set_dimensions(get_width(), buttons.back().get_height());
@@ -269,7 +269,7 @@ void OptionsPanel::add_option(std::string text, Callback callback) {
 
 
 void OptionsPanel::add_option(std::string text, std::string dst, Callback callback) {
-	int n = buttons.size() + 1;
+	int n = (int)buttons.size() + 1;
 	buttons.push_back(OptionButton(std::to_string(n) + ". " + text, dst));
 	buttons.back().set_function(callback);
 	// buttons.back().set_function([&](Component*) {
@@ -283,7 +283,7 @@ void OptionsPanel::add_option(std::string text, std::string dst, Callback callba
 
 void OptionsPanel::create() {
 	if (!buttons.empty()) {
-		set_dimensions(get_width(), buttons.back().get_height() * buttons.size());
+		set_dimensions(get_width(), buttons.back().get_height() * (int)buttons.size());
 	}
 	Panel::create();
 
@@ -564,7 +564,7 @@ void DialogueBox::next() {
 				int x = get_x();
 				int y = get_y() + get_height();
 				if (box_at_bottom)
-					y = get_y() - (options->size() * 19);
+					y = get_y() - ((int)options->size() * 19);
 				options_panel = OptionsPanel(x, y, get_width());
 			}
 

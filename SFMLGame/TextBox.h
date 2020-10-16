@@ -23,7 +23,7 @@ public:
 	void add_option(std::string text, std::string dst, Callback callback);
 private:
 	std::vector<OptionButton> buttons;
-	int selected_index = 0;
+	size_t selected_index = 0;
 };
 
 

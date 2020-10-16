@@ -69,7 +69,7 @@ void Character::face_right() {
 	}
 }
 
-int Character::schedule_size() const {
+size_t Character::schedule_size() const {
 	return schedule.size();
 }
 

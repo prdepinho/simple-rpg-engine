@@ -226,7 +226,7 @@ void SavePanel::create() {
 	buttons = std::vector<LoadButton>(save_files.size() + 1);
 
 	{
-		int h = ((save_files.size() + 2) * button_height) + (border * 2);
+		int h = (((int)save_files.size() + 2) * button_height) + (border * 2);
 		set_dimensions(get_width(), h);
 		Panel::create();
 	}
@@ -240,11 +240,11 @@ void SavePanel::create() {
 		add_component(label);
 	}
 
-	size_t i = 0;
-	for (i = 0; i < save_files.size(); i++) {
+	int i = 0;
+	for (i = 0; i < (int)save_files.size(); i++) {
 		LoadButton &button = buttons[i];
 		int x = get_x() + (get_width() / 2) - (button_length / 2);
-		int y = get_y() + (border * 2) + label.get_height() + (i * button_height);
+		int y = get_y() + (border * 2) + (int)label.get_height() + (i * button_height);
 		button = LoadButton(save_files[i].title, x, y, button_length, button_height - 1);
 		button.set_function([&](Component* c) {
 			LoadButton *b = dynamic_cast<LoadButton*>(c);
@@ -268,7 +268,7 @@ void SavePanel::create() {
 	{
 		LoadButton &button = buttons.back();
 		int x = get_x() + (get_width() / 2) - (button_length / 2);
-		int y = get_y() + (border * 2) + label.get_height() + (i * button_height);
+		int y = get_y() + (border * 2) + (int)label.get_height() + (i * button_height);
 		button = LoadButton("Back", x, y, button_length, button_height - 1);
 		button.set_function([&](Component*) {
 			call_functions(this);
@@ -293,7 +293,7 @@ void SavePanel::show(Screen &screen, Callback callback) {
 
 void SavePanel::refresh_buttons() {
 	SavePanel &panel = get();
-	int index = panel.button_index;
+	size_t index = panel.button_index;
 
 	std::vector<Resources::SaveFile> save_files = Resources::get_save_files();
 	size_t i = 0;

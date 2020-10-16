@@ -373,7 +373,7 @@ float Json::get_float(std::string object_path) {
 		throw JsonException("Token is not number");
 }
 
-inline unsigned int Json::length() const {
+inline size_t Json::length() const {
 	switch (type) {
 	case LIST:
 		return list.size();
