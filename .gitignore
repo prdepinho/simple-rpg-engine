@@ -9,3 +9,5 @@ build/
 *.rar
 *.zip
 *.aps
+*.o
+out/
