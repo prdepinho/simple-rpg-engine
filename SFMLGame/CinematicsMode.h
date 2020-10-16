@@ -14,7 +14,7 @@ class CinematicsMode : public Mode {
 public:
 	CinematicsMode(GameScreen *game_screen=nullptr, 
 		LuaObject data = LuaObject(),
-		std::function<void()> on_end = [&]() {});
+		std::function<void()> on_end = []() {});
 
 	virtual ~CinematicsMode();
 

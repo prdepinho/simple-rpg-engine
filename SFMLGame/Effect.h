@@ -7,9 +7,9 @@ class Effect {
 public:
 	Effect(bool run = true)
 		: running(run),
-		on_update([&](Effect*) {}),
-		on_end([&](Effect*) {}),
-		on_interrupt([&](Effect*) {})
+		on_update([](Effect*) {}),
+		on_end([](Effect*) {}),
+		on_interrupt([](Effect*) {})
 	{ }
 	virtual ~Effect() {}
 

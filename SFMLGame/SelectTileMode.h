@@ -9,8 +9,8 @@ class GameScreen;
 class SelectTileMode : public Mode {
 public:
 	SelectTileMode(GameScreen *game_screen=nullptr, sf::Vector2i center = {0, 0}, int range_radius = 0, int effect_radius = 0, 
-		std::function<bool(sf::Vector2i center, std::vector<sf::Vector2i>&)> on_select = [&](sf::Vector2i center, std::vector<sf::Vector2i>&) { return true; },
-		std::function<void()> on_end = [&]() {});
+		std::function<bool(sf::Vector2i center, std::vector<sf::Vector2i>&)> on_select = [](sf::Vector2i center, std::vector<sf::Vector2i>&) { return true; },
+		std::function<void()> on_end = []() {});
 	virtual ~SelectTileMode();
 	virtual void create() override;
 	virtual void destroy() override;
