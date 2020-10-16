@@ -25,13 +25,11 @@
 #include "LogBox.h"
 #include "Mode.h"
 #include "SelectTileMode.h"
-#include "CinematicsMode.h"
 
 class GameScreen : public Screen
 {
 public:
 	friend class SelectTileMode;
-	friend class CinematicsMode;
 	GameScreen()
 		: holding_screen(false),
 		player_character(nullptr),
@@ -194,7 +192,6 @@ private:
 
 	Mode *current_mode = nullptr;
 	SelectTileMode select_tile_mode;
-	CinematicsMode cinematics_mode;
 
 	bool block_input;
 
