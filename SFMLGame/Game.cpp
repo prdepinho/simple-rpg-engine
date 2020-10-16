@@ -382,6 +382,7 @@ public:
 		return 1;
 	}
 
+#if false
 	static int sfml_get_schedule(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		int id = (int) lua_tointeger(state, -1);
@@ -399,6 +400,7 @@ public:
 		}
 		return 1;
 	}
+#endif
 
 	static int sfml_get_window_dimensions(lua_State *state) {
 		lua_newtable(state);
@@ -942,7 +944,6 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_get_player_position", LuaFunction::sfml_get_player_position);
 	lua_register(lua.get_state(), "sfml_clear_schedule", LuaFunction::sfml_clear_schedule);
 	lua_register(lua.get_state(), "sfml_get_tile", LuaFunction::sfml_get_tile);
-	lua_register(lua.get_state(), "sfml_get_schedule", LuaFunction::sfml_get_schedule);
 	lua_register(lua.get_state(), "sfml_get_window_dimensions", LuaFunction::sfml_get_window_dimensions);
 	lua_register(lua.get_state(), "sfml_change_map", LuaFunction::sfml_change_map);
 	lua_register(lua.get_state(), "sfml_set_obstacle", LuaFunction::sfml_set_obstacle);

@@ -212,14 +212,6 @@ function print_map()
   end
 end
 
-function print_schedule()
-  schedule = sfml_get_schedule(25)
-  print('Schedule:')
-  for index, action in pairs(schedule) do
-    print(string.format('  %d: %s', index, action))
-  end
-end
-
 function test()
   local array = sfml_test()
   if false then
