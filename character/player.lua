@@ -16,8 +16,8 @@ function Player:new(o, control)
 end
 
 -- animation = animations.types.cat_girl
--- animation = 'cat_girl'
-animation = 'human_male'
+animation = 'cat_girl'
+-- animation = 'human_male'
 
 function Player:create()
   self.data.enemy = false

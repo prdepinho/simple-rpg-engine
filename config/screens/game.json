@@ -1,6 +1,6 @@
 {
-  "map": "flee_or_fight",
-  "_map": "room",
+  "_map": "flee_or_fight",
+  "map": "room",
   "_map": "first_floor",
   "_map": "level",
   "turns_per_second": 5

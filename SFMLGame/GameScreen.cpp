@@ -599,7 +599,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			}
 			break;
 		case Control::B: 
-#if false
+#if true
 			{
 				select_tile_to_shoot();
 			}
@@ -607,7 +607,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			break;
 		case Control::START:
 			// open menu
-#if false
+#if true
 			block_input = true;
 			CharacterMenu::show(*this, player_character, [&](Component *) {
 				block_input = false;
