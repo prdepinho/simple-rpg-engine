@@ -95,7 +95,8 @@ void GameScreen::create() {
 	map.get_fog_of_war().update_fog(player_character->get_field_of_vision()); // doesn't have to be here. It only update once a turn.
 
 	game_view.setSize(sf::Vector2f((float) game->get_resolution_width(), (float) game->get_resolution_height()));
-	game_view.setCenter(sf::Vector2f((float) player_character->get_x(), (float) player_character->get_y()));
+	// game_view.setCenter(sf::Vector2f((float) player_character->get_x(), (float) player_character->get_y()));
+	center_game_view(sf::Vector2f((float) player_character->get_x(), (float) player_character->get_y()));
 	gui_view.setSize(sf::Vector2f((float) game->get_resolution_width(), (float) game->get_resolution_height()));
 	gui_view.setCenter((float)game->get_resolution_width() / 2.f, (float) game->get_resolution_height() / 2.f);
 }
@@ -1426,7 +1427,8 @@ void GameScreen::show_foreground() {
 	gui_status.showing_overlay = Overlay::get().is_visible();
 	gui_status.showing_log = log_box.is_visible();
 	Overlay::get().hide();
-	log_box.hide();
+	hide_log();
+	// log_box.hide();
 }
 
 void GameScreen::pan_foreground(LuaObject data) {
@@ -1456,7 +1458,8 @@ void GameScreen::hide_foreground() {
 	if (gui_status.showing_overlay)
 		Overlay::get().show();
 	if (gui_status.showing_log)
-		log_box.show();
+		show_log();
+		// log_box.show();
 }
 
 
@@ -1471,7 +1474,8 @@ void GameScreen::pan_game_view(sf::Vector2f v) {
 void GameScreen::center_game_view(sf::Vector2f v) {
 	auto center = game_view.getCenter();
 	sf::Vector2f diff = { center.x - v.x, center.y - v.y };
-	game_view.setCenter(v);
+	float log_adjustment = log_box.is_visible() ? log_box.get_height() / 2 : 0.f;
+	game_view.setCenter({ v.x, v.y + log_adjustment});
 	for (FloatingMessage *floating_message : floating_messages) {
 		floating_message->move(diff.x, diff.y);
 		floating_message->create();
@@ -1523,19 +1527,23 @@ void GameScreen::add_floating_message(std::string message, int tile_x, int tile_
 
 void GameScreen::toggle_log() {
 	if (log_box.is_visible()) {
-		log_box.hide();
+		hide_log();
 	}
 	else {
-		log_box.show();
+		show_log();
 	}
 }
 
 void GameScreen::show_log() {
 	log_box.show();
+	auto pos = player_character->getPosition();
+	center_game_view(pos);
 }
 
 void GameScreen::hide_log() {
 	log_box.hide();
+	auto pos = player_character->getPosition();
+	center_game_view(pos);
 }
 
 
@@ -1829,7 +1837,8 @@ void GameScreen::set_vision_radius(int radius) {
 	update_field_of_vision(player_character);
 	// update camera
 	if (camera_follow) {
-		center_game_view(player_character->getPosition());
+		auto pos = player_character->getPosition();
+		center_game_view(pos);
 	}
 	// update fog of war
 	map.get_fog_of_war().update_fog(player_character->get_field_of_vision());
