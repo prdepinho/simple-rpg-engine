@@ -534,6 +534,16 @@ function Control:get_save_files()
   return save_files
 end
 
+function Control:new_game()
+  self.characters = {}
+  self.character_modules = {}
+  self.loaded_character_data = {}
+  self.map_data = {}
+  self.map_module = {}
+  self.current_map = ""
+  self.magic = {}
+end
+
 function Control:save_game(filename, title)
   print('save game: ' .. filename .. ' (' .. title .. ')')
   local data = {}
@@ -601,6 +611,7 @@ function Control:character_base_damage_bonus(name)
 end
 
 function Control:add_character(script, name)
+  save.print_data(self.characters[name])
   if self.character_modules[name] == nil then
     self.character_modules[name] = require(script)
   end

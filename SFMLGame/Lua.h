@@ -88,6 +88,7 @@ public:
 
 
 	void reset_data();
+	void new_game();
 	void save_game(std::string filename, std::string title);
 	void load_game(std::string filename);
 	void delete_save_game(std::string filename);

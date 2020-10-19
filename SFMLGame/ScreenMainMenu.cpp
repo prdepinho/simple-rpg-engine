@@ -24,6 +24,7 @@ void ScreenMainMenu::create()
 		button.set_function([&](Component* c) {
 			std::string label = dynamic_cast<Button*>(c)->get_label();
 			game->log(label);
+			game->get_lua()->new_game();
 			game->change_to_game_screen();
 			return true;
 		});

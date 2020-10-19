@@ -99,6 +99,10 @@ function get_save_files()
   return control:get_save_files()
 end
 
+function new_game()
+  control:new_game()
+end
+
 function save_game(filename, title)
   control:save_game(filename, title)
 end
