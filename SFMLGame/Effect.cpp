@@ -85,10 +85,11 @@ void AttackEffect::update(float elapsed_time) {
 	if (time_count == elapsed_time) {
 		attacker->start_triggered_animation("attack", this, [&](void *d) {
 			_game.get_lua()->attack(attacker->get_name(), defender->get_name());
+			gogogo = true;  // don't stop running before triggering attack.
 		});
 	}
 	else {
-		if (time_count >= seconds) {
+		if (time_count >= seconds && gogogo) {
 			stop_running();
 		}
 	}

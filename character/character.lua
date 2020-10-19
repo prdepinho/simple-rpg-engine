@@ -52,24 +52,6 @@ function Character:on_idle()
       y = position.y + delta_y
     }
 
-
-    for x = 0, 20, 1 do
-      for y = 0, 20, 1 do
-        if x == position.x and y == position.y then
-          io.write(' @')
-        elseif x == feared.x and y == feared.y then
-          io.write(' F')
-        elseif x == dst.x and y == dst.y then
-          io.write(' X')
-        else
-          io.write(' .')
-        end
-      end
-      io.write('\n')
-    end
-
-
-
     sfml_move(self.name, dst.x, dst.y)
 
   elseif self:is_player_in_sight(4) then

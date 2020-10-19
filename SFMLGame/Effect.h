@@ -147,6 +147,7 @@ protected:
 	Character *defender;
 	float seconds = 0.f;
 	float time_count = 0.f;
+	bool gogogo = false;
 };
 
 class RangedAttackEffect : public AttackEffect {
