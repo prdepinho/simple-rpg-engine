@@ -16,8 +16,15 @@ function Character:new(o, control)
 end
 
 
--- called every turn
+-- called every turn (things pcs and npcs do)
 function Character:on_turn()
+end
+
+-- called every turn (things only npcs do)
+function Character:npc_on_turn()
+  if self.data.stats.status.fear then
+    return
+  end
   if self.data.enemy then
     if self:is_player_in_sight(4) then
       self:attack("player")
@@ -28,6 +35,50 @@ end
 
 -- called the turn when character's schedule is empty
 function Character:on_idle()
+  if self.data.stats.status.fear then
+    local feared = sfml_get_character_position(self.data.feared_character)
+    local position = sfml_get_character_position(self.name)
+
+    local delta_x = position.x - feared.x
+    if delta_x ~= 0 then
+      delta_x = delta_x / math.abs(delta_x)
+    end
+    local delta_y = position.y - feared.y
+    if delta_y ~=0 then
+      delta_y = delta_y / math.abs(delta_y)
+    end
+    local dst = {
+      x = position.x + delta_x,
+      y = position.y + delta_y
+    }
+
+
+    for x = 0, 20, 1 do
+      for y = 0, 20, 1 do
+        if x == position.x and y == position.y then
+          io.write(' @')
+        elseif x == feared.x and y == feared.y then
+          io.write(' F')
+        elseif x == dst.x and y == dst.y then
+          io.write(' X')
+        else
+          io.write(' .')
+        end
+      end
+      io.write('\n')
+    end
+
+
+
+    sfml_move(self.name, dst.x, dst.y)
+
+  elseif self:is_player_in_sight(4) then
+    local pos = sfml_get_player_position()
+    sfml_move(self.name, pos.x, pos.y)
+
+  else
+    self:idle_walk(self.name)
+  end
 end
 
 

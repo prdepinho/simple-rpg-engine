@@ -24,17 +24,6 @@ function Witch:create()
 end
 
 
-function Witch:on_turn()
-  -- is player character in vision
-  -- -- attack
-end
-
-function Witch:on_idle()
-  -- local fov = sfml_get_field_of_vision(id)
-  -- sfml_wait(id, 1);
-  -- commons.idle_walk(M.name)
-end
-
 function Witch:on_interact(interactor_name)
   -- print('interact with witch')
   local dialogue = {

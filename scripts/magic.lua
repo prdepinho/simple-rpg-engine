@@ -165,6 +165,9 @@ function Magic:poison_update(character)
 end
 
 
+
+
+
 function Magic:invisibility(caster, center, tiles, targets)
   sfml_push_log(caster .. ' - casts ' .. rules.spell.invisibility.name)
   local caster_stats = self.control.characters[caster].data.stats
@@ -206,6 +209,60 @@ function Magic:invisible_end(character)
 end
 
 function Magic:invisible_update(character)
+end
+
+
+
+
+
+
+function Magic:fear(caster, center, tiles, targets)
+  sfml_push_log(caster .. ' - casts ' .. rules.spell.fear.name)
+  local caster_stats = self.control.characters[caster].data.stats
+
+  local caster_pos = sfml_get_character_position(caster)
+  sfml_start_fireworks("fear_visage", caster_pos.x, caster_pos.y)
+  for index, character_name in ipairs(targets) do
+    if character_name ~= caster then
+
+      local position = sfml_get_character_position(character_name)
+      sfml_start_fireworks("fear_sweat", position.x, position.y)
+      sfml_start_animation(character_name, "hurt")
+
+      local stats = self.control.characters[character_name].data.stats
+      if not stats.status.dead then
+
+        local challenge = rules.arcane_spell_challenge(caster_stats)
+        local save = rules.roll_wis_save(stats, challenge)
+
+        self.control:log_save(character_name, 'Wis', save)
+
+        if save.success then
+          sfml_show_floating_message("saved", position.x, position.y)
+        else 
+          sfml_show_floating_message(rules.status.fear.name, position.x, position.y)
+
+          local duration = rules.roll_dice("3d6")
+          duration = duration + rules.arcane_spell_bonus(caster_stats)
+
+          self.control:set_status(character_name, "fear", challange, duration)
+          self.control.characters[character_name].data.feared_character = caster
+        end
+
+      end
+    end
+  end
+end
+
+function Magic:fear_start(character)
+  sfml_clear_schedule(character)
+end
+
+function Magic:fear_end(character)
+  self.control.characters[character].data.feared_character = nil
+end
+
+function Magic:fear_update(character)
 end
 
 return Magic

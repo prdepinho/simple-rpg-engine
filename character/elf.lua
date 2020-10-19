@@ -23,19 +23,4 @@ function Elf:create()
 end
 
 
-function Elf:on_turn()
-end
-
-function Elf:on_idle()
-  if self:is_player_in_sight(4) then
-    local pos = sfml_get_player_position()
-    sfml_move(self.name, pos.x, pos.y)
-  else
-    self:idle_walk(self.name)
-  end
-end
-
-function Elf:on_interact(interactor_name)
-end
-
 return Elf

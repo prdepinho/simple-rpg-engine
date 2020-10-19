@@ -23,20 +23,4 @@ function Imp:create()
 end
 
 
-function Imp:on_turn()
-  Character.on_turn(self)
-end
-
-function Imp:on_idle()
-  if self:is_player_in_sight(4) then
-    local pos = sfml_get_player_position()
-    sfml_move(self.name, pos.x, pos.y)
-  else
-    self:idle_walk(self.name)
-  end
-end
-
-function Imp:on_interact(interactor_name)
-end
-
 return Imp

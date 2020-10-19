@@ -664,6 +664,7 @@ function Control:character_on_turn(name, id)
   if self.characters[name] ~= nil then
     if not self.characters[name].data.stats.status.dead then
       self:update_status(name)
+      self.characters[name]:npc_on_turn()
       self.characters[name]:on_turn()
     end
   else

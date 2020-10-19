@@ -31,25 +31,4 @@ function Ranger:create()
   self.data.stats.inventory[4] = {code = "ranger_w2", name = "dagger", type = "weapon"}
 end
 
-
-function Ranger:on_turn()
-  if self.data.enemy then
-    if self:is_player_in_sight(4) then
-      self:attack("player")
-    end
-  end
-end
-
-function Ranger:on_idle()
-  if self:is_player_in_sight(4) then
-    local pos = sfml_get_player_position()
-    sfml_move(self.name, pos.x, pos.y)
-  else
-    self:idle_walk(self.name)
-  end
-end
-
-function Ranger:on_interact(interactor_name)
-end
-
 return Ranger

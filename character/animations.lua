@@ -45,7 +45,11 @@ local basic_animation = {
   dead = {
     fps = 1,
     frames = { 11 }
-  }
+  },
+  fear = {
+    fps = 2 * turns_per_second,
+    frames = {12, 13},
+  },
 }
 
 animations.types = {

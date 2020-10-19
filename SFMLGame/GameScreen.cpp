@@ -64,7 +64,7 @@ void GameScreen::create() {
 		log_box = LogBox(8);
 		log_box.create();
 		add_component(log_box);
-		log_box.hide();
+		// log_box.hide();
 	}
 
 	// debug console
@@ -80,9 +80,6 @@ void GameScreen::create() {
 	}
 
 	state = CHARACTER_CONTROL;
-	// Overlay::refresh(*this, player_character);
-
-	select(container);
 
 	// load map
 	{
@@ -90,6 +87,9 @@ void GameScreen::create() {
 		next_map = filename;
 		load_map();
 	}
+
+	Overlay::refresh(*this, player_character);
+	select(container);
 
 	// update fog of war
 	map.get_fog_of_war().update_fog(player_character->get_field_of_vision()); // doesn't have to be here. It only update once a turn.
@@ -650,7 +650,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		}
 	}
 
-#if false
+#if true
 	switch (event.type) {
 	case sf::Event::MouseButtonPressed:
 		if (selected_component == &container) {
@@ -795,13 +795,10 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		case sf::Keyboard::Num8:
 			player_character->loop_animation("dead");
 			break;
-
 		case sf::Keyboard::Num9:
-			schedule_character_wait(*player_character, 1);
+			player_character->loop_animation("fear");
 			break;
-		case sf::Keyboard::Num0:
-			schedule_character_wait(*player_character, 2);
-			break;
+
 		case sf::Keyboard::Tilde:
 			if (!debug_console.is_visible()) {
 				debug_console.show_console();

@@ -15,9 +15,7 @@ function Player:new(o, control)
   return o
 end
 
--- animation = animations.types.cat_girl
 animation = 'cat_girl'
--- animation = 'human_male'
 
 function Player:create()
   self.data.enemy = false
@@ -27,15 +25,7 @@ function Player:create()
 end
 
 
-function Player:on_turn()
-  -- overwrite and do nothing, I'm the player character
-end
-
-function Player:on_idle()
-  -- overwrite and do nothing, I'm the player character
-end
-
-function Player:on_interact(interactor_name)
+function Player:npc_on_turn()
   -- overwrite and do nothing, I'm the player character
 end
 

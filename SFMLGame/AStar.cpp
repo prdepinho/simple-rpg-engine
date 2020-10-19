@@ -14,6 +14,10 @@ std::stack<Direction> AStar::search(Tilemap & map, sf::Vector2i start, sf::Vecto
 		Direction::UP, Direction::DOWN, Direction::RIGHT, Direction::LEFT
 	};
 
+	if (!map.in_tile_bounds(end.x, end.y)) {
+		return std::stack<Direction>();
+	}
+
 	// treat the dst tile as not obstacle for the algorithm.
 	bool is_end_obstacle = map.get_tile(end.x, end.y).obstacle;
 	if (is_end_obstacle)
