@@ -32,6 +32,8 @@ public:
 	void select_previous();
 	void select_next();
 
+	bool has_focus();
+
 protected:
 	void select_recursive(Component &component);
 

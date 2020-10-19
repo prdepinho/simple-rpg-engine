@@ -12,8 +12,7 @@ Game::Game() : screen(nullptr), to_change_screen(nullptr) {
 Game::~Game() {
 	if (screen != nullptr) {
 		screen->destroy();
-		if (screen != &game_screen)
-			delete screen;
+		delete screen;
 	}
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
@@ -91,7 +90,7 @@ void Game::change_to_map_editor_screen() {
 }
 
 void Game::change_to_game_screen() {
-#if false
+#if true
 	Resources::stop_music();
 	to_change_screen = new GameScreen();
 	to_change_screen->config_filename = Path::SCREENS + "game.json";
@@ -110,8 +109,7 @@ void Game::change_to_load_game_screen() {
 void Game::change_screen() {
 	if (screen != nullptr) {
 		screen->destroy();
-		if (screen != &game_screen)
-			delete screen;
+		delete screen;
 	}
 	screen = to_change_screen;
 	screen->set_window(&window);

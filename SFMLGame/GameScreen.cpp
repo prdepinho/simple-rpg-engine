@@ -489,10 +489,9 @@ void GameScreen::control_mouse_wheel_zoom(float delta, int x, int y) {
 }
 
 
-
 void GameScreen::poll_events(float elapsed_time) {
 	Screen::poll_events(elapsed_time);
-	if (!window->hasFocus())
+	if (!has_focus())
 		return;
 	if (current_mode) {
 		current_mode->poll_events(elapsed_time);

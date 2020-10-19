@@ -130,7 +130,7 @@ void Screen::poll_events(float elapsed_time)
 	try {
 		sf::Event event;
 		while (window->pollEvent(event)) {
-			if (window->hasFocus())
+			if (has_focus())
 				handle_event(event, elapsed_time);
 		}
 
@@ -143,7 +143,7 @@ void Screen::poll_events(float elapsed_time)
 }
 
 Component *Screen::handle_event(sf::Event &event, float elapsed_time) {
-	if (!window->hasFocus())
+	if (!has_focus())
 		return nullptr;
 	Component *interacted_component = nullptr;
 
@@ -215,3 +215,10 @@ Component *Screen::handle_event(sf::Event &event, float elapsed_time) {
 	}
 	return interacted_component;
 }
+
+bool Screen::has_focus() {
+	if (window)
+		return window->hasFocus();
+	return false;
+}
+
