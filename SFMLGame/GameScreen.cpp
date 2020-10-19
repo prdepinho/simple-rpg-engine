@@ -1010,8 +1010,12 @@ void GameScreen::schedule_character_interaction(Character &character, int tile_x
 }
 
 void GameScreen::schedule_character_attack(Character &attacker, Character &defender) {
+	if (&attacker == player_character) {
+		Log("Schedule attack. (busy: %s)", (player_busy ? "true" : "false"));
+	}
 	auto *action = new AttackAction(&attacker, &defender);
 	attacker.schedule_action(action);
+	player_busy = true;
 }
 
 void GameScreen::schedule_character_cast_magic(std::string magic_name, Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> tiles, std::vector<std::string> targets, int inventory_index) {
@@ -1160,10 +1164,12 @@ void GameScreen::attack_character(Character &attacker, Character &defender) {
 				}
 			}
 			else {
+				player_busy = false;
 				Log("Is not in range.");
 			}
 		}
 		else {
+			player_busy = false;
 			Log("No ammo");
 		}
 	}
