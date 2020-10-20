@@ -262,6 +262,8 @@ private:
 		bool running = false;
 		LuaObject data;
 	} foreground;
+
+	Font busy;
 };
 
 

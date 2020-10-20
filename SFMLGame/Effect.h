@@ -127,6 +127,7 @@ public:
 		time_count(0)
 	{}
 	virtual void update(float elapsed_time) override;
+	Character *get_character() { return character; }
 protected:
 	Character *character;
 	float seconds;

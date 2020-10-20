@@ -541,7 +541,6 @@ function Control:new_game()
   self.map_data = {}
   self.map_module = {}
   self.current_map = ""
-  self.magic = {}
 end
 
 function Control:save_game(filename, title)

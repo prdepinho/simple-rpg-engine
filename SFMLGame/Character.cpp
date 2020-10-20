@@ -74,6 +74,12 @@ size_t Character::schedule_size() const {
 }
 
 void Character::schedule_action(Action * action) {
+	if (name == "player") {
+		Log("Schedule: %s", action->to_string().c_str());
+		if (action->to_string() == "InteractionAction") {
+			Log("Yeah, that's it.");
+		}
+	}
 	schedule.push(action);
 }
 

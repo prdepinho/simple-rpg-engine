@@ -91,6 +91,12 @@ void GameScreen::create() {
 	Overlay::refresh(*this, player_character);
 	select(container);
 
+	player_busy = false;
+	busy = Font();
+	busy.set_texture(Resources::get_texture("gui"));
+	add_component(busy, false);
+
+
 	// update fog of war
 	map.get_fog_of_war().update_fog(player_character->get_field_of_vision()); // doesn't have to be here. It only update once a turn.
 
@@ -134,6 +140,8 @@ void GameScreen::draw() {
 
 bool GameScreen::update(float elapsed_time) {
 	Screen::update(elapsed_time);
+
+	busy.draw_line(_game.get_resolution_width() - 40, 0, (player_busy ? "busy" : "free"), sf::Color::White);
 
 	if (current_mode)
 		current_mode->update(elapsed_time);
@@ -196,6 +204,8 @@ bool GameScreen::update(float elapsed_time) {
 	// change map here
 	if (next_map != "")
 		load_map();
+
+	// if (turn_count + elapsed_time >= turn_duration / 2)
 
 	// Turn handling. Wait player input to process the next turn.
 	if ((turn_count += elapsed_time) >= turn_duration && effects.empty()) {
@@ -275,94 +285,98 @@ bool GameScreen::update(float elapsed_time) {
 
 
 void GameScreen::control_move_up() {
-	if (can_move(*player_character, Direction::UP)) {
-		player_character->clear_schedule();
-		auto *action = new MoveAction(player_character, Direction::UP);
-		player_character->schedule_action(action);
-		player_busy = true;
-	}
-	else {
-		auto pos = character_position(*player_character);
-		int dst_x = pos.x;
-		int dst_y = pos.y - 1;
-		Character *target = get_live_character_on_tile(dst_x, dst_y);
-		if (target != nullptr && is_enemy(*target)) {
-			schedule_character_attack(*player_character, *target);
+	if (!player_busy) {
+		if (can_move(*player_character, Direction::UP)) {
+			player_character->clear_schedule();
+			auto *action = new MoveAction(player_character, Direction::UP);
+			player_character->schedule_action(action);
 		}
 		else {
-			auto *action = new InteractionAction(player_character, dst_x, dst_y);
-			player_character->schedule_action(action);
-			player_busy = true;
+			auto pos = character_position(*player_character);
+			int dst_x = pos.x;
+			int dst_y = pos.y - 1;
+			Character *target = get_live_character_on_tile(dst_x, dst_y);
+			if (target != nullptr && is_enemy(*target)) {
+				schedule_character_attack(*player_character, *target);
+			}
+			else {
+				auto *action = new InteractionAction(player_character, dst_x, dst_y);
+				player_character->schedule_action(action);
+			}
 		}
+		player_busy = true;
 	}
 }
 
 void GameScreen::control_move_down() {
-	if (can_move(*player_character, Direction::DOWN)) {
-		player_character->clear_schedule();
-		auto *action = new MoveAction(player_character, Direction::DOWN);
-		player_character->schedule_action(action);
-		player_busy = true;
-	}
-	else {
-		auto pos = character_position(*player_character);
-		int dst_x = pos.x;
-		int dst_y = pos.y + 1;
-		Character *target = get_live_character_on_tile(dst_x, dst_y);
-		if (target != nullptr && is_enemy(*target)) {
-			schedule_character_attack(*player_character, *target);
+	if (!player_busy) {
+		if (can_move(*player_character, Direction::DOWN)) {
+			player_character->clear_schedule();
+			auto *action = new MoveAction(player_character, Direction::DOWN);
+			player_character->schedule_action(action);
 		}
 		else {
-			auto *action = new InteractionAction(player_character, dst_x, dst_y);
-			player_character->schedule_action(action);
-			player_busy = true;
+			auto pos = character_position(*player_character);
+			int dst_x = pos.x;
+			int dst_y = pos.y + 1;
+			Character *target = get_live_character_on_tile(dst_x, dst_y);
+			if (target != nullptr && is_enemy(*target)) {
+				schedule_character_attack(*player_character, *target);
+			}
+			else {
+				auto *action = new InteractionAction(player_character, dst_x, dst_y);
+				player_character->schedule_action(action);
+			}
 		}
+		player_busy = true;
 	}
 }
 
 void GameScreen::control_move_left() {
-	if (can_move(*player_character, Direction::LEFT)) {
-		player_character->clear_schedule();
-		auto *action = new MoveAction(player_character, Direction::LEFT);
-		player_character->schedule_action(action);
-		player_busy = true;
-	}
-	else {
-		auto pos = character_position(*player_character);
-		int dst_x = pos.x - 1;
-		int dst_y = pos.y;
-		Character *target = get_live_character_on_tile(dst_x, dst_y);
-		if (target != nullptr && is_enemy(*target)) {
-			schedule_character_attack(*player_character, *target);
+	if (!player_busy) {
+		if (can_move(*player_character, Direction::LEFT)) {
+			player_character->clear_schedule();
+			auto *action = new MoveAction(player_character, Direction::LEFT);
+			player_character->schedule_action(action);
 		}
 		else {
-			auto *action = new InteractionAction(player_character, dst_x, dst_y);
-			player_character->schedule_action(action);
-			player_busy = true;
+			auto pos = character_position(*player_character);
+			int dst_x = pos.x - 1;
+			int dst_y = pos.y;
+			Character *target = get_live_character_on_tile(dst_x, dst_y);
+			if (target != nullptr && is_enemy(*target)) {
+				schedule_character_attack(*player_character, *target);
+			}
+			else {
+				auto *action = new InteractionAction(player_character, dst_x, dst_y);
+				player_character->schedule_action(action);
+			}
 		}
+		player_busy = true;
 	}
 }
 
 void GameScreen::control_move_right() {
-	if (can_move(*player_character, Direction::RIGHT)) {
-		player_character->clear_schedule();
-		auto *action = new MoveAction(player_character, Direction::RIGHT);
-		player_character->schedule_action(action);
-		player_busy = true;
-	}
-	else {
-		auto pos = character_position(*player_character);
-		int dst_x = pos.x + 1;
-		int dst_y = pos.y;
-		Character *target = get_live_character_on_tile(dst_x, dst_y);
-		if (target != nullptr && is_enemy(*target)) {
-			schedule_character_attack(*player_character, *target);
+	if (!player_busy) {
+		if (can_move(*player_character, Direction::RIGHT)) {
+			player_character->clear_schedule();
+			auto *action = new MoveAction(player_character, Direction::RIGHT);
+			player_character->schedule_action(action);
 		}
 		else {
-			auto *action = new InteractionAction(player_character, dst_x, dst_y);
-			player_character->schedule_action(action);
-			player_busy = true;
+			auto pos = character_position(*player_character);
+			int dst_x = pos.x + 1;
+			int dst_y = pos.y;
+			Character *target = get_live_character_on_tile(dst_x, dst_y);
+			if (target != nullptr && is_enemy(*target)) {
+				schedule_character_attack(*player_character, *target);
+			}
+			else {
+				auto *action = new InteractionAction(player_character, dst_x, dst_y);
+				player_character->schedule_action(action);
+			}
 		}
+		player_busy = true;
 	}
 }
 
@@ -383,10 +397,12 @@ void GameScreen::control_pan_right() {
 }
 
 void GameScreen::control_wait() {
-	player_character->clear_schedule();
-	auto *action = new WaitAction(player_character);
-	player_character->schedule_action(action);
-	player_busy = true;
+	if (!player_busy) {
+		player_character->clear_schedule();
+		auto *action = new WaitAction(player_character);
+		player_character->schedule_action(action);
+		player_busy = true;
+	}
 }
 
 
@@ -504,38 +520,32 @@ void GameScreen::poll_events(float elapsed_time) {
 	}
 	try {
 		// constant input handler
-		if (!player_busy) {
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)) {
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-					control_pan_up();
-				}
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-					control_pan_down();
-				}
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-					control_pan_left();
-				}
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-					control_pan_right();
-				} 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)) {
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+				control_pan_up();
 			}
-			else {
-				if (InputHandler::is_pressed(Control::UP)) {
-					control_move_up();
-				}
-				else if (InputHandler::is_pressed(Control::DOWN)) {
-					control_move_down();
-				}
-				else if (InputHandler::is_pressed(Control::LEFT)) {
-					control_move_left();
-				}
-				else if (InputHandler::is_pressed(Control::RIGHT)) {
-					control_move_right();
-				}
-				else if (InputHandler::is_pressed(Control::B)) {
-					// wait
-					// control_wait();
-				}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+				control_pan_down();
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+				control_pan_left();
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+				control_pan_right();
+			} 
+		}
+		else {
+			if (InputHandler::is_pressed(Control::UP)) {
+				control_move_up();
+			}
+			else if (InputHandler::is_pressed(Control::DOWN)) {
+				control_move_down();
+			}
+			else if (InputHandler::is_pressed(Control::LEFT)) {
+				control_move_left();
+			}
+			else if (InputHandler::is_pressed(Control::RIGHT)) {
+				control_move_right();
 			}
 		}
 
@@ -592,60 +602,27 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			// do
 			{
 				auto position = character_position(*player_character);
-				// control_loot(position.x, position.y);
 				auto *action = new InteractionAction(player_character, position.x, position.y);
 				player_character->schedule_action(action);
 				player_busy = true;
 			}
 			break;
 		case Control::B: 
-#if true
 			{
 				select_tile_to_shoot();
 			}
-#endif
 			break;
 		case Control::START:
 			// open menu
-#if true
 			block_input = true;
 			CharacterMenu::show(*this, player_character, [&](Component *) {
 				block_input = false;
 				return true;
 			});
-#endif
 			break;
 		case Control::SELECT:
 			schedule_character_wait(*player_character, 1);
-#if false
-			{
-				// select tile
-				auto center = character_position(*player_character);
-				int range_radius = 3;
-				int effect_radius = 1;
-				select_tile_mode = SelectTileMode(this, center, range_radius, effect_radius, 
-					[&](sf::Vector2i center, std::vector<sf::Vector2i> &selected_tiles) {
-						Log("On ok");
-						for (auto tile : selected_tiles) {
-							Log("%d, %d", tile.x, tile.y);
-							auto src = character_position(*player_character);
-							auto callback = [&](MissileEffect* e) {
-								auto tile_coords = map.get_tile_coord(e->get_dst_x(), e->get_dst_y());
-								start_firework("fireball_blast", tile_coords.x, tile_coords.y);
-							};
-							cast_missile("arrow", src.x, src.y, tile.x, tile.y, callback);
-						}
-						return true;
-					},
-					[&]() {
-						Log("On end");
-						current_mode = nullptr; 
-					}
-				);
-				select_tile_mode.create();
-				current_mode = &select_tile_mode;
-			}
-#endif
+			player_busy = true;
 			break;
 		}
 	}
@@ -728,10 +705,12 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			case sf::Keyboard::R: 
 				{
 					static int give_points = true;
-					player_busy = true;
+					block_input = true;
+					// player_busy = true;
 					CharacterEditPanel::show(player_character, give_points, *this, [&](Component*) {
 						Overlay::refresh(*this, player_character);
-						player_busy = false;
+						block_input = false;
+						// player_busy = false;
 						select(container);
 						give_points = false;
 						return true;
@@ -985,7 +964,7 @@ void GameScreen::put_item_on_tile(Item &item, int x, int y) {
 
 void GameScreen::schedule_character_wait(Character &character, int turns) {
 	for (int i = 0; i < turns; ++i) {
-		auto *action = new WaitAction();
+		auto *action = new WaitAction(&character);
 		character.schedule_action(action);
 	}
 }
@@ -1010,12 +989,8 @@ void GameScreen::schedule_character_interaction(Character &character, int tile_x
 }
 
 void GameScreen::schedule_character_attack(Character &attacker, Character &defender) {
-	if (&attacker == player_character) {
-		Log("Schedule attack. (busy: %s)", (player_busy ? "true" : "false"));
-	}
 	auto *action = new AttackAction(&attacker, &defender);
 	attacker.schedule_action(action);
-	player_busy = true;
 }
 
 void GameScreen::schedule_character_cast_magic(std::string magic_name, Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> tiles, std::vector<std::string> targets, int inventory_index) {
@@ -1047,9 +1022,6 @@ void GameScreen::move_character(Character &character, Direction direction) {
 	if (!can_move(character, position.x, position.y)) {
 		character.clear_schedule();
 		// Log("%s Clear", character.get_name().c_str());
-		if (&character == player_character) {
-			player_busy = false;
-		}
 		return;
 	}
 
@@ -1091,13 +1063,15 @@ void GameScreen::move_character(Character &character, Direction direction) {
 			catch (LuaException &e) {
 				Log("Lua Error: %s", e.what());
 			}
-			player_busy = false;
 			update_field_of_vision(player_character);
 			// update fog of war
 			map.get_fog_of_war().update_fog(player_character->get_field_of_vision()); 
+			player_busy = false;
+		});
+		effect->set_on_interrupt([&](Effect*) {
+			player_busy = false;
 		});
 		add_effect(effect);
-		player_busy = true;
 	}
 
 	// non-player character
@@ -1131,8 +1105,10 @@ void GameScreen::wait_character(Character &character) {
 		effect->set_on_end([&](Effect*) {
 			player_busy = false;
 		});
+		effect->set_on_interrupt([&](Effect*) {
+			player_busy = false;
+		});
 		add_effect(effect);
-		player_busy = true;
 	}
 	else {
 		Effect *effect = new WaitEffect(&character, turn_duration);
@@ -1155,8 +1131,10 @@ void GameScreen::attack_character(Character &attacker, Character &defender) {
 					effect->set_on_end([&](Effect*) {
 						player_busy = false;
 					});
+					effect->set_on_interrupt([&](Effect*) {
+						player_busy = false;
+					});
 					add_effect(effect);
-					player_busy = true;
 				}
 				else {
 					Effect *effect = new RangedAttackEffect(&attacker, &defender, turn_duration);
@@ -1164,12 +1142,10 @@ void GameScreen::attack_character(Character &attacker, Character &defender) {
 				}
 			}
 			else {
-				player_busy = false;
 				Log("Is not in range.");
 			}
 		}
 		else {
-			player_busy = false;
 			Log("No ammo");
 		}
 	}
@@ -1181,8 +1157,10 @@ void GameScreen::attack_character(Character &attacker, Character &defender) {
 			effect->set_on_end([&](Effect*) {
 				player_busy = false;
 			});
+			effect->set_on_interrupt([&](Effect*) {
+				player_busy = false;
+			});
 			add_effect(effect);
-			player_busy = true;
 		}
 		else {
 			Effect *effect = new AttackEffect(&attacker, &defender, turn_duration);
@@ -1240,8 +1218,10 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 			effect->set_on_end([&](Effect*) {
 				player_busy = false;
 			});
+			effect->set_on_interrupt([&](Effect*) {
+				player_busy = false;
+			});
 			add_effect(effect);
-			player_busy = true;
 		}
 		else {
 			Effect *effect = new WaitEffect(&character, turn_duration);
@@ -1257,6 +1237,21 @@ void GameScreen::cast_magic(Character &caster, sf::Vector2i center, std::vector<
 	character_face(caster, center.x, center.y);
 	_game.get_lua()->inventory_stack_pop(inventory_index + 1, caster.get_name(), 1);
 	_game.get_lua()->cast_magic(magic_name, caster.get_name(), center, tiles, targets);
+
+	if (&caster == player_character) {
+		Effect *effect = new WaitEffect(player_character, turn_duration);
+		effect->set_on_end([&](Effect*) {
+			player_busy = false;
+		});
+		effect->set_on_interrupt([&](Effect*) {
+			player_busy = false;
+		});
+		add_effect(effect);
+	}
+	else {
+		Effect *effect = new WaitEffect(&caster, turn_duration);
+		add_effect(effect);
+	}
 }
 
 
@@ -1778,6 +1773,7 @@ void GameScreen::select_tile_to_cast(int range_radius, int effect_radius, std::s
 
 void GameScreen::refresh_overlay() {
 	Overlay::refresh(*this, player_character);
+	select(container);
 }
 
 
