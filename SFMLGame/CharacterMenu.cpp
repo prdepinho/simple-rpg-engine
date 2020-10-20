@@ -1082,7 +1082,7 @@ void Overlay::create() {
 
 void Overlay::refresh(Screen &screen, Character *character) {
 	Overlay &overlay = get();
-	overlay = Overlay();
+	// overlay = Overlay();
 	overlay.create();
 
 	LuaObject stats = _game.get_lua()->character_stats(character->get_name());
@@ -1131,5 +1131,5 @@ void Overlay::refresh(Screen &screen, Character *character) {
 		x += 9;
 	}
 
-	screen.add_component(overlay);
+	// screen.add_component(overlay);
 }

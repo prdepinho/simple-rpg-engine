@@ -88,6 +88,7 @@ void GameScreen::create() {
 		load_map();
 	}
 
+	add_component(Overlay::get());
 	Overlay::refresh(*this, player_character);
 	select(container);
 

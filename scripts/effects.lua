@@ -142,6 +142,21 @@ animations.types = {
     },
   },
 
+  armor = {
+    basic = defaults,
+    duration = 2 / turns_per_second,
+    sound = "",
+    sound = "vwuuu.wav",
+    coordinates = {
+      x = 0,
+      y = 16 * 7
+    },
+    animation = {
+      fps = 2 * turns_per_second,
+      frames = {0, 1, 2, 3},
+    },
+  },
+
   bullet = {
     basic = defaults,
     duration = 1 / turns_per_second,

@@ -273,4 +273,36 @@ end
 function Magic:fear_update(character)
 end
 
+
+
+function Magic:armor(caster, center, tiles, targets)
+  sfml_push_log(caster .. ' - casts ' .. rules.spell.armor.name)
+  local caster_stats = self.control.characters[caster].data.stats
+
+  for index, character_name in ipairs(targets) do
+    local position = sfml_get_character_position(character_name)
+    sfml_start_fireworks("armor", position.x, position.y)
+
+    sfml_show_floating_message(rules.status.armor.name, position.x, position.y)
+    
+    local duration = rules.roll_dice("3d6")
+    duration = duration + rules.arcane_spell_bonus(caster_stats)
+
+    self.control:set_status(character_name, "armor", 0, duration)
+  end
+end
+
+function Magic:armor_start(character)
+  self.control.characters[character].data.stats.bonus.magic_ac = 20
+  sfml_refresh_overlay()
+end
+
+function Magic:armor_end(character)
+  self.control.characters[character].data.stats.bonus.magic_ac = 0
+  sfml_refresh_overlay()
+end
+
+function Magic:armor_update(character)
+end
+
 return Magic
