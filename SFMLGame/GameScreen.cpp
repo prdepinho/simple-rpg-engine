@@ -858,6 +858,19 @@ void GameScreen::add_effect(Effect *effect) {
 	effects_buffer.push_back(effect);
 }
 
+void GameScreen::delete_effects() {
+	for (Effect *effect : effects) {
+		effect->interrupt();
+		delete effect;
+	}
+	effects.clear();
+	for (Effect *effect : effects_buffer) {
+		delete effect;
+	}
+	effects_buffer.clear();
+}
+
+
 void GameScreen::add_entity(Entity *entity) {
 	entities.push_back(entity);
 }
@@ -885,6 +898,10 @@ void GameScreen::change_map(std::string filename, int tile_x, int tile_y) {
 	for (Effect *effect : effects) {
 		effect->interrupt();
 	}
+	// container.clear_components();
+	delete_floating_messages();
+	entities.clear();
+
 	new_tile_position = { tile_x, tile_y };
 }
 
@@ -1481,7 +1498,7 @@ void GameScreen::center_game_view(sf::Vector2f v) {
 	float log_adjustment = log_box.is_visible() ? log_box.get_height() / 2 : 0.f;
 	game_view.setCenter({ v.x, v.y + log_adjustment});
 	for (FloatingMessage *floating_message : floating_messages) {
-		floating_message->move(diff.x, diff.y);
+		floating_message->move(diff.x, diff.y + log_adjustment);
 		floating_message->create();
 	}
 }
@@ -1559,6 +1576,16 @@ void GameScreen::remove_floating_message(FloatingMessage *fm) {
 			break;
 		}
 	}
+}
+
+void GameScreen::delete_floating_messages() {
+	Log("delete floating messages");
+	for (auto it = floating_messages.begin(); it != floating_messages.end(); ++it) {
+		FloatingMessage *fm = *it;
+		remove_component(*fm);
+		delete fm;
+	}
+	floating_messages.clear();
 }
 
 

@@ -10,6 +10,8 @@ TimedEffect::TimedEffect(float seconds) : seconds(seconds), count(0.f) {}
 TimedEffect::~TimedEffect() {}
 
 void TimedEffect::update(float elapsed_time) {
+	if (!is_running())
+		return;
 	on_update(this);
 	count += elapsed_time;
 	if (count >= seconds)
@@ -23,6 +25,8 @@ MissileEffect::MissileEffect(float seconds, Entity *entity, int src_x, int src_y
 {}
 
 void MissileEffect::update(float elapsed_time) {
+	if (!is_running())
+		return;
 	float delta_x = (dst_x - src_x) * elapsed_time / seconds;
 	float delta_y = (dst_y - src_y) * elapsed_time / seconds;
 	entity->move(delta_x, delta_y);
@@ -44,6 +48,8 @@ MagicMissileEffect::MagicMissileEffect(float seconds, Entity *entity, int src_x,
 
 
 void MoveEffect::update(float elapsed_time) {
+	if (!is_running())
+		return;
 	float pixels_to_move = speed * elapsed_time;
 
 	// snap to the grid if almost there, or if past it (hopefully not by much!)
@@ -75,12 +81,16 @@ void MoveEffect::update(float elapsed_time) {
 }
 
 void WaitEffect::update(float elapsed_time) {
+	if (!is_running())
+		return;
 	if ((time_count += elapsed_time) >= seconds) {
 		stop_running();
 	}
 }
 
 void AttackEffect::update(float elapsed_time) {
+	if (!is_running())
+		return;
 	time_count += elapsed_time;
 	if (time_count == elapsed_time) {
 		attacker->start_triggered_animation("attack", this, [&](void *d) {
@@ -96,6 +106,8 @@ void AttackEffect::update(float elapsed_time) {
 }
 
 void RangedAttackEffect::update(float elapsed_time) {
+	if (!is_running())
+		return;
 	time_count += elapsed_time;
 	if (time_count == elapsed_time) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());

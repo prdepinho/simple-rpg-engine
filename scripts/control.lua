@@ -618,7 +618,6 @@ function Control:character_base_damage_bonus(name)
 end
 
 function Control:add_character(script, name)
-  save.print_data(self.characters[name])
   if self.character_modules[name] == nil then
     self.character_modules[name] = require(script)
   end

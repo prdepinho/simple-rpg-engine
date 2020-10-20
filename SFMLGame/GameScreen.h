@@ -128,6 +128,7 @@ public:
 	void clean_items();
 
 	void add_effect(Effect *effect);
+	void delete_effects();
 
 	void add_entity(Entity *entity);
 	void remove_entity(Entity *entity);
@@ -140,6 +141,7 @@ public:
 	void add_floating_message(FloatingMessage *fm);
 	void add_floating_message(std::string message, int tile_x, int tile_y, float duration);
 	void remove_floating_message(FloatingMessage *fm);
+	void delete_floating_messages();
 
 	void toggle_log();
 	void show_log();

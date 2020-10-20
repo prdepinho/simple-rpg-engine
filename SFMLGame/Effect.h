@@ -13,7 +13,11 @@ public:
 	{ }
 	virtual ~Effect() {}
 
-	virtual void update(float elapsed_time) { stop_running(); }
+	virtual void update(float elapsed_time) { 
+		if (!is_running())
+			return;
+		stop_running(); 
+	}
 
 	bool is_running() const { return running; }
 	void stop_running() { running = false; on_end(this); }
