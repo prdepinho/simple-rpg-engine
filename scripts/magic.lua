@@ -256,10 +256,18 @@ end
 
 function Magic:fear_start(character)
   sfml_clear_schedule(character)
+  if character == 'player' then
+    sfml_set_player_control(false)
+    print('player out of control')
+  end
 end
 
 function Magic:fear_end(character)
   self.control.characters[character].data.feared_character = nil
+  if character == 'player' then
+    sfml_set_player_control(true)
+    print('player regained control')
+  end
 end
 
 function Magic:fear_update(character)

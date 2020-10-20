@@ -53,16 +53,21 @@ function Character:on_idle()
     }
 
     sfml_move(self.name, dst.x, dst.y)
-
-  elseif self:is_player_in_sight(4) then
-    local pos = sfml_get_player_position()
-    sfml_move(self.name, pos.x, pos.y)
-
   else
-    self:idle_walk(self.name)
+
+    if self.data.enemy then
+      if self:is_player_in_sight(4) then
+        print('  player in sight')
+        local pos = sfml_get_player_position()
+        sfml_move(self.name, pos.x, pos.y)
+      else
+        print('  idle walk')
+        self:idle_walk(self.name)
+      end
+    end
+
   end
 end
-
 
 -- called when a character interacts with it
 function Character:on_interact(interactor_name)
