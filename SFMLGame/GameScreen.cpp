@@ -1021,6 +1021,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 	pick_tile(character, position);
 	if (!can_move(character, position.x, position.y)) {
 		character.clear_schedule();
+		player_busy = false;
 		// Log("%s Clear", character.get_name().c_str());
 		return;
 	}
@@ -1032,6 +1033,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 	}
 	catch (LuaException &e) {
 		Log("Lua Error: %s", e.what());
+		player_busy = false;
 	}
 
 	{
@@ -1062,6 +1064,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 			}
 			catch (LuaException &e) {
 				Log("Lua Error: %s", e.what());
+				player_busy = false;
 			}
 			update_field_of_vision(player_character);
 			// update fog of war

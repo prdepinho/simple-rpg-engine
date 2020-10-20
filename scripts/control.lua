@@ -100,11 +100,19 @@ function Control:update_status(name)
       if status.on_update ~= '' then
         self.magic[status.on_update](self.magic, name)
       end
-      character_status.duration = character_status.duration - 1
-      if character_status.duration == 0 then
+
+      if type(character_status) == 'boolean' then
+        -- why is it boolean?
+        print('Character status is boolean: ' .. tostring(character_status) .. '(' .. status_name .. ')')
         self:remove_status(name, status_name)
+
       else
+        character_status.duration = character_status.duration - 1
+        if character_status.duration == 0 then
+          self:remove_status(name, status_name)
+        end
       end
+
     end
   end
 end
