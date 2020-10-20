@@ -27,6 +27,7 @@ public:
 	virtual ~MessagePanel() {}
 
 	static void show(std::string msg, Screen &screen, std::function<void()> callback = []() {});
+	static MessagePanel &get() { static MessagePanel panel; return panel; }
 	virtual void create() override;
 private:
 	std::function<void()> callback;

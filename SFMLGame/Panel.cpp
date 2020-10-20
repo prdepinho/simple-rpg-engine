@@ -57,7 +57,7 @@ void MessagePanel::create() {
  }
 
 void MessagePanel::show(std::string msg, Screen &screen, std::function<void()> callback) {
-	static MessagePanel message_panel;
+	MessagePanel &message_panel = get();
 	int h = 60;
 	int w = 100;
 	int x = screen.get_game()->get_resolution_width() / 2 - (w / 2);

@@ -186,6 +186,9 @@ public:
 	void write_line(std::string key, std::string line, int dst_x, int dst_y);
 	void remove_mapped_component(std::string key);
 
+	void set_player_control(bool in_control);
+	bool is_player_in_control() const { return in_control; }
+
 private:
 
 	std::priority_queue<Action*, std::vector<Action*>, ActionComparison> turn_actions; // the actions that take place in a single turn
@@ -222,6 +225,7 @@ private:
 	std::vector<Character*> characters;  // the first characters in the vector are dead characters, the live characters are after them.
 	Character *player_character;
 	bool player_busy;
+	bool in_control;
 	sf::Keyboard::Key player_input;
 
 	int turn;

@@ -937,6 +937,20 @@ public:
 		screen->remove_mapped_component(key);
 		return 1;
 	}
+
+	static int sfml_set_player_control(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		bool in_control = (bool)lua_toboolean(state, -1);
+		screen->set_player_control(in_control);
+		return 1;
+	}
+
+	static int sfml_is_player_in_control(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		bool in_control = screen->is_player_in_control();
+		lua_pushboolean(state, in_control);
+		return 1;
+	}
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -993,6 +1007,8 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_add_icon", LuaFunction::sfml_add_icon);
 	lua_register(lua.get_state(), "sfml_remove_mapped_component", LuaFunction::sfml_remove_mapped_component);
 	lua_register(lua.get_state(), "sfml_write_line", LuaFunction::sfml_write_line);
+	lua_register(lua.get_state(), "sfml_set_player_control", LuaFunction::sfml_set_player_control);
+	lua_register(lua.get_state(), "sfml_is_player_in_control", LuaFunction::sfml_is_player_in_control);
 
 
 }

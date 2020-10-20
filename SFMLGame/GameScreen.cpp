@@ -92,6 +92,8 @@ void GameScreen::create() {
 	select(container);
 
 	player_busy = false;
+	in_control = true;
+
 	busy = Font();
 	busy.set_texture(Resources::get_texture("gui"));
 	add_component(busy, false);
@@ -211,7 +213,7 @@ bool GameScreen::update(float elapsed_time) {
 	if ((turn_count += elapsed_time) >= turn_duration && effects.empty()) {
 
 		// new turn
-		if (turn_actions.empty() && player_character->schedule_size() > 0) {
+		if (turn_actions.empty() && (!in_control || player_character->schedule_size() > 0)) {
 
 			++turn;
 			turn_count = 0.f;
@@ -285,7 +287,7 @@ bool GameScreen::update(float elapsed_time) {
 
 
 void GameScreen::control_move_up() {
-	if (!player_busy) {
+	if (!player_busy && in_control) {
 		if (can_move(*player_character, Direction::UP)) {
 			player_character->clear_schedule();
 			auto *action = new MoveAction(player_character, Direction::UP);
@@ -309,7 +311,7 @@ void GameScreen::control_move_up() {
 }
 
 void GameScreen::control_move_down() {
-	if (!player_busy) {
+	if (!player_busy && in_control) {
 		if (can_move(*player_character, Direction::DOWN)) {
 			player_character->clear_schedule();
 			auto *action = new MoveAction(player_character, Direction::DOWN);
@@ -333,7 +335,7 @@ void GameScreen::control_move_down() {
 }
 
 void GameScreen::control_move_left() {
-	if (!player_busy) {
+	if (!player_busy && in_control) {
 		if (can_move(*player_character, Direction::LEFT)) {
 			player_character->clear_schedule();
 			auto *action = new MoveAction(player_character, Direction::LEFT);
@@ -357,7 +359,7 @@ void GameScreen::control_move_left() {
 }
 
 void GameScreen::control_move_right() {
-	if (!player_busy) {
+	if (!player_busy && in_control) {
 		if (can_move(*player_character, Direction::RIGHT)) {
 			player_character->clear_schedule();
 			auto *action = new MoveAction(player_character, Direction::RIGHT);
@@ -397,7 +399,7 @@ void GameScreen::control_pan_right() {
 }
 
 void GameScreen::control_wait() {
-	if (!player_busy) {
+	if (!player_busy && in_control) {
 		player_character->clear_schedule();
 		auto *action = new WaitAction(player_character);
 		player_character->schedule_action(action);
@@ -596,7 +598,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	}
 
 
-	if (!player_busy) {
+	if (!player_busy && in_control) {
 		switch (InputHandler::get_control_input(event)) {
 		case Control::A:
 			// do
@@ -697,7 +699,8 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				}
 				break;
 			case sf::Keyboard::G:
-				std::cout << _game.get_lua()->stack_dump() << std::endl;
+				// std::cout << _game.get_lua()->stack_dump() << std::endl;
+				in_control = !in_control;
 				break;
 			case sf::Keyboard::M:
 				change_map("room2", 8, 6);
@@ -1898,3 +1901,8 @@ void GameScreen::remove_mapped_component(std::string key) {
 		mapped_components[key] = nullptr;
 	}
 }
+
+void GameScreen::set_player_control(bool in_control) {
+	this->in_control = in_control;
+}
+
