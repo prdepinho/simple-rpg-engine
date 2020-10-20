@@ -1529,8 +1529,7 @@ void GameScreen::add_floating_message(std::string message, int tile_x, int tile_
 
 		floating_message->create();
 		floating_messages.push_back(floating_message);
-		add_component(*floating_message);
-		select(container);
+		add_component(*floating_message, false);
 	}
 
 
@@ -1803,7 +1802,8 @@ void GameScreen::select_tile_to_cast(int range_radius, int effect_radius, std::s
 
 void GameScreen::refresh_overlay() {
 	Overlay::refresh(*this, player_character);
-	select(container);
+	if (!block_input)
+		select(container);
 }
 
 
