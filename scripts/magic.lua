@@ -143,7 +143,7 @@ function Magic:poison(caster, center, tiles, targets)
         local duration = rules.roll_dice("3d6")
         duration = duration + rules.arcane_spell_bonus(caster_stats)
 
-        self.control:set_status(character_name, "poison", challange, duration)
+        self.control:set_status(character_name, "poison", challenge, duration)
       end
 
     end
@@ -245,7 +245,7 @@ function Magic:fear(caster, center, tiles, targets)
           local duration = rules.roll_dice("3d6")
           duration = duration + rules.arcane_spell_bonus(caster_stats)
 
-          self.control:set_status(character_name, "fear", challange, duration)
+          self.control:set_status(character_name, "fear", challenge, duration)
           self.control.characters[character_name].data.feared_character = caster
         end
 
