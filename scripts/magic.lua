@@ -185,17 +185,19 @@ function Magic:invisibility(caster, center, tiles, targets)
   end
 end
 
-function Magic:invisible_start(character)
-  print(character)
-  local stats = self.control.characters[character].data.stats
-  stats.bonus.ac = stats.bonus.ac + 2
-  stats.bonus.to_hit = stats.bonus.to_hit + 2
+function Magic:invisible_enter(character)
   if character == 'player' then
     sfml_character_set_transparency(character, 127)
     sfml_refresh_overlay()
   else
     sfml_character_set_transparency(character, 0)
   end
+end
+
+function Magic:invisible_start(character)
+  local stats = self.control.characters[character].data.stats
+  stats.bonus.ac = stats.bonus.ac + 2
+  stats.bonus.to_hit = stats.bonus.to_hit + 2
 end
 
 function Magic:invisible_end(character)

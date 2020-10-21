@@ -61,6 +61,9 @@ function Control:set_status(target_name, status_name, challenge_level, duration)
   if status.on_start ~= '' then
     self.magic[status.on_start](self.magic, target_name)
   end
+  if status.on_enter ~= '' then
+    self.magic[status.on_enter](self.magic, target_name)
+  end
 
   local msg = target_name .. ' - ' .. status.name
   if duration > 0 then
@@ -646,6 +649,19 @@ function Control:add_character(script, name)
       sfml_set_obstacle(false, position.x, position.y)
       sfml_loop_animation(name, 'dead')
       sfml_push_character_to_bottom(name)
+    else
+      local character = self.characters[name]
+      for status_name, character_status in pairs(character.data.stats.status) do 
+        if not character_status.dead then
+          local status_data = rules.status[status_name]
+          if status_data.character_animation ~= '' then
+            sfml_loop_animation(name, status_data.character_animation)
+          end
+          if status_data.on_enter ~= '' then
+            self.magic[status_data.on_enter](self.magic, name)
+          end
+        end
+      end
     end
   end
 end
@@ -731,6 +747,7 @@ function Control:map_enter()
   for code, item in pairs(self.map_module.data.items) do
     sfml_add_item(code, item.name, item.type, item.quantity or 0, item.x, item.y)
   end
+
 end
 
 function Control:map_exit()
