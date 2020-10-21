@@ -305,4 +305,41 @@ end
 function Magic:armor_update(character)
 end
 
+
+
+
+
+function Magic:strength(caster, center, tiles, targets)
+  sfml_push_log(caster .. ' - casts ' .. rules.spell.strength.name)
+  local caster_stats = self.control.characters[caster].data.stats
+
+  for index, character_name in ipairs(targets) do
+    local position = sfml_get_character_position(character_name)
+    sfml_start_fireworks("strength", position.x, position.y)
+
+    sfml_show_floating_message(rules.status.strength.name, position.x, position.y)
+    
+    local duration = rules.roll_dice("3d6")
+    duration = duration + rules.divine_spell_bonus(caster_stats)
+
+    self.control:set_status(character_name, "strength", 0, duration)
+  end
+end
+
+function Magic:strength_start(character)
+  local data = self.control.characters[character].data
+  data.old_str = data.stats.ability.str
+  data.stats.ability.str = 19
+end
+
+function Magic:strength_end(character)
+  local data = self.control.characters[character].data
+  data.stats.ability.str = data.old_str
+  data.old_str = 0
+end
+
+function Magic:strength_update(character)
+end
+
+
 return Magic

@@ -34,6 +34,7 @@ function M.create()
   M.data.items["room_s5"] = {name = "poison", type = "spell", x = 2, y = 2, quantity = 15}
   M.data.items["room_s6"] = {name = "fear", type = "spell", x = 2, y = 2, quantity = 15}
   M.data.items["room_s7"] = {name = "armor", type = "spell", x = 2, y = 2, quantity = 15}
+  M.data.items["room_s8"] = {name = "strength", type = "spell", x = 2, y = 2, quantity = 15}
 end
 
 function M.enter()

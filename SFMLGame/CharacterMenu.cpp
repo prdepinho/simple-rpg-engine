@@ -1083,7 +1083,8 @@ void Overlay::create() {
 void Overlay::refresh(Screen &screen, Character *character) {
 	Overlay &overlay = get();
 	// overlay = Overlay();
-	overlay.create();
+	// overlay.clear_components();
+	// overlay.create();
 
 	LuaObject stats = _game.get_lua()->character_stats(character->get_name());
 
@@ -1112,6 +1113,7 @@ void Overlay::refresh(Screen &screen, Character *character) {
 	for (Icon &icon : overlay.status_icons) {
 		overlay.remove_component(icon);
 	}
+	overlay.status_icons.clear();
 
 	y += overlay.ac.line_height();
 	LuaObject *status_list = stats.get_object("status");
@@ -1124,11 +1126,15 @@ void Overlay::refresh(Screen &screen, Character *character) {
 		int pix_x = status.get_int("icon.x");
 		int pix_y = status.get_int("icon.y");
 
-		;
-		overlay.status_icons.push_back(Icon(x, y, 8, 8, pix_x, pix_y));
-		overlay.status_icons.back().create();
-		overlay.add_component(overlay.status_icons.back());
+		Icon icon(x, y, 8, 8, pix_x, pix_y);
+		icon.create();
+		overlay.status_icons.push_back(icon);
+		// overlay.add_component(overlay.status_icons.back());
 		x += 9;
+	}
+
+	for (Icon &icon : overlay.status_icons) {
+		overlay.add_component(icon);
 	}
 
 	// screen.add_component(overlay);

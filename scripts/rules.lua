@@ -135,6 +135,7 @@ rules.spell = {
   invisibility  = { name = "Invisibility",  category = "arcane", stack_capacity = 10, icon = {x = 16*6,  y = 16*6}, range_radius = 1, effect_radius = 0, usable = true, use = "invisibility",  desc = "Turn a creature invisible. It gains +2 ac and attack bonus." },
   fear          = { name = "Fear",          category = "arcane", stack_capacity = 10, icon = {x = 16*4,  y = 16*6}, range_radius = 6, effect_radius = 3, usable = true, use = "fear",          desc = "Inflicts fear in the heart of creatures in an area. Wis save to negate." },
   armor         = { name = "Armor",         category = "arcane", stack_capacity = 10, icon = {x = 16*1,  y = 16*6}, range_radius = 1, effect_radius = 0, usable = true, use = "armor",         desc = "Creates a magic armor that grants ac 20 to a creature."},
+  strength      = { name = "Strength",      category = "divine", stack_capacity = 10, icon = {x = 16*4,  y = 16*8}, range_radius = 1, effect_radius = 0, usable = true, use = "strength",      desc = "Grants a creature the inhuman strength of 19."},
   cure_wounds   = { name = "Cure Wounds",   category = "divine", stack_capacity = 10, icon = {x = 16*0,  y = 16*8}, range_radius = 1, effect_radius = 0, usable = true, use = "cure_wounds",   desc = "Recover hit points to the amount of 2d4 + Wisdom Modifier." },
 }
 
@@ -151,7 +152,7 @@ rules.status = {
   resist_poison = {name = "Resist Poison",  on_start = "",                on_end = "",              on_update = "",                 character_animation = "",       icon = { x = 8*28, y = 8*1 } },
   courage       = {name = "Courage",        on_start = "",                on_end = "",              on_update = "",                 character_animation = "",       icon = { x = 8*29, y = 8*1 } },
   armor         = {name = "Armor",          on_start = "armor_start",     on_end = "armor_end",     on_update = "armor_update",     character_animation = "",       icon = { x = 8*30, y = 8*1 } },
-  strength      = {name = "Strength",       on_start = "",                on_end = "",              on_update = "",                 character_animation = "",       icon = { x = 8*31, y = 8*1 } },
+  strength      = {name = "Strength",       on_start = "strength_start",  on_end = "strength_end",  on_update = "strength_update",  character_animation = "",       icon = { x = 8*31, y = 8*1 } },
 }
 
 function rules.new_character() 

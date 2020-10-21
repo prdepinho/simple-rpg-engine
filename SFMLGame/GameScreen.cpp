@@ -88,7 +88,8 @@ void GameScreen::create() {
 		load_map();
 	}
 
-	add_component(Overlay::get());
+	Overlay::get().create();
+	add_component(Overlay::get(), false);
 	Overlay::refresh(*this, player_character);
 	select(container);
 
@@ -715,7 +716,6 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 						Overlay::refresh(*this, player_character);
 						block_input = false;
 						// player_busy = false;
-						select(container);
 						give_points = false;
 						return true;
 					});
@@ -1806,8 +1806,6 @@ void GameScreen::select_tile_to_cast(int range_radius, int effect_radius, std::s
 
 void GameScreen::refresh_overlay() {
 	Overlay::refresh(*this, player_character);
-	if (!block_input)
-		select(container);
 }
 
 
