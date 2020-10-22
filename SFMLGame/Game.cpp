@@ -23,7 +23,10 @@ void Game::init()
 
 	lua.load(Script::LUA_MAIN);
 
-	Log("Start loading assets:")
+	Log("Start loading assets:");
+
+	Log("Loading rules...");
+	Resources::load_rules();
 
 	Log("Loading textures...");
 	Resources::load_textures();

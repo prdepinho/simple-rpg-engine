@@ -75,8 +75,10 @@ end
 
 function Control:remove_status(character, status_name)
   print('remove status: ' .. status_name)
-
   local status = rules.status[status_name]
+
+  sfml_push_log(character .. " - " .. status.name .. " removed")
+
   if status.on_end ~= "" then
     self.magic[status.on_end](self.magic, character)
   end
@@ -348,12 +350,18 @@ function Control:equip_item(item_index, character_name)
   local item = self.characters[character_name].data.stats.inventory[item_index]
   if item.type == "weapon" then
     self.characters[character_name].data.stats.weapon = item
-    if rules.weapon[item.name].hands > 1 then
+
+    local equipped_shield = self.characters[character_name].data.stats.shield
+    if equipped_shield.code ~= '' and rules.weapon[item.name].hands > 1 then
       self.characters[character_name].data.stats.shield = {code = "", name = "no_shield", type = "shield"}
+      sfml_push_log("Shield has been unequipped");
       print("Shield has been unequipped")
     end
-    if not self:does_ammo_match_weapon(self.characters[character_name].data.stats.ammo.name, character_name) then
+
+    local equipped_ammo = self.characters[character_name].data.stats.ammo
+    if equipped_ammo.code ~= '' and not self:does_ammo_match_weapon(equipped_ammo.name, character_name) then
       self.characters[character_name].data.stats.ammo = {code = "", name = "no_ammo", type = "ammo", quantity = 0}
+      sfml_push_log("Unequipped ammo that does not match weapon.");
       print("Unequipped ammo that does not match new weapon")
     end
 
@@ -364,6 +372,7 @@ function Control:equip_item(item_index, character_name)
     if rules.weapon[self.characters[character_name].data.stats.weapon.name].hands <= 1 then
       self.characters[character_name].data.stats.shield = item
     else
+      sfml_push_log("Shield cannot be equipped with two handed weapons.");
       print("Shield cannot be equipped with two handed weapons")
       return false
     end
@@ -372,6 +381,7 @@ function Control:equip_item(item_index, character_name)
     if self:does_ammo_match_weapon(item.name, character_name) then
       self.characters[character_name].data.stats.ammo = item
     else
+      sfml_push_log("Ammo does not match equipped weapon.");
       print("Ammo does not match equipped weapon")
       return false
     end

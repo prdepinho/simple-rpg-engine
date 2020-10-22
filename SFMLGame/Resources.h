@@ -6,6 +6,7 @@
 #include <map>
 #include "consts.h"
 #include "Json.h"
+#include "Lua.h"
 
 class ResourcesException : public std::exception {
 public: 
@@ -72,12 +73,18 @@ public:
 		return get().animation_map[name];
 	}
 
+	static LuaObject &get_rules() {
+		return get().rules;
+	}
+
+
 	static void play_music(std::string filename);
 	static void loop_music(std::string filename);
 	static void stop_music();
 
 	static void play_sound(std::string filename);
 
+	static void load_rules();
 	static void load_textures();
 	static void load_sounds();
 	static void load_music();
@@ -112,6 +119,9 @@ private:
 	std::vector<sf::SoundBuffer*> sound_buffers;
 
 	sf::Music *playing_music = nullptr;
+
+	Lua *lua;
+	LuaObject rules;
 
 	// play a set number of cycling sounds simultaneously.
 	std::vector<sf::Sound*> sounds;

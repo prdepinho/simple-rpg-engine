@@ -20,6 +20,14 @@ Resources::~Resources() {
 	for (auto it = sounds.begin(); it != sounds.end(); ++it)
 		if (*it != nullptr)
 			delete *it;
+
+	rules.delete_functions();
+	delete lua;
+}
+
+void Resources::load_rules() {
+	get().lua = new Lua(Path::SCRIPTS + "rules.lua");
+	get().rules = get().lua->read_top_table();
 }
 
 void Resources::load_textures() {

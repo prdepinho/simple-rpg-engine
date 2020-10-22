@@ -7,30 +7,22 @@
 CharacterEditPanel::CharacterEditPanel(Character *character, int x, int y, int w, int h) : Panel(x, y, w, h), character(character) {
 }
 
-CharacterEditPanel::~CharacterEditPanel() {
-	if (is_created()) {
-		rules.delete_functions();
-	}
-	if (lua) {
-		delete lua;
-	}
-}
+CharacterEditPanel::~CharacterEditPanel() { }
 
 void CharacterEditPanel::create() {
-	lua = new Lua(Path::SCRIPTS + "rules.lua");
-	rules = lua->read_top_table();
+	LuaObject &rules = Resources::get_rules();
 
 	LuaObject stats = _game.get_lua()->character_stats(character->get_name());
 
 	points = give_points ? rules.get_int("creation_rules.points.total") : 0;
 
 	ability_map = {
-		{"ability.str", "Str"},
-		{"ability.dex", "Dex"},
-		{"ability.con", "Con"},
-		{"ability.int", "Int"},
-		{"ability.wis", "Wis"},
-		{"ability.cha", "Cha"}
+		{"ability.str", "Str: "},
+		{"ability.dex", "Dex:  "},
+		{"ability.con", "Con: "},
+		{"ability.int", "Int:  "},
+		{"ability.wis", "Wis:  "},
+		{"ability.cha", "Cha: "}
 	};
 
 	for (auto &tuples : ability_map) {
@@ -77,13 +69,17 @@ void CharacterEditPanel::create() {
 	}
 
 	// ability scores
-	for (int i = 0; i < 6; i++) {
-		x = margin + button_width + margin;
-		y = ac_label.get_y() + ac_label.get_height() + margin + i * button_height + margin;
-		std::string str = ability_map[i][1] + ": " + std::to_string(ability_scores[ability_map[i][0]]);
-		labels[i] = Label(str, x, y, sf::Color::Black);
-		labels[i].create();
-		add_component(labels[i]);
+	{
+		for (int i = 0; i < 6; i++) {
+			x = margin + button_width + margin;
+			y = ac_label.get_y() + ac_label.get_height() + margin + i * button_height + margin;
+			std::string str = ability_map[i][1] + std::to_string(ability_scores[ability_map[i][0]]);
+			str += " (" + std::to_string((*rules.get_object("ability_modifier"))[ability_scores[ability_map[i][0]]-1].get_int()) + ")";
+
+			labels[i] = Label(str, x, y, sf::Color::Black);
+			labels[i].create();
+			add_component(labels[i]);
+		}
 	}
 
 	// add/subtract ability buttons
@@ -121,7 +117,7 @@ void CharacterEditPanel::create() {
 		buttons[i].create();
 		add_component(buttons[i]);
 
-		x = labels[j].get_x() + button_width + margin;
+		x = labels[j].get_x() + button_width + margin * 4;
 		buttons[i + 1] = AbilityButton(">", x, y, w, h - 1, [&](Component* c) {
 			if (editable) {
 				AbilityButton *b = dynamic_cast<AbilityButton*>(c);
@@ -224,7 +220,7 @@ void CharacterEditPanel::create() {
 	// text area
 	{
 		int lines_per_page = 10;
-		x = buttons[i-1].get_x() + buttons[i-1].get_width() + margin;
+		x = buttons[i-1].get_x() + buttons[i-1].get_width() + margin * 4;
 		y = name_label.get_y() + name_label.get_height() + margin;
 		w = 120;
 		text_area = TextArea(x, y, w, lines_per_page, 20);
@@ -238,11 +234,17 @@ void CharacterEditPanel::create() {
 }
 
 void CharacterEditPanel::refresh() {
+	LuaObject &rules = Resources::get_rules();
 	LuaObject *point_costs = rules.get_object("creation_rules.points.costs");
 
 	for (int i = 0, j = 0; i < 6; i++, j+=2) {
 		int score = ability_scores[ability_map[i][0]];
-		std::string str = ability_map[i][1] + ": " + std::to_string(score);
+		std::string str = ability_map[i][1] + std::to_string(score);
+
+		int modifier = (*rules.get_object("ability_modifier"))[ability_scores[ability_map[i][0]] - 1].get_int();
+		std::string sign = (modifier > 0 ? "+" : "");
+		str += " (" + sign + std::to_string(modifier) + ")";
+
 		labels[i].set_text(str);
 		{
 			int price_up = (*point_costs)[score].get_int("", -1);
@@ -290,6 +292,7 @@ void CharacterEditPanel::set_cursor(int i) {
 }
 
 void CharacterEditPanel::update_text_area() {
+	LuaObject &rules = Resources::get_rules();
 	text_area.clear();
 	int score = 0;
 	if (cursor < 12)

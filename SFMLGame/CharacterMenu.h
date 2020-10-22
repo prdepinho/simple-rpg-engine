@@ -51,6 +51,7 @@ private:
 class StatsPanel : public Panel {
 public:
 	StatsPanel(int x=0, int y=0);
+	virtual ~StatsPanel();
 	virtual void create() override;
 	void refresh(Character *character);
 	struct EquipmentData {
@@ -152,6 +153,7 @@ public:
 	static void show(Screen &screen, Character *character, std::vector<Item*> items, Callback callback=Callback());
 	static LootMenu &get() { static LootMenu menu; return menu; }
 	Character *get_character() { return character; }
+	void display_info(Item item);
 	void update_buttons();
 	void close();
 private:
@@ -159,6 +161,9 @@ private:
 	Inventory inventory;
 	Loot loot;
 	Character *character;
+	TextArea name_area;
+	TextArea info_area;
+	int margin = 5;
 };
 
 

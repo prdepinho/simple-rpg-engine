@@ -49,7 +49,4 @@ private:
 	Label ac_label;
 	int cursor = 0;
 	bool editable = true;
-
-	Lua *lua = nullptr;
-	LuaObject rules;
 };

@@ -60,8 +60,8 @@ rules.armor = {
 }
 
 rules.shield = {
-  no_shield = { name = "No Shield", ac_bonus = 0, icon = {x = 16*0, y = 16*5} },
-  shield    = { name = "Shield",    ac_bonus = 3, icon = {x = 16*1, y = 16*5} },
+  no_shield = { name = "No Shield", ac_bonus = 0, icon = {x = 16*0, y = 16*5}, desc = "" },
+  shield    = { name = "Shield",    ac_bonus = 3, icon = {x = 16*1, y = 16*5}, desc = "A wooden shield fortified with boiled leather and illustrated with heraldry." },
 }
 
 -- 
@@ -278,7 +278,7 @@ rules.creation_rules = {
   end,
   points = {
     --         1    2    3    4    5    6    7    8    9   10  11  12  13  14  15  16   17   18   19   20
-    costs = { nil, nil, nil,  5,   3,   2,   2,   1,   1,  1,  1,  1,  2,  2,  3,  5,   8,   13,  nil, nil  },
+    costs = { nil, nil, nil,  5,   3,   2,   1,   1,   1,  1,  1,  1,  2,  2,  3,  5,   8,   13,  nil, nil  },
     total = 33,
     -- costs = { nil, nil, nil,  1,   1,   1,   1,   1,   1,  1,  1,  1,  1,  2,  2,  3,   4,   5,  nil, nil },
     -- total = 27,

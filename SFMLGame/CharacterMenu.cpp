@@ -140,6 +140,7 @@ void ItemContextMenu::create() {
 		buttons[i] = Button("Drop", x, y, w, h, [&](Component*) {
 			if (item.get_code() != "") {
 				_game.get_lua()->drop_item(item.get_code(), character->get_name(), tile_x, tile_y);
+				CharacterMenu::get().display_info(Item());
 				CharacterMenu::refresh_stats();
 			}
 			call_functions(this);
@@ -237,9 +238,11 @@ void ItemButton::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 
 
 StatsPanel::StatsPanel(int x, int y) {
-	set_position(x, y);
-	set_dimensions(130, (32 * 2) + 2);
+	set_position(x + margin, y + margin);
+	set_dimensions(140, (32 * 2) + 2);
 }
+
+StatsPanel::~StatsPanel() {}
 
 void StatsPanel::create() {
 	fonts = std::vector<Font>(7);
@@ -299,33 +302,40 @@ void StatsPanel::refresh(Character *character) {
 
 	{
 		std::vector<std::vector<std::string>> ability_map = {
-			{"ability.str", "Str"},
-			{"ability.dex", "Dex"},
-			{"ability.con", "Con"},
-			{"ability.int", "Int"},
-			{"ability.wis", "Wis"},
-			{"ability.cha", "Cha"}
+			{"ability.str", "Str: "},
+			{"ability.dex", "Dex:  "},
+			{"ability.con", "Con: "},
+			{"ability.int", "Int:  "},
+			{"ability.wis", "Wis:  "},
+			{"ability.cha", "Cha: "}
 		};
 
-		int i = 0;
-		for (auto it = ability_map.begin(); it != ability_map.end(); ++it) {
-			std::string key = (*it)[0];
-			std::string str = (*it)[1];
+		{
 
-			int value = stats.get_int(key);
-			std::stringstream ss;
-			ss << str << ": " << value;
+			int i = 0;
+			for (auto it = ability_map.begin(); it != ability_map.end(); ++it) {
+				std::string key = (*it)[0];
+				std::string str = (*it)[1];
 
-			fonts[i].draw_line(x, y, ss.str(), sf::Color::Black);
-			y += fonts[i].line_height();
-			i++;
+				int value = stats.get_int(key);
+				std::stringstream ss;
+				ss << str << value;
+
+				int modifier = (*Resources::get_rules().get_object("ability_modifier"))[value - 1].get_int();
+				ss << " (" << (modifier > 0 ? "+" : "") << std::to_string(modifier) << ")";
+
+				fonts[i].draw_line(x, y, ss.str(), sf::Color::Black);
+				y += fonts[i].line_height();
+				i++;
+			}
+
 		}
 	}
 	
 
 	// y = get_x() + margin * 3;
 	y = portrait.get_y();
-	x += 40;
+	x += 50;
 	{
 		std::string item_name = stats.get_string("weapon.name");
 		std::string item_type = stats.get_string("weapon.type");
@@ -469,6 +479,7 @@ void Inventory::create() {
 					_game.get_lua()->inventory_exchange_items(selected_button_index, cursor, character->get_name());
 					update_items(character);
 					change_state(Inventory::State::NORMAL);
+					CharacterMenu::get().display_info(b->get_item());
 					break;
 				}
 				return true;
@@ -683,7 +694,7 @@ CharacterMenu::CharacterMenu() {
 	// set_position(0, 100);
 	// set_dimensions(50, (32 * 2) + 2);
 
-	int w = _game.get_resolution_width() * 2 / 3;
+	int w = _game.get_resolution_width() * 3 / 4;
 	int h = _game.get_resolution_height() * 2 / 3;
 	int x = (_game.get_resolution_width() / 2) - (w / 2);
 	int y = (_game.get_resolution_height() / 2) - (h / 2);
@@ -758,7 +769,7 @@ void CharacterMenu::show(Screen &screen, Character *character, Callback callback
 
 
 	x = menu.margin * 2 + menu.get_x();
-	y = menu.margin * 2 + menu.get_y() + menu.get_height() - 9 * 7;
+	y = menu.margin * 3 + menu.get_y() + menu.get_height() - 9 * 7;
 	int w = menu.get_width() - 70;
 	int lines = 1;
 	int max_lines = 1;
@@ -767,7 +778,7 @@ void CharacterMenu::show(Screen &screen, Character *character, Callback callback
 	menu.add_component(menu.name_area);
 
 	x = menu.margin + menu.get_x();
-	y = menu.margin + menu.get_y() + menu.get_height() - 8 * 5;
+	y = menu.margin * 2 + menu.get_y() + menu.get_height() - 8 * 5;
 	w = menu.get_width() - 50;
 	lines = 4;
 	max_lines = 10;
@@ -841,6 +852,7 @@ void Loot::create() {
 						b->set_item(Item());
 					}
 					menu->update_buttons();
+					menu->display_info(b->get_item());
 				}
 				else 
 					Log("Empty slot");
@@ -871,6 +883,10 @@ void Loot::create() {
 void Loot::set_cursor(int i) {
 	get_screen()->select(buttons[i]);
 	cursor = i;
+
+	Item item = buttons[i].get_item();
+	LootMenu &menu = LootMenu::get();
+	menu.display_info(item);
 }
 
 void Loot::move_cursor(Direction direction) {
@@ -947,7 +963,7 @@ LootMenu::LootMenu() {
 	// set_position(0, 100);
 	// set_dimensions(50, (32 * 2) + 2);
 
-	int w = _game.get_resolution_width() * 2 / 3;
+	int w = _game.get_resolution_width() * 3 / 4;
 	int h = _game.get_resolution_height() * 2 / 3;
 	int x = (_game.get_resolution_width() / 2) - (w / 2);
 	int y = (_game.get_resolution_height() / 2) - (h / 2);
@@ -1027,15 +1043,41 @@ void LootMenu::show(Screen &screen, Character *character, std::vector<Item*> ite
 	menu.loot.create();
 	menu.add_component(menu.loot);
 
+	x = menu.margin * 2 + menu.get_x();
+	y = menu.margin * 3 + menu.get_y() + menu.get_height() - 9 * 7;
+	int w = menu.get_width() - 70;
+	int lines = 1;
+	int max_lines = 1;
+	menu.name_area = TextArea(x, y, w, lines, max_lines);
+	menu.name_area.create();
+	menu.add_component(menu.name_area);
+
+	x = menu.margin + menu.get_x();
+	y = menu.margin * 2 + menu.get_y() + menu.get_height() - 8 * 5;
+	w = menu.get_width() - 50;
+	lines = 4;
+	max_lines = 10;
+	menu.info_area = TextArea(x, y, w, lines, max_lines);
+	menu.info_area.create();
+	menu.add_component(menu.info_area);
+
 
 	screen.add_component(menu);
-	menu.loot.set_cursor(0);
-
-
 
 	menu.loot.set_items(items);
 
+	menu.loot.set_cursor(0);
 }
+
+void LootMenu::display_info(Item item) {
+	auto stats = _game.get_lua()->item_stats(item.get_name(), item.get_type());
+	name_area.clear();
+	name_area.push_line(stats.get_string("name", "noname"));
+
+	info_area.clear();
+	info_area.push_line(stats.get_string("desc", "nodescription"));
+}
+
 
 void LootMenu::close() {
 	get_screen()->remove_component(*this);
