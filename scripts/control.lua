@@ -392,6 +392,23 @@ end
 -- Loot item from the ground. Returns false if character inventory is full.
 function Control:loot_item(item_code, character_name)
   local item = self.map_data[self.current_map].items[item_code]
+
+  local stats = rules[item.type][item.name]
+  if stats.stack_capacity then
+    for index, item_data in ipairs(self.characters[character_name].data.stats.inventory) do
+      if item_data.name == item.name then
+        self:stack_items(item, item_data)
+
+        if item.quantity == 0 then
+          self.map_data[self.current_map].items[item_code] = nil
+          sfml_remove_item(item_code)
+          return true
+        end
+
+      end
+    end
+  end
+
   for index, item_data in ipairs(self.characters[character_name].data.stats.inventory) do
     if item_data.code == '' then
       self.characters[character_name].data.stats.inventory[index] = {
@@ -453,8 +470,16 @@ function Control:inventory_exchange_items(index_a, index_b, character_name)
   local item_a = self.characters[character_name].data.stats.inventory[index_a]
   local item_b = self.characters[character_name].data.stats.inventory[index_b]
 
+  if index_a == index_b then
+    return
+  end
+
   if item_a.name == item_b.name and rules[item_a.type][item_a.name].stack_capacity then
     self:stack_items(item_a, item_b)
+
+    if item_a.quantity == 0 then
+      self.characters[character_name].data.stats.inventory[index_a] = {code = "", name = "no_item", type = "item"}
+    end
 
   else
     local tmp = self.characters[character_name].data.stats.inventory[index_a]
@@ -480,15 +505,23 @@ function Control:ammo_stack_pop(character_name, how_much)
   local ammo = stats.ammo
   local inventory_item = {}
 
+  local item_index = 0
   for index, item in ipairs(stats.inventory) do
     if item.code == ammo.code then
       inventory_item = item
+      item_index = index
     end
   end
 
   if rules[ammo.type][ammo.name].stack_capacity then
     ammo.quantity = ammo.quantity - how_much
     inventory_item.quantity = ammo.quantity
+
+    if inventory_item.quantity == 0 then
+      self.characters[character_name].data.stats.inventory[item_index] = {code = "", name = "no_item", type = "item"}
+      self.characters[character_name].data.stats.ammo = {code = "", name = "no_ammo", type = "ammo", quantity = 0}
+    end
+
     if ammo.quantity < 0 then
       ammo.quantity = 0
       inventory_item.quantity = 0
@@ -503,6 +536,11 @@ function Control:inventory_stack_pop(index, character_name, how_much)
   local item = self.characters[character_name].data.stats.inventory[index]
   if rules[item.type][item.name].stack_capacity then
     item.quantity = item.quantity - how_much
+
+    if item.quantity == 0 then
+      self.characters[character_name].data.stats.inventory[index] = {code = "", name = "no_item", type = "item"}
+    end
+
     if item.quantity < 0 then
       item.quantity = 0
       return false
