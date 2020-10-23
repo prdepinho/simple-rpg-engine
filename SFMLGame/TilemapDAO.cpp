@@ -179,10 +179,12 @@ void TiledTilemapDAO::load_map(GameScreen *game_screen, std::string filename, Ti
 	unsigned floor_layers = (unsigned)floor_layer_ptrs.size();
 	unsigned ceiling_layers = (unsigned)ceiling_layer_ptrs.size();
 
+	std::string tileset_name = tmx_map.getTilesets()[0].getName();
+
 	std::vector<int> tiles(width * height * floor_layers, 0);
 	map = Tilemap();
-	map.load_floor_layer(Resources::get_texture("tileset"), sf::Vector2u(16, 16), tiles.data(), width, height, floor_layers);
-	map.load_ceiling_layer(Resources::get_texture("tileset"), sf::Vector2u(16, 16), tiles.data(), width, height, ceiling_layers);
+	map.load_floor_layer(Resources::get_texture(tileset_name), sf::Vector2u(16, 16), tiles.data(), width, height, floor_layers);
+	map.load_ceiling_layer(Resources::get_texture(tileset_name), sf::Vector2u(16, 16), tiles.data(), width, height, ceiling_layers);
 	map.setup_fog_of_war(sf::Vector2u(16, 16), width, height);
 	
 	auto &floor_map = map.get_floor_layer();
