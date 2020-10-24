@@ -37,8 +37,11 @@ if __name__ == '__main__':
 
 
     data = f"""<?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="{width}" height="{height}" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="1">"""
-
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="{width}" height="{height}" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="1">
+<properties>
+<property name="for_of_war" type="bool" value="false"/>
+<property name="vision_radius" type="int" value="5"/>
+</properties>"""
     id = 0
     for layer in layers:
         id += 1

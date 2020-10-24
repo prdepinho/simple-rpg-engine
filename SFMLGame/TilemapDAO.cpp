@@ -271,6 +271,27 @@ void TiledTilemapDAO::load_map(GameScreen *game_screen, std::string filename, Ti
 		}
 	}
 
+	// properties
+	{
+		bool fog_of_war = false;
+		int vision_radius = 3;
+
+		auto properties = tmx_map.getProperties();
+		for (auto &prop : properties) {
+			if (prop.getName() == "for_of_war") {
+				fog_of_war = prop.getBoolValue();
+			}
+			else if (prop.getName() == "vision_radius") {
+				vision_radius = prop.getIntValue();
+			}
+		}
+
+		game_screen->set_fog_of_war(fog_of_war);
+		if (fog_of_war) {
+			game_screen->set_vision_radius(vision_radius);
+		}
+	}
+
 	// objects
 	for (auto &object : object_layer->getObjects()) {
 		switch (object.getShape()) {

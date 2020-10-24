@@ -180,6 +180,7 @@ public:
 
 	bool is_enemy(Character &character);
 
+	void set_fog_of_war(bool darkness);
 	void set_vision_radius(int radius);
 
 	void add_icon(std::string key, int pix_x, int pix_y, int dst_x, int dst_y);

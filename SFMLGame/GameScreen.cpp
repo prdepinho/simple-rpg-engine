@@ -102,7 +102,8 @@ void GameScreen::create() {
 
 
 	// update fog of war
-	map.get_fog_of_war().update_fog(player_character->get_field_of_vision()); // doesn't have to be here. It only update once a turn.
+	if (show_fog_of_war)
+		map.get_fog_of_war().update_fog(player_character->get_field_of_vision()); // doesn't have to be here. It only update once a turn.
 
 	game_view.setSize(sf::Vector2f((float) game->get_resolution_width(), (float) game->get_resolution_height()));
 	// game_view.setCenter(sf::Vector2f((float) player_character->get_x(), (float) player_character->get_y()));
@@ -170,7 +171,8 @@ bool GameScreen::update(float elapsed_time) {
 		for (Character *character : characters) {
 			character->update(elapsed_time);
 		}
-		map.get_fog_of_war().update(elapsed_time);
+		if (show_fog_of_war)
+			map.get_fog_of_war().update(elapsed_time);
 	}
 	{
 		for (Entity *entity : entities) {
@@ -733,8 +735,10 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				}
 				//update_field_of_vision(player_character);
 				// update fog of war
-				map.get_fog_of_war().update_fog(player_character->get_field_of_vision());
-				Log("Vision radius: %d", vision_radius);
+				if (show_fog_of_war) {
+					map.get_fog_of_war().update_fog(player_character->get_field_of_vision());
+					Log("Vision radius: %d", vision_radius);
+				}
 				break;
 			case sf::Keyboard::Dash:
 				vision_radius--;
@@ -745,8 +749,10 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				}
 				// update_field_of_vision(player_character);
 				// update fog of war
-				map.get_fog_of_war().update_fog(player_character->get_field_of_vision());
-				Log("Vision radius: %d", vision_radius);
+				if (show_fog_of_war) {
+					map.get_fog_of_war().update_fog(player_character->get_field_of_vision());
+					Log("Vision radius: %d", vision_radius);
+				}
 				break;
 
 		}
@@ -922,8 +928,10 @@ void GameScreen::load_map() {
 	int y = game->get_resolution_height() / 2 -  map.get_height() / 2;
 	map.set_position(x, y);
 	map.set_show_outline(true);
-	map.get_fog_of_war().set_position(x, y);
-	map.get_fog_of_war().set_show_outline(true);
+	if (show_fog_of_war) {
+		map.get_fog_of_war().set_position(x, y);
+		map.get_fog_of_war().set_show_outline(true);
+	}
 
 	TiledTilemapDAO::load_characters(this, next_map, map);
 
@@ -971,7 +979,8 @@ void GameScreen::put_character_on_tile(Character & character, int x, int y) {
 		}
 		update_field_of_vision(&character);
 		// update fog of war
-		map.get_fog_of_war().update_fog(player_character->get_field_of_vision());
+		if (show_fog_of_war)
+			map.get_fog_of_war().update_fog(player_character->get_field_of_vision());
 	}
 }
 
@@ -1089,7 +1098,8 @@ void GameScreen::move_character(Character &character, Direction direction) {
 			}
 			update_field_of_vision(player_character);
 			// update fog of war
-			map.get_fog_of_war().update_fog(player_character->get_field_of_vision()); 
+			if (show_fog_of_war)
+				map.get_fog_of_war().update_fog(player_character->get_field_of_vision()); 
 			player_busy = false;
 		});
 		effect->set_on_interrupt([&](Effect*) {
@@ -1866,6 +1876,10 @@ bool GameScreen::is_enemy(Character &character) {
 	return _game.get_lua()->is_enemy(character);
 }
 
+void GameScreen::set_fog_of_war(bool show) {
+	show_fog_of_war = show;
+}
+
 void GameScreen::set_vision_radius(int radius) {
 	vision_radius = radius;
 	update_field_of_vision(player_character);
@@ -1875,7 +1889,8 @@ void GameScreen::set_vision_radius(int radius) {
 		center_game_view(pos);
 	}
 	// update fog of war
-	map.get_fog_of_war().update_fog(player_character->get_field_of_vision());
+	if (show_fog_of_war)
+		map.get_fog_of_war().update_fog(player_character->get_field_of_vision());
 }
 
 void GameScreen::add_icon(std::string key, int pix_x, int pix_y, int dst_x, int dst_y) {
