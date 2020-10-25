@@ -1,6 +1,7 @@
 {
+  "_map": "room",
+  "map": "polis",
   "_map": "flee_or_fight",
-  "map": "room",
   "_map": "test",
   "_map": "first_floor",
   "_map": "level",

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="1">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="5">
+ <properties>
+  <property name="for_of_war" type="bool" value="false"/>
+  <property name="vision_radius" type="int" value="5"/>
+ </properties>
  <tileset firstgid="1" source="tiled_tileset.tsx"/>
  <layer id="1" name="floor" width="20" height="20">
   <data encoding="csv">
@@ -123,26 +127,26 @@
  </layer>
  <layer id="6" name="obstacle" width="20" height="20">
   <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,2,2,2,2,0,0,0,0,0,0,0,2,
+0,0,0,0,0,0,0,0,2,2,2,2,0,0,0,0,0,0,0,2,
+0,0,0,0,0,0,0,0,2,2,2,2,0,0,0,0,0,0,0,2,
+0,0,2,2,2,2,0,0,2,2,0,2,0,0,0,0,0,0,0,2,
+0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,2,2,2,0,2,
+0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,2,2,2,0,2,
+0,0,2,2,0,2,0,0,0,0,0,0,0,0,0,2,2,2,0,2,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,0,2,
+0,2,2,2,2,2,0,0,0,2,2,0,0,0,0,2,2,2,0,2,
+0,2,2,2,2,2,0,0,0,2,2,0,0,0,0,2,2,2,0,2,
+0,2,2,2,2,2,0,0,0,0,0,0,0,0,0,2,0,2,0,2,
+0,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+0,2,2,2,2,2,0,0,0,0,0,0,0,0,2,2,2,0,0,2,
+0,2,2,2,0,2,0,0,0,0,0,0,0,0,2,2,2,0,0,2,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,0,0,2,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,2,0,0,2,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,
+2,2,2,2,2,2,0,0,0,0,0,0,0,0,2,2,2,2,2,2
 </data>
  </layer>
  <layer id="7" name="invisible" width="20" height="20">
@@ -169,5 +173,32 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="8" name="objects"/>
+ <objectgroup id="8" name="objects">
+  <object id="1" name="se_house_door" x="243.909" y="243.909" width="9" height="10.6364">
+   <properties>
+    <property name="destiny" value="se_house:front_door"/>
+    <property name="key" value="se_house_key"/>
+    <property name="locked" type="bool" value="true"/>
+    <property name="open_delta_x" type="int" value="1"/>
+    <property name="open_delta_y" type="int" value="0"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="3" name="come_inn_door" x="67.8333" y="212.015" width="9" height="10.6364">
+   <properties>
+    <property name="destiny" value="come_inn:front_door"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="open_delta_x" type="int" value="1"/>
+    <property name="open_delta_y" type="int" value="0"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="4" name="player" x="165" y="296.667">
+   <properties>
+    <property name="type" value="player"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
 </map>

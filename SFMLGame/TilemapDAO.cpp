@@ -271,7 +271,7 @@ void TiledTilemapDAO::load_map(GameScreen *game_screen, std::string filename, Ti
 		}
 	}
 
-	// properties
+	// map properties
 	{
 		bool fog_of_war = false;
 		int vision_radius = 3;
@@ -296,14 +296,21 @@ void TiledTilemapDAO::load_map(GameScreen *game_screen, std::string filename, Ti
 	for (auto &object : object_layer->getObjects()) {
 		switch (object.getShape()) {
 		case tmx::Object::Shape::Rectangle: {
-				int left = (int)std::floor(object.getAABB().left / 16);
-				int top = (int)std::floor(object.getAABB().top / 16);
+				int left   = (int)std::floor(object.getAABB().left / 16);
+				int top    = (int)std::floor(object.getAABB().top / 16);
 				int height = (int)std::ceil(object.getAABB().height / 16);
-				int width = (int)std::ceil(object.getAABB().width / 16);
+				int width  = (int)std::ceil(object.getAABB().width / 16);
 				for (int x = left; x < left + width; x++) {
 					for (int y = top; y < top + height; y++) {
 						map.get_tile(x, y).object_name = object.getName();
-						_game.get_lua()->set_map_object(object.getName(), x, y);
+						map.get_tile(x, y).left = left;
+						map.get_tile(x, y).top = top;
+						map.get_tile(x, y).height = height;
+						map.get_tile(x, y).width = width;
+						// _game.get_lua()->set_map_object(object.getName(), x, y);
+
+						std::vector<tmx::Property> properties = object.getProperties();
+						_game.get_lua()->set_map_object(object.getName(), x, y, properties);
 					}
 				}
 			}

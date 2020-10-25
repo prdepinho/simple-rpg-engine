@@ -13,6 +13,10 @@ struct TileData {
 	bool invisible = false;
 	std::string object_name;
 	bool open = false;
+	int left;
+	int top;
+	int height;
+	int width;
 };
 
 class TilemapLayer : public AnimatedEntity {

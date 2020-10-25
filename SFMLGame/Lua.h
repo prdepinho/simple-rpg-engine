@@ -7,6 +7,9 @@
 #include <sstream>
 #include "lua5.3.5/lua.hpp"
 #include "Entity.h"
+#include <tmxlite/Map.hpp>
+#include <tmxlite/TileLayer.hpp>
+#include <tmxlite/ObjectGroup.hpp>
 
 class Game;
 class Character;
@@ -59,7 +62,7 @@ public:
 	void call_event(std::string function, std::string event, int tile_x, int tile_y, std::string character_name);
 	void character_interaction(std::string target_name, std::string interactor_name);
 	void change_map(std::string script);
-	void set_map_object(std::string name, int x, int y);
+	void set_map_object(std::string name, int x, int y, std::vector<tmx::Property> properties);
 	void add_character(std::string script, std::string name);
 	bool is_character_removed(std::string name);
 	void remove_character(std::string name);

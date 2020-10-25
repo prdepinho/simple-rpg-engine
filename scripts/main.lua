@@ -163,8 +163,8 @@ function change_map(new_map)
   control:change_map(new_map)
 end
 
-function set_map_object(name, tile_x, tile_y)
-  control:set_map_object(name, tile_x, tile_y)
+function set_map_object(name, tile_x, tile_y, properties)
+  control:set_map_object(name, tile_x, tile_y, properties)
 end
 
 function map_enter()

@@ -223,7 +223,7 @@ bool GameScreen::update(float elapsed_time) {
 			turn_count = 0.f;
 
 			Log("---- turn: %d ---------------------------------", turn);
-			log_box.push_line("Turn " + std::to_string(turn));
+			// log_box.push_line("Turn " + std::to_string(turn));
 
 			picked_tiles.clear();
 

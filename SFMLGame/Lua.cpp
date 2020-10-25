@@ -308,12 +308,37 @@ void Lua::change_map(std::string script) {
 	lua_pop(state, 1);
 }
 
-void Lua::set_map_object(std::string name, int x, int y) {
+void Lua::set_map_object(std::string name, int x, int y, std::vector<tmx::Property> properties) {
 	lua_getglobal(state, "set_map_object");
 	lua_pushstring(state, name.c_str());
 	lua_pushinteger(state, x);
 	lua_pushinteger(state, y);
-	int result = lua_pcall(state, 3, 1, 0);
+
+	lua_newtable(state);
+	{
+		for (tmx::Property &property : properties) {
+			lua_pushstring(state, property.getName().c_str());
+			switch (property.getType()) {
+			case tmx::Property::Type::Float:
+				lua_pushnumber(state, property.getFloatValue());
+				break;
+			case tmx::Property::Type::Int:
+				lua_pushinteger(state, property.getIntValue());
+				break;
+			case tmx::Property::Type::String:
+				lua_pushstring(state, property.getStringValue().c_str());
+				break;
+			case tmx::Property::Type::Boolean:
+				lua_pushboolean(state, property.getBoolValue());
+				break;
+			default:
+				lua_pushnil(state);
+			}
+			lua_settable(state, -3);
+		}
+	}
+
+	int result = lua_pcall(state, 4, 1, 0);
 	if (result != LUA_OK) {
 		std::stringstream ss;
 		ss << name << ": " << get_error(state);

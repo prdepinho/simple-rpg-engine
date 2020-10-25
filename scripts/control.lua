@@ -776,12 +776,19 @@ function Control:change_map(new_map)
   print('Load module: ' .. self.current_map)
 end
 
-function Control:set_map_object(name, tile_x, tile_y)
+function Control:set_map_object(name, tile_x, tile_y, properties)
   if not self.map_data[self.current_map].created then
     if self.map_data[self.current_map].objects[name] == nil then
-      self.map_data[self.current_map].objects[name] = {}
+      self.map_data[self.current_map].objects[name] = {
+        properties = properties,
+        coords = {},
+      }
     end
-    table.insert(self.map_data[self.current_map].objects[name], {x = tile_x, y = tile_y})
+    table.insert(
+      self.map_data[self.current_map].objects[name].coords,
+      { x = tile_x, y = tile_y }
+    )
+
   end
 end
 
