@@ -811,7 +811,7 @@ end
 
 function Control:map_event(function_name, event, x, y, character_name)
   if self.map_module[function_name] ~= nil then
-    self.map_module[function_name](event, x, y, character_name)
+    self.map_module[function_name](event, x, y, character_name, self.map_module.data.objects[function_name])
   end
 end
 

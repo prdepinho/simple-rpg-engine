@@ -81,6 +81,7 @@ private:
 
 public:
 	void change_map(std::string filename, int tile_x, int tile_y);
+	void change_map(std::string filename, std::string object_name);
 	void center_map_on_character(Character &character);
 
 	void schedule_character_wait(Character &character, int turns);
@@ -104,6 +105,7 @@ public:
 	Character *get_character_by_name(std::string name);
 	Character *get_npc_on_tile(int tile_x, int tile_y);
 	void put_character_on_tile(Character &character, int x, int y);
+	void put_character_on_tile(Character &character, std::string object_name);
 	sf::Vector2i character_position(Character &character);
 	void push_character_to_bottom(Character &character);
 
@@ -204,7 +206,9 @@ private:
 
 	// these variables are for the screen to change the map and put the player character in its position in the loop, after effects have been cleared.
 	std::string next_map = "";
+	bool next_position_is_tile = true;
 	sf::Vector2i new_tile_position = { 0, 0 };
+	std::string new_position_object_name = "";
 
 	struct PickedTilesOperator {
 		bool operator() (const sf::Vector2i& lhs, const sf::Vector2i& rhs) const {

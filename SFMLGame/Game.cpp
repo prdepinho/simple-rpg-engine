@@ -390,6 +390,35 @@ public:
 			lua_pushliteral(state, "open");
 			lua_pushboolean(state, tile.open);
 			lua_settable(state, -3);
+
+			lua_pushliteral(state, "invisible");
+			lua_pushboolean(state, tile.invisible);
+			lua_settable(state, -3);
+
+			lua_pushliteral(state, "tex_x");
+			lua_pushnumber(state, tile.tex_x);
+			lua_settable(state, -3);
+
+			lua_pushliteral(state, "tex_y");
+			lua_pushnumber(state, tile.tex_y);
+			lua_settable(state, -3);
+
+			lua_pushliteral(state, "left");
+			lua_pushinteger(state, tile.left);
+			lua_settable(state, -3);
+
+			lua_pushliteral(state, "top");
+			lua_pushinteger(state, tile.top);
+			lua_settable(state, -3);
+
+			lua_pushliteral(state, "height");
+			lua_pushinteger(state, tile.height);
+			lua_settable(state, -3);
+
+			lua_pushliteral(state, "width");
+			lua_pushinteger(state, tile.width);
+			lua_settable(state, -3);
+
 		}
 
 		return 1;
@@ -430,16 +459,37 @@ public:
 	}
 
 	static int sfml_change_map(lua_State *state) {
-		int dst_tile_y = (int) lua_tointeger(state, -1);
-		int dst_tile_x = (int) lua_tointeger(state, -2);
-		std::string map_name = lua_tostring(state, -3);
-
-		std::stringstream ss;
-		ss << "Engine: sfml_change_map(" << map_name << ", " << dst_tile_x << ", " << dst_tile_y << ")";
-		_game.log(ss.str());
-
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
-		screen->change_map(map_name, dst_tile_x, dst_tile_y);
+
+		int dst_tile_x = 0;
+		int dst_tile_y = 0;
+		std::string map_name = "";
+
+		if (lua_type(state, -1) == LUA_TSTRING) {
+			std::string format = lua_tostring(state, -1);
+			size_t pos = format.find(":");
+			map_name = format.substr(0, pos);
+			std::string object_name = format.substr(pos + 1);
+
+			std::stringstream ss;
+			ss << "Engine: sfml_change_map(" << map_name << ", " << object_name << ")";
+			_game.log(ss.str());
+
+			screen->change_map(map_name, object_name);
+		}
+
+		else {
+			dst_tile_y = (int)lua_tointeger(state, -1);
+			dst_tile_x = (int)lua_tointeger(state, -2);
+			map_name = lua_tostring(state, -3);
+
+			std::stringstream ss;
+			ss << "Engine: sfml_change_map(" << map_name << ", " << dst_tile_x << ", " << dst_tile_y << ")";
+			_game.log(ss.str());
+
+			screen->change_map(map_name, dst_tile_x, dst_tile_y);
+		}
+
 		return 1;
 	}
 

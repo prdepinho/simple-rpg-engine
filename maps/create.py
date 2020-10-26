@@ -67,20 +67,26 @@ if __name__ == '__main__':
 
     data = """
 package.path = package.path .. ";../maps/?.lua"
-require "common"
+local common = require "common"
 
 local M = {}
 
-M.door = door
+M.door = common.door
+
 
 function M.create()
+  common.create(M.data)
 end
 
 function M.enter()
+  common.enter(M.data)
 end
 
 function M.exit()
+  common.exit(M.data)
 end
+
+
 
 return M
 """

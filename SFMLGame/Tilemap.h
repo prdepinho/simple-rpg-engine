@@ -13,6 +13,8 @@ struct TileData {
 	bool invisible = false;
 	std::string object_name;
 	bool open = false;
+	float tex_x;
+	float tex_y;
 	int left;
 	int top;
 	int height;

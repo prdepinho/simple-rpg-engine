@@ -912,7 +912,29 @@ void GameScreen::change_map(std::string filename, int tile_x, int tile_y) {
 	delete_floating_messages();
 	entities.clear();
 
+	next_position_is_tile = true;
 	new_tile_position = { tile_x, tile_y };
+}
+
+void GameScreen::change_map(std::string filename, std::string object_name) {
+	_game.get_lua()->execute_method("map_exit");
+
+	next_map = filename;
+	for (Character *character : characters) {
+		character->clear_schedule();
+	}
+	for (Effect *effect : effects_buffer) {
+		effect->interrupt();
+	}
+	for (Effect *effect : effects) {
+		effect->interrupt();
+	}
+	// container.clear_components();
+	delete_floating_messages();
+	entities.clear();
+
+	next_position_is_tile = false;
+	new_position_object_name = object_name;
 }
 
 void GameScreen::load_map() {
@@ -937,7 +959,13 @@ void GameScreen::load_map() {
 
 	next_map = "";
 
-	put_character_on_tile(*player_character, new_tile_position.x, new_tile_position.y);
+	if (next_position_is_tile) {
+		put_character_on_tile(*player_character, new_tile_position.x, new_tile_position.y);
+	}
+	else {
+		put_character_on_tile(*player_character, new_position_object_name);
+	}
+
 	center_map_on_character(*player_character);
 
 	_game.get_lua()->execute_method("map_enter");
@@ -982,6 +1010,25 @@ void GameScreen::put_character_on_tile(Character & character, int x, int y) {
 		if (show_fog_of_war)
 			map.get_fog_of_war().update_fog(player_character->get_field_of_vision());
 	}
+}
+
+void GameScreen::put_character_on_tile(Character &character, std::string object_name) {
+	int dst_tile_x = 0;
+	int dst_tile_y = 0;
+	size_t width = get_map().get_tile_width();
+	size_t height = get_map().get_tile_height();
+	for (size_t x = 0; x < width; x++) {
+		for (size_t y = 0; y < height; y++) {
+			TileData &tile = get_map().get_tile((int)x, (int)y);
+			if (tile.object_name == object_name) {
+				dst_tile_x = (int)x;
+				dst_tile_y = (int)y;
+				goto end_loop;
+			}
+		}
+	}
+	end_loop:;
+	put_character_on_tile(character, dst_tile_x, dst_tile_y);
 }
 
 void GameScreen::put_item_on_tile(Item &item, int x, int y) {

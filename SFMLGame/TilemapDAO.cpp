@@ -228,6 +228,8 @@ void TiledTilemapDAO::load_map(GameScreen *game_screen, std::string filename, Ti
 							unsigned texX = tile->imagePosition.x;
 							unsigned texY = tile->imagePosition.y;
 							floor_map.set_texture_coords((int)frame_count, x, y, z, (float)texX, (float)texY);
+							map.get_tile(x, y).tex_x = (float)texX / 16.f;
+							map.get_tile(x, y).tex_y = (float)texY / 16.f;
 						}
 					}
 				}
