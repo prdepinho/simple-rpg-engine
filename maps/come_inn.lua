@@ -1,30 +1,26 @@
 
 package.path = package.path .. ";../maps/?.lua"
-local common = require "common"
+local Map = require "map"
 
-local M = {}
+local ComeInn = Map:new()
 
-M.door = common.door
-
-function M.create()
-  print('come inn create')
-  common.create(M.data)
+function ComeInn:new(o, control)
+  o = o or Map:new(o, control)
+  setmetatable(o, self)
+  self.__index = self
+  return o
 end
 
-function M.enter()
-  print('come inn enter')
-  common.enter(M.data)
+function ComeInn:create()
+  Map.create(self)
 end
 
-function M.exit()
-  print('come inn exit')
-  common.exit(M.data)
+function ComeInn:enter()
+  Map.enter(self)
 end
 
-
-function M.front_door(event, x, y, character_name, object)
-  print('come inn front door')
-  common.front_door(event, x, y, character_name, object)
+function ComeInn:exit()
+  Map.exit(self)
 end
 
-return M
+return ComeInn

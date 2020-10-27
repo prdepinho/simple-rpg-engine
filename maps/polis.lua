@@ -1,28 +1,33 @@
 
 package.path = package.path .. ";../maps/?.lua"
-local common = require "common"
+local Map = require "map"
 
-local M = {}
+local Polis = Map:new()
 
-M.door = common.door
-
-function M.create()
-  common.create(M.data)
+function Polis:new(o, control)
+  o = o or Map:new(o, control)
+  setmetatable(o, self)
+  self.__index = self
+  return o
 end
 
-function M.enter()
-  common.enter(M.data)
-end
+-- function Polis:create()
+--   common.create(M.data)
+-- end
+-- 
+-- function Polis:enter()
+--   common.enter(M.data)
+-- end
+-- 
+-- function Polis:exit()
+-- end
+-- 
+-- function Polis:come_inn_door(event, x, y, character_name, object)
+--   common.come_inn_door(event, x, y, character_name, object)
+-- end
+-- 
+-- function Polis:se_house_door(event, x, y, character_name, object)
+--   common.se_house_door(event, x, y, character_name, object)
+-- end
 
-function M.exit()
-end
-
-function M.come_inn_door(event, x, y, character_name, object)
-  common.come_inn_door(event, x, y, character_name, object)
-end
-
-function M.se_house_door(event, x, y, character_name, object)
-  common.se_house_door(event, x, y, character_name, object)
-end
-
-return M
+return Polis

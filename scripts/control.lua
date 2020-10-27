@@ -11,8 +11,11 @@ local Control = {
   characters = {},
   character_modules = {},
   loaded_character_data = {},
-  map_data = {},
+
+  map = {},
   map_module = {},
+  loaded_map_data = {},
+
   current_map = "",
   magic = {},
 }
@@ -401,7 +404,7 @@ end
 
 -- Loot item from the ground. Returns false if character inventory is full.
 function Control:loot_item(item_code, character_name)
-  local item = self.map_data[self.current_map].items[item_code]
+  local item = self.map.data.items[item_code]
 
   local stats = rules[item.type][item.name]
   if stats.stack_capacity then
@@ -410,7 +413,7 @@ function Control:loot_item(item_code, character_name)
         self:stack_items(item, item_data)
 
         if item.quantity == 0 then
-          self.map_data[self.current_map].items[item_code] = nil
+          self.map.data.items[item_code] = nil
           sfml_remove_item(item_code)
           return true
         end
@@ -427,7 +430,7 @@ function Control:loot_item(item_code, character_name)
         type = item.type,
         quantity = item.quantity,
       }
-      self.map_data[self.current_map].items[item_code] = nil
+      self.map.data.items[item_code] = nil
       sfml_remove_item(item_code)
       return true
     end
@@ -439,7 +442,7 @@ end
 function Control:drop_item(item_code, character_name, x, y)
   for index, item_data in ipairs(self.characters[character_name].data.stats.inventory) do
     if item_data.code == item_code then
-      self.map_data[self.current_map].items[item_code] = {
+      self.map.data.items[item_code] = {
         name = item_data.name,
         type = item_data.type,
         x = x,
@@ -562,7 +565,7 @@ end
 
 function Control:reset_data()
   self.characters = {}
-  self.map_data = {}
+  self.loaded_map_data = {}
 end
 
 function Control:get_save_files()
@@ -597,7 +600,7 @@ function Control:new_game()
   self.characters = {}
   self.character_modules = {}
   self.loaded_character_data = {}
-  self.map_data = {}
+  self.loaded_map_data = {}
   self.map_module = {}
   self.current_map = ""
 end
@@ -608,7 +611,7 @@ function Control:save_game(filename, title)
   data.active = true
   data.title = title
   -- data.player_position = sfml_get_player_position()
-  data.map_data = self.map_data
+  data.map_data = self.loaded_map_data
   data.character_data = {}
 
   for name, character in pairs(self.characters) do
@@ -622,7 +625,7 @@ end
 function Control:load_game(filename)
   print('load game: ' .. filename)
   local module = require(filename)
-  self.map_data = module.data.map_data
+  self.loaded_map_data = module.data.map_data
 
   -- for name, data in pairs(module.data.character_data) do
   --   print(self.characters[name])
@@ -765,27 +768,34 @@ end
 
 function Control:change_map(new_map)
   self.current_map = new_map
-  if not self.map_data[self.current_map] then
-    self.map_data[self.current_map] = {}
-    self.map_data[self.current_map].items = {}
-    self.map_data[self.current_map].objects = {}
+  if not self.loaded_map_data[self.current_map] then
+    self.loaded_map_data[self.current_map] = {}
+    self.loaded_map_data[self.current_map].items = {}
+    self.loaded_map_data[self.current_map].objects = {}
   end
   self.map_module = {}
   self.map_module = require(self.current_map)
-  self.map_module.data = self.map_data[self.current_map]
+  self.map_module.data = self.loaded_map_data[self.current_map]
+
+  self.map = self.map_module:new(nil, self)
+  self.map.data = self.loaded_map_data[self.current_map]
   print('Load module: ' .. self.current_map)
 end
 
+function Control:test()
+  print('works')
+end
+
 function Control:set_map_object(name, tile_x, tile_y, properties)
-  if not self.map_data[self.current_map].created then
-    if self.map_data[self.current_map].objects[name] == nil then
-      self.map_data[self.current_map].objects[name] = {
+  if not self.map.data.created then
+    if self.map.data.objects[name] == nil then
+      self.map.data.objects[name] = {
         properties = properties,
         coords = {},
       }
     end
     table.insert(
-      self.map_data[self.current_map].objects[name].coords,
+      self.map.data.objects[name].coords,
       { x = tile_x, y = tile_y }
     )
 
@@ -793,25 +803,25 @@ function Control:set_map_object(name, tile_x, tile_y, properties)
 end
 
 function Control:map_enter()
-  if not self.map_data[self.current_map].created then
-    self.map_data[self.current_map].created = true
-    self.map_module.create()
+  if not self.map.data.created then
+    self.map.data.created = true
+    self.map:create()
   end
-  self.map_module.enter()
+  self.map:enter()
   -- populate items
-  for code, item in pairs(self.map_module.data.items) do
+  for code, item in pairs(self.map.data.items) do
     sfml_add_item(code, item.name, item.type, item.quantity or 0, item.x, item.y)
   end
 
 end
 
 function Control:map_exit()
-  self.map_module.exit()
+  self.map:exit()
 end
 
 function Control:map_event(function_name, event, x, y, character_name)
-  if self.map_module[function_name] ~= nil then
-    self.map_module[function_name](event, x, y, character_name, self.map_module.data.objects[function_name])
+  if self.map[function_name] ~= nil then
+    self.map[function_name](self.map, event, x, y, character_name, self.map.data.objects[function_name])
   end
 end
 
