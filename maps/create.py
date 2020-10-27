@@ -2,21 +2,49 @@
 import sys
 import os
 
-if __name__ == '__main__':
-    print('hello world')
 
+def camelcaseify(string):
+    """ Transform snake case words into camel case. """
+    parts = []
+
+    while len(string) > 0:
+        pos = string.find('_')
+        if pos > 0:
+            part = string[0:pos]
+            string = string[pos+1:]
+        else:
+            part = string
+            string = []
+        parts.append(part)
+
+    result = ''
+    for part in parts:
+        temp = part[0].upper()
+        temp += part[1:]
+        result += temp
+
+    return result
+
+
+
+if __name__ == '__main__':
     if len(sys.argv) > 3:
         name = sys.argv[1]
         width = int(sys.argv[2])
         height = int(sys.argv[3])
-
-        print(name)
-        print(width)
-        print(height)
     else:
         print('How to use:')
         print('$ py create.py name width height')
         sys.exit()
+
+
+    if os.path.isfile(name + '.tmx'):
+        print('file %s already exists. Remove it in order to create.' % (name + '.tmx'))
+        exit()
+
+    if os.path.isfile(name + '.lua'):
+        print('file %s already exists. Remove it in order to create.' % (name + '.lua'))
+        exit()
 
 
 
@@ -64,32 +92,39 @@ if __name__ == '__main__':
 
 
 
+    class_name = camelcaseify(name)
 
-    data = """
+    data = f"""
 package.path = package.path .. ";../maps/?.lua"
-local common = require "common"
+local Map = require "map"
 
-local M = {}
+local {class_name} = Map:new()
 
-M.door = common.door
-
-
-function M.create()
-  common.create(M.data)
+function {class_name}:new(o, control)
+  o = o or Map:new(o, control)
+  setmetatable(o, self)
+  self.__index = self
+  return o
 end
 
-function M.enter()
-  common.enter(M.data)
+function {class_name}:create()
+  Map.create(self)
 end
 
-function M.exit()
-  common.exit(M.data)
+function {class_name}:enter()
+  Map.enter(self)
 end
 
+function {class_name}:exit()
+  Map.exit(self)
+end
+
+return {class_name}
 
 
-return M
 """
 
     with open(name + '.lua', 'w') as f:
         f.write(data)
+
+    print('created %s and %s' % (name + '.tmx', name + '.lua'))
