@@ -11,23 +11,16 @@ function Polis:new(o, control)
   return o
 end
 
--- function Polis:create()
---   common.create(M.data)
--- end
--- 
--- function Polis:enter()
---   common.enter(M.data)
--- end
--- 
--- function Polis:exit()
--- end
--- 
--- function Polis:come_inn_door(event, x, y, character_name, object)
---   common.come_inn_door(event, x, y, character_name, object)
--- end
--- 
--- function Polis:se_house_door(event, x, y, character_name, object)
---   common.se_house_door(event, x, y, character_name, object)
--- end
+function Polis:create()
+  Map.create(self)
+end
+
+function Polis:enter()
+  Map.enter(self)
+end
+
+function Polis:exit()
+  Map.exit(self)
+end
 
 return Polis

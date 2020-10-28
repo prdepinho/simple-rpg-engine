@@ -563,6 +563,15 @@ function Control:inventory_stack_pop(index, character_name, how_much)
   return false
 end
 
+function Control:find_in_inventory(character_name, code)
+  for index, item in ipairs(self.characters[character_name].data.stats.inventory) do
+    if item.code == code then
+      return index
+    end
+  end
+  return nil
+end
+
 function Control:reset_data()
   self.characters = {}
   self.loaded_map_data = {}

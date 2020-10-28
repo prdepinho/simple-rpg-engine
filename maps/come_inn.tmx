@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="2">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="3">
  <properties>
   <property name="for_of_war" type="bool" value="false"/>
   <property name="vision_radius" type="int" value="5"/>
@@ -147,6 +147,16 @@
     <property name="open_delta_x" type="int" value="1"/>
     <property name="open_delta_y" type="int" value="0"/>
     <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="2" name="chest" x="210.25" y="113.375" width="12.5" height="13.375">
+   <properties>
+    <property name="item1" value="se_house_key:item:key"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="open_delta_x" type="int" value="1"/>
+    <property name="open_delta_y" type="int" value="0"/>
+    <property name="type" value="chest"/>
    </properties>
   </object>
  </objectgroup>

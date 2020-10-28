@@ -179,6 +179,7 @@
     <property name="destiny" value="se_house:front_door"/>
     <property name="key" value="se_house_key"/>
     <property name="locked" type="bool" value="true"/>
+    <property name="locked_message" value="The door for this house is locked."/>
     <property name="open_delta_x" type="int" value="1"/>
     <property name="open_delta_y" type="int" value="0"/>
     <property name="type" value="door"/>
