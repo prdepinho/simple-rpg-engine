@@ -529,6 +529,15 @@ public:
 		return 1;
 	}
 
+	static int sfml_is_tile_open(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		int x = (int)lua_tointeger(state, -2);
+		int y = (int)lua_tointeger(state, -1);
+		bool is_open = screen->get_map().get_tile(x, y).open;
+		lua_pushboolean(state, is_open);
+		return 1;
+	}
+
 	static int sfml_play_sound(lua_State *state) {
 		try {
 			std::string filename = lua_tostring(state, -1);
@@ -1026,6 +1035,7 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_set_obstacle", LuaFunction::sfml_set_obstacle);
 	lua_register(lua.get_state(), "sfml_lock_door", LuaFunction::sfml_lock_door);
 	lua_register(lua.get_state(), "sfml_set_open_tile", LuaFunction::sfml_set_open_tile);
+	lua_register(lua.get_state(), "sfml_is_tile_open", LuaFunction::sfml_is_tile_open);
 	lua_register(lua.get_state(), "sfml_play_sound", LuaFunction::sfml_play_sound);
 	lua_register(lua.get_state(), "sfml_play_music", LuaFunction::sfml_play_music);
 	lua_register(lua.get_state(), "sfml_loop_music", LuaFunction::sfml_loop_music);
