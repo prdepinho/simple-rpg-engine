@@ -17,7 +17,9 @@ end
 
 function Map:create()
   for object_name, object in pairs(self.data.objects) do
-    if object.properties.type == 'chest' then
+    if object.properties.type == 'door' then
+      object.properties.closed = true
+    elseif object.properties.type == 'chest' then
       object.properties.closed = true
     end
   end
@@ -31,13 +33,18 @@ function Map:enter()
         local object = self.data.objects[object_name]
         if object.properties.type == 'door' then
           if event == "enter_tile" then
-            self:open_tile(x, y, object)
-            sfml_play_sound("tcsh.wav")
+            if object.properties.closed then
+              object.properties.closed = true
+              self:open_tile(x, y, object)
+              sfml_play_sound("tcsh.wav")
+            end
 
           elseif event == "step_on" then
             if character_name == 'player' then
               -- sfml_change_map('small_room', 7, 3)
-              sfml_change_map(object.properties.destiny)
+              if object.properties.destiny then
+                sfml_change_map(object.properties.destiny)
+              end
             end
 
           elseif event == "interact" then
@@ -107,6 +114,7 @@ function Map:enter()
 
     if object.properties.type == 'door' then
       sfml_lock_door(object.properties.locked, object_name)
+      object.properties.closed = true
 
     elseif object.properties.type == 'chest' then
       if object.properties.closed == nil then

@@ -1,18 +1,26 @@
 
 package.path = package.path .. ";../maps/?.lua"
-require "common"
+local Map = require "map"
 
-local M = {}
+local SEHouse = Map:new()
 
-M.door = door
-
-function M.create()
+function SEHouse:new(o, control)
+  o = o or Map:new(o, control)
+  setmetatable(o, self)
+  self.__index = self
+  return o
 end
 
-function M.enter()
+function SEHouse:create()
+  Map.create(self)
 end
 
-function M.exit()
+function SEHouse:enter()
+  Map.enter(self)
 end
 
-return M
+function SEHouse:exit()
+  Map.exit(self)
+end
+
+return SEHouse
