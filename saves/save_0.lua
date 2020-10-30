@@ -1,234 +1,254 @@
 M = {}
 M.data = {
-  active = true,
   character_data = {
     player = {
+      removed = false,
       stats = {
-        bonus = {
-          magic_ac = 0,
-          ac = 0,
-          to_hit = 0,
+        armor = {
+          code = "",
+          type = "armor",
+          name = "unarmored",
         },
-        status = {
+        hit_die = "d10",
+        current_hp = 6,
+        level = 1,
+        ammo = {
+          type = "ammo",
+          code = "",
+          quantity = 0,
+          name = "no_ammo",
         },
+        ability = {
+          dex = 8,
+          int = 8,
+          str = 8,
+          wis = 8,
+          con = 8,
+          cha = 8,
+        },
+        total_hp = 6,
+        shield = {
+          code = "",
+          type = "shield",
+          name = "no_shield",
+        },
+        weapon = {
+          code = "",
+          type = "weapon",
+          name = "unarmed",
+        },
+        name = "Mumu",
         portrait = {
           x = 0,
           y = 224,
         },
-        ammo = {
-          code = "",
-          name = "no_ammo",
-          quantity = 0,
-          type = "ammo",
+        status = {
         },
-        hit_die = "d10",
-        current_hp = 6,
-        name = "Mumu",
-        level = 1,
+        bonus = {
+          to_hit = 0,
+          magic_ac = 0,
+          ac = 0,
+        },
         inventory = {
           {
-            code = "se_house_key",
-            name = "key",
-            type = "item",
+            type = "weapon",
+            code = "inn_weapon1",
+            name = "arming_sword",
           },
           {
             code = "",
-            name = "no_item",
             type = "item",
+            name = "no_item",
           },
           {
             code = "",
-            name = "no_item",
             type = "item",
+            name = "no_item",
           },
           {
             code = "",
-            name = "no_item",
             type = "item",
+            name = "no_item",
           },
           {
             code = "",
-            name = "no_item",
             type = "item",
+            name = "no_item",
           },
           {
             code = "",
-            name = "no_item",
             type = "item",
+            name = "no_item",
           },
           {
             code = "",
-            name = "no_item",
             type = "item",
+            name = "no_item",
           },
           {
             code = "",
-            name = "no_item",
             type = "item",
+            name = "no_item",
           },
         },
-        shield = {
-          code = "",
-          name = "no_shield",
-          type = "shield",
-        },
-        ability = {
-          int = 8,
-          wis = 8,
-          con = 8,
-          dex = 8,
-          cha = 8,
-          str = 8,
-        },
-        armor = {
-          code = "",
-          name = "unarmored",
-          type = "armor",
-        },
-        weapon = {
-          code = "",
-          name = "unarmed",
-          type = "weapon",
-        },
-        total_hp = 6,
       },
-      enemy = false,
       created = true,
-      removed = false,
+      enemy = false,
     },
   },
-  title = "13:0 2020,10,29",
+  active = true,
+  title = "10:57 2020,10,30",
   map_data = {
     polis = {
-      items = {
-      },
+      created = true,
       objects = {
-        se_house_door = {
-          coords = {
-            {
-              x = 15,
-              y = 15,
-            },
-          },
-          properties = {
-            locked_message = "The door for this house is locked.",
-            open_delta_y = 0,
-            type = "door",
-            locked = true,
-            open_delta_x = 1,
-            closed = true,
-            destiny = "se_house:front_door",
-            key = "se_house_key",
-          },
-        },
         come_inn_door = {
+          properties = {
+            open_delta_x = 1,
+            open_delta_y = 0,
+            locked = false,
+            closed = true,
+            type = "door",
+            destiny = "come_inn:front_door",
+            key = "",
+          },
           coords = {
             {
               x = 4,
               y = 13,
             },
           },
+        },
+        se_house_door = {
           properties = {
-            open_delta_y = 0,
             open_delta_x = 1,
-            locked = false,
+            open_delta_y = 0,
+            locked = true,
+            closed = true,
+            locked_message = "The door for this house is locked.",
             type = "door",
-            closed = false,
-            destiny = "come_inn:front_door",
-            key = "",
+            destiny = "se_house:front_door",
+            key = "se_house_key",
+          },
+          coords = {
+            {
+              x = 15,
+              y = 15,
+            },
           },
         },
       },
-      created = true,
-    },
-    come_inn = {
       items = {
       },
+    },
+    come_inn = {
+      created = true,
       objects = {
-        front_door = {
+        hoard = {
+          properties = {
+            item1 = "inn_magic1:spell:cure_wounds:6",
+            item2 = "inn_weapon1:weapon:arming_sword",
+            type = "hoard",
+          },
           coords = {
             {
               x = 10,
-              y = 14,
+              y = 9,
             },
-          },
-          properties = {
-            open_delta_y = 0,
-            open_delta_x = 1,
-            locked = false,
-            type = "door",
-            closed = false,
-            destiny = "polis:come_inn_door",
-            key = "",
           },
         },
         door1 = {
+          properties = {
+            open_delta_x = 1,
+            open_delta_y = 0,
+            locked = false,
+            closed = true,
+            key = "",
+            type = "door",
+          },
           coords = {
             {
               x = 3,
               y = 3,
             },
           },
-          properties = {
-            open_delta_y = 0,
-            locked = false,
-            type = "door",
-            closed = false,
-            open_delta_x = 1,
-            key = "",
-          },
-        },
-        door3 = {
-          coords = {
-            {
-              x = 12,
-              y = 3,
-            },
-          },
-          properties = {
-            open_delta_y = 0,
-            locked = false,
-            type = "door",
-            closed = true,
-            open_delta_x = 1,
-            key = "",
-          },
         },
         door2 = {
+          properties = {
+            open_delta_x = 1,
+            open_delta_y = 0,
+            locked = false,
+            closed = true,
+            key = "",
+            type = "door",
+          },
           coords = {
             {
               x = 8,
               y = 3,
             },
           },
-          properties = {
-            open_delta_y = 0,
-            locked = false,
-            type = "door",
-            closed = false,
-            open_delta_x = 1,
-            key = "",
-          },
         },
         chest = {
+          properties = {
+            open_delta_x = 1,
+            open_delta_y = 0,
+            locked = false,
+            item1 = "se_house_key:item:key",
+            closed = true,
+            key = "",
+            type = "chest",
+          },
           coords = {
             {
               x = 13,
               y = 7,
             },
           },
+        },
+        door3 = {
           properties = {
-            open_delta_y = 0,
             open_delta_x = 1,
+            open_delta_y = 0,
             locked = false,
-            type = "chest",
-            closed = false,
+            closed = true,
             key = "",
-            item1 = "se_house_key:item:key",
+            type = "door",
+          },
+          coords = {
+            {
+              x = 12,
+              y = 3,
+            },
+          },
+        },
+        front_door = {
+          properties = {
+            open_delta_x = 1,
+            open_delta_y = 0,
+            locked = false,
+            closed = false,
+            type = "door",
+            destiny = "polis:come_inn_door",
+            key = "",
+          },
+          coords = {
+            {
+              x = 10,
+              y = 14,
+            },
           },
         },
       },
-      created = true,
+      items = {
+        inn_magic1 = {
+          x = 10,
+          type = "spell",
+          quantity = 6,
+          name = "cure_wounds",
+          y = 9,
+        },
+      },
     },
   },
 }

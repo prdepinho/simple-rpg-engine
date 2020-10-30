@@ -21,6 +21,18 @@ function Map:create()
       object.properties.closed = true
     elseif object.properties.type == 'chest' then
       object.properties.closed = true
+    elseif object.properties.type == 'hoard' then
+      local x = object.coords[1].x
+      local y = object.coords[1].y
+      for i = 1, 8, 1 do
+        local label = 'item' .. tostring(i)
+        if object.properties[label] then
+          print(label)
+          self:take_out_hoard_item(x, y, object.properties[label])
+        else
+          break
+        end
+      end
     end
   end
 end
@@ -180,6 +192,38 @@ function Map:take_out_chest_item(x, y, str)
 
   self.data.items[code] = {name = name, type = type, x = x, y = y, quantity = quantity}
   sfml_add_item(code, name, type, quantity or 0, x, y)
+end
+
+function Map:take_out_hoard_item(x, y, str)
+  local code = ''
+  local type = ''
+  local name = ''
+  local quantity = nil
+
+  local pos = str:find(':')
+  code = str:sub(1, pos - 1)
+  str = str:sub(pos + 1, str:len())
+
+  pos = str:find(':')
+  type = str:sub(1, pos - 1)
+  str = str:sub(pos + 1, str:len())
+
+  pos = str:find(':')
+  if pos then
+    name = str:sub(1, pos - 1)
+    str = str:sub(pos + 1, str:len())
+    quantity = tonumber(str)
+    str = ''
+  else
+    name = str
+    str = ''
+  end
+
+  pos = str:find(':')
+  if pos then
+  end
+
+  self.data.items[code] = {name = name, type = type, x = x, y = y, quantity = quantity}
 end
 
 
