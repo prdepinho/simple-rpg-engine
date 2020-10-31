@@ -47,7 +47,12 @@ function Map:enter()
           if event == "enter_tile" then
             if object.properties.closed then
               object.properties.closed = true
-              self:open_tile(x, y, object)
+
+              for index, coords in ipairs(object.coords) do
+                self:open_tile(coords.x, coords.y, object)
+              end
+
+              -- self:open_tile(x, y, object)
               sfml_play_sound("tcsh.wav")
             end
 
@@ -103,7 +108,11 @@ function Map:enter()
                 sfml_start_animation(character_name, 'use')
                 sfml_set_obstacle(false, x, y)
 
-                self:open_tile(x, y, object)
+
+                for index, coords in object.coords do
+                  self:open_tile(coords.x, coords.y, object)
+                end
+                -- self:open_tile(x, y, object)
                 sfml_play_sound("tcsh.wav")
 
                 for i = 1, 8, 1 do
