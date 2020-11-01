@@ -18,7 +18,7 @@ end
 animation = "elf"
 
 function Elf:create()
-  self.data.enemy = true
+  self.data.enemy = false
   self.data.stats = rules.new_character()
 end
 

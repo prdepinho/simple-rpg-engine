@@ -22,13 +22,13 @@ function Ranger:create()
   self.data.enemy = true
   self.data.stats = rules.new_character()
 
-  self.data.stats.inventory[1] = {code = "ranger_w", name = "halberd", type = "weapon"}
+  self.data.stats.inventory[1] = {code = self.name .. "_w", name = "halberd", type = "weapon"}
+  self.data.stats.inventory[2] = {code = self.name .. "_a", name = "leather_armor", type = "armor"}
+  self.data.stats.inventory[3] = {code = self.name .. "_i", name = "shield", type = "shield"}
+  self.data.stats.inventory[4] = {code = self.name .. "_w2", name = "dagger", type = "weapon"}
   self.data.stats.weapon = self.data.stats.inventory[1]
-  self.data.stats.inventory[2] = {code = "ranger_a", name = "leather_armor", type = "armor"}
   self.data.stats.armor = self.data.stats.inventory[2]
   self.data.stats.shield =       {code = "", name = "no_shield", type = "shield"}
-  self.data.stats.inventory[3] = {code = "ranger_i", name = "shield", type = "shield"}
-  self.data.stats.inventory[4] = {code = "ranger_w2", name = "dagger", type = "weapon"}
 end
 
 return Ranger

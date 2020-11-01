@@ -166,10 +166,10 @@ function rules.new_character()
       wis = 8,
       cha = 8,
     },
-    total_hp = 6,
-    current_hp = 6,
+    total_hp = 5,
+    current_hp = 5,
     level = 1,
-    hit_die = "d10",
+    hit_die = "d6",
     weapon = {code = "", name = "unarmed", type = "weapon"},
     armor =  {code = "", name = "unarmored", type = "armor"},
     shield = {code = "", name = "no_shield", type = "shield"},
@@ -224,18 +224,34 @@ function rules.set_ability_scores(stats, str, dex, con, int, wis, cha)
   rules.set_max_hit_points(stats, stats.total_hp + diff_bonus)
 end
 
+function rules.set_ability_scores_map(stats, map)
+  local previous_con = stats.ability.con
+  stats.ability.str = map.str
+  stats.ability.dex = map.dex
+  stats.ability.con = map.con
+  stats.ability.int = map.int
+  stats.ability.wis = map.wis
+  stats.ability.cha = map.cha
+
+  local previous_hp_bonus = stats.level * rules.ability_modifier[previous_con]
+  local new_hp_bonus = stats.level * rules.ability_modifier[stats.ability.con]
+  local diff_bonus = new_hp_bonus - previous_hp_bonus
+  rules.set_max_hit_points(stats, stats.total_hp + diff_bonus)
+end
+
 function rules.level_up(stats)
-  if hit_die == "d12" then
+  if stats.hit_die == "d12" then
     rules.set_max_hit_points(stats, stats.total_hp + 7 + rules.ability_modifier[stats.ability.con])
-  elseif hit_die == "d10" then
+  elseif stats.hit_die == "d10" then
     rules.set_max_hit_points(stats, stats.total_hp + 6 + rules.ability_modifier[stats.ability.con])
-  elseif hit_die == "d8" then
+  elseif stats.hit_die == "d8" then
     rules.set_max_hit_points(stats, stats.total_hp + 5 + rules.ability_modifier[stats.ability.con])
-  elseif hit_die == "d6" then
+  elseif stats.hit_die == "d6" then
     rules.set_max_hit_points(stats, stats.total_hp + 4 + rules.ability_modifier[stats.ability.con])
-  elseif hit_die == "d4" then
+  elseif stats.hit_die == "d4" then
     rules.set_max_hit_points(stats, stats.total_hp + 3 + rules.ability_modifier[stats.ability.con])
   end
+  stats.level = stats.level + 1
 end
 
 function rules.set_max_hit_points(stats, total_hp)
