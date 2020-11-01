@@ -830,6 +830,7 @@ end
 
 function Control:map_event(function_name, event, x, y, character_name)
   if self.map[function_name] ~= nil then
+    print('character_name: ' .. character_name)
     self.map[function_name](self.map, event, x, y, character_name, function_name)
   end
 end

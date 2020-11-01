@@ -52,7 +52,6 @@ function Map:enter()
                 self:open_tile(coords.x, coords.y, object)
               end
 
-              -- self:open_tile(x, y, object)
               sfml_play_sound("tcsh.wav")
             end
 
@@ -65,27 +64,29 @@ function Map:enter()
             end
 
           elseif event == "interact" then
-            if object.properties.locked then
-              local index = self.control:find_in_inventory(character_name, object.properties.key)
-              if index then
-                sfml_play_sound("plim.wav")
-                
-                local item = rules.item[self.control.characters[character_name].data.stats.inventory[index].name]
-                sfml_text_box("You used " .. item.name .. " to unlock the door.")
+            if character_name == 'player' then 
+              if object.properties.locked then
+                local index = self.control:find_in_inventory(character_name, object.properties.key)
+                if index then
+                  sfml_play_sound("plim.wav")
+                  
+                  local item = rules.item[self.control.characters[character_name].data.stats.inventory[index].name]
+                  sfml_text_box("You used " .. item.name .. " to unlock the door.")
 
-                sfml_start_animation(character_name, 'use')
-                object.properties.locked = false
-                -- sfml_lock_door(object.properties.locked, object_name)
-                sfml_set_obstacle(false, x, y)
-              else
-                sfml_play_sound("boop.wav")
-                sfml_text_box(object.properties.locked_message or "The door is locked.")
+                  sfml_start_animation(character_name, 'use')
+                  object.properties.locked = false
+                  -- sfml_lock_door(object.properties.locked, object_name)
+                  sfml_set_obstacle(false, x, y)
+                else
+                  sfml_play_sound("boop.wav")
+                  sfml_text_box(object.properties.locked_message or "The door is locked.")
+                end
               end
             end
           end
 
         elseif object.properties.type == 'chest' then
-          if event == 'interact' then
+          if event == 'interact' and character_name == 'player' then
             if object.properties.closed then
               if object.properties.locked then
                 local index = self.control:find_in_inventory(character_name, object.properties.key)
