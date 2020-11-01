@@ -562,9 +562,10 @@ void DialogueBox::next() {
 		if (options->size() > 0) {
 			{
 				int x = get_x();
-				int y = get_y() + get_height();
-				if (box_at_bottom)
+				int y = get_y() + total_height;
+				if (box_at_bottom) {
 					y = get_y() - ((int)options->size() * 19);
+				}
 				options_panel = OptionsPanel(x, y, get_width());
 			}
 
