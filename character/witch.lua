@@ -19,8 +19,7 @@ end
 animation = 'witch'
 
 function Witch:create()
-  self.data.enemy = false
-  self.data.stats = rules.new_character()
+  Character.create(self)
 end
 
 

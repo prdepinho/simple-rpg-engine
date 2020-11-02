@@ -110,7 +110,7 @@ function Map:enter()
                 sfml_set_obstacle(false, x, y)
 
 
-                for index, coords in object.coords do
+                for index, coords in ipairs(object.coords) do
                   self:open_tile(coords.x, coords.y, object)
                 end
                 -- self:open_tile(x, y, object)

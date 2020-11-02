@@ -15,19 +15,22 @@ function Character:new(o, control)
   return o
 end
 
+function Character:create()
+  self.data.enemy = false
+  self.data.npc = true
+  self.data.stats = rules.new_character()
+end
 
 -- called every turn (things pcs and npcs do)
 function Character:on_turn()
-end
-
--- called every turn (things only npcs do)
-function Character:npc_on_turn()
-  if self.data.stats.status.fear then
-    return
-  end
-  if self.data.enemy then
-    if self:is_player_in_sight(4) then
-      self:attack("player")
+  if self.data.npc then
+    if self.data.stats.status.fear then
+      return
+    end
+    if self.data.enemy then
+      if self:is_player_in_sight(4) then
+        self:attack("player")
+      end
     end
   end
 end
@@ -53,19 +56,19 @@ function Character:on_idle()
     }
 
     sfml_move(self.name, dst.x, dst.y)
-  else
+    return
+  end
 
+  if self.data.npc then
     if self.data.enemy then
       if self:is_player_in_sight(4) then
-        print('  player in sight')
         local pos = sfml_get_player_position()
         sfml_move(self.name, pos.x, pos.y)
-      else
-        print('  idle walk')
-        self:idle_walk(self.name)
+        return
       end
     end
 
+    self:idle_walk(self.name)
   end
 end
 

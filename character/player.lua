@@ -19,14 +19,11 @@ animation = 'cat_girl'
 
 function Player:create()
   self.data.enemy = false
+  self.data.npc = false
   self.data.stats = rules.new_character()
   self.data.stats.portrait = {x = 0, y = 224}
   self.data.stats.name = "Mumu"
 end
 
-
-function Player:npc_on_turn()
-  -- overwrite and do nothing, I'm the player character
-end
 
 return Player

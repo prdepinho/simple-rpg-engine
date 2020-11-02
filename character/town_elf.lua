@@ -3,12 +3,12 @@ package.path = package.path .. ";../character/?.lua"
 package.path = package.path .. ";../scripts/?.lua"
 local rules = require "rules"
 local animations = require "animations"
-local Character = require "character"
+local Elf = require "elf"
 
-local TownElf = Character:new()
+local TownElf = Elf:new()
 
 function TownElf:new(o, control)
-  o = o or Character:new(o, control)
+  o = o or Elf:new(o, control)
   setmetatable(o, self)
   self.__index = self
   o.animation = "elf"
@@ -18,29 +18,7 @@ end
 animation = "elf"
 
 function TownElf:create()
-  self.data.enemy = false
-
-  self.data.stats = rules.new_character()
-  local stats = self.data.stats
-
-  stats.name = "Aldebaran"
-  stats.hit_die = "d6",
-
-  rules.set_ability_scores_map(stats, {
-    str = 8,
-    dex = 16,
-    con = 10,
-    int = 15,
-    wis = 10,
-    cha = 13,
-  })
-  rules.level_up(stats)
-
-  stats.inventory[1] = {code = self.name .. "_bow", name = "short_bow", type = 'weapon'}
-  stats.inventory[2] = {code = self.name .. "_arrows", name = "arrow", type = "ammo", quantity = 20}
-  stats.inventory[3] = {code = self.name .. "_dagger", name = "dagger", type = "weapon"}
-  stats.weapon = stats.inventory[1]
-  stats.ammo = stats.inventory[2]
+  Elf.create(self)
 end
 
 function TownElf:on_interact(interactor_name)
@@ -65,11 +43,19 @@ function TownElf:on_interact(interactor_name)
           {
             text = "An elf in the city?",
             go_to = "response"
+          },
+          {
+            text = "What's the name of the city again?",
+            go_to = "city"
           }
         }
       },
       response = {
         text = "Well, you should look at yourself, then.",
+        go_to = "end"
+      },
+      city = {
+        text = "Normindia.",
         go_to = "end"
       }
     }

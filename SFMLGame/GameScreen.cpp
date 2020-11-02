@@ -1481,10 +1481,11 @@ void GameScreen::show_text_box(std::string text) {
 
 void GameScreen::show_dialogue_box(LuaObject dialogue) {
 	block_input = true;
+	bool bottom = log_box.is_visible();
 	DialogueBox::show(dialogue, *this, [&](Component *c) {
 		block_input = false;
 		return true;
-	});
+	}, false, bottom);
 }
 
 void GameScreen::show_illustrated_dialogue_box(LuaObject dialogue) {
