@@ -37,11 +37,11 @@ function Map:create()
   end
 end
 
-function Map:enter()
+function Map:set_objects()
   for object_name, object in pairs(self.data.objects) do
     for property_name, property in pairs(object.properties) do
 
-      self[object_name] = function (self, event, x, y, character_name, object_name)
+      Map[object_name] = function (self, event, x, y, character_name, object_name)
         local object = self.data.objects[object_name]
         if object.properties.type == 'door' then
           if event == "enter_tile" then
@@ -66,7 +66,10 @@ function Map:enter()
           elseif event == "interact" then
             if character_name == 'player' then 
               if object.properties.locked then
-                local index = self.control:find_in_inventory(character_name, object.properties.key)
+                local index = nil
+                if object.properties.key then
+                  index = self.control:find_in_inventory(character_name, object.properties.key)
+                end
                 if index then
                   sfml_play_sound("plim.wav")
                   
@@ -76,7 +79,9 @@ function Map:enter()
                   sfml_start_animation(character_name, 'use')
                   object.properties.locked = false
                   -- sfml_lock_door(object.properties.locked, object_name)
-                  sfml_set_obstacle(false, x, y)
+                  for index, coords in ipairs(object.coords) do
+                    sfml_set_obstacle(false, coords.x, coords.y)
+                  end
                 else
                   sfml_play_sound("boop.wav")
                   sfml_text_box(object.properties.locked_message or "The door is locked.")
@@ -89,7 +94,10 @@ function Map:enter()
           if event == 'interact' and character_name == 'player' then
             if object.properties.closed then
               if object.properties.locked then
-                local index = self.control:find_in_inventory(character_name, object.properties.key)
+                local index = nil
+                if object.properties.key then
+                  index = self.control:find_in_inventory(character_name, object.properties.key)
+                end
                 if index then
                   sfml_play_sound("plim.wav")
                   
@@ -107,7 +115,11 @@ function Map:enter()
                 sfml_play_sound("plim.wav")
                 -- sfml_lock_door(object.properties.locked, object_name)
                 sfml_start_animation(character_name, 'use')
-                sfml_set_obstacle(false, x, y)
+
+                for index, coords in ipairs(object.coords) do
+                  sfml_set_obstacle(false, coords.x, coords.y)
+                end
+
 
 
                 for index, coords in ipairs(object.coords) do
@@ -132,6 +144,10 @@ function Map:enter()
 
     end
   end
+end
+
+function Map:enter()
+  self:set_objects()
   for object_name, object in pairs(self.data.objects) do
 
     if object.properties.type == 'door' then

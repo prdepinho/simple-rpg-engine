@@ -24,9 +24,6 @@ function ComeInn:exit()
 end
 
 function ComeInn:notice_board(event, x, y, character_name, object_name)
-  print('yes, it is being called: notice board')
-  print(character_name)
-
   if character_name == 'player' then
     if event == "interact" then
 

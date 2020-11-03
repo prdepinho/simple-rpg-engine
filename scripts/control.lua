@@ -6,11 +6,14 @@ local rules = require "rules"
 local save = require "save"
 local Magic = require "magic"
 local Character = require "character"
+local Map = require "map"
 
 local Control = {
   characters = {},
   character_modules = {},
   loaded_character_data = {},
+
+  data = {},
 
   map = {},
   map_module = {},
@@ -575,6 +578,7 @@ end
 function Control:reset_data()
   self.characters = {}
   self.loaded_map_data = {}
+  self.data = {}
 end
 
 function Control:get_save_files()
@@ -610,6 +614,7 @@ function Control:new_game()
   self.character_modules = {}
   self.loaded_character_data = {}
   self.loaded_map_data = {}
+  self.data = {}
   self.map_module = {}
   self.current_map = ""
 end
@@ -627,6 +632,8 @@ function Control:save_game(filename, title)
     data.character_data[name] = character.data
   end
 
+  data.data = self.data
+
   -- data.character_data = self.character_data
   save.save_data(filename, data)
 end
@@ -642,6 +649,8 @@ function Control:load_game(filename)
   -- end
 
   self.loaded_character_data = module.data.character_data
+
+  self.data = module.data.data
 
 end
 
@@ -781,6 +790,7 @@ function Control:change_map(new_map)
     self.loaded_map_data[self.current_map].items = {}
     self.loaded_map_data[self.current_map].objects = {}
   end
+
   self.map_module = {}
   self.map_module = require(self.current_map)
   self.map_module.data = self.loaded_map_data[self.current_map]
@@ -829,7 +839,6 @@ end
 
 function Control:map_event(function_name, event, x, y, character_name)
   if self.map[function_name] ~= nil then
-    print('character_name: ' .. character_name)
     self.map[function_name](self.map, event, x, y, character_name, function_name)
   end
 end
