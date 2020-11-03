@@ -17,10 +17,5 @@ end
 
 animation = "rat"
 
-function Rat:create()
-  self.data.enemy = true
-  self.data.stats = rules.new_character()
-end
-
 
 return Rat

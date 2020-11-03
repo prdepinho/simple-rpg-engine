@@ -33,7 +33,7 @@ std::vector<sf::Vector2i> generate_field_of_vision(Tilemap &map, sf::Vector2i ce
 		std::vector<sf::Vector2i> line = bresenham_line(center.x, center.y, border_point.x, border_point.y);
 		strip_out_of_bounds_tiles(map, line);
 
-		for (size_t i = 0; i < line.size() -1; i++) {
+		for (int i = 0; i < (int)line.size() -1; i++) {
 			sf::Vector2i line_point = line[i];
 			field.push_back(line_point);
 			bool stop = stop_on_invisible ? (map.get_tile(line_point.x, line_point.y).invisible) : (map.get_tile(line_point.x, line_point.y).obstacle);
@@ -46,7 +46,7 @@ std::vector<sf::Vector2i> generate_field_of_vision(Tilemap &map, sf::Vector2i ce
 		std::vector<sf::Vector2i> line = bresenham_line(center.x, center.y, border_point.x, border_point.y);
 		strip_out_of_bounds_tiles(map, line);
 
-		for (size_t i = 0; i < line.size(); i++) {
+		for (int i = 0; i < (int)line.size(); i++) {
 			sf::Vector2i line_point = line[i];
 			field.push_back(line_point);
 			bool stop = stop_on_invisible ? (map.get_tile(line_point.x, line_point.y).invisible) : (map.get_tile(line_point.x, line_point.y).obstacle);
@@ -59,7 +59,7 @@ std::vector<sf::Vector2i> generate_field_of_vision(Tilemap &map, sf::Vector2i ce
 		std::vector<sf::Vector2i> line = bresenham_line(center.x, center.y, border_point.x, border_point.y);
 		strip_out_of_bounds_tiles(map, line);
 
-		for (size_t i = 0; i < line.size(); i++) {
+		for (int i = 0; i < (int)line.size(); i++) {
 			sf::Vector2i line_point = line[i];
 			field.push_back(line_point);
 			bool stop = stop_on_invisible ? (map.get_tile(line_point.x, line_point.y).invisible) : (map.get_tile(line_point.x, line_point.y).obstacle);
@@ -151,7 +151,7 @@ std::vector<sf::Vector2i> generate_line_of_sight(Tilemap &map, sf::Vector2i src,
 	std::vector<sf::Vector2i> rval;
 	std::vector<sf::Vector2i> line = bresenham_line(src.x, src.y, dst.x, dst.y);
 	strip_out_of_bounds_tiles(map, line);
-	for (size_t i = 0; i < line.size() -1; i++) {
+	for (int i = 0; i < line.size() -1; i++) {
 		sf::Vector2i line_point = line[i];
 		rval.push_back(line_point);
 		if (line_point != src && map.get_tile(line_point.x, line_point.y).obstacle) {

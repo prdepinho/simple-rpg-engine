@@ -1,6 +1,8 @@
 {
   "_map": "room",
-  "map": "polis",
+  "_map": "polis",
+  "_map": "come_inn_cellar",
+  "map": "rat_lair",
   "_map": "flee_or_fight",
   "_map": "test",
 

@@ -20,7 +20,7 @@ animation = "elf"
 function Elf:create()
   Character.create(self)
 
-  self.data.enemy = true
+  self.data.enemy = false
 
   local stats = self.data.stats
   stats.name = "Aldebaran"

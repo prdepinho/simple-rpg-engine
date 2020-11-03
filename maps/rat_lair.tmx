@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="15" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="9">
+ <properties>
+  <property name="for_of_war" type="bool" value="true"/>
+  <property name="vision_radius" type="int" value="3"/>
+ </properties>
+ <tileset firstgid="1" source="tiled_tileset.tsx"/>
+ <layer id="1" name="floor" width="15" height="10">
+  <data encoding="csv">
+5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+5,21,21,21,21,21,21,21,5,21,21,21,21,21,5,
+5,37,53,37,37,37,37,37,5,37,37,37,37,37,5,
+5,53,53,53,53,53,53,53,21,53,53,53,53,53,5,
+5,5,53,5,53,5,5,53,53,53,53,53,53,53,5,
+5,21,53,21,53,21,5,5,5,53,53,53,53,53,5,
+5,53,53,53,53,53,21,21,5,53,53,53,53,53,5,
+5,53,53,53,53,53,53,53,5,53,53,53,53,53,5,
+5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+21,21,21,21,21,21,21,21,21,21,21,21,21,21,21
+</data>
+ </layer>
+ <layer id="2" name="overfloor" width="15" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,162,241,0,0,0,0,161,0,162,0,0,0,161,0,
+0,178,0,0,0,0,0,193,0,194,0,0,0,177,0,
+0,0,209,0,0,0,0,162,0,0,0,0,0,177,0,
+0,162,241,0,0,161,0,0,0,162,0,0,0,177,0,
+0,178,0,0,0,193,0,161,0,178,0,0,0,177,0,
+0,178,0,0,0,0,0,177,0,178,0,0,0,177,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="3" name="furniture" width="15" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,184,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,209,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,241,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,216,0,217,216,0,216,217,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="4" name="ceiling" width="15" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="5" name="overceiling" width="15" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="6" name="obstacle" width="15" height="10">
+  <data encoding="csv">
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,0,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,0,2,2,2,2,2,2,2,2,2,2,2,2,
+2,0,0,0,0,0,0,0,2,0,0,0,0,0,2,
+2,2,0,2,0,2,2,0,0,0,0,0,0,0,2,
+2,2,0,2,0,2,2,2,2,0,0,0,0,0,2,
+2,0,0,0,0,0,2,2,2,0,0,0,0,0,2,
+2,0,0,0,0,0,0,2,2,2,2,0,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+</data>
+ </layer>
+ <layer id="7" name="invisible" width="15" height="10">
+  <data encoding="csv">
+4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+4,4,0,4,4,4,4,4,4,4,4,4,4,4,4,
+4,4,0,4,4,4,4,4,4,4,4,4,4,4,4,
+4,0,0,0,0,0,0,0,4,0,0,0,0,0,4,
+4,4,0,4,0,4,4,0,0,0,0,0,0,0,4,
+4,4,0,4,0,4,4,4,4,0,0,0,0,0,4,
+4,0,0,0,0,0,4,4,4,0,0,0,0,0,4,
+4,0,0,0,0,0,0,0,4,0,0,0,0,0,4,
+4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+4,4,4,4,4,4,4,4,4,4,4,4,4,4,4
+</data>
+ </layer>
+ <objectgroup id="8" name="objects">
+  <object id="1" name="cellar_hole" x="36.5833" y="18.4318" width="9" height="10.6364">
+   <properties>
+    <property name="destiny" value="come_inn_cellar:cellar_hole"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="2" name="rat5" x="88.75" y="121.25">
+   <properties>
+    <property name="type" value="rat"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="3" name="rat4" x="216" y="108.25">
+   <properties>
+    <property name="type" value="rat"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="4" name="rat3" x="25" y="122.5">
+   <properties>
+    <property name="type" value="rat"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="5" name="rat2" x="105" y="125.25">
+   <properties>
+    <property name="type" value="rat"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="6" name="rat1" x="215.5" y="89.5">
+   <properties>
+    <property name="type" value="rat"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="7" name="rat_king" x="183.25" y="121">
+   <properties>
+    <property name="type" value="rat"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="8" name="player" x="41.75" y="22.25">
+   <properties>
+    <property name="type" value="player"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+</map>

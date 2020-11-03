@@ -159,13 +159,15 @@ end
 function Map:open_tile(x, y, object)
   local tile = sfml_get_tile(x, y)
   if not tile.open then
-    local delta_x = tile.tex_x + object.properties.open_delta_x
-    local delta_y = tile.tex_y + object.properties.open_delta_y
-    sfml_change_floor_texture(
-      x, y, 2, 
-      delta_x,
-      delta_y
-    )
+    if object.properties.open_delta_x ~= nil and object.properties.open_delta_y ~= nil then
+      local delta_x = tile.tex_x + object.properties.open_delta_x
+      local delta_y = tile.tex_y + object.properties.open_delta_y
+      sfml_change_floor_texture(
+        x, y, 2, 
+        delta_x,
+        delta_y
+      )
+    end
     sfml_set_open_tile(true, x, y)
     object.properties.closed = false
   end
