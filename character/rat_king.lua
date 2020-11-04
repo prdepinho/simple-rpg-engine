@@ -24,7 +24,7 @@ function RatKing:create()
   stats.name = "Queen Mousse"
   rules.set_ability_scores_map(stats, {
     str = 10,
-    dex = 15,
+    dex = 14,
     con = 13,
     int = 10,
     wis = 14,

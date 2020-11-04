@@ -28,11 +28,11 @@ function Elf:create()
 
   rules.set_ability_scores_map(stats, {
     str = 8,
-    dex = 16,
-    con = 10,
-    int = 15,
-    wis = 10,
-    cha = 13,
+    dex = 15,
+    con = 9,
+    int = 9,
+    wis = 13,
+    cha = 15,
   })
   rules.level_up(stats)
 

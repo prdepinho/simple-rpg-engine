@@ -5,37 +5,34 @@ local rules = require "rules"
 local animations = require "animations"
 local Character = require "character"
 
-local Rat = Character:new()
+local ComeInnKeeper = Character:new()
 
-function Rat:new(o, control)
+function ComeInnKeeper:new(o, control)
   o = o or Character:new(o, control)
   setmetatable(o, self)
   self.__index = self
-  o.animation = "rat"
+  o.animation = "inn_keeper"
   return o
 end
 
-animation = "rat"
+animation = "inn_keeper"
 
-function Rat:create()
+function ComeInnKeeper:create()
   Character.create(self)
-  self.data.enemy = false
 
   local stats = self.data.stats
-  stats.name = "Rat"
-  stats.total_hp = 4
-  stats.current_hp = 4
-  stats.hit_die = "d4",
+  stats.name = "Marshal"
+  stats.hit_die = "d6",
 
   rules.set_ability_scores_map(stats, {
-    str = 8,
-    dex = 14,
-    con = 13,
-    int = 8,
+    str = 14,
+    dex = 7,
+    con = 10,
+    int = 13,
     wis = 13,
-    cha = 8,
+    cha = 15,
   })
 end
 
 
-return Rat
+return ComeInnKeeper

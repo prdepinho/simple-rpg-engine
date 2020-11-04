@@ -149,6 +149,14 @@ animations.types = {
     },
     animations = basic_animation
   },
+  inn_keeper = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 12
+    },
+    animations = basic_animation
+  },
 }
 
 return animations
