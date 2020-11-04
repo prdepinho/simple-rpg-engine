@@ -109,6 +109,14 @@ animations.types = {
     },
     animations = basic_animation
   },
+  rat_king = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 7
+    },
+    animations = basic_animation
+  },
   rat = {
     basic = defaults,
     coordinates = {

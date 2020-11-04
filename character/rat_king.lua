@@ -11,11 +11,11 @@ function RatKing:new(o, control)
   o = o or Rat:new(o, control)
   setmetatable(o, self)
   self.__index = self
-  o.animation = "rat"
+  o.animation = "rat_king"
   return o
 end
 
-animation = "rat"
+animation = "rat_king"
 
 function RatKing:create()
   Rat.create(self)
@@ -36,7 +36,7 @@ end
 function RatKing:on_interact(interactor_name)
   local dialogue = {
     start = {
-      text = "I am the Rat King.",
+      text = "I am the Rat Queen.",
       go_to = "end"
     }
   }
