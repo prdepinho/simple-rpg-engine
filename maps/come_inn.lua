@@ -44,14 +44,14 @@ function ComeInn:notice_board(event, x, y, character_name, object_name)
 
         messages = {
           text = function() 
-            if self.data.rats_quest_accepted then
+            if self.control.data.rats_quest_accepted then
               return "There are no more noteworthy messages on the board."
             else
               return "There are many requests for menial services. One stand out from the others."
             end
           end,
           go_to = function()
-            if self.data.rats_quest_accepted then
+            if self.control.data.rats_quest_accepted then
               return 'end'
             else
               return 'rats'
@@ -75,7 +75,7 @@ function ComeInn:notice_board(event, x, y, character_name, object_name)
 
         accept = {
           text = "You rip the message from the board",
-          callback = function() self.data.rats_quest_accepted = true; print('accepted') end,
+          callback = function() self.control.data.rats_quest_accepted = true; print('accepted') end,
           go_to = "end",
         }
       }

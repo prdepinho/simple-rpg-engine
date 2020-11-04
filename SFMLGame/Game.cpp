@@ -502,6 +502,17 @@ public:
 		return 1;
 	}
 
+	static int sfml_set_invisible(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		bool invisible = (bool) lua_toboolean(state, -3);
+		int x = (int) lua_tointeger(state, -2);
+		int y = (int) lua_tointeger(state, -1);
+		screen->get_map().get_tile(x, y).invisible = invisible;
+		screen->update_field_of_vision(screen->get_player_character());
+		return 1;
+	}
+
+	// same as set_obstacle, but receives an object name instead of coordinates
 	static int sfml_lock_door(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		bool obstacle = (bool) lua_toboolean(state, -2);
@@ -520,12 +531,15 @@ public:
 		return 1;
 	}
 
+	// represents opening a door. changes the tile openness and visibility.
 	static int sfml_set_open_tile(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		bool open = (bool)lua_toboolean(state, -3);
 		int x = (int)lua_tointeger(state, -2);
 		int y = (int)lua_tointeger(state, -1);
 		screen->get_map().get_tile(x, y).open = open;
+		screen->get_map().get_tile(x, y).invisible = open;
+		screen->update_field_of_vision(screen->get_player_character());
 		return 1;
 	}
 
@@ -1033,6 +1047,7 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_get_window_dimensions", LuaFunction::sfml_get_window_dimensions);
 	lua_register(lua.get_state(), "sfml_change_map", LuaFunction::sfml_change_map);
 	lua_register(lua.get_state(), "sfml_set_obstacle", LuaFunction::sfml_set_obstacle);
+	lua_register(lua.get_state(), "sfml_set_invisible", LuaFunction::sfml_set_invisible);
 	lua_register(lua.get_state(), "sfml_lock_door", LuaFunction::sfml_lock_door);
 	lua_register(lua.get_state(), "sfml_set_open_tile", LuaFunction::sfml_set_open_tile);
 	lua_register(lua.get_state(), "sfml_is_tile_open", LuaFunction::sfml_is_tile_open);

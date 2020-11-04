@@ -23,7 +23,7 @@ function Elf:create()
   self.data.enemy = false
 
   local stats = self.data.stats
-  stats.name = "Aldebaran"
+  stats.name = "Elf"
   stats.hit_die = "d6",
 
   rules.set_ability_scores_map(stats, {

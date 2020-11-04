@@ -35,8 +35,15 @@ end
 
 function Polis:cellar_door(event, x, y, character_name, object_name)
   local object = self.data.objects[object_name]
+
   if not object.properties.locked then
     Map.cellar_door(self, event, x, y, character_name, object_name)
+  else
+    if character_name == 'player' then
+      if self.control.characters.player.data.stats.ability.wis >= 13 then
+        sfml_text_box("(Wis 13) There is a trap door hidden under the building. It is barred from the inside.")
+      end
+    end
   end
 end
 

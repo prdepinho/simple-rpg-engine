@@ -19,6 +19,7 @@ animation = "elf"
 
 function TownElf:create()
   Elf.create(self)
+  self.data.stats.name = "Aldebaran"
 end
 
 function TownElf:on_interact(interactor_name)

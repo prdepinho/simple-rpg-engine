@@ -17,6 +17,22 @@ end
 
 animation = "rat"
 
+function RatKing:create()
+  Rat.create(self)
+
+  local stats = self.data.stats
+  stats.name = "Queen Mousse"
+  rules.set_ability_scores_map(stats, {
+    str = 10,
+    dex = 15,
+    con = 13,
+    int = 10,
+    wis = 14,
+    cha = 13,
+  })
+  rules.level_up(stats)
+end
+
 function RatKing:on_interact(interactor_name)
   local dialogue = {
     start = {

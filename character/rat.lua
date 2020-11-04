@@ -17,5 +17,25 @@ end
 
 animation = "rat"
 
+function Rat:create()
+  Character.create(self)
+  self.data.enemy = false
+
+  local stats = self.data.stats
+  stats.name = "Rat"
+  stats.total_hp = 4
+  stats.current_hp = 4
+  stats.hit_die = "d4",
+
+  rules.set_ability_scores_map(stats, {
+    str = 8,
+    dex = 15,
+    con = 13,
+    int = 8,
+    wis = 13,
+    cha = 10,
+  })
+end
+
 
 return Rat

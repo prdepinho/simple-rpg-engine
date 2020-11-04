@@ -78,7 +78,6 @@ function Map:set_objects()
 
                   sfml_start_animation(character_name, 'use')
                   object.properties.locked = false
-                  -- sfml_lock_door(object.properties.locked, object_name)
                   for index, coords in ipairs(object.coords) do
                     sfml_set_obstacle(false, coords.x, coords.y)
                   end
@@ -113,7 +112,6 @@ function Map:set_objects()
 
               else
                 sfml_play_sound("plim.wav")
-                -- sfml_lock_door(object.properties.locked, object_name)
                 sfml_start_animation(character_name, 'use')
 
                 for index, coords in ipairs(object.coords) do
@@ -151,14 +149,21 @@ function Map:enter()
   for object_name, object in pairs(self.data.objects) do
 
     if object.properties.type == 'door' then
-      sfml_lock_door(object.properties.locked, object_name)
+      for index, coords in ipairs(object.coords) do
+        sfml_set_obstacle(object.properties.locked, coords.x, coords.y)
+        sfml_set_invisible(not object.properties.open, coords.x, coords.y)
+      end
+
       object.properties.closed = true
 
     elseif object.properties.type == 'chest' then
       if object.properties.closed == nil then
         object.properties.closed = true
       end
-      sfml_lock_door(object.properties.closed, object_name)
+      for index, coords in ipairs(object.coords) do
+        sfml_set_obstacle(object.properties.closed, coords.x, coords.y)
+      end
+
       if not object.properties.closed then
         local x = object.coords[1].x
         local y = object.coords[1].y
@@ -185,6 +190,7 @@ function Map:open_tile(x, y, object)
       )
     end
     sfml_set_open_tile(true, x, y)
+    sfml_set_invisible(false, x, y)
     object.properties.closed = false
   end
 end
