@@ -43,7 +43,7 @@ public:
 
 protected:
 	virtual void update_view();
-	void push_text(std::string text);
+	void push_text(std::string text, bool completely_write=false);
 
 	int vertical_margin = 10;
 	int horizontal_margin = 10;

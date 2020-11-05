@@ -200,7 +200,7 @@ Component *TextBox::on_key_pressed(sf::Keyboard::Key key) {
 	return nullptr;
 }
 
-void TextBox::push_text(std::string text) {
+void TextBox::push_text(std::string text, bool completely_write) {
 	auto new_split_lines = font.split_lines(text, text_width);
 	text_lines.insert(text_lines.end(), new_split_lines.begin(), new_split_lines.end());
 	visible_lines.resize(text_lines.size());
@@ -213,6 +213,15 @@ void TextBox::push_text(std::string text) {
 
 	GameScreen *gs = dynamic_cast<GameScreen*>(get_screen());
 	gs->get_log_box().push_line(text);
+
+
+	if (completely_write) {
+		for (size_t i = start_line; i < end_line; i++) {
+			visible_lines[i] = text_lines[i];
+		}
+		completely_written = true;
+		update_view();
+	}
 }
 
 Component *TextBox::on_pressed(int x, int y) {
@@ -397,7 +406,6 @@ void DialogueBox::update(float elapsed_time) {
 			}
 			if (visible_lines[end_line -1] == text_lines[end_line -1]) {
 				completely_written = true;
-				Log("Completely written");
 				if (end_line == text_lines.size()) {
 					if (show_options) {
 						get_screen()->add_component(options_panel);
@@ -528,6 +536,7 @@ void DialogueBox::update_view() {
 
 void DialogueBox::next() {
 	if (go_to != "end") {
+		show_options = false;
 		LuaObject *block = dialogue.get_object(go_to);
 
 		// show foreground
@@ -574,12 +583,11 @@ void DialogueBox::next() {
 				std::string dst = it->second.get_string("go_to");
 				options_panel.add_option(text, dst, [&](Component* c) {
 					OptionButton *button = dynamic_cast<OptionButton*>(c);
-					push_text(button->get_label());
+					push_text(button->get_label(), true);
 					go_to = button->get_dst();
 					next();
 					get_screen()->remove_component(options_panel);
 					get_screen()->select(*this);
-					show_options = false;
 					return true;
 				});
 			}
@@ -587,9 +595,6 @@ void DialogueBox::next() {
 			show_options = true;
 		}
 		else {
-#if false
-			this->go_to = block->get_string("go_to");
-#else
 			// go_to
 			{
 				switch (block->get_token("go_to")->get_type()) {
@@ -601,8 +606,6 @@ void DialogueBox::next() {
 					break;
 				}
 			}
-#endif
-			std::cout << "goto: " << this->go_to << std::endl;
 		}
 	}
 }
