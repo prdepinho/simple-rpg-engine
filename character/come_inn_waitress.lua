@@ -5,43 +5,44 @@ local rules = require "rules"
 local animations = require "animations"
 local Character = require "character"
 
-local ComeInnKeeper = Character:new()
+local ComeInnWaitress = Character:new()
 
-function ComeInnKeeper:new(o, control)
+function ComeInnWaitress:new(o, control)
   o = o or Character:new(o, control)
   setmetatable(o, self)
   self.__index = self
-  o.animation = "inn_keeper"
+  o.animation = "elf"
   return o
 end
 
-animation = "inn_keeper"
+animation = "bunny_girl"
 
-function ComeInnKeeper:create()
+function ComeInnWaitress:create()
   Character.create(self)
 
   local stats = self.data.stats
-  stats.name = "Marshal"
+  stats.name = "Debbie"
   stats.hit_die = "d6",
 
   rules.set_ability_scores_map(stats, {
-    str = 14,
-    dex = 7,
+    str = 10,
+    dex = 13,
     con = 10,
-    int = 13,
-    wis = 13,
+    int = 10,
+    wis = 8,
     cha = 15,
   })
 end
 
-function ComeInnKeeper:on_interact(interactor_name)
+function ComeInnWaitress:on_interact(interactor_name)
   local dialogue = {
     start = {
-      text = "Welcome to my inn.",
+      text = "I will attend to you shortly.",
       go_to = "end"
     }
   }
   sfml_dialogue(dialogue)
 end
 
-return ComeInnKeeper
+
+return ComeInnWaitress

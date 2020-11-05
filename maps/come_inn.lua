@@ -23,6 +23,17 @@ function ComeInn:exit()
   Map.exit(self)
 end
 
+function ComeInn:inn_counter(event, x, y, character_name, object_name)
+  if character_name == 'player' then
+    if event == 'interact' then
+      local inn_keeper = self.control.characters.come_inn_keeper
+      if not inn_keeper.data.stats.status.dead then
+        inn_keeper:on_interact(character_name)
+      end
+    end
+  end
+end
+
 function ComeInn:notice_board(event, x, y, character_name, object_name)
   if character_name == 'player' then
     if event == "interact" then

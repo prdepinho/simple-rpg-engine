@@ -157,6 +157,14 @@ animations.types = {
     },
     animations = basic_animation
   },
+  hobo = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 13
+    },
+    animations = basic_animation
+  },
 }
 
 return animations
