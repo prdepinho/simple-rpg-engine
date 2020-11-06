@@ -125,7 +125,8 @@ rules.ammo = {
 
 rules.item = {
   no_item = { name = "No item", icon = {x = 16*0, y = 16*3}, desc = "" },
-  key = {name = "Key", icon = {x = 16*0, y = 16*9},          desc = "" },
+  money   = { name = "Money",   icon = {x = 16*2, y = 16*9}, desc = "Copper coins.", stack_capacity = 100 },
+  key     = { name = "Key",     icon = {x = 16*0, y = 16*9}, desc = "A brass key." },
 }
 
 rules.spell = {

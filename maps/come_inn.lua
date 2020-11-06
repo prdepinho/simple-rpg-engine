@@ -23,6 +23,41 @@ function ComeInn:exit()
   Map.exit(self)
 end
 
+function ComeInn:bed(event, x, y, character_name, object_name)
+  if character_name == 'player' then
+    if self.control.data.payed_night or self.control.data.come_inn_free_room then
+      self.control.data.payed_night = false
+      local stats = self.control.characters.player.stats
+
+      stats.current_hp = stats.total_hp
+
+      for status_name, status in pairs(stats.status) do
+        if status then
+          self.control:remove_status('player', status_name)
+        end
+      end
+
+      local dialogue = {
+        start = {
+          foreground = {
+            image = "fireplace.png",
+            origin = {
+              x = 0,
+              y = 0,
+            }
+          },
+          text = "You rest the night.",
+          go_to = "end",
+        }
+      }
+      sfml_illustrated_dialogue(dialogue)
+
+    else
+      sfml_text_box("I should pay for the night first.")
+    end
+  end
+end
+
 function ComeInn:inn_counter(event, x, y, character_name, object_name)
   if character_name == 'player' then
     if event == 'interact' then
@@ -85,7 +120,7 @@ function ComeInn:notice_board(event, x, y, character_name, object_name)
         },
 
         accept = {
-          text = "You rip the message from the board",
+          text = "You rip the message from the board.",
           callback = function() self.control.data.rats_quest_accepted = true; print('accepted') end,
           go_to = "end",
         }

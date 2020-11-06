@@ -566,6 +566,25 @@ function Control:inventory_stack_pop(index, character_name, how_much)
   return false
 end
 
+-- return true if the payment is made, false if the money was lacking
+function Control:spend_money(character_name, how_much)
+  local character = self.characters[character_name]
+  for index, item in ipairs(characters.data.stats.inventory) do
+    if item.name == 'money' then
+      if item.quantity - how_much >= 0 then
+        item.quantity = item.quantity - how_much
+        if item.quantity == 0 then
+          self.characters[character_name].data.stats.inventory[index] = {code = "", name = "no_item", type = "item"}
+        end
+        return true
+      else
+        return false
+      end
+    end
+  end
+  return false
+end
+
 function Control:find_in_inventory(character_name, code)
   for index, item in ipairs(self.characters[character_name].data.stats.inventory) do
     if item.code == code then

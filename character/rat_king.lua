@@ -21,7 +21,7 @@ function RatKing:create()
   Rat.create(self)
 
   local stats = self.data.stats
-  stats.name = "Queen Mousse"
+  stats.name = "Mss. Laffevre"
   rules.set_ability_scores_map(stats, {
     str = 10,
     dex = 14,
@@ -36,7 +36,7 @@ end
 function RatKing:on_interact(interactor_name)
   local dialogue = {
     start = {
-      text = "I am Mousse, Queen of the Rats of the Gray Fur.",
+      text = "I am Mss. Laffevre, Queen of the Rats of the Gray Fur.",
       options = {
         { text = "I must be going.", go_to = 'end' },
       }
@@ -65,6 +65,12 @@ function RatKing:on_interact(interactor_name)
       go_to = 'end',
       callback = function()
         print('aggro rats')
+        self.control.characters.rat1.data.enemy = true
+        self.control.characters.rat2.data.enemy = true
+        self.control.characters.rat3.data.enemy = true
+        self.control.characters.rat4.data.enemy = true
+        self.control.characters.rat5.data.enemy = true
+        self.control.characters.rat_king.data.enemy = true
       end
     },
     dont_know = {
