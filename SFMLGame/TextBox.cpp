@@ -244,7 +244,7 @@ void TextBox::show(std::string text, Screen &screen, Callback callback) {
 	text_box.add_function(callback);
 	text_box.create();
 	int x = (_game.get_resolution_width() / 2) - (text_box.get_width() / 2);
-	int y = x;
+	int y = text_box.vertical_margin;
 	text_box.set_position(x, y);
 	screen.add_component(text_box);
 
@@ -520,7 +520,7 @@ void DialogueBox::show(LuaObject dialogue, Screen &screen, Callback callback, bo
 	dialogue_box.create();
 
 	int x = (_game.get_resolution_width() / 2) - (dialogue_box.get_width() / 2);
-	int y = x;
+	int y = dialogue_box.vertical_margin;
 	if (box_at_bottom) {
 		y = _game.get_resolution_height() - dialogue_box.total_height - dialogue_box.vertical_margin;
 	}
@@ -574,6 +574,10 @@ void DialogueBox::next() {
 				int y = get_y() + total_height;
 				if (box_at_bottom) {
 					y = get_y() - ((int)options->size() * 19);
+				}
+				else {
+					y = get_y() + total_height + 50;
+					y = _game.get_resolution_height() - ((int)options->size() * 19) - vertical_margin;
 				}
 				options_panel = OptionsPanel(x, y, get_width());
 			}

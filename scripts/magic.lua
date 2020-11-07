@@ -39,6 +39,7 @@ function Magic:magic_missile_blast(caster, center, tiles, targets)
       sfml_show_floating_message(fmsg, position.x, position.y)
 
       self.control:damage_character(character_name, damage)
+      self.control:character_on_attacked(caster, character_name)
     end
   end
 end
@@ -114,6 +115,7 @@ function Magic:fireball_blast(caster, center, tiles, targets)
     sfml_show_floating_message(fmsg, position.x, position.y)
 
     self.control:damage_character(character_name, damage)
+    self.control:character_on_attacked(caster, character_name)
   end
 end
 
@@ -144,6 +146,7 @@ function Magic:poison(caster, center, tiles, targets)
         duration = duration + rules.arcane_spell_bonus(caster_stats)
 
         self.control:set_status(character_name, "poison", challenge, duration)
+        self.control:character_on_attacked(caster, character_name)
       end
 
     end
@@ -249,6 +252,7 @@ function Magic:fear(caster, center, tiles, targets)
 
           self.control:set_status(character_name, "fear", challenge, duration)
           self.control.characters[character_name].data.feared_character = caster
+          self.control:character_on_attacked(caster, character_name)
         end
 
       end

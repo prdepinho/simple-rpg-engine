@@ -9,6 +9,8 @@ local Character = require "character"
 local Map = require "map"
 
 local Control = {
+  item_code = 0,
+
   characters = {},
   character_modules = {},
   loaded_character_data = {},
@@ -30,6 +32,16 @@ function Control:new(o)
   self.magic = Magic:new(nil, o)
   math.randomseed(os.time())
   return o
+end
+
+function Control:next_item_code(str)
+  local code = self.item_code
+  self.item_code = self.item_code + 1
+  if str then
+    return str .. '_' .. tostring(code)
+  else
+    return 'item_' .. tostring(code)
+  end
 end
 
 
@@ -179,6 +191,9 @@ function Control:is_in_range(attacker_name, defender_name)
 
 end
 
+function Control:character_on_attacked(attacker_name, defender_name)
+  self.characters[defender_name]:on_attacked(attacker_name)
+end
 
 function Control:attack(attacker_name, defender_name)
   local attacker = self.characters[attacker_name].data
@@ -190,6 +205,8 @@ function Control:attack(attacker_name, defender_name)
   local fmsg = ''
   local hit_msg = attacker.stats.name .. ' - ';
   local dmg_msg = defender.stats.name .. ' - ';
+
+  self:character_on_attacked(attacker_name, defender_name)
 
   hit_msg = hit_msg .. 'attack roll: '
   hit_msg = hit_msg .. '(' .. tostring(hit_result.hit_rolls[1])
@@ -569,7 +586,7 @@ function Control:inventory_stack_pop(index, character_name, how_much)
 end
 
 -- return true if the payment is made, false if not enough money
-function Control:spend_money(character_name, how_much)
+function Control:spend_money(character_name, how_much, to_whom)
   local character = self.characters[character_name]
   for index, item in ipairs(character.data.stats.inventory) do
     if item.name == 'money' then
@@ -578,6 +595,9 @@ function Control:spend_money(character_name, how_much)
         if item.quantity == 0 then
           self.characters[character_name].data.stats.inventory[index] = {code = "", name = "no_item", type = "item"}
         end
+        if to_whom then
+          self:gain_money(to_whom, how_much)
+        end
         return true
       else
         return false
@@ -585,6 +605,30 @@ function Control:spend_money(character_name, how_much)
     end
   end
   return false
+end
+
+function Control:gain_money(character_name, how_much)
+  local character = self.characters[character_name]
+  local total = how_much
+  for index, item in ipairs(character.data.stats.inventory) do
+    if item.name == 'money' then
+      print('item stacked')
+      item.quantity = item.quantity + how_much
+      total = total - how_much
+      break
+    end
+  end
+  if total > 0 then
+    for index, item in ipairs(character.data.stats.inventory) do
+      print('loop')
+      if item.code == '' then
+        print('item added')
+        character.data.stats.inventory[index] = { code = self:next_item_code(), name = "money", type = "item", quantity = total }
+        total = 0
+        break
+      end
+    end
+  end
 end
 
 function Control:find_in_inventory(character_name, code)

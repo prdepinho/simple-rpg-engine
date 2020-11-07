@@ -31,6 +31,7 @@ function RatKing:create()
     cha = 13,
   })
   rules.level_up(stats)
+  stats.inventory[1] = {code = "Rat queen's treasure", name = "money", type = "item", quantity = 3 }
 end
 
 function RatKing:on_interact(interactor_name)

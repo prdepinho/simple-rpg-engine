@@ -29,7 +29,7 @@ function ComeInn:bed(event, x, y, character_name, object_name)
       self.control.data.payed_night = false
       local stats = self.control.characters.player.data.stats
 
-      stats.current_hp = stats.total_hp
+      self.control:heal_character('player', stats.total_hp)
 
       for status_name, status in pairs(stats.status) do
         if status then

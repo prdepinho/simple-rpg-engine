@@ -61,7 +61,7 @@ void GameScreen::create() {
 
 	// log box
 	{
-		log_box = LogBox(8);
+		log_box = LogBox(7);
 		log_box.create();
 		add_component(log_box);
 		// log_box.hide();
@@ -222,7 +222,7 @@ bool GameScreen::update(float elapsed_time) {
 			++turn;
 			turn_count = 0.f;
 
-			Log("---- turn: %d ---------------------------------", turn);
+			// Log("---- turn: %d ---------------------------------", turn);
 			// log_box.push_line("Turn " + std::to_string(turn));
 
 			picked_tiles.clear();
@@ -1481,7 +1481,8 @@ void GameScreen::show_text_box(std::string text) {
 
 void GameScreen::show_dialogue_box(LuaObject dialogue) {
 	block_input = true;
-	bool bottom = log_box.is_visible();
+	// bool bottom = log_box.is_visible();
+	bool bottom = false;
 	DialogueBox::show(dialogue, *this, [&](Component *c) {
 		block_input = false;
 		return true;

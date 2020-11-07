@@ -76,6 +76,12 @@ end
 function Character:on_interact(interactor_name)
 end
 
+function Character:on_attacked(attacker_name)
+  if attacker_name == 'player' then
+    self.data.enemy = true
+  end
+end
+
 function Character:on_death()
 end
 
