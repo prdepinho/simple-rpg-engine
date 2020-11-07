@@ -76,6 +76,8 @@ end
 function Character:on_interact(interactor_name)
 end
 
+function Character:on_death()
+end
 
 -- walk here and there.
 function Character:idle_walk(radius)

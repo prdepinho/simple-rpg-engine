@@ -23,6 +23,7 @@ function Player:create()
   self.data.stats = rules.new_character()
   self.data.stats.portrait = {x = 0, y = 224}
   self.data.stats.name = "Mumu"
+  self.data.stats.inventory[1] = {code = "mumu's money", name = "money", type = "item", quantity = 3 }
 end
 
 

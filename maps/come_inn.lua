@@ -27,7 +27,7 @@ function ComeInn:bed(event, x, y, character_name, object_name)
   if character_name == 'player' then
     if self.control.data.payed_night or self.control.data.come_inn_free_room then
       self.control.data.payed_night = false
-      local stats = self.control.characters.player.stats
+      local stats = self.control.characters.player.data.stats
 
       stats.current_hp = stats.total_hp
 

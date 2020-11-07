@@ -4,6 +4,7 @@ package.path = package.path .. ";../scripts/?.lua"
 local rules = require "rules"
 local animations = require "animations"
 local Character = require "character"
+local save = require "save"
 
 local ComeInnKeeper = Character:new()
 
@@ -54,10 +55,10 @@ function ComeInnKeeper:on_interact(interactor_name)
       text = function()
         local rval = self.control:spend_money('player', 1)
         if rval then
-          return "Unfortunetely I have no money."
-        else
           self.control.data.payed_night = true
           return "The room is upstairs."
+        else
+          return "Unfortunetely I have no money."
         end
       end,
       go_to = "end"
@@ -77,13 +78,16 @@ function ComeInnKeeper:on_interact(interactor_name)
     }
   }
 
+  save.print_data(self.control.data)
+
   local rats_dead = true
-  rats_dead = rats_dead and self.control.characters.rat1.data.stats.status.dead ~= nil
-  rats_dead = rats_dead and self.control.characters.rat2.data.stats.status.dead ~= nil
-  rats_dead = rats_dead and self.control.characters.rat3.data.stats.status.dead ~= nil
-  rats_dead = rats_dead and self.control.characters.rat4.data.stats.status.dead ~= nil
-  rats_dead = rats_dead and self.control.characters.rat5.data.stats.status.dead ~= nil
-  rats_dead = rats_dead and self.control.characters.rat_king.data.stats.status.dead ~= nil
+  rats_dead = rats_dead and self.control.data.rat1_dead
+  rats_dead = rats_dead and self.control.data.rat2_dead
+  rats_dead = rats_dead and self.control.data.rat3_dead
+  rats_dead = rats_dead and self.control.data.rat4_dead
+  rats_dead = rats_dead and self.control.data.rat5_dead
+  rats_dead = rats_dead and self.control.data.rat_king_dead
+
   if rats_dead then
     table.insert(dialogue.start.options, { text = "I have dealt with the rats in the basement.", go_to = 'rats_dead' })
   end

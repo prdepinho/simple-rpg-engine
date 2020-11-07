@@ -349,6 +349,8 @@ function Control:kill_character(character_name)
 
   local position = sfml_get_character_position(character_name)
   sfml_set_obstacle(false, position.x, position.y)
+
+  self.characters[character_name]:on_death()
 end
 
 -- Equip an item from character inventory. Return false if item is not equipable.
@@ -566,10 +568,10 @@ function Control:inventory_stack_pop(index, character_name, how_much)
   return false
 end
 
--- return true if the payment is made, false if the money was lacking
+-- return true if the payment is made, false if not enough money
 function Control:spend_money(character_name, how_much)
   local character = self.characters[character_name]
-  for index, item in ipairs(characters.data.stats.inventory) do
+  for index, item in ipairs(character.data.stats.inventory) do
     if item.name == 'money' then
       if item.quantity - how_much >= 0 then
         item.quantity = item.quantity - how_much

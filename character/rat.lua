@@ -37,5 +37,9 @@ function Rat:create()
   })
 end
 
+function Rat:on_death()
+  self.control.data[self.name .. '_dead'] = true
+end
+
 
 return Rat
