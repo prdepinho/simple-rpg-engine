@@ -3,7 +3,8 @@
   "_map": "polis",
   "_map": "come_inn_cellar",
   "_map": "rat_lair",
-  "map": "come_inn",
+  "_map": "come_inn",
+  "map": "se_house",
   "_map": "flee_or_fight",
   "_map": "test",
 
