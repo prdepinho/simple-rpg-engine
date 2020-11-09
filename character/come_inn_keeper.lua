@@ -4,7 +4,6 @@ package.path = package.path .. ";../scripts/?.lua"
 local rules = require "rules"
 local animations = require "animations"
 local Character = require "character"
-local save = require "save"
 
 local ComeInnKeeper = Character:new()
 
@@ -58,7 +57,7 @@ function ComeInnKeeper:on_interact(interactor_name)
           self.control.data.payed_night = true
           return "The room is upstairs."
         else
-          return "Unfortunetely I have no money."
+          return "I'm sorry, but I don't do business on credit."
         end
       end,
       go_to = "end"
@@ -77,8 +76,6 @@ function ComeInnKeeper:on_interact(interactor_name)
       end
     }
   }
-
-  save.print_data(self.control.data)
 
   local rats_dead = true
   rats_dead = rats_dead and self.control.data.rat1_dead

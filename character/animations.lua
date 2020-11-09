@@ -165,6 +165,22 @@ animations.types = {
     },
     animations = basic_animation
   },
+  viking = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 14
+    },
+    animations = basic_animation
+  },
+  trenchcoat = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 15
+    },
+    animations = basic_animation
+  },
 }
 
 return animations

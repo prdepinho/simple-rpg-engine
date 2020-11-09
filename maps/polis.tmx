@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="11">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="12">
  <properties>
   <property name="for_of_war" type="bool" value="false"/>
   <property name="vision_radius" type="int" value="5"/>
@@ -61,15 +61,15 @@
 0,0,0,0,0,0,0,0,0,0,145,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,145,0,0,0,0,0,0,0,0,0,0,0,147,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,163,0,0,0,0,0,0,0,0,0,0,0,147,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,145,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,147,0,0,0,
+0,0,0,0,163,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,147,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,145,0,0,0,
 0,0,147,0,147,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,147,0,145,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,129,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,145,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -211,6 +211,16 @@
    <properties>
     <property name="destiny" value="rat_lair:rat_lair_cellar_door"/>
     <property name="locked" type="bool" value="true"/>
+    <property name="open_delta_x" type="int" value="1"/>
+    <property name="open_delta_y" type="int" value="0"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="11" name="poison_seller_front_door" x="67.5" y="99.6818" width="9" height="10.6364">
+   <properties>
+    <property name="destiny" value="poison_seller:front_door"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
     <property name="open_delta_x" type="int" value="1"/>
     <property name="open_delta_y" type="int" value="0"/>
     <property name="type" value="door"/>

@@ -460,6 +460,14 @@ function Control:loot_item(item_code, character_name)
   return false
 end
 
+-- put item on the floor and loot it.
+function Control:add_item_to_inventory(character_name, code, name, type, quantity)
+  local position = sfml_get_character_position(character_name)
+  quantity = quantity or 0
+  self.map.data.items[code] = {name = name, type = type, x = position.x, y = position.y, quantity = quantity}
+  self:loot_item(code, character_name)
+end
+
 -- Drops an item from character's inventory. Returns false if item was not in the inventory.
 function Control:drop_item(item_code, character_name, x, y)
   for index, item_data in ipairs(self.characters[character_name].data.stats.inventory) do

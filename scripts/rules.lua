@@ -124,9 +124,10 @@ rules.ammo = {
 }
 
 rules.item = {
-  no_item = { name = "No item", icon = {x = 16*0, y = 16*3}, desc = "" },
-  money   = { name = "Money",   icon = {x = 16*2, y = 16*9}, desc = "Copper coins.", stack_capacity = 100 },
-  key     = { name = "Key",     icon = {x = 16*0, y = 16*9}, desc = "A brass key." },
+  no_item = { name = "No item", icon = {x = 16*0, y = 16*3},  desc = "" },
+  money   = { name = "Money",   icon = {x = 16*2, y = 16*9},  desc = "Copper coins.", stack_capacity = 100 },
+  poison  = { name = "Poison",  icon = {x = 16*1, y = 16*10}, desc = "Rat poison." },
+  key     = { name = "Key",     icon = {x = 16*0, y = 16*9},  desc = "A brass key." },
 }
 
 rules.spell = {
