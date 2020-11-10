@@ -23,7 +23,7 @@ public:
 	~SaveOptionMenu();
 	virtual void create() override;
 	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
-	static void show(Screen &screen, Resources::SaveFile save_file, bool allow_save, Callback callback=Callback());
+	static void show(Screen &screen, Resources::SaveFile save_file, bool allow_save, bool allow_delete, Callback callback=Callback());
 private:
 	int border = 5;
 	int button_height = 20;
@@ -32,6 +32,7 @@ private:
 	std::vector<Button> buttons;
 	Resources::SaveFile save_file;
 	bool allow_save = false;
+	bool allow_delete = false;
 };
 
 

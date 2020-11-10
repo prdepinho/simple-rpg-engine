@@ -111,6 +111,10 @@ Component* Button::on_key_pressed(sf::Keyboard::Key key) {
 }
 
 Component* Button::on_click() {
+	if (!activated) {
+		Resources::get_sound("boop.wav")->play();
+		return this;
+	}
 	bool rval = false;
 	for (Callback function : functions) {
 		rval = rval || function(this);
@@ -132,13 +136,13 @@ void Button::on_clic_inactive() {
 void Button::on_activated() {
 	Log("on activated");
 	Component::on_activated();
-	// vertices = released_vertices;
+	vertices = released_vertices;
 }
 
 void Button::on_disactivated() {
 	Log("on disactivated");
 	Component::on_disactivated();
-	// vertices = pressed_vertices;
+	vertices = pressed_vertices;
 }
 
 void Button::set_label(std::string str) 

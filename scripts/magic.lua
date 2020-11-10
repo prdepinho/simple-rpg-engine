@@ -470,7 +470,7 @@ function Magic:cloak(caster, center, tiles, targets)
     local position = sfml_get_character_position(character_name)
     sfml_start_fireworks("invisibility", position.x, position.y)
 
-    sfml_show_floating_message(rules.status.invisible.name, position.x, position.y)
+    sfml_show_floating_message(rules.item.cloak.name, position.x, position.y)
     
     local dex_mod = rules.ability_modifier[caster_stats.ability.dex]
     local duration = rules.roll_dice("3d6")

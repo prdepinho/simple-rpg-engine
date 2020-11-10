@@ -28,17 +28,17 @@ void LoadGameScreen::create() {
 			// _game.get_lua()->load_game(b->get_save_file().filename);
 			// game->change_to_game_screen();
 
-			SaveOptionMenu::show(*this, b->get_save_file(), false, [&](Component*) {
+			SaveOptionMenu::show(*this, b->get_save_file(), false, false, [&](Component*) {
 				select(buttons[button_index]);
 				return true;
 			});
 			return true;
 		});
-		if (!save_files[i].active)
-			button.disactivate();
 		button.set_save_file(save_files[i]);
 		add_component(button);
 		button.create();
+		if (!save_files[i].active)
+			button.disactivate();
 	}
 
 	{
@@ -80,35 +80,27 @@ Component *LoadGameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	if (interacted_component)
 		return nullptr;
 
+	switch (InputHandler::get_control_input(event)) {
+	case Control::UP:
+		if (button_index > 0)
+			button_index--;
+		else
+			button_index = buttons.size() - 1;
+		select(buttons[button_index]);
+		break;
+
+	case Control::DOWN:
+		if ((size_t) button_index < buttons.size() -1)
+			button_index++;
+		else
+			button_index = 0;
+		select(buttons[button_index]);
+		break;
+	}
+
 	switch (event.type) {
 	case sf::Event::Closed:
 		window->close();
-		break;
-
-	case sf::Event::KeyPressed:
-		switch (event.key.code) {
-		case sf::Keyboard::Up:
-			if (button_index > 0)
-				button_index--;
-			else
-				button_index = buttons.size() - 1;
-			select(buttons[button_index]);
-			// Resources::get_sound("vwuuu.wav")->play();
-			break;
-
-		case sf::Keyboard::Down:
-			if ((size_t) button_index < buttons.size() -1)
-				button_index++;
-			else
-				button_index = 0;
-			select(buttons[button_index]);
-			// Resources::get_sound("vwuuu.wav")->play();
-			break;
-
-		case sf::Keyboard::Enter:
-			// Resources::get_sound("crrreee.wav")->play();
-			break;
-		}
 		break;
 
 	case sf::Event::KeyReleased:

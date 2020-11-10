@@ -35,7 +35,6 @@ void SaveOptionMenu::create() {
 			Button *b = dynamic_cast<Button*>(c);
 			Log("Save");
 			if (save_file.active) {
-				Log("save avtive");
 				ChoicePanel::show("Are you sure you want overwrite?", *get_screen(), 
 					[&]() {
 						Log("Yes.");
@@ -54,7 +53,6 @@ void SaveOptionMenu::create() {
 				);
 			}
 			else {
-				Log("Save inctive");
 				std::string filename = Path::SAVES + save_file.filename + ".lua";
 				_game.get_lua()->save_game(filename, Time::current_time_string());
 				SavePanel::refresh_buttons();
@@ -63,10 +61,10 @@ void SaveOptionMenu::create() {
 			}
 			return true;
 		});
-		if (!allow_save)
-			button.disactivate();
 		add_component(button);
 		button.create();
+		if (!allow_save)
+			button.disactivate();
 		i++;
 	}
 	{
@@ -97,6 +95,8 @@ void SaveOptionMenu::create() {
 		});
 		add_component(button);
 		button.create();
+		if (!save_file.active)
+			button.disactivate();
 		i++;
 	}
 	
@@ -128,6 +128,8 @@ void SaveOptionMenu::create() {
 		});
 		add_component(button);
 		button.create();
+		if (!save_file.active || !allow_delete)
+			button.disactivate();
 		i++;
 	}
 	{
@@ -147,13 +149,14 @@ void SaveOptionMenu::create() {
 	}
 }
 
-void SaveOptionMenu::show(Screen &screen, Resources::SaveFile save_file, bool allow_save, Callback callback) {
+void SaveOptionMenu::show(Screen &screen, Resources::SaveFile save_file, bool allow_save, bool allow_delete, Callback callback) {
 	static SaveOptionMenu save_option_panel;
 	save_option_panel = SaveOptionMenu();
+	save_option_panel.allow_save = allow_save;
+	save_option_panel.allow_delete = allow_delete;
+	save_option_panel.save_file = save_file;
 	save_option_panel.create();
 	save_option_panel.button_index = 0;
-	save_option_panel.save_file = save_file;
-	save_option_panel.allow_save = allow_save;
 	save_option_panel.set_function(callback);
 	screen.add_component(save_option_panel);
 	screen.select(save_option_panel.buttons.front());
@@ -249,7 +252,7 @@ void SavePanel::create() {
 		button.set_function([&](Component* c) {
 			LoadButton *b = dynamic_cast<LoadButton*>(c);
 			Log("%s", b->get_save_file().title.c_str());
-			SaveOptionMenu::show(*get_screen(), b->get_save_file(), true, [&](Component*) {
+			SaveOptionMenu::show(*get_screen(), b->get_save_file(), true, true, [&](Component*) {
 				get_screen()->select(buttons[button_index]);
 				return true;
 			});
@@ -258,11 +261,11 @@ void SavePanel::create() {
 			// _game.change_to_game_screen();
 			return true;
 		});
-		if (!save_files[i].active)
-			button.disactivate();
 		button.set_save_file(save_files[i]);
 		add_component(button);
 		button.create();
+		// if (!save_files[i].active)
+		// 	button.disactivate();
 	}
 
 	{
@@ -279,6 +282,7 @@ void SavePanel::create() {
 		button.create();
 	}
 
+	// refresh_buttons();
 }
 
 void SavePanel::show(Screen &screen, Callback callback) {
@@ -301,8 +305,8 @@ void SavePanel::refresh_buttons() {
 		LoadButton &button = panel.buttons[i];
 		button.set_save_file(save_files[i]);
 		button.set_label(save_files[i].title);
-		if (!save_files[i].active)
-			button.disactivate();
+		// if (!save_files[i].active)
+		// 	button.disactivate();
 	}
 }
 

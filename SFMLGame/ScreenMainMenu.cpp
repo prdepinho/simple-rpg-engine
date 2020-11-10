@@ -47,6 +47,9 @@ void ScreenMainMenu::create()
 		add_component(button);
 		button.create();
 		i++;
+
+
+
 	}
 #endif
 
