@@ -145,6 +145,7 @@ function Control:is_enemy(character_name)
 end
 
 function Control:cast_magic(magic_name, caster, center, tiles, targets)
+  sfml_start_animation(caster, "cast")
   self.magic[magic_name](self.magic, caster, center, tiles, targets)
 end
 
@@ -465,6 +466,7 @@ function Control:add_item_to_inventory(character_name, code, name, type, quantit
   local position = sfml_get_character_position(character_name)
   quantity = quantity or 0
   self.map.data.items[code] = {name = name, type = type, x = position.x, y = position.y, quantity = quantity}
+  sfml_add_item(code, name, type, quantity or 0, position.x, position.y)
   self:loot_item(code, character_name)
 end
 
