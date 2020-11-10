@@ -463,7 +463,7 @@ void GameScreen::control_mouse_info() {
 		}
 		// do something here
 
-#if false
+#if true
 		{
 			std::string message = "Position: (" + std::to_string(tile_x) + ", " + std::to_string(tile_y) + ")";
 			add_floating_message(message, tile_x, tile_y, turn_duration * 5);
@@ -1568,12 +1568,6 @@ void GameScreen::center_game_view(sf::Vector2f v) {
 
 
 
-void GameScreen::add_floating_message(FloatingMessage *fm) {
-	fm->create();
-	floating_messages.push_back(fm);
-	add_component(*fm);
-}
-
 void GameScreen::add_floating_message(std::string message, int tile_x, int tile_y, float duration) {
 	auto tile_pix_coords = map.get_tile_pix_coords(tile_x, tile_y);
 	sf::Vector2f coords = get_gui_position_over_game(map.get_x() + tile_pix_coords.x, map.get_y() + tile_pix_coords.y);
@@ -1582,7 +1576,7 @@ void GameScreen::add_floating_message(std::string message, int tile_x, int tile_
 	sf::Color color = sf::Color::White;
 	float speed = 0.05f;
 
-	FloatingMessage *floating_message = new FloatingMessage(message, x, y, speed, color);
+	FloatingMessage *floating_message = new FloatingMessage(message, x, y, speed, color, duration);
 	{
 		floating_message->disactivate();
 
@@ -1592,10 +1586,11 @@ void GameScreen::add_floating_message(std::string message, int tile_x, int tile_
 
 		floating_message->create();
 		floating_messages.push_back(floating_message);
-		add_component(*floating_message, false);
 	}
 
 
+#if false
+	add_component(*floating_message, false);
 	ComponentEffect *effect = new ComponentEffect(duration, floating_message);
 	auto callback = ([&](Effect* e) {
 		ComponentEffect *ce = dynamic_cast<ComponentEffect*>(e);
@@ -1606,7 +1601,53 @@ void GameScreen::add_floating_message(std::string message, int tile_x, int tile_
 	effect->set_on_end(callback);
 	effect->set_on_interrupt(callback);
 	add_effect(effect);
+#else
+	if (floating_messages.size() == 1)
+		next_floating_message();
+#endif
+
 }
+
+void GameScreen::next_floating_message() {
+	Log("floating messages: %d", (int)floating_messages.size());
+	if (floating_messages.size() > 0) {
+		FloatingMessage *floating_message = floating_messages[0];
+		add_component(*floating_message, false);
+		ComponentEffect *effect = new ComponentEffect(floating_message->get_duration(), floating_message);
+		auto callback = ([&](Effect* e) {
+			ComponentEffect *ce = dynamic_cast<ComponentEffect*>(e);
+			FloatingMessage *fm = dynamic_cast<FloatingMessage*>(ce->get_component());
+			remove_floating_message(fm);
+			delete ce->get_component();
+
+			next_floating_message();
+		});
+		effect->set_on_end(callback);
+		effect->set_on_interrupt(callback);
+		add_effect(effect);
+	}
+}
+
+void GameScreen::remove_floating_message(FloatingMessage *fm) {
+	for (auto it = floating_messages.begin(); it != floating_messages.end(); ++it) {
+		if (*it == fm) {
+			it = floating_messages.erase(it);
+			remove_component(*fm);
+			break;
+		}
+	}
+}
+
+void GameScreen::delete_floating_messages() {
+	for (auto it = floating_messages.begin(); it != floating_messages.end(); ++it) {
+		FloatingMessage *fm = *it;
+		remove_component(*fm);
+		delete fm;
+	}
+	floating_messages.clear();
+}
+
+
 
 void GameScreen::toggle_log() {
 	if (log_box.is_visible()) {
@@ -1627,27 +1668,6 @@ void GameScreen::hide_log() {
 	log_box.hide();
 	auto pos = player_character->getPosition();
 	center_game_view(pos);
-}
-
-
-void GameScreen::remove_floating_message(FloatingMessage *fm) {
-	for (auto it = floating_messages.begin(); it != floating_messages.end(); ++it) {
-		if (*it == fm) {
-			it = floating_messages.erase(it);
-			remove_component(*fm);
-			break;
-		}
-	}
-}
-
-void GameScreen::delete_floating_messages() {
-	Log("delete floating messages");
-	for (auto it = floating_messages.begin(); it != floating_messages.end(); ++it) {
-		FloatingMessage *fm = *it;
-		remove_component(*fm);
-		delete fm;
-	}
-	floating_messages.clear();
 }
 
 

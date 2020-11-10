@@ -2,8 +2,8 @@
 #include "Resources.h"
 #include "Game.h"
 
-FloatingMessage::FloatingMessage(std::string message, int x, int y, float speed, sf::Color color) 
-	: message(message), color(color), speed(speed)
+FloatingMessage::FloatingMessage(std::string message, int x, int y, float speed, sf::Color color, float duration) 
+	: message(message), color(color), speed(speed), duration(duration)
 {
 	set_position(x, y);
 	font = Font();

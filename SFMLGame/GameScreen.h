@@ -140,10 +140,10 @@ public:
 	void center_map_on_tile(sf::Vector2i v);
 	sf::Vector2f get_tile_position(sf::Vector2i v);
 
-	void add_floating_message(FloatingMessage *fm);
 	void add_floating_message(std::string message, int tile_x, int tile_y, float duration);
 	void remove_floating_message(FloatingMessage *fm);
 	void delete_floating_messages();
+	void next_floating_message();
 
 	void toggle_log();
 	void show_log();
