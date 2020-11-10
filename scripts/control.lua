@@ -50,7 +50,9 @@ function Control:log_save(character, type, result)
   if result.bonus >= 0 then
     sign = "+"
   end
-  local msg = character .. ' - ' .. type .. ' save: ' .. tostring(result.roll)
+
+  local name = self.characters[character].data.stats.name 
+  local msg = name .. ' - ' .. type .. ' save: ' .. tostring(result.roll)
   msg = msg .. ' ' .. sign .. tostring(result.bonus)
   msg = msg .. ' vs. ' .. tostring(result.challenge) .. '. '
 
@@ -145,7 +147,6 @@ function Control:is_enemy(character_name)
 end
 
 function Control:cast_magic(magic_name, caster, center, tiles, targets)
-  sfml_start_animation(caster, "cast")
   self.magic[magic_name](self.magic, caster, center, tiles, targets)
 end
 
@@ -314,6 +315,11 @@ function Control:attack(attacker_name, defender_name)
 
   if damage_result.total_damage > 0 then
     self:damage_character(defender_name, damage_result.total_damage)
+  end
+
+  local effect = rules.weapon[attacker.stats.weapon.name].effect
+  if effect ~= '' then
+    self.magic[effect](self.magic, attacker_name, defender_name, hit_result, damage_result)
   end
 
 end  

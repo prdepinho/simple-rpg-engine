@@ -15,7 +15,11 @@ end
 
 
 function Magic:magic_missile(caster, center, tiles, targets)
-  sfml_push_log(caster .. ' - casts ' .. rules.spell.magic_missile.name)
+  sfml_start_animation(caster, "cast")
+
+  local caster_name = self.control.characters[caster].data.stats.name 
+  sfml_push_log(caster_name .. ' - casts ' .. rules.spell.magic_missile.name)
+
   local src = sfml_get_character_position(caster)
   local dst = center
   sfml_cast_magic_missile('magic_missile', caster, src.x, src.y, dst.x, dst.y, 'magic_missile_blast', tiles)
@@ -31,7 +35,8 @@ function Magic:magic_missile_blast(caster, center, tiles, targets)
       local position = sfml_get_character_position(character_name)
       sfml_start_fireworks("magic_missile_blast", position.x, position.y)
 
-      local hit_msg = character_name .. ' - has taken '
+      local name = self.control.characters[character_name].data.stats.name
+      local hit_msg = name .. ' - has taken '
       hit_msg = hit_msg .. damage .. ' damage'
       sfml_push_log(hit_msg)
 
@@ -45,7 +50,10 @@ function Magic:magic_missile_blast(caster, center, tiles, targets)
 end
 
 function Magic:cure_wounds(caster, center, tiles, targets)
-  sfml_push_log(caster .. ' - casts ' .. rules.spell.cure_wounds.name)
+  sfml_start_animation(caster, "cast")
+
+  local caster_name = self.characters[caster].data.stats.name 
+  sfml_push_log(caster_name .. ' - casts ' .. rules.spell.cure_wounds.name)
 
 
   for index, character_name in ipairs(targets) do
@@ -64,7 +72,10 @@ function Magic:cure_wounds(caster, center, tiles, targets)
       if bonus >= 0 then
         sign = '+ '
       end
-      local msg = character_name .. ' - has recovered '
+
+
+      local name = self.control.characters[character_name].data.stats.name 
+      local msg = name .. ' - has recovered '
       msg = msg .. tostring(heal) .. ' = '
       msg = msg .. tostring(roll) .. ' ' .. sign .. tostring(bonus)
       msg = msg .. ' hit points = '
@@ -80,7 +91,11 @@ end
 
 
 function Magic:fireball(caster, center, tiles, targets)
-  sfml_push_log(caster .. ' - casts ' .. rules.spell.fireball.name)
+  sfml_start_animation(caster, "cast")
+
+  local caster_name = self.control.characters[caster].data.stats.name 
+  sfml_push_log(caster_name .. ' - casts ' .. rules.spell.fireball.name)
+
   local src = sfml_get_character_position(caster)
   local dst = center
   sfml_cast_magic_missile('fireball', caster, src.x, src.y, dst.x, dst.y, 'fireball_blast', tiles)
@@ -107,7 +122,8 @@ function Magic:fireball_blast(caster, center, tiles, targets)
       damage = math.ceil(damage / 2)
     end
 
-    local hit_msg = character_name .. ' - has taken '
+    local name = self.control.characters[character_name].data.stats.name 
+    local hit_msg = name .. ' - has taken '
     hit_msg = hit_msg .. damage .. ' damage'
     sfml_push_log(hit_msg)
 
@@ -121,7 +137,11 @@ end
 
 
 function Magic:poison(caster, center, tiles, targets)
-  sfml_push_log(caster .. ' - casts ' .. rules.spell.poison.name)
+  sfml_start_animation(caster, "cast")
+
+  local caster_name = self.control.characters[caster].data.stats.name 
+  sfml_push_log(caster_name .. ' - casts ' .. rules.spell.poison.name)
+
   local caster_stats = self.control.characters[caster].data.stats
 
   for index, character_name in ipairs(targets) do
@@ -163,16 +183,53 @@ function Magic:poison_update(character)
   local position = sfml_get_character_position(character)
   local damage = rules.roll_dice('1d1')
   self.control:damage_character(character, damage)
-  sfml_push_log(character .. ' - received ' .. tostring(damage) .. ' damage')
+
+  local name = self.control.characters[character].data.stats.name 
+  sfml_push_log(name .. ' - received ' .. tostring(damage) .. ' damage')
   sfml_show_floating_message(tostring(damage), position.x, position.y)
 end
 
 
 
+function Magic:rat_desease(attacker_name, defender_name, hit_result, damage_result)
+  if hit_result.critical_hit or hit_result.hit then
+    local attacker = self.control.characters[attacker_name].data.stats
+
+    local position = sfml_get_character_position(defender_name)
+
+    local stats = self.control.characters[defender_name].data.stats
+    if not stats.status.dead then
+
+      local challenge = rules.arcane_spell_challenge(attacker)
+      local save = rules.roll_con_save(stats, challenge)
+
+      self.control:log_save(defender_name, 'Con', save)
+
+      if save.success then
+        sfml_show_floating_message("saved", position.x, position.y)
+      else 
+        sfml_show_floating_message(rules.status.poison.name, position.x, position.y)
+
+        local duration = rules.roll_dice("3d6")
+        duration = duration + rules.arcane_spell_bonus(attacker)
+
+        sfml_start_fireworks("poison", position.x, position.y)
+        self.control:set_status(defender_name, "poison", challenge, duration)
+      end
+
+    end
+  end
+end
+
+
 
 
 function Magic:invisibility(caster, center, tiles, targets)
-  sfml_push_log(caster .. ' - casts ' .. rules.spell.invisibility.name)
+  sfml_start_animation(caster, "cast")
+
+  local caster_name = self.control.characters[caster].data.stats.name 
+  sfml_push_log(caster_name .. ' - casts ' .. rules.spell.invisibility.name)
+
   local caster_stats = self.control.characters[caster].data.stats
 
   for index, character_name in ipairs(targets) do
@@ -222,7 +279,11 @@ end
 
 
 function Magic:fear(caster, center, tiles, targets)
-  sfml_push_log(caster .. ' - casts ' .. rules.spell.fear.name)
+  sfml_start_animation(caster, "cast")
+
+  local caster_name = self.control.characters[caster].data.stats.name 
+  sfml_push_log(caster_name .. ' - casts ' .. rules.spell.fear.name)
+
   local caster_stats = self.control.characters[caster].data.stats
 
   local caster_pos = sfml_get_character_position(caster)
@@ -282,7 +343,11 @@ end
 
 
 function Magic:armor(caster, center, tiles, targets)
-  sfml_push_log(caster .. ' - casts ' .. rules.spell.armor.name)
+  sfml_start_animation(caster, "cast")
+
+  local caster_name = self.control.characters[caster].data.stats.name 
+  sfml_push_log(caster_name .. ' - casts ' .. rules.spell.armor.name)
+
   local caster_stats = self.control.characters[caster].data.stats
 
   for index, character_name in ipairs(targets) do
@@ -316,7 +381,11 @@ end
 
 
 function Magic:strength(caster, center, tiles, targets)
-  sfml_push_log(caster .. ' - casts ' .. rules.spell.strength.name)
+  sfml_start_animation(caster, "cast")
+
+  local caster_name = self.control.characters[caster].data.stats.name 
+  sfml_push_log(caster_name .. ' - casts ' .. rules.spell.strength.name)
+
   local caster_stats = self.control.characters[caster].data.stats
 
   for index, character_name in ipairs(targets) do
@@ -346,6 +415,48 @@ end
 
 function Magic:strength_update(character)
 end
+
+
+
+
+
+function Magic:cheese(caster, center, tiles, targets)
+  sfml_start_animation(caster, "use")
+
+  local caster_name = self.control.characters[caster].data.stats.name 
+  sfml_push_log(caster_name .. ' - uses ' .. rules.item.cheese.name)
+
+  for index, character_name in ipairs(targets) do
+
+    local position = sfml_get_character_position(character_name)
+    sfml_start_fireworks("healing", position.x, position.y)
+
+    local stats = self.control.characters[character_name].data.stats
+    if not stats.status.dead then
+
+      -- healing wounds
+      local roll = rules.roll_dice('1d4')
+      local heal = roll
+
+      local name = self.control.characters[character_name].data.stats.name 
+      local msg = name .. ' - has recovered '
+      msg = msg .. tostring(heal) .. ' hit points'
+      sfml_push_log(msg)
+
+      local fmsg = '+' .. tostring(heal)
+      sfml_show_floating_message(fmsg, position.x, position.y)
+
+      self.control:heal_character(character_name, heal)
+
+      -- curing poison
+      if stats.status.poison ~= nil then
+        self.control:remove_status(character_name, 'poison')
+      end
+
+    end
+  end
+end
+
 
 
 return Magic
