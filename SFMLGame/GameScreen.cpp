@@ -214,7 +214,7 @@ bool GameScreen::update(float elapsed_time) {
 	// if (turn_count + elapsed_time >= turn_duration / 2)
 
 	// Turn handling. Wait player input to process the next turn.
-	if ((turn_count += elapsed_time) >= turn_duration && effects.empty()) {
+	if ((turn_count += elapsed_time) >= turn_duration && effects.empty() && floating_messages.empty()) {
 
 		// new turn
 		if (turn_actions.empty() && (!in_control || player_character->schedule_size() > 0)) {
@@ -1610,7 +1610,7 @@ void GameScreen::add_floating_message(std::string message, int tile_x, int tile_
 
 void GameScreen::next_floating_message() {
 	Log("floating messages: %d", (int)floating_messages.size());
-	if (floating_messages.size() > 0) {
+	if (!floating_messages.empty()) {
 		FloatingMessage *floating_message = floating_messages[0];
 		add_component(*floating_message, false);
 		ComponentEffect *effect = new ComponentEffect(floating_message->get_duration(), floating_message);
