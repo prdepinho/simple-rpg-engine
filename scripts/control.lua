@@ -85,7 +85,7 @@ function Control:set_status(target_name, status_name, challenge_level, duration)
     self.magic[status.on_enter](self.magic, target_name)
   end
 
-  local msg = target_name .. ' - ' .. status.name
+  local msg = self.characters[target_name].data.stats.name .. ' - ' .. status.name
   if duration > 0 then
     msg = msg .. ' (' .. duration .. ' turns)'
   end
@@ -97,13 +97,13 @@ function Control:remove_status(character, status_name)
   print('remove status: ' .. status_name)
   local status = rules.status[status_name]
 
-  sfml_push_log(character .. " - " .. status.name .. " removed")
+  local stats = self.characters[character].data.stats
+  sfml_push_log(stats.name .. " - " .. status.name .. " removed")
 
   if status.on_end ~= "" then
     self.magic[status.on_end](self.magic, character)
   end
 
-  local stats = self.characters[character].data.stats
   stats.status[status_name] = nil
 
   local animation = 'walk'
@@ -147,6 +147,9 @@ function Control:is_enemy(character_name)
 end
 
 function Control:cast_magic(magic_name, caster, center, tiles, targets)
+  if self.characters[caster].data.stats.status.invisible ~= nil then
+    self:remove_status(caster, 'invisible')
+  end
   self.magic[magic_name](self.magic, caster, center, tiles, targets)
 end
 
@@ -208,6 +211,9 @@ function Control:attack(attacker_name, defender_name)
   local hit_msg = attacker.stats.name .. ' - ';
   local dmg_msg = defender.stats.name .. ' - ';
 
+  if self.characters[attacker_name].data.stats.status.invisible ~= nil then
+    self:remove_status(attacker_name, 'invisible')
+  end
   self:character_on_attacked(attacker_name, defender_name)
 
   hit_msg = hit_msg .. 'attack roll: '
@@ -367,7 +373,7 @@ function Control:kill_character(character_name)
   self:set_status(character_name, 'dead', 0, -1)
   sfml_character_set_active(character_name, false)
   sfml_clear_schedule(character_name)
-  sfml_push_log(character.stats.name .. ' - Dead!')
+  -- sfml_push_log(character.stats.name .. ' - Dead!')
   sfml_loop_animation(character_name, 'dead')
   sfml_push_character_to_bottom(character_name)
 

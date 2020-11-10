@@ -1609,7 +1609,6 @@ void GameScreen::add_floating_message(std::string message, int tile_x, int tile_
 }
 
 void GameScreen::next_floating_message() {
-	Log("floating messages: %d", (int)floating_messages.size());
 	if (!floating_messages.empty()) {
 		FloatingMessage *floating_message = floating_messages[0];
 		add_component(*floating_message, false);

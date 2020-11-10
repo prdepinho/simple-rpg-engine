@@ -186,6 +186,7 @@
   <object id="6" name="chest" x="209.417" y="65.9792" width="12.5" height="13.375">
    <properties>
     <property name="item1" value="thieves_guild_dagger:weapon:dagger"/>
+    <property name="item2" value="thieves_guild_cloak:item:cloak"/>
     <property name="key" value=""/>
     <property name="locked" type="bool" value="false"/>
     <property name="open_delta_x" type="int" value="1"/>

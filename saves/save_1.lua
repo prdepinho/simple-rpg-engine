@@ -1,6 +1,12 @@
 M = {}
 M.data = {
-  title = "",
-  active = false,
+  character_data = {
+  },
+  data = {
+  },
+  title = "13:25 2020,11,10",
+  map_data = {
+  },
+  active = true,
 }
 return M

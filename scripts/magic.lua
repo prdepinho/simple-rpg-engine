@@ -166,8 +166,8 @@ function Magic:poison(caster, center, tiles, targets)
         duration = duration + rules.arcane_spell_bonus(caster_stats)
 
         self.control:set_status(character_name, "poison", challenge, duration)
-        self.control:character_on_attacked(caster, character_name)
       end
+      self.control:character_on_attacked(caster, character_name)
 
     end
   end
@@ -313,8 +313,8 @@ function Magic:fear(caster, center, tiles, targets)
 
           self.control:set_status(character_name, "fear", challenge, duration)
           self.control.characters[character_name].data.feared_character = caster
-          self.control:character_on_attacked(caster, character_name)
         end
+        self.control:character_on_attacked(caster, character_name)
 
       end
     end
@@ -457,6 +457,46 @@ function Magic:cheese(caster, center, tiles, targets)
   end
 end
 
+
+function Magic:cloak(caster, center, tiles, targets)
+  sfml_start_animation(caster, "use")
+
+  local caster_name = self.control.characters[caster].data.stats.name 
+  sfml_push_log(caster_name .. ' - uses ' .. rules.item.cloak.name)
+
+  local caster_stats = self.control.characters[caster].data.stats
+
+  for index, character_name in ipairs(targets) do
+    local position = sfml_get_character_position(character_name)
+    sfml_start_fireworks("invisibility", position.x, position.y)
+
+    sfml_show_floating_message(rules.status.invisible.name, position.x, position.y)
+    
+    local dex_mod = rules.ability_modifier[caster_stats.ability.dex]
+    local duration = rules.roll_dice("3d6")
+    duration = duration + dex_mod
+
+    local in_sight = sfml_get_characters_in_sight(caster, 6)
+    if #in_sight > 0 then
+      local observed = false
+      for index, name in ipairs(in_sight) do
+        observed = observerd or self.control.characters[name].data.enemy
+      end
+
+      if observed then
+        sfml_show_floating_message("Failed", position.x, position.y)
+        sfml_push_log("Failed to hide: There are enemies looking.")
+      else
+        self.control:set_status(character_name, "invisible", dex_mod, duration)
+      end
+
+    else
+      self.control:set_status(character_name, "invisible", dex_mod, duration)
+    end
+
+  end
+
+end
 
 
 return Magic

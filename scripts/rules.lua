@@ -131,6 +131,7 @@ rules.item = {
   money   = { name = "Money",         icon = {x = 16*2, y = 16*9},  stack_capacity = 100,   range_radius = 0, effect_radius = 0, usabel = false, use = "",       desc = "Copper coins." },
   poison  = { name = "Poison",        icon = {x = 16*1, y = 16*10}, stack_capacity = 10,    range_radius = 0, effect_radius = 0, usabel = false, use = "",       desc = "Rat poison." },
   cheese  = { name = "Gouda Cheese",  icon = {x = 16*0, y = 16*10}, stack_capacity = 10,    range_radius = 1, effect_radius = 0, usable = true,  use = "cheese", desc = "Young matured Gouda Cheese with a lovely fruity tang. Restores 1d4 hit points and cures poison." },
+  cloak   = { name = "Thief Cloak",   icon = {x = 16*3, y = 16*10}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = true,  use = "cloak",  desc = "A cloak made to blend with the background and avoid detection." },
   key     = { name = "Key",           icon = {x = 16*0, y = 16*9},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",       desc = "A brass key." },
 }
 
@@ -485,7 +486,7 @@ function rules.roll_attack(attacker, defender)
   hit_result.hit_total = result
   hit_result.ac = ac_armor
 
-  if defender.status.hold and attacker_weapon.cutthroat then
+  if (defender.status.hold or attacker.status.invisible) and attacker_weapon.cutthroat then
     hit_result.cut_throat = true
     print(string.format("Attacker: cut throat!"))
 

@@ -61,7 +61,7 @@ function Character:on_idle()
 
   if self.data.npc then
     if self.data.enemy then
-      if self:is_player_in_sight(4) then
+      if self:is_player_in_sight(6) then
         local pos = sfml_get_player_position()
         sfml_move(self.name, pos.x, pos.y)
         return
