@@ -35,6 +35,7 @@ function Rat:create()
     wis = 13,
     cha = 8,
   })
+  stats.weapon = { code = self.name .. "_tooth", name = "rat_tooth", type = "weapon" }
 end
 
 function Rat:on_death()

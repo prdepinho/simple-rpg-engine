@@ -478,6 +478,7 @@ function Magic:cloak(caster, center, tiles, targets)
 
     local in_sight = sfml_get_characters_in_sight(caster, 6)
     if #in_sight > 0 then
+
       local observed = false
       for index, name in ipairs(in_sight) do
         observed = observerd or self.control.characters[name].data.enemy

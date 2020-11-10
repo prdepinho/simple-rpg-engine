@@ -115,7 +115,7 @@ rules.weapon = {
   arquebus      = { name = "Arquebus",      damage = "1d12", to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 2, ac_bonus = 0, size = 0, weight = 0, bulk = 3, ranged = true,  range = 6, gun = true,  cutthroat = false, ammo_category = "gun_bullet",    icon = {x = 16*6, y = 16*3}, effect = "",              desc = "Two handed weapon that shoots gun bullets." },
 
 
-  unarmed       = { name = "Rat Tooth",     damage = "1d1",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, bulk = 0, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*0, y = 16*0}, effect = "rat_desease",   desc = "The tooth and claws of a plague rat has a chance to poison its victim." },
+  rat_tooth     = { name = "Rat Tooth",     damage = "1d1",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, bulk = 0, ranged = false, range = 0, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*0, y = 16*0}, effect = "rat_desease",   desc = "The tooth and claws of a plague rat has a chance to poison its victim." },
 }
 
 rules.ammo = {

@@ -217,7 +217,7 @@
    </properties>
    <point/>
   </object>
-  <object id="12" name="come_inn_patron" x="86.7273" y="184">
+  <object id="12" name="come_inn_patron" x="54.4773" y="187">
    <properties>
     <property name="type" value="come_inn_patron"/>
    </properties>
@@ -232,7 +232,7 @@
   <object id="14" name="bed" x="18.7273" y="20.9091" width="10.5455" height="22.9091"/>
   <object id="15" name="bed" x="98.9091" y="20.1818" width="10.5455" height="22.9091"/>
   <object id="16" name="bed" x="178.545" y="20.3636" width="10.5455" height="22.9091"/>
-  <object id="17" name="guard3" x="28" y="199.25">
+  <object id="17" name="guard3" x="87.5" y="188.75">
    <properties>
     <property name="type" value="city_guard"/>
    </properties>

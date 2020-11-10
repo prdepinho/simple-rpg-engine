@@ -79,6 +79,10 @@ end
 function Character:on_attacked(attacker_name)
   if attacker_name == 'player' then
     self.data.enemy = true
+    local in_sight = sfml_get_characters_in_sight(attacker_name, 6)
+    for index, name in ipairs(in_sight) do
+      self.control.characters[name].data.enemy = true
+    end
   end
 end
 
