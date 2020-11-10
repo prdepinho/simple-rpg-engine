@@ -260,11 +260,12 @@ function Control:attack(attacker_name, defender_name)
     sfml_show_floating_message(fmsg, position.x, position.y)
 
   elseif hit_result.cut_throat then
-    fmsg = "Dead!"
+    fmsg = "Sneak Attack!"
     sfml_play_sound("tcsh.wav")
 
     sfml_push_log(hit_msg)
     sfml_show_floating_message(fmsg, position.x, position.y)
+    self:kill_character(defender_name)
 
   elseif hit_result.hit then
     fmsg = tostring(damage_result.total_damage)
