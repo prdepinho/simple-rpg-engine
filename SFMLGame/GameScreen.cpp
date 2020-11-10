@@ -1864,6 +1864,31 @@ void GameScreen::select_tile_to_shoot() {
 	}
 }
 
+void GameScreen::select_tile_to_attack() {
+	if (target == nullptr) {
+		//    select target
+		auto center = character_position(*player_character);
+		int range_radius = equipped_weapon_range(*player_character);
+		int effect_radius = 0;
+		select_tile(center, range_radius, effect_radius, [&](sf::Vector2i center, std::vector<sf::Vector2i> &selected) {
+			for (auto tile : selected) {
+				// Character *character = get_character_on_tile(tile.x, tile.y);
+				Character *character = get_live_character_on_tile(tile.x, tile.y);
+				if (character) {
+					target_character(*character);
+					schedule_character_attack(*player_character, *target);
+					return true;
+				}
+			}
+			return false;
+		});
+	}
+	//  else
+	else {
+		schedule_character_attack(*player_character, *target);
+	}
+}
+
 void GameScreen::select_tile_to_cast(int range_radius, int effect_radius, std::string magic_name) {
 	auto src = character_position(*player_character);
 	selected_magic = magic_name;

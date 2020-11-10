@@ -44,15 +44,23 @@ void ItemContextMenu::create() {
 				Character *player_character = screen->get_player_character();
 				LuaObject character_stats = _game.get_lua()->character_stats(player_character->get_name());
 
-				// select target for ranged weapon
-				if (screen->is_equipped_with_ranged_weapon(*player_character) && item.get_code() == character_stats.get_string("weapon.code")) {
-					Log("This weapon is the same equipped ranged weapon");
-					CharacterMenu::get().exit();
-
-					call_functions(this);
-					get_screen()->remove_component(*this);
-					screen->select_tile_to_shoot();
-					return true;
+				if (item.get_code() == character_stats.get_string("weapon.code")) {
+					// select target for ranged weapon
+					if (screen->is_equipped_with_ranged_weapon(*player_character) && item.get_code() == character_stats.get_string("weapon.code")) {
+						CharacterMenu::get().exit();
+						call_functions(this);
+						get_screen()->remove_component(*this);
+						screen->select_tile_to_shoot();
+						return true;
+					}
+					// select target for melee weapon
+					else {
+						CharacterMenu::get().exit();
+						call_functions(this);
+						get_screen()->remove_component(*this);
+						screen->select_tile_to_attack();
+						return true;
+					}
 				}
 
 				LuaObject item_stats = _game.get_lua()->item_stats(item.get_name(), item.get_type());
