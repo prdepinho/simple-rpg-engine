@@ -15,8 +15,6 @@ function SuspiciousGuard:new(o, control)
   return o
 end
 
-animation = "viking"
-
 function SuspiciousGuard:create()
   CityGuard.create(self)
 end

@@ -15,11 +15,8 @@ function StrawberryMonster:new(o, control)
   return o
 end
 
-animation = "strawberry_monster"
-
 function StrawberryMonster:create()
-  self.data.enemy = true
-  self.data.stats = rules.new_character()
+  Character.create(self)
 end
 
 

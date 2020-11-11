@@ -15,9 +15,6 @@ function Witch:new(o, control)
   return o
 end
 
--- animation = animations.types.witch
-animation = 'witch'
-
 function Witch:create()
   Character.create(self)
 end

@@ -15,11 +15,8 @@ function Evana:new(o, control)
   return o
 end
 
-animation = 'evana'
-
 function Evana:create()
-  self.data.enemy = true
-  self.data.stats = rules.new_character()
+  Character.create(self)
 end
 
 

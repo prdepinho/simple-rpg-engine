@@ -15,8 +15,6 @@ function TownElf:new(o, control)
   return o
 end
 
-animation = "elf"
-
 function TownElf:create()
   Elf.create(self)
   self.data.stats.name = "Aldebaran"

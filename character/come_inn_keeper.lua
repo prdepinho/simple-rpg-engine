@@ -15,8 +15,6 @@ function ComeInnKeeper:new(o, control)
   return o
 end
 
-animation = "inn_keeper"
-
 function ComeInnKeeper:create()
   Character.create(self)
 

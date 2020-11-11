@@ -9,11 +9,12 @@ Character::~Character() {
 }
 
 void Character::create(std::string filename) {
-	Lua script(Path::CHARACTERS + filename + ".lua");
+	// Lua script(Path::CHARACTERS + filename + ".lua");
 	this->filename = filename;
 	this->name = filename;
 
-	std::string animation_type = script.get_string("animation");
+	// std::string animation_type = script.get_string("animation");
+	std::string animation_type = "human_male";
 	AnimationResources animation_resources = Resources::get_animation(animation_type);
 	animations = animation_resources.animations;
 
@@ -21,6 +22,14 @@ void Character::create(std::string filename) {
 
 	set_dimensions(animation_resources.sprite_height, animation_resources.sprite_width);
 	setOrigin(sf::Vector2f((float) animation_resources.sprite_height / 2, (float) animation_resources.sprite_width / 2));
+}
+
+void Character::set_skin(std::string skin) {
+	std::string animation_type = skin;
+	AnimationResources animation_resources = Resources::get_animation(animation_type);
+	animations = animation_resources.animations;
+	set_texture(Resources::get_texture(animation_resources.sprite_sheet));
+	set_animation(current_animation, true);
 }
 
 void Character::set_animation(std::string type, bool loop) {

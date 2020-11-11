@@ -15,8 +15,6 @@ function RatKing:new(o, control)
   return o
 end
 
-animation = "rat_king"
-
 function RatKing:create()
   Rat.create(self)
 

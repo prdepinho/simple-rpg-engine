@@ -15,8 +15,6 @@ function ComeInnPatron:new(o, control)
   return o
 end
 
-animation = "hobo"
-
 function ComeInnPatron:create()
   Character.create(self)
 

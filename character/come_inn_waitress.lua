@@ -11,11 +11,9 @@ function ComeInnWaitress:new(o, control)
   o = o or Character:new(o, control)
   setmetatable(o, self)
   self.__index = self
-  o.animation = "elf"
+  o.animation = "bunny_girl"
   return o
 end
-
-animation = "bunny_girl"
 
 function ComeInnWaitress:create()
   Character.create(self)

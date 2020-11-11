@@ -15,8 +15,6 @@ function Rat:new(o, control)
   return o
 end
 
-animation = "rat"
-
 function Rat:create()
   Character.create(self)
   self.data.enemy = false

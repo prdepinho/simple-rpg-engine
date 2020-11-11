@@ -15,11 +15,8 @@ function BunnyGirl:new(o, control)
   return o
 end
 
-animation = 'bunny_girl'
-
 function BunnyGirl:create()
-  self.data.enemy = true
-  self.data.stats = rules.new_character()
+  Character.create(self)
 end
 
 

@@ -52,6 +52,8 @@ public:
 
 	void set_transparency(int value);
 
+	void set_skin(std::string skin);
+
 private:
 	std::queue<Action*> schedule;  // actions are created and deleted by GameScreen class, unless all schedule is discarted or character deleted.
 

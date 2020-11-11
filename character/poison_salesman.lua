@@ -15,8 +15,6 @@ function PoisonSalesman:new(o, control)
   return o
 end
 
-animation = "trenchcoat"
-
 function PoisonSalesman:create()
   Character.create(self)
 

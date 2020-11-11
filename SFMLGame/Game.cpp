@@ -1059,6 +1059,17 @@ public:
 		lua_pushboolean(state, in_control);
 		return 1;
 	}
+
+	static int sfml_set_character_skin(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		std::string character_name = lua_tostring(state, -2);
+		std::string skin = lua_tostring(state, -1);
+
+		Character *character = screen->get_character_by_name(character_name);
+		character->set_skin(skin);
+		return 1;
+	}
+
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -1120,6 +1131,7 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_write_line", LuaFunction::sfml_write_line);
 	lua_register(lua.get_state(), "sfml_set_player_control", LuaFunction::sfml_set_player_control);
 	lua_register(lua.get_state(), "sfml_is_player_in_control", LuaFunction::sfml_is_player_in_control);
+	lua_register(lua.get_state(), "sfml_set_character_skin", LuaFunction::sfml_set_character_skin);
 
 
 }

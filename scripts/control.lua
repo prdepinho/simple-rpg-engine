@@ -747,19 +747,11 @@ function Control:load_game(filename)
   local module = require(filename)
   self.loaded_map_data = module.data.map_data
 
-  -- for name, data in pairs(module.data.character_data) do
-  --   print(self.characters[name])
-  --   self.characters[name].data = data
-  -- end
-
   self.loaded_character_data = module.data.character_data
-
   self.data = module.data.data
 
-  print('change map from loading game')
   self.player_position = module.data.player_position.coords
   self.player_map = module.data.player_position.map
-  -- sfml_change_map(module.data.player_position.map, pos.x, pos.y)
 
 end
 
@@ -842,6 +834,7 @@ function Control:add_character(script, name)
       end
     end
   end
+  self.characters[name]:on_enter()
 end
 
 function Control:remove_character(name)

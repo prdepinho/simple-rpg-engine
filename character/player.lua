@@ -15,9 +15,8 @@ function Player:new(o, control)
   return o
 end
 
-animation = 'cat_girl'
-
 function Player:create()
+  sfml_set_character_skin(self.name, self.animation)
   self.data.enemy = false
   self.data.npc = false
   self.data.stats = rules.new_character()

@@ -15,8 +15,6 @@ function CityGuard:new(o, control)
   return o
 end
 
-animation = "viking"
-
 function CityGuard:create()
   Character.create(self)
 

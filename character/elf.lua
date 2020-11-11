@@ -15,8 +15,6 @@ function Elf:new(o, control)
   return o
 end
 
-animation = "elf"
-
 function Elf:create()
   Character.create(self)
 

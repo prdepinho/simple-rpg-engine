@@ -15,10 +15,8 @@ function Ranger:new(o, control)
   return o
 end
 
--- animation = animations.types.ranger
-animation = 'ranger'
-
 function Ranger:create()
+  Character.create(self)
   self.data.enemy = true
   self.data.stats = rules.new_character()
 
