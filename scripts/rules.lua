@@ -129,8 +129,8 @@ rules.ammo = {
 rules.item = {
   no_item     = { name = "No item",       icon = {x = 16*0, y = 16*3},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "" },
   money       = { name = "Money",         icon = {x = 16*2, y = 16*9},  stack_capacity = 100,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Copper coins." },
-  rat_poison  = { name = "Rat Poison",    icon = {x = 16*1, y = 16*10}, stack_capacity = 10,    range_radius = 1, effect_radius = 0, usable = true,  use = "rat_poison", desc = "Rat poison that can be used to poison someone without raising suspicion." },
-  cheese      = { name = "Gouda Cheese",  icon = {x = 16*0, y = 16*10}, stack_capacity = 10,    range_radius = 1, effect_radius = 0, usable = true,  use = "cheese",     desc = "Young matured Gouda Cheese with a lovely fruity tang. Restores 1d4 hit points and cures poison." },
+  rat_poison  = { name = "Rat Poison",    icon = {x = 16*1, y = 16*10}, stack_capacity = 3,     range_radius = 1, effect_radius = 0, usable = true,  use = "rat_poison", desc = "Rat poison that can be used to poison someone without raising suspicion." },
+  cheese      = { name = "Gouda Cheese",  icon = {x = 16*0, y = 16*10}, stack_capacity = 3,     range_radius = 1, effect_radius = 0, usable = true,  use = "cheese",     desc = "Young matured Gouda Cheese with a lovely fruity tang. Restores 1d4 hit points and cures poison." },
   cloak       = { name = "Thief Cloak",   icon = {x = 16*3, y = 16*10}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = true,  use = "cloak",      desc = "A cloak made to blend with the background and avoid detection." },
   key         = { name = "Key",           icon = {x = 16*0, y = 16*9},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A brass key." },
 }

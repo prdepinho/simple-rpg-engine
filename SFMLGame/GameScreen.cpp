@@ -83,8 +83,20 @@ void GameScreen::create() {
 
 	// load map
 	{
+#if false
 		std::string filename = json.get_string("map");
 		next_map = filename;
+#else
+		std::string filename = _game.get_lua()->get_player_map();
+
+		auto position = _game.get_lua()->get_player_position();
+		if (position.x >= 0 && position.y >= 0) {
+			next_position_is_tile = true;
+			new_tile_position = position;
+		}
+
+		next_map = filename;
+#endif
 		load_map();
 	}
 
@@ -907,6 +919,7 @@ void GameScreen::change_map(std::string filename, int tile_x, int tile_y) {
 }
 
 void GameScreen::change_map(std::string filename, std::string object_name) {
+	std::cout << "change map" << std::endl;
 	_game.get_lua()->execute_method("map_exit");
 
 	next_map = filename;
@@ -928,6 +941,7 @@ void GameScreen::change_map(std::string filename, std::string object_name) {
 }
 
 void GameScreen::load_map() {
+	std::cout << "load map" << std::endl;
 	_game.get_lua()->change_map(next_map);
 
 	clear_target();

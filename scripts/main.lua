@@ -12,6 +12,14 @@ local magic = require "magic"
 local control = Control:new(nil) 
 
 
+function get_player_map()
+  return control.player_map
+end
+
+function get_player_position()
+  return control.player_position
+end
+
 
 function is_enemy(character_name)
   return control:is_enemy(character_name)

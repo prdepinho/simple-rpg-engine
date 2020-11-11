@@ -78,9 +78,9 @@ void SaveOptionMenu::create() {
 			ChoicePanel::show("Are you sure you want to load?", *get_screen(), 
 				[&]() {
 					Log("Yes.");
+					_game.change_to_game_screen();
 					_game.get_lua()->reset_data();
 					_game.get_lua()->load_game(save_file.filename);
-					_game.change_to_game_screen();
 					// call_functions(this);
 					// get_screen()->remove_component(*this);
 				},

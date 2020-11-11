@@ -36,6 +36,30 @@ function ComeInnCellar:exit()
   Map.exit(self)
 end
 
+function ComeInnCellar:cheese_wheels(event, x, y, character_name, object_name)
+  if character_name == 'player' then
+    if event == 'interact' then
+      local dialogue = {
+        start = {
+          text = "You see stacks of cheese wheel on the table.",
+          options = {
+            { text = "Leave them.", go_to = 'end' },
+            { text = "Take some.", go_to = 'take' },
+          }
+        },
+        take = {
+          text = "You take a slice of cheese for yourself.",
+          go_to = 'end',
+          callback = function()
+            self.control:add_item_to_inventory('player', self.control:next_item_code(), 'cheese', 'item', 1)
+          end
+        }
+      }
+      sfml_dialogue(dialogue)
+    end
+  end
+end
+
 function ComeInnCellar:poison_sacks(event, x, y, character_name, object_name)
   if character_name == 'player' then
     if event == 'interact' and not self.control.data.disposed_of_poison then
@@ -72,6 +96,7 @@ function ComeInnCellar:poison_sacks(event, x, y, character_name, object_name)
       if self.control.data.decided_to_help_rats then
         dialogue.start.go_to = nil
         dialogue.start.options = {
+          { text = "Leave them.", go_to = 'end' },
           { text = "Dispose of the poison.", go_to = 'dispose' },
           { text = "Take the poison.", go_to = 'take' },
         }

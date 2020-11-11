@@ -9,6 +9,10 @@ local Character = require "character"
 local Map = require "map"
 
 local Control = {
+
+  player_map = 'come_inn_cellar',
+  player_position = nil,
+
   item_code = 0,
 
   characters = {},
@@ -476,8 +480,15 @@ end
 
 -- put item on the floor and loot it.
 function Control:add_item_to_inventory(character_name, code, name, type, quantity)
-  local position = sfml_get_character_position(character_name)
   quantity = quantity or 0
+
+  local log_quantity = ""
+  if quantity > 0 then
+    log_quantity = " x" .. tostring(quantity)
+  end
+  sfml_push_log(self.characters[character_name].data.stats.name .. " receives " .. rules[type][name].name .. log_quantity)
+
+  local position = sfml_get_character_position(character_name)
   self.map.data.items[code] = {name = name, type = type, x = position.x, y = position.y, quantity = quantity}
   sfml_add_item(code, name, type, quantity or 0, position.x, position.y)
   self:loot_item(code, character_name)
@@ -722,6 +733,11 @@ function Control:save_game(filename, title)
 
   data.data = self.data
 
+  data.player_position = {
+    map = self.current_map,
+    coords = sfml_get_player_position()
+  }
+
   -- data.character_data = self.character_data
   save.save_data(filename, data)
 end
@@ -739,6 +755,11 @@ function Control:load_game(filename)
   self.loaded_character_data = module.data.character_data
 
   self.data = module.data.data
+
+  print('change map from loading game')
+  self.player_position = module.data.player_position.coords
+  self.player_map = module.data.player_position.map
+  -- sfml_change_map(module.data.player_position.map, pos.x, pos.y)
 
 end
 

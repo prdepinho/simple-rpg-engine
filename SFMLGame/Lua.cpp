@@ -586,6 +586,38 @@ bool Lua::is_enemy(Character &character) {
 	return rval;
 }
 
+std::string Lua::get_player_map() {
+	lua_getglobal(state, "get_player_map");
+	int result = lua_pcall(state, 0, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	std::string map = lua_tostring(state, -1);
+	lua_pop(state, 1);
+	return map;
+}
+
+sf::Vector2i Lua::get_player_position() {
+	lua_getglobal(state, "get_player_position");
+	int result = lua_pcall(state, 0, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	sf::Vector2i position = { -1, -1 };
+
+	if (lua_type(state, -1) != LUA_TNIL) {
+		LuaObject obj = read_top_table();
+		position.x = obj.get_int("x");
+		position.y = obj.get_int("y");
+	}
+	lua_pop(state, 1);
+	return position;
+}
+
 void Lua::reset_data() {
 	lua_getglobal(state, "reset_data");
 	int result = lua_pcall(state, 0, 1, 0);
