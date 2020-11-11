@@ -23,6 +23,16 @@ function ThievesGuild:exit()
   Map.exit(self)
 end
 
+function ThievesGuild:bed(event, x, y, character_name, object_name)
+  if character_name == 'player' then
+    if event == 'interact' then
+      if self.control.data.thieves_guild_member then
+        self.control:rest()
+      end
+    end
+  end
+end
+
 function ThievesGuild:wardrobe(event, x, y, character_name, object_name)
   local object = self.data.objects[object_name]
   if character_name == 'player' then

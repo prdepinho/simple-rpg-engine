@@ -188,7 +188,23 @@ animations.types = {
       y = 16 * 16
     },
     animations = basic_animation
-  }
+  },
+  knight_male = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 17
+    },
+    animations = basic_animation
+  },
+  cleric_female = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 18
+    },
+    animations = basic_animation
+  },
 }
 
 return animations

@@ -8,7 +8,8 @@ local Magic = require "magic"
 local Character = require "character"
 local Map = require "map"
 
-local start_game_map = 'come_inn_cellar'
+
+local start_game_map = 'polis'
 
 local Control = {
 
@@ -48,6 +49,34 @@ function Control:next_item_code(str)
   else
     return 'item_' .. tostring(code)
   end
+end
+
+
+function Control:rest()
+  local stats = self.characters.player.data.stats
+
+  self:heal_character('player', stats.total_hp)
+
+  for status_name, status in pairs(stats.status) do
+    if status then
+      self:remove_status('player', status_name)
+    end
+  end
+
+  local dialogue = {
+    start = {
+      foreground = {
+        image = "fireplace.png",
+        origin = {
+          x = 0,
+          y = 0,
+        }
+      },
+      text = "You rest the night.",
+      go_to = "end",
+    }
+  }
+  sfml_illustrated_dialogue(dialogue)
 end
 
 
@@ -776,8 +805,6 @@ function Control:item_stats(name, item_type)
 end
 
 function Control:character_stats(name)
-  print('++++++++++ character stats: ' .. tostring(name))
-  save.print_data(self.characters)
   return self.characters[name].data.stats
 end
 

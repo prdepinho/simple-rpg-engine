@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="9">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="13">
  <properties>
   <property name="for_of_war" type="bool" value="true"/>
   <property name="vision_radius" type="int" value="5"/>
@@ -100,7 +100,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="6" name="obstacle" width="15" height="15" visible="0">
+ <layer id="6" name="obstacle" width="15" height="15">
   <data encoding="csv">
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
@@ -119,7 +119,7 @@
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
 </data>
  </layer>
- <layer id="7" name="invisible" width="15" height="15" visible="0">
+ <layer id="7" name="invisible" width="15" height="15">
   <data encoding="csv">
 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
@@ -195,5 +195,14 @@
    </properties>
   </object>
   <object id="7" name="wardrobe" x="193.75" y="22.25" width="12.75" height="24.25"/>
+  <object id="9" name="thieves_guild_receptionist" x="186.5" y="139">
+   <properties>
+    <property name="type" value="thieves_guild_receptionist"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="10" name="bed" x="82.4772" y="35.0455" width="10.5455" height="22.9091"/>
+  <object id="11" name="bed" x="114.227" y="36.7955" width="10.5455" height="22.9091"/>
+  <object id="12" name="bed" x="146.477" y="37.0455" width="10.5455" height="22.9091"/>
  </objectgroup>
 </map>
