@@ -457,6 +457,43 @@ function Magic:cheese(caster, center, tiles, targets)
   end
 end
 
+function Magic:rat_poison(caster, center, tiles, targets)
+  sfml_start_animation(caster, "use")
+
+  local caster_name = self.control.characters[caster].data.stats.name 
+  sfml_push_log(caster_name .. ' - uses ' .. rules.item.rat_poison.name)
+
+  local caster_stats = self.control.characters[caster].data.stats
+
+  for index, character_name in ipairs(targets) do
+
+    local position = sfml_get_character_position(character_name)
+
+    local stats = self.control.characters[character_name].data.stats
+    if not stats.status.dead then
+
+      local dex_mod = rules.ability_modifier[caster_stats.ability.dex]
+      local save = rules.roll_con_save(stats, 10 + dex_mod)
+
+      self.control:log_save(character_name, 'Con', save)
+
+      if save.success then
+        sfml_show_floating_message("saved", position.x, position.y)
+      else 
+        sfml_start_fireworks("poison", position.x, position.y)
+        sfml_show_floating_message(rules.status.poison.name, position.x, position.y)
+
+        local duration = rules.roll_dice("3d6")
+        duration = duration + dex_mod
+
+        self.control:set_status(character_name, "poison", dex_mod, duration)
+      end
+      -- self.control:character_on_attacked(caster, character_name)  -- does not trigger on attacked
+
+    end
+  end
+end
+
 
 function Magic:cloak(caster, center, tiles, targets)
   sfml_start_animation(caster, "use")
@@ -488,11 +525,11 @@ function Magic:cloak(caster, center, tiles, targets)
         sfml_show_floating_message("Failed", position.x, position.y)
         sfml_push_log("Failed to hide: There are enemies looking.")
       else
-        self.control:set_status(character_name, "invisible", dex_mod, duration)
+        self.control:set_status(character_name, "invisible", 10 + dex_mod, duration)
       end
 
     else
-      self.control:set_status(character_name, "invisible", dex_mod, duration)
+      self.control:set_status(character_name, "invisible", 10 + dex_mod, duration)
     end
 
   end

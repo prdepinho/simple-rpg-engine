@@ -1,7 +1,10 @@
-screen_resolution = {
+default_resolution = {
   width = 256,
   height = 240,
 }
+
+screen_resolution = default_resolution
+
 
 fullscreen = false
 -- Use when not in fullscreen. Increase the window size this many times its resolution.

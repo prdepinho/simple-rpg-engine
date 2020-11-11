@@ -60,7 +60,7 @@ function PoisonSalesman:on_interact(interactor_name)
         local rval = self.control:spend_money('player', 2, self.name)
         if rval then
           local code = self.control:next_item_code()
-          self.control:add_item_to_inventory('player', code, 'poison', 'item')
+          self.control:add_item_to_inventory('player', code, 'rat_poison', 'item', 1)
           sfml_play_sound("plim.wav")
           return "Thank you for your patronage."
         else

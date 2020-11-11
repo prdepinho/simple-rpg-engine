@@ -1,10 +1,10 @@
 {
   "_map": "room",
   "_map": "polis",
-  "_map": "come_inn_cellar",
+  "map": "come_inn_cellar",
   "_map": "rat_lair",
   "_map": "come_inn",
-  "map": "se_house",
+  "_map": "se_house",
   "_map": "flee_or_fight",
   "_map": "test",
 
