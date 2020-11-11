@@ -8,9 +8,11 @@ local Magic = require "magic"
 local Character = require "character"
 local Map = require "map"
 
+local start_game_map = 'come_inn_cellar'
+
 local Control = {
 
-  player_map = 'come_inn_cellar',
+  player_map = start_game_map,
   player_position = nil,
 
   item_code = 0,
@@ -675,6 +677,8 @@ function Control:find_in_inventory(character_name, code)
 end
 
 function Control:reset_data()
+  self.player_map = start_game_map
+  self.player_position = nil
   self.characters = {}
   self.loaded_map_data = {}
   self.data = {}
@@ -772,6 +776,8 @@ function Control:item_stats(name, item_type)
 end
 
 function Control:character_stats(name)
+  print('++++++++++ character stats: ' .. tostring(name))
+  save.print_data(self.characters)
   return self.characters[name].data.stats
 end
 

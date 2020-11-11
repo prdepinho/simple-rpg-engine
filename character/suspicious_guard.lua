@@ -11,12 +11,12 @@ function SuspiciousGuard:new(o, control)
   o = o or CityGuard:new(o, control)
   setmetatable(o, self)
   self.__index = self
-  o.animation = "viking"
   return o
 end
 
 function SuspiciousGuard:create()
   CityGuard.create(self)
+  self.data.animation = "viking"
 end
 
 function SuspiciousGuard:on_interact(interactor_name)

@@ -11,12 +11,12 @@ function ComeInnPatron:new(o, control)
   o = o or Character:new(o, control)
   setmetatable(o, self)
   self.__index = self
-  o.animation = "hobo"
   return o
 end
 
 function ComeInnPatron:create()
   Character.create(self)
+  self.data.animation = "hobo"
 
   local stats = self.data.stats
   stats.name = "Grasshopper"

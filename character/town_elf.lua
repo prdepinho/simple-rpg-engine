@@ -11,12 +11,12 @@ function TownElf:new(o, control)
   o = o or Elf:new(o, control)
   setmetatable(o, self)
   self.__index = self
-  o.animation = "elf"
   return o
 end
 
 function TownElf:create()
   Elf.create(self)
+  self.data.animation = "elf"
   self.data.stats.name = "Aldebaran"
 end
 

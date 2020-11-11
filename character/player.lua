@@ -11,12 +11,12 @@ function Player:new(o, control)
   o = o or Character:new(o, control)
   setmetatable(o, self)
   self.__index = self
-  o.animation = "cat_girl"
   return o
 end
 
 function Player:create()
-  sfml_set_character_skin(self.name, self.animation)
+  self.data.animation = "cat_girl"
+  sfml_set_character_skin(self.name, self.data.animation)
   self.data.enemy = false
   self.data.npc = false
   self.data.stats = rules.new_character()

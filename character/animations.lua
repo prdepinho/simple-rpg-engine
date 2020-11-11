@@ -181,6 +181,14 @@ animations.types = {
     },
     animations = basic_animation
   },
+  thief_female = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 16
+    },
+    animations = basic_animation
+  }
 }
 
 return animations

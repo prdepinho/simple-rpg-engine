@@ -11,12 +11,12 @@ function ComeInnKeeper:new(o, control)
   o = o or Character:new(o, control)
   setmetatable(o, self)
   self.__index = self
-  o.animation = "inn_keeper"
   return o
 end
 
 function ComeInnKeeper:create()
   Character.create(self)
+  self.data.animation = "inn_keeper"
 
   local stats = self.data.stats
   stats.name = "Marshal"

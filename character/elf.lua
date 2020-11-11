@@ -11,12 +11,12 @@ function Elf:new(o, control)
   o = o or Character:new(o, control)
   setmetatable(o, self)
   self.__index = self
-  o.animation = "elf"
   return o
 end
 
 function Elf:create()
   Character.create(self)
+  self.data.animation = "elf"
 
   self.data.enemy = false
 

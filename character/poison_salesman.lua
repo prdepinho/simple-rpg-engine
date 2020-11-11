@@ -11,12 +11,12 @@ function PoisonSalesman:new(o, control)
   o = o or Character:new(o, control)
   setmetatable(o, self)
   self.__index = self
-  o.animation = "trenchcoat"
   return o
 end
 
 function PoisonSalesman:create()
   Character.create(self)
+  self.data.animation = "trenchcoat"
 
   local stats = self.data.stats
   stats.name = "Picard"

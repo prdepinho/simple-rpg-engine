@@ -341,6 +341,7 @@ void TiledTilemapDAO::load_characters(GameScreen *game_screen, std::string filen
 	}
 
 	// objects
+	bool player_put = false;
 	for (auto &object : object_layer->getObjects()) {
 		switch (object.getShape()) {
 		case tmx::Object::Shape::Point: 
@@ -386,6 +387,7 @@ void TiledTilemapDAO::load_characters(GameScreen *game_screen, std::string filen
 					// game_screen->put_character_on_tile(*game_screen->get_player_character(), x, y);
 					game_screen->set_player_new_tile_position(x, y);
 					_game.get_lua()->add_character(type, code);
+					player_put = true;
 				}
 				else {
 					// if (!_game.get_lua()->is_character_removed(code)) {
@@ -400,6 +402,11 @@ void TiledTilemapDAO::load_characters(GameScreen *game_screen, std::string filen
 		}
 		break;
 		}
+	}
+
+	if (!player_put) {
+		game_screen->set_player_new_tile_position(0, 0);
+		_game.get_lua()->add_character("player", "player");
 	}
 }
 

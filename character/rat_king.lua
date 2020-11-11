@@ -11,12 +11,12 @@ function RatKing:new(o, control)
   o = o or Rat:new(o, control)
   setmetatable(o, self)
   self.__index = self
-  o.animation = "rat_king"
   return o
 end
 
 function RatKing:create()
   Rat.create(self)
+  self.data.animation = "rat_king"
 
   local stats = self.data.stats
   stats.name = "Mss. Laffevre"

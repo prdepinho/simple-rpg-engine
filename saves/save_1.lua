@@ -1,42 +1,284 @@
 M = {}
 M.data = {
-  player_position = {
-    map = "come_inn",
-    coords = {
-      y = 8,
-      x = 3,
-    },
+  data = {
+    dead_rat_3_dead = true,
+    dead_rat_2_dead = true,
+    dead_rat_1_dead = true,
   },
-  title = "14:46 2020,11,11",
   active = true,
   map_data = {
-    come_inn = {
-      created = true,
+    thieves_guild = {
       objects = {
-        door3 = {
+        wardrobe = {
           properties = {
-            open_delta_y = 0,
-            key = "",
-            closed = true,
-            type = "door",
-            open_delta_x = 1,
-            locked = false,
+            changed = true,
           },
           coords = {
             {
-              y = 3,
+              y = 1,
               x = 12,
+            },
+            {
+              y = 2,
+              x = 12,
+            },
+          },
+        },
+        bow_and_arrows = {
+          properties = {
+            item2 = "thieves_guild_arrows:ammo:arrow:20",
+            type = "hoard",
+            item1 = "thieves_guild_bow:weapon:short_bow",
+          },
+          coords = {
+            {
+              y = 8,
+              x = 1,
+            },
+          },
+        },
+        door2 = {
+          properties = {
+            locked = false,
+            closed = false,
+            key = "",
+            open_delta_y = 0,
+            type = "door",
+            open_delta_x = 1,
+          },
+          coords = {
+            {
+              y = 6,
+              x = 8,
+            },
+          },
+        },
+        chest = {
+          properties = {
+            locked = false,
+            closed = true,
+            open_delta_x = 1,
+            key = "",
+            open_delta_y = 0,
+            item2 = "thieves_guild_cloak:item:cloak",
+            type = "chest",
+            item1 = "thieves_guild_dagger:weapon:dagger",
+          },
+          coords = {
+            {
+              y = 4,
+              x = 13,
+            },
+          },
+        },
+        cell = {
+          properties = {
+            locked = false,
+            closed = true,
+            key = "",
+            open_delta_y = 0,
+            type = "door",
+            open_delta_x = 1,
+          },
+          coords = {
+            {
+              y = 11,
+              x = 4,
             },
           },
         },
         door1 = {
           properties = {
-            open_delta_y = 0,
-            key = "",
+            locked = false,
             closed = true,
+            key = "",
+            open_delta_y = 0,
             type = "door",
             open_delta_x = 1,
+          },
+          coords = {
+            {
+              y = 7,
+              x = 4,
+            },
+          },
+        },
+        trap_door = {
+          properties = {
             locked = false,
+            closed = true,
+            key = "",
+            type = "door",
+            open_delta_y = 0,
+            destiny = "se_house:hidden_trap_door",
+            open_delta_x = 1,
+          },
+          coords = {
+            {
+              y = 13,
+              x = 12,
+            },
+          },
+        },
+      },
+      items = {
+        thieves_guild_arrows = {
+          name = "arrow",
+          y = 8,
+          x = 1,
+          type = "ammo",
+          quantity = 20,
+        },
+        thieves_guild_bow = {
+          name = "short_bow",
+          y = 8,
+          x = 1,
+          type = "weapon",
+        },
+      },
+      created = true,
+    },
+    polis = {
+      objects = {
+        cellar_door = {
+          properties = {
+            locked = true,
+            closed = true,
+            type = "door",
+            open_delta_y = 0,
+            destiny = "rat_lair:rat_lair_cellar_door",
+            open_delta_x = 1,
+          },
+          coords = {
+            {
+              y = 8,
+              x = 4,
+            },
+          },
+        },
+        poison_seller_front_door = {
+          properties = {
+            locked = false,
+            closed = false,
+            key = "",
+            type = "door",
+            open_delta_y = 0,
+            destiny = "poison_seller:front_door",
+            open_delta_x = 1,
+          },
+          coords = {
+            {
+              y = 6,
+              x = 4,
+            },
+          },
+        },
+        come_inn_door = {
+          properties = {
+            locked = false,
+            closed = true,
+            key = "",
+            type = "door",
+            open_delta_y = 0,
+            destiny = "come_inn:front_door",
+            open_delta_x = 1,
+          },
+          coords = {
+            {
+              y = 13,
+              x = 4,
+            },
+          },
+        },
+        se_house_door = {
+          properties = {
+            locked = false,
+            locked_message = "The door for this house is locked.",
+            closed = false,
+            key = "se_house_key",
+            type = "door",
+            open_delta_y = 0,
+            destiny = "se_house:front_door",
+            open_delta_x = 1,
+          },
+          coords = {
+            {
+              y = 15,
+              x = 15,
+            },
+          },
+        },
+      },
+      items = {
+      },
+      created = true,
+    },
+    come_inn = {
+      objects = {
+        inn_counter = {
+          properties = {
+          },
+          coords = {
+            {
+              y = 9,
+              x = 9,
+            },
+            {
+              y = 9,
+              x = 10,
+            },
+            {
+              y = 9,
+              x = 11,
+            },
+            {
+              y = 9,
+              x = 12,
+            },
+            {
+              y = 9,
+              x = 13,
+            },
+          },
+        },
+        hoard = {
+          properties = {
+            item2 = "inn_weapon1:weapon:arming_sword",
+            type = "hoard",
+            item1 = "inn_magic1:spell:cure_wounds:6",
+          },
+          coords = {
+            {
+              y = 1,
+              x = 13,
+            },
+          },
+        },
+        chest = {
+          properties = {
+            locked = false,
+            closed = false,
+            key = "",
+            open_delta_x = 1,
+            open_delta_y = 0,
+            type = "chest",
+            item1 = "se_house_key:item:key",
+          },
+          coords = {
+            {
+              y = 7,
+              x = 13,
+            },
+          },
+        },
+        door1 = {
+          properties = {
+            locked = false,
+            closed = true,
+            key = "",
+            open_delta_y = 0,
+            type = "door",
+            open_delta_x = 1,
           },
           coords = {
             {
@@ -45,20 +287,62 @@ M.data = {
             },
           },
         },
-        come_inn_cellar_door = {
+        door3 = {
           properties = {
-            destiny = "come_inn_cellar:cellar_door",
             locked = false,
-            type = "door",
             closed = true,
-            open_delta_y = 0,
-            open_delta_x = 1,
             key = "",
+            open_delta_y = 0,
+            type = "door",
+            open_delta_x = 1,
           },
           coords = {
             {
-              y = 6,
-              x = 1,
+              y = 3,
+              x = 12,
+            },
+          },
+        },
+        notice_board = {
+          properties = {
+          },
+          coords = {
+            {
+              y = 11,
+              x = 13,
+            },
+          },
+        },
+        front_door = {
+          properties = {
+            locked = false,
+            closed = false,
+            key = "",
+            type = "door",
+            open_delta_y = 0,
+            destiny = "polis:come_inn_door",
+            open_delta_x = 1,
+          },
+          coords = {
+            {
+              y = 14,
+              x = 10,
+            },
+          },
+        },
+        door2 = {
+          properties = {
+            locked = false,
+            closed = true,
+            key = "",
+            open_delta_y = 0,
+            type = "door",
+            open_delta_x = 1,
+          },
+          coords = {
+            {
+              y = 3,
+              x = 8,
             },
           },
         },
@@ -92,125 +376,170 @@ M.data = {
             },
           },
         },
-        front_door = {
+        come_inn_cellar_door = {
           properties = {
-            destiny = "polis:come_inn_door",
             locked = false,
+            closed = true,
+            key = "",
             type = "door",
-            closed = true,
             open_delta_y = 0,
+            destiny = "come_inn_cellar:cellar_door",
             open_delta_x = 1,
-            key = "",
           },
           coords = {
             {
-              y = 14,
-              x = 10,
-            },
-          },
-        },
-        hoard = {
-          properties = {
-            item2 = "inn_weapon1:weapon:arming_sword",
-            item1 = "inn_magic1:spell:cure_wounds:6",
-            type = "hoard",
-          },
-          coords = {
-            {
-              y = 1,
-              x = 13,
-            },
-          },
-        },
-        chest = {
-          properties = {
-            open_delta_y = 0,
-            locked = false,
-            type = "chest",
-            closed = true,
-            item1 = "se_house_key:item:key",
-            open_delta_x = 1,
-            key = "",
-          },
-          coords = {
-            {
-              y = 7,
-              x = 13,
-            },
-          },
-        },
-        inn_counter = {
-          properties = {
-          },
-          coords = {
-            {
-              y = 9,
-              x = 9,
-            },
-            {
-              y = 9,
-              x = 10,
-            },
-            {
-              y = 9,
-              x = 11,
-            },
-            {
-              y = 9,
-              x = 12,
-            },
-            {
-              y = 9,
-              x = 13,
-            },
-          },
-        },
-        door2 = {
-          properties = {
-            open_delta_y = 0,
-            key = "",
-            closed = true,
-            type = "door",
-            open_delta_x = 1,
-            locked = false,
-          },
-          coords = {
-            {
-              y = 3,
-              x = 8,
-            },
-          },
-        },
-        notice_board = {
-          properties = {
-          },
-          coords = {
-            {
-              y = 11,
-              x = 13,
+              y = 6,
+              x = 1,
             },
           },
         },
       },
       items = {
         inn_magic1 = {
-          type = "spell",
-          y = 1,
           name = "cure_wounds",
-          quantity = 6,
+          y = 1,
           x = 13,
+          type = "spell",
+          quantity = 6,
         },
         inn_weapon1 = {
-          type = "weapon",
-          y = 1,
           name = "arming_sword",
+          y = 1,
           x = 13,
+          type = "weapon",
         },
       },
+      created = true,
+    },
+    se_house = {
+      objects = {
+        chest = {
+          properties = {
+            locked = false,
+            closed = true,
+            key = "",
+            open_delta_x = 1,
+            open_delta_y = 0,
+            type = "chest",
+            item1 = "se_house_magic1:spell:magic_missile:5",
+          },
+          coords = {
+            {
+              y = 1,
+              x = 4,
+            },
+          },
+        },
+        front_door = {
+          properties = {
+            locked = false,
+            closed = true,
+            key = "se_house_key",
+            type = "door",
+            open_delta_y = 0,
+            destiny = "polis:se_house_door",
+            open_delta_x = 1,
+          },
+          coords = {
+            {
+              y = 7,
+              x = 4,
+            },
+          },
+        },
+        rug = {
+          properties = {
+          },
+          coords = {
+            {
+              y = 2,
+              x = 2,
+            },
+            {
+              y = 3,
+              x = 2,
+            },
+            {
+              y = 4,
+              x = 2,
+            },
+            {
+              y = 2,
+              x = 3,
+            },
+            {
+              y = 3,
+              x = 3,
+            },
+            {
+              y = 4,
+              x = 3,
+            },
+            {
+              y = 2,
+              x = 4,
+            },
+            {
+              y = 3,
+              x = 4,
+            },
+            {
+              y = 4,
+              x = 4,
+            },
+            {
+              y = 2,
+              x = 5,
+            },
+            {
+              y = 3,
+              x = 5,
+            },
+            {
+              y = 4,
+              x = 5,
+            },
+          },
+        },
+        hidden_trap_door = {
+          properties = {
+            locked = false,
+            closed = false,
+            type = "door",
+            key = "",
+            visible = true,
+            open_delta_y = 0,
+            destiny = "thieves_guild:trap_door",
+            open_delta_x = 1,
+          },
+          coords = {
+            {
+              y = 3,
+              x = 4,
+            },
+          },
+        },
+      },
+      items = {
+      },
+      created = true,
     },
     come_inn_cellar = {
-      created = true,
       objects = {
+        poison_sacks = {
+          properties = {
+          },
+          coords = {
+            {
+              y = 2,
+              x = 13,
+            },
+            {
+              y = 3,
+              x = 13,
+            },
+          },
+        },
         cheese_wheels = {
           properties = {
           },
@@ -245,13 +574,13 @@ M.data = {
         },
         cellar_door = {
           properties = {
-            destiny = "come_inn:come_inn_cellar_door",
             locked = false,
-            type = "door",
             closed = false,
-            open_delta_y = 0,
-            open_delta_x = 1,
             key = "",
+            type = "door",
+            open_delta_y = 0,
+            destiny = "come_inn:come_inn_cellar_door",
+            open_delta_x = 1,
           },
           coords = {
             {
@@ -262,11 +591,11 @@ M.data = {
         },
         cellar_hole = {
           properties = {
-            type = "door",
             locked = false,
             closed = true,
-            destiny = "rat_lair:cellar_hole",
             key = "",
+            destiny = "rat_lair:cellar_hole",
+            type = "door",
           },
           coords = {
             {
@@ -275,806 +604,1189 @@ M.data = {
             },
           },
         },
-        poison_sacks = {
-          properties = {
-          },
-          coords = {
-            {
-              y = 2,
-              x = 13,
-            },
-            {
-              y = 3,
-              x = 13,
-            },
-          },
-        },
       },
       items = {
       },
+      created = true,
     },
   },
+  player_position = {
+    map = "thieves_guild",
+    coords = {
+      y = 4,
+      x = 8,
+    },
+  },
+  title = "17:58 2020,11,11",
   character_data = {
-    dead_rat_2 = {
+    suspicious_guard = {
+      created = true,
       npc = true,
       removed = false,
-      created = true,
       stats = {
-        current_hp = 0,
+        level = 2,
         shield = {
+          code = "suspicious_guard_shield",
           type = "shield",
-          code = "",
-          name = "no_shield",
-        },
-        total_hp = 6,
-        bonus = {
-          magic_ac = 0,
-          ac = 0,
-          to_hit = 0,
+          name = "shield",
         },
         weapon = {
+          code = "suspicious_guard_axe",
           type = "weapon",
-          code = "dead_rat_2_tooth",
-          name = "rat_tooth",
+          name = "axe",
         },
-        ability = {
-          str = 8,
-          con = 13,
-          wis = 13,
-          cha = 8,
-          int = 8,
-          dex = 14,
-        },
+        total_hp = 15,
         status = {
-          dead = {
-            duration = -1,
-            challenge_level = 0,
-          },
         },
-        inventory = {
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
+        bonus = {
+          to_hit = 0,
+          magic_ac = 0,
+          ac = 0,
         },
+        armor = {
+          code = "suspicious_guard_armor",
+          type = "armor",
+          name = "chain_mail",
+        },
+        name = "City Guard",
         ammo = {
-          type = "ammo",
           quantity = 0,
           code = "",
+          type = "ammo",
           name = "no_ammo",
         },
-        name = "Rat",
         portrait = {
           y = 192,
           x = 0,
         },
-        armor = {
-          type = "armor",
-          code = "",
-          name = "unarmored",
-        },
-        level = 1,
-        hit_die = "d4",
-      },
-      enemy = false,
-    },
-    guard3 = {
-      npc = true,
-      removed = false,
-      created = true,
-      stats = {
-        current_hp = 15,
-        shield = {
-          type = "shield",
-          code = "guard3_shield",
-          name = "shield",
-        },
-        total_hp = 15,
-        bonus = {
-          magic_ac = 0,
-          ac = 0,
-          to_hit = 0,
-        },
-        weapon = {
-          type = "weapon",
-          code = "guard3_axe",
-          name = "axe",
-        },
-        ability = {
-          str = 15,
-          con = 15,
-          wis = 10,
-          cha = 10,
-          int = 10,
-          dex = 10,
-        },
-        status = {
-        },
         inventory = {
           {
+            code = "suspicious_guard_axe",
             type = "weapon",
-            code = "guard3_axe",
             name = "axe",
           },
           {
+            code = "suspicious_guard_shield",
             type = "shield",
-            code = "guard3_shield",
             name = "shield",
           },
           {
+            code = "suspicious_guard_armor",
             type = "armor",
-            code = "guard3_armor",
             name = "chain_mail",
           },
           {
-            type = "item",
             code = "",
+            type = "item",
             name = "no_item",
           },
           {
-            type = "item",
             code = "",
+            type = "item",
             name = "no_item",
           },
           {
-            type = "item",
             code = "",
+            type = "item",
             name = "no_item",
           },
           {
-            type = "item",
             code = "",
+            type = "item",
             name = "no_item",
           },
           {
-            type = "item",
             code = "",
+            type = "item",
             name = "no_item",
           },
         },
-        ammo = {
-          type = "ammo",
-          quantity = 0,
-          code = "",
-          name = "no_ammo",
+        hit_die = "d8",
+        current_hp = 15,
+        ability = {
+          str = 15,
+          dex = 10,
+          con = 15,
+          cha = 10,
+          wis = 10,
+          int = 10,
         },
-        name = "City Guard",
-        portrait = {
-          y = 192,
-          x = 0,
+      },
+      animation = "viking",
+      enemy = false,
+    },
+    guard1 = {
+      created = true,
+      npc = true,
+      removed = false,
+      stats = {
+        level = 2,
+        shield = {
+          code = "guard1_shield",
+          type = "shield",
+          name = "shield",
+        },
+        weapon = {
+          code = "guard1_axe",
+          type = "weapon",
+          name = "axe",
+        },
+        total_hp = 15,
+        status = {
+        },
+        bonus = {
+          to_hit = 0,
+          magic_ac = 0,
+          ac = 0,
         },
         armor = {
+          code = "guard1_armor",
           type = "armor",
-          code = "guard3_armor",
           name = "chain_mail",
         },
-        level = 2,
+        name = "City Guard",
+        ammo = {
+          quantity = 0,
+          code = "",
+          type = "ammo",
+          name = "no_ammo",
+        },
+        portrait = {
+          y = 192,
+          x = 0,
+        },
+        inventory = {
+          {
+            code = "guard1_axe",
+            type = "weapon",
+            name = "axe",
+          },
+          {
+            code = "guard1_shield",
+            type = "shield",
+            name = "shield",
+          },
+          {
+            code = "guard1_armor",
+            type = "armor",
+            name = "chain_mail",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+        },
         hit_die = "d8",
-      },
-      enemy = false,
-    },
-    come_inn_patron = {
-      npc = true,
-      removed = false,
-      created = true,
-      stats = {
-        current_hp = 7,
-        shield = {
-          type = "shield",
-          code = "",
-          name = "no_shield",
-        },
-        total_hp = 7,
-        bonus = {
-          magic_ac = 0,
-          ac = 0,
-          to_hit = 0,
-        },
-        weapon = {
-          type = "weapon",
-          code = "",
-          name = "unarmed",
-        },
+        current_hp = 15,
         ability = {
-          str = 13,
-          con = 14,
+          str = 15,
+          dex = 10,
+          con = 15,
+          cha = 10,
           wis = 10,
-          cha = 8,
-          int = 8,
-          dex = 13,
-        },
-        status = {
-        },
-        inventory = {
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-        },
-        ammo = {
-          type = "ammo",
-          quantity = 0,
-          code = "",
-          name = "no_ammo",
-        },
-        name = "Grasshopper",
-        portrait = {
-          y = 192,
-          x = 0,
-        },
-        armor = {
-          type = "armor",
-          code = "",
-          name = "unarmored",
-        },
-        level = 1,
-        hit_die = "d6",
-      },
-      enemy = false,
-    },
-    come_inn_waitress = {
-      npc = true,
-      removed = false,
-      created = true,
-      stats = {
-        current_hp = 6,
-        shield = {
-          type = "shield",
-          code = "",
-          name = "no_shield",
-        },
-        total_hp = 6,
-        bonus = {
-          magic_ac = 0,
-          ac = 0,
-          to_hit = 0,
-        },
-        weapon = {
-          type = "weapon",
-          code = "",
-          name = "unarmed",
-        },
-        ability = {
-          str = 10,
-          con = 10,
-          wis = 8,
-          cha = 15,
           int = 10,
-          dex = 13,
         },
-        status = {
-        },
-        inventory = {
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-        },
-        ammo = {
-          type = "ammo",
-          quantity = 0,
-          code = "",
-          name = "no_ammo",
-        },
-        name = "Debbie",
-        portrait = {
-          y = 192,
-          x = 0,
-        },
-        armor = {
-          type = "armor",
-          code = "",
-          name = "unarmored",
-        },
-        level = 1,
-        hit_die = "d6",
       },
+      animation = "viking",
       enemy = false,
     },
-    dead_rat_1 = {
+    guard3 = {
+      created = true,
       npc = true,
       removed = false,
-      created = true,
       stats = {
-        current_hp = 0,
+        level = 2,
         shield = {
+          code = "guard3_shield",
           type = "shield",
-          code = "",
-          name = "no_shield",
-        },
-        total_hp = 6,
-        bonus = {
-          magic_ac = 0,
-          ac = 0,
-          to_hit = 0,
+          name = "shield",
         },
         weapon = {
+          code = "guard3_axe",
           type = "weapon",
-          code = "dead_rat_1_tooth",
-          name = "rat_tooth",
+          name = "axe",
         },
-        ability = {
-          str = 8,
-          con = 13,
-          wis = 13,
-          cha = 8,
-          int = 8,
-          dex = 14,
-        },
+        total_hp = 15,
         status = {
-          dead = {
-            duration = -1,
-            challenge_level = 0,
-          },
         },
-        inventory = {
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
+        bonus = {
+          to_hit = 0,
+          magic_ac = 0,
+          ac = 0,
         },
+        armor = {
+          code = "guard3_armor",
+          type = "armor",
+          name = "chain_mail",
+        },
+        name = "City Guard",
         ammo = {
-          type = "ammo",
           quantity = 0,
           code = "",
+          type = "ammo",
           name = "no_ammo",
         },
-        name = "Rat",
         portrait = {
           y = 192,
           x = 0,
         },
-        armor = {
-          type = "armor",
-          code = "",
-          name = "unarmored",
+        inventory = {
+          {
+            code = "guard3_axe",
+            type = "weapon",
+            name = "axe",
+          },
+          {
+            code = "guard3_shield",
+            type = "shield",
+            name = "shield",
+          },
+          {
+            code = "guard3_armor",
+            type = "armor",
+            name = "chain_mail",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
         },
-        level = 1,
-        hit_die = "d4",
+        hit_die = "d8",
+        current_hp = 15,
+        ability = {
+          str = 15,
+          dex = 10,
+          con = 15,
+          cha = 10,
+          wis = 10,
+          int = 10,
+        },
       },
+      animation = "viking",
       enemy = false,
     },
     come_inn_keeper = {
+      created = true,
       npc = true,
       removed = false,
-      created = true,
       stats = {
-        current_hp = 6,
+        level = 1,
         shield = {
-          type = "shield",
           code = "",
+          type = "shield",
           name = "no_shield",
         },
-        total_hp = 6,
-        bonus = {
-          magic_ac = 0,
-          ac = 0,
-          to_hit = 0,
-        },
         weapon = {
-          type = "weapon",
           code = "",
+          type = "weapon",
           name = "unarmed",
         },
-        ability = {
-          str = 14,
-          con = 10,
-          wis = 13,
-          cha = 15,
-          int = 13,
-          dex = 7,
-        },
+        total_hp = 6,
         status = {
         },
-        inventory = {
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-        },
-        ammo = {
-          type = "ammo",
-          quantity = 0,
-          code = "",
-          name = "no_ammo",
-        },
-        name = "Marshal",
-        portrait = {
-          y = 192,
-          x = 0,
-        },
-        armor = {
-          type = "armor",
-          code = "",
-          name = "unarmored",
-        },
-        level = 1,
-        hit_die = "d6",
-      },
-      enemy = false,
-    },
-    dead_rat_3 = {
-      npc = true,
-      removed = false,
-      created = true,
-      stats = {
-        current_hp = 0,
-        shield = {
-          type = "shield",
-          code = "",
-          name = "no_shield",
-        },
-        total_hp = 6,
         bonus = {
+          to_hit = 0,
           magic_ac = 0,
           ac = 0,
-          to_hit = 0,
         },
-        weapon = {
-          type = "weapon",
-          code = "dead_rat_3_tooth",
-          name = "rat_tooth",
+        armor = {
+          code = "",
+          type = "armor",
+          name = "unarmored",
         },
-        ability = {
-          str = 8,
-          con = 13,
-          wis = 13,
-          cha = 8,
-          int = 8,
-          dex = 14,
-        },
-        status = {
-          dead = {
-            duration = -1,
-            challenge_level = 0,
-          },
-        },
-        inventory = {
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-        },
+        name = "Marshal",
         ammo = {
-          type = "ammo",
           quantity = 0,
           code = "",
+          type = "ammo",
           name = "no_ammo",
         },
-        name = "Rat",
         portrait = {
           y = 192,
           x = 0,
         },
-        armor = {
-          type = "armor",
+        inventory = {
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+        },
+        hit_die = "d6",
+        current_hp = 6,
+        ability = {
+          str = 14,
+          dex = 7,
+          con = 10,
+          cha = 15,
+          wis = 13,
+          int = 13,
+        },
+      },
+      animation = "inn_keeper",
+      enemy = false,
+    },
+    come_inn_patron = {
+      created = true,
+      npc = true,
+      removed = false,
+      stats = {
+        level = 1,
+        shield = {
           code = "",
+          type = "shield",
+          name = "no_shield",
+        },
+        weapon = {
+          code = "",
+          type = "weapon",
+          name = "unarmed",
+        },
+        total_hp = 7,
+        status = {
+        },
+        bonus = {
+          to_hit = 0,
+          magic_ac = 0,
+          ac = 0,
+        },
+        armor = {
+          code = "",
+          type = "armor",
           name = "unarmored",
         },
-        level = 1,
-        hit_die = "d4",
+        name = "Grasshopper",
+        ammo = {
+          quantity = 0,
+          code = "",
+          type = "ammo",
+          name = "no_ammo",
+        },
+        portrait = {
+          y = 192,
+          x = 0,
+        },
+        inventory = {
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+        },
+        hit_die = "d6",
+        current_hp = 7,
+        ability = {
+          str = 13,
+          dex = 13,
+          con = 14,
+          cha = 8,
+          wis = 10,
+          int = 8,
+        },
       },
+      animation = "hobo",
+      enemy = false,
+    },
+    town_elf = {
+      created = true,
+      npc = true,
+      removed = false,
+      stats = {
+        level = 2,
+        shield = {
+          code = "",
+          type = "shield",
+          name = "no_shield",
+        },
+        weapon = {
+          code = "town_elf_bow",
+          type = "weapon",
+          name = "short_bow",
+        },
+        total_hp = 10,
+        status = {
+        },
+        bonus = {
+          to_hit = 0,
+          magic_ac = 0,
+          ac = 0,
+        },
+        armor = {
+          code = "",
+          type = "armor",
+          name = "unarmored",
+        },
+        name = "Aldebaran",
+        ammo = {
+          quantity = 20,
+          code = "town_elf_arrows",
+          type = "ammo",
+          name = "arrow",
+        },
+        portrait = {
+          y = 192,
+          x = 0,
+        },
+        inventory = {
+          {
+            code = "town_elf_bow",
+            type = "weapon",
+            name = "short_bow",
+          },
+          {
+            quantity = 20,
+            code = "town_elf_arrows",
+            type = "ammo",
+            name = "arrow",
+          },
+          {
+            code = "town_elf_dagger",
+            type = "weapon",
+            name = "dagger",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+        },
+        hit_die = "d6",
+        current_hp = 10,
+        ability = {
+          str = 8,
+          dex = 15,
+          con = 9,
+          cha = 15,
+          wis = 13,
+          int = 9,
+        },
+      },
+      animation = "elf",
       enemy = false,
     },
     player = {
+      created = true,
       npc = false,
       removed = false,
-      created = true,
       stats = {
-        current_hp = 5,
+        level = 1,
         shield = {
-          type = "shield",
           code = "",
+          type = "shield",
           name = "no_shield",
         },
-        total_hp = 5,
-        bonus = {
-          magic_ac = 0,
-          ac = 0,
-          to_hit = 0,
-        },
         weapon = {
-          type = "weapon",
           code = "",
+          type = "weapon",
           name = "unarmed",
         },
-        ability = {
-          str = 8,
-          con = 8,
-          wis = 8,
-          cha = 8,
-          int = 8,
-          dex = 8,
-        },
+        total_hp = 5,
         status = {
         },
-        inventory = {
-          {
-            type = "spell",
-            quantity = 5,
-            code = "mumu's poison",
-            name = "poison",
-          },
-          {
-            type = "item",
-            quantity = 3,
-            code = "mumu's cheese",
-            name = "cheese",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            code = "",
-            name = "no_item",
-          },
-          {
-            type = "item",
-            quantity = 3,
-            code = "mumu's money",
-            name = "money",
-          },
+        bonus = {
+          to_hit = 0,
+          magic_ac = 0,
+          ac = 0,
         },
-        ammo = {
-          type = "ammo",
-          quantity = 0,
+        armor = {
           code = "",
-          name = "no_ammo",
+          type = "armor",
+          name = "unarmored",
         },
         name = "Mumu",
+        ammo = {
+          quantity = 0,
+          code = "",
+          type = "ammo",
+          name = "no_ammo",
+        },
         portrait = {
           y = 224,
           x = 0,
         },
-        armor = {
-          type = "armor",
-          code = "",
-          name = "unarmored",
+        inventory = {
+          {
+            quantity = 5,
+            code = "mumu's poison",
+            type = "spell",
+            name = "poison",
+          },
+          {
+            quantity = 3,
+            code = "mumu's cheese",
+            type = "item",
+            name = "cheese",
+          },
+          {
+            code = "se_house_key",
+            type = "item",
+            name = "key",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            quantity = 3,
+            code = "mumu's money",
+            type = "item",
+            name = "money",
+          },
         },
-        level = 1,
         hit_die = "d6",
+        current_hp = 5,
+        ability = {
+          str = 8,
+          dex = 8,
+          con = 8,
+          cha = 8,
+          wis = 8,
+          int = 8,
+        },
       },
+      animation = "thief_female",
       enemy = false,
     },
-  },
-  data = {
-    dead_rat_2_dead = true,
-    dead_rat_1_dead = true,
-    dead_rat_3_dead = true,
+    dead_rat_1 = {
+      created = true,
+      npc = true,
+      removed = false,
+      stats = {
+        level = 1,
+        shield = {
+          code = "",
+          type = "shield",
+          name = "no_shield",
+        },
+        weapon = {
+          code = "dead_rat_1_tooth",
+          type = "weapon",
+          name = "rat_tooth",
+        },
+        total_hp = 6,
+        status = {
+          dead = {
+            challenge_level = 0,
+            duration = -1,
+          },
+        },
+        bonus = {
+          to_hit = 0,
+          magic_ac = 0,
+          ac = 0,
+        },
+        armor = {
+          code = "",
+          type = "armor",
+          name = "unarmored",
+        },
+        name = "Rat",
+        ammo = {
+          quantity = 0,
+          code = "",
+          type = "ammo",
+          name = "no_ammo",
+        },
+        portrait = {
+          y = 192,
+          x = 0,
+        },
+        inventory = {
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+        },
+        hit_die = "d4",
+        current_hp = 0,
+        ability = {
+          str = 8,
+          dex = 14,
+          con = 13,
+          cha = 8,
+          wis = 13,
+          int = 8,
+        },
+      },
+      animation = "rat",
+      enemy = false,
+    },
+    dead_rat_3 = {
+      created = true,
+      npc = true,
+      removed = false,
+      stats = {
+        level = 1,
+        shield = {
+          code = "",
+          type = "shield",
+          name = "no_shield",
+        },
+        weapon = {
+          code = "dead_rat_3_tooth",
+          type = "weapon",
+          name = "rat_tooth",
+        },
+        total_hp = 6,
+        status = {
+          dead = {
+            challenge_level = 0,
+            duration = -1,
+          },
+        },
+        bonus = {
+          to_hit = 0,
+          magic_ac = 0,
+          ac = 0,
+        },
+        armor = {
+          code = "",
+          type = "armor",
+          name = "unarmored",
+        },
+        name = "Rat",
+        ammo = {
+          quantity = 0,
+          code = "",
+          type = "ammo",
+          name = "no_ammo",
+        },
+        portrait = {
+          y = 192,
+          x = 0,
+        },
+        inventory = {
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+        },
+        hit_die = "d4",
+        current_hp = 0,
+        ability = {
+          str = 8,
+          dex = 14,
+          con = 13,
+          cha = 8,
+          wis = 13,
+          int = 8,
+        },
+      },
+      animation = "rat",
+      enemy = false,
+    },
+    guard2 = {
+      created = true,
+      npc = true,
+      removed = false,
+      stats = {
+        level = 2,
+        shield = {
+          code = "guard2_shield",
+          type = "shield",
+          name = "shield",
+        },
+        weapon = {
+          code = "guard2_axe",
+          type = "weapon",
+          name = "axe",
+        },
+        total_hp = 15,
+        status = {
+        },
+        bonus = {
+          to_hit = 0,
+          magic_ac = 0,
+          ac = 0,
+        },
+        armor = {
+          code = "guard2_armor",
+          type = "armor",
+          name = "chain_mail",
+        },
+        name = "City Guard",
+        ammo = {
+          quantity = 0,
+          code = "",
+          type = "ammo",
+          name = "no_ammo",
+        },
+        portrait = {
+          y = 192,
+          x = 0,
+        },
+        inventory = {
+          {
+            code = "guard2_axe",
+            type = "weapon",
+            name = "axe",
+          },
+          {
+            code = "guard2_shield",
+            type = "shield",
+            name = "shield",
+          },
+          {
+            code = "guard2_armor",
+            type = "armor",
+            name = "chain_mail",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+        },
+        hit_die = "d8",
+        current_hp = 15,
+        ability = {
+          str = 15,
+          dex = 10,
+          con = 15,
+          cha = 10,
+          wis = 10,
+          int = 10,
+        },
+      },
+      animation = "viking",
+      enemy = false,
+    },
+    dead_rat_2 = {
+      created = true,
+      npc = true,
+      removed = false,
+      stats = {
+        level = 1,
+        shield = {
+          code = "",
+          type = "shield",
+          name = "no_shield",
+        },
+        weapon = {
+          code = "dead_rat_2_tooth",
+          type = "weapon",
+          name = "rat_tooth",
+        },
+        total_hp = 6,
+        status = {
+          dead = {
+            challenge_level = 0,
+            duration = -1,
+          },
+        },
+        bonus = {
+          to_hit = 0,
+          magic_ac = 0,
+          ac = 0,
+        },
+        armor = {
+          code = "",
+          type = "armor",
+          name = "unarmored",
+        },
+        name = "Rat",
+        ammo = {
+          quantity = 0,
+          code = "",
+          type = "ammo",
+          name = "no_ammo",
+        },
+        portrait = {
+          y = 192,
+          x = 0,
+        },
+        inventory = {
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+        },
+        hit_die = "d4",
+        current_hp = 0,
+        ability = {
+          str = 8,
+          dex = 14,
+          con = 13,
+          cha = 8,
+          wis = 13,
+          int = 8,
+        },
+      },
+      animation = "rat",
+      enemy = false,
+    },
+    come_inn_waitress = {
+      created = true,
+      npc = true,
+      removed = false,
+      stats = {
+        level = 1,
+        shield = {
+          code = "",
+          type = "shield",
+          name = "no_shield",
+        },
+        weapon = {
+          code = "",
+          type = "weapon",
+          name = "unarmed",
+        },
+        total_hp = 6,
+        status = {
+        },
+        bonus = {
+          to_hit = 0,
+          magic_ac = 0,
+          ac = 0,
+        },
+        armor = {
+          code = "",
+          type = "armor",
+          name = "unarmored",
+        },
+        name = "Debbie",
+        ammo = {
+          quantity = 0,
+          code = "",
+          type = "ammo",
+          name = "no_ammo",
+        },
+        portrait = {
+          y = 192,
+          x = 0,
+        },
+        inventory = {
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+        },
+        hit_die = "d6",
+        current_hp = 6,
+        ability = {
+          str = 10,
+          dex = 13,
+          con = 10,
+          cha = 15,
+          wis = 8,
+          int = 10,
+        },
+      },
+      animation = "bunny_girl",
+      enemy = false,
+    },
   },
 }
 return M

@@ -11,12 +11,12 @@ function BunnyGirl:new(o, control)
   o = o or Character:new(o, control)
   setmetatable(o, self)
   self.__index = self
-  o.animation = "bunny_girl"
   return o
 end
 
 function BunnyGirl:create()
   Character.create(self)
+  self.data.animation = "bunny_girl"
 end
 
 

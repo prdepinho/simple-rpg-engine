@@ -11,12 +11,12 @@ function DeadRat:new(o, control)
   o = o or Rat:new(o, control)
   setmetatable(o, self)
   self.__index = self
-  o.animation = "rat"
   return o
 end
 
 function DeadRat:create()
   Rat.create(self)
+  self.data.animation = "rat"
   self.data.stats.current_hp = 0
   self.control:kill_character(self.name)
 end

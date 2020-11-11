@@ -12,18 +12,23 @@ function Character:new(o, control)
   setmetatable(o, self)
   self.__index = self
   self.control = control
-  o.animation = "human_male"
   return o
 end
 
 function Character:create()
+  self.data.animation = "human_male"
   self.data.enemy = false
   self.data.npc = true
   self.data.stats = rules.new_character()
 end
 
+function Character:set_skin(skin)
+  self.data.animation = skin
+  sfml_set_character_skin(self.name, self.data.animation)
+end
+
 function Character:on_enter()
-  sfml_set_character_skin(self.name, self.animation)
+  sfml_set_character_skin(self.name, self.data.animation)
 end
 
 -- called every turn (things pcs and npcs do)

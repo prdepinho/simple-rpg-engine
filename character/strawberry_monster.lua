@@ -11,11 +11,11 @@ function StrawberryMonster:new(o, control)
   o = o or Character:new(o, control)
   setmetatable(o, self)
   self.__index = self
-  o.animation = "strawberry_monster"
   return o
 end
 
 function StrawberryMonster:create()
+  self.data.animation = "strawberry_monster"
   Character.create(self)
 end
 

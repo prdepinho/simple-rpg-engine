@@ -11,12 +11,12 @@ function Witch:new(o, control)
   o = o or Character:new(o, control)
   setmetatable(o, self)
   self.__index = self
-  o.animation = "witch"
   return o
 end
 
 function Witch:create()
   Character.create(self)
+  self.data.animation = "witch"
 end
 
 

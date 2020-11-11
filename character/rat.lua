@@ -11,12 +11,12 @@ function Rat:new(o, control)
   o = o or Character:new(o, control)
   setmetatable(o, self)
   self.__index = self
-  o.animation = "rat"
   return o
 end
 
 function Rat:create()
   Character.create(self)
+  self.data.animation = "rat"
   self.data.enemy = false
 
   local stats = self.data.stats

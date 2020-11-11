@@ -11,12 +11,12 @@ function Imp:new(o, control)
   o = o or Character:new(o, control)
   setmetatable(o, self)
   self.__index = self
-  o.animation = "imp"
   return o
 end
 
 function Imp:create()
   Character.create(self)
+  self.data.animation = "imp"
 end
 
 

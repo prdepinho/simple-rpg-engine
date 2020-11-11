@@ -11,12 +11,12 @@ function CityGuard:new(o, control)
   o = o or Character:new(o, control)
   setmetatable(o, self)
   self.__index = self
-  o.animation = "viking"
   return o
 end
 
 function CityGuard:create()
   Character.create(self)
+  self.data.animation = "viking"
 
   local stats = self.data.stats
   stats.name = "City Guard"
