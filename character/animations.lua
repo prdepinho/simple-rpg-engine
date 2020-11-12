@@ -205,6 +205,14 @@ animations.types = {
     },
     animations = basic_animation
   },
+  pig_man = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 19
+    },
+    animations = basic_animation
+  },
 }
 
 return animations

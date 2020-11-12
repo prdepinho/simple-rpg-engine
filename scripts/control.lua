@@ -663,6 +663,13 @@ function Control:spend_money(character_name, how_much, to_whom)
         if to_whom then
           self:gain_money(to_whom, how_much)
         end
+
+        local log_quantity = ""
+        if how_much > 0 then
+          log_quantity = " x" .. tostring(how_much)
+        end
+        sfml_push_log(self.characters[character_name].data.stats.name .. " pays " .. log_quantity .. " to " .. to_whom)
+
         return true
       else
         return false
@@ -699,6 +706,15 @@ end
 function Control:find_in_inventory(character_name, code)
   for index, item in ipairs(self.characters[character_name].data.stats.inventory) do
     if item.code == code then
+      return index
+    end
+  end
+  return nil
+end
+
+function Control:find_in_inventory_by_name(character_name, name)
+  for index, item in ipairs(self.characters[character_name].data.stats.inventory) do
+    if item.name == name then
       return index
     end
   end
@@ -872,6 +888,7 @@ end
 
 function Control:remove_character(name)
   self.characters[name].data.removed = true
+  sfml_remove_character(name)
 end
 
 function Control:is_character_removed(name)

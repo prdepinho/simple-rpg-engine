@@ -1276,7 +1276,7 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 					else {
 						_game.get_lua()->strip_character_items(target_character->get_name());
 						_game.get_lua()->remove_character(target_character->get_name());
-						remove_character(target_character);
+						// remove_character(target_character);
 						control_loot(tile_x, tile_y);
 						character_face(character, tile_x, tile_y);
 					}

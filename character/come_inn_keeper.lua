@@ -28,7 +28,7 @@ function ComeInnKeeper:create()
     con = 10,
     int = 13,
     wis = 13,
-    cha = 15,
+    cha = 13,
   })
 end
 
@@ -72,6 +72,59 @@ function ComeInnKeeper:on_interact(interactor_name)
       callback = function()
         self.control.data.come_inn_free_room = true
       end
+    },
+    poison = {
+      text = "From the shop of old Picard. It is the building at the back. Why do you ask?",
+      options = {
+        { text = "I could use some.", go_to = 'interested' },
+      },
+      callback = function()
+        self.control.data.talk_to_picard = true
+      end
+    },
+    interested = {
+      text = "Well, sure. Old Picard has what you need. Please, tell him I gave the recomendation.",
+      go_to = 'end'
+    },
+    implore = {
+      text = "Well, well, well. The kitty cat wants to teach me how to run my business. Go lick your ass.",
+      go_to = 'end'
+    },
+    risk = {
+      text = "By the gods, I haven't thought of that! You are right. But what am I going to do about the pests?",
+      options = {
+        { text = "Just leave them be.", go_to = 'leave_them_be' },
+        { text = "Hunt then yourself.", go_to = 'hunt_them_yourself' },
+        { text = "I'll hunt them down for you.", go_to = 'hunt_them_myself' },
+      },
+    },
+    leave_them_be = {
+      text = "They will destroy my inn!",
+      go_to = 'end',
+      callback = function()
+        self.control.data.leave_rats_be = true
+      end
+    },
+    hunt_them_yourself = {
+      text = "I need someone to take care of my inn in the meanwhile. Would you do that for me?",
+      options = {
+        { text = "Sure. It will be fine", go_to = 'help' },
+        { text = "I have businesses of my own.", go_to = 'end' },
+      }
+    },
+    hunt_them_myself = {
+      text = "Please, do that. I will make your time worthwhile.",
+      go_to = 'end',
+      callback = function()
+        self.control.data.kill_rats_myself = true
+      end
+    },
+    help = {
+      text = "Right. Go downstairs and pick your uniform. I'll give your instructions and get ready for the hunt.",
+      go_to = 'end',
+      callback = function()
+        self.control.data.serve_inn = true
+      end
     }
   }
 
@@ -97,6 +150,17 @@ function ComeInnKeeper:on_interact(interactor_name)
       text = "No need to ask, my girl. Pick any room you want.",
       go_to = "end"
     }
+  end
+
+  if self.control.data.checked_poison then
+    table.insert(dialogue.start.options, { text = "Where did you get the poison in the cellar?", go_to = 'poison' })
+  end
+
+  if self.control.data.decided_to_help_rats then
+    table.insert(dialogue.poison.options, { text = "Please, stop poisoning the rats.", go_to = 'implore' })
+    if self.control.characters.player.data.stats.ability.int >= 13 then
+      table.insert(dialogue.poison.options, {text = "(Int 13) You risk poisoning your customers.", go_to = 'risk' })
+    end
   end
 
   sfml_dialogue(dialogue)

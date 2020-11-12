@@ -148,12 +148,6 @@
    </properties>
    <point/>
   </object>
-  <object id="8" name="player" x="40.75" y="58.5">
-   <properties>
-    <property name="type" value="player"/>
-   </properties>
-   <point/>
-  </object>
   <object id="9" name="dead_rat_4" x="25" y="61.25">
    <properties>
     <property name="type" value="dead_rat"/>

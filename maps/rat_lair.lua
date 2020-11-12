@@ -13,6 +13,11 @@ end
 
 function RatLair:create()
   Map.create(self)
+  if self.control.data.served_inn then
+    -- self.control:add_character('come_inn_keeper', 'come_inn_keeper')
+    -- self.control:kill_character('come_inn_keeper')
+    -- sfml_put_character_on_tile('come_inn_keeper', 11, 5)
+  end
 end
 
 function RatLair:enter()

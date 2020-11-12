@@ -75,18 +75,47 @@ function RatKing:on_interact(interactor_name)
     dont_know = {
       text = "This is the only place we have.",
       go_to = 'end'
+    },
+    stopped_poison_supply = {
+      text = "May the blessings of Karni Mata be upon you, my savior! You are a friend to the rats and let it be published for all the world to know. Please, accept this from my personal treasure.",
+      go_to = 'end',
+      callback = function()
+        self.control:spend_money(self.name, 3, 'player')
+        self.control:add_item_to_inventory('player', 'karni_mata_blessing', 'poison', 'spell', 5)
+        self.control.data.got_rats_reward = true
+      end
+    },
+    convinced = {
+      text = "Thank you, my friend. I won't forget what you did for my people.",
+      go_to = 'end',
+      callback = function()
+        self.control:spend_money(self.name, 3, 'player')
+        self.control.data.got_rats_reward = true
+      end
     }
   }
 
-  if self.control.data.rats_quest_accepted then
+  if self.control.data.rats_quest_accepted and not self.control.data.decided_to_help_rats then
     table.insert(dialogue.start.options, { text = "I have the message. Is this the place?", go_to = 'quest' })
   end
-
   if self.control.data.decided_to_help_rats then
-    dialogue.start = {
-      text = "Have you dealt with the poison yet?",
-      go_to = 'end'
-    }
+    dialogue.start.text = "Have you dealt with the poison yet?"
+  end
+  if self.control.data.kill_rats_myself then 
+    table.insert(dialogue.start.options, { text = "You pests rot in hell.", go_to = 'kill' })
+  end
+  if self.control.data.stop_poison_supply and not self.control.data.got_rats_reward then
+    table.insert(dialogue.start.options, { text = "I have stopped the poison supply.", go_to = 'stopped_poison_supply' })
+  end
+  if self.control.data.leave_rats_be and not self.control.data.got_rats_reward then
+    table.insert(dialogue.start.options, { text = "I convinced the innkeeper to leave you alone.", go_to = 'convinced' })
+  end
+  if self.control.data.got_rats_reward then
+    dialogue.start.text = "Welcome back, my friend."
+  end
+  if self.control.data.served_inn and not self.control.data.got_rats_reward then
+    dialogue.start.text = "Welcome back, my friend. It is a glorious day for us. We have defeated our hated enemy and now we can live in peace."
+    self.control.data.got_rats_reward = true
   end
 
   sfml_dialogue(dialogue)

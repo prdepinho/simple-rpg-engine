@@ -66,8 +66,47 @@ function PoisonSalesman:on_interact(interactor_name)
         end
       end,
       go_to = 'end'
+    },
+    stop_supply = {
+      text = "Why would you ask me that?",
+      options = {
+        { text = "Never mind.", go_to = 'end' },
+      }
+    },
+    poisoning = {
+      text = "Do you have proof of that?",
+      go_to = function()
+        local index = self.control:find_in_inventory_by_name('player', 'poisoned_cheese')
+        if index then
+          return 'show_proof'
+        else
+          return 'no_proof'
+        end
+      end
+    },
+    show_proof = {
+      text = "You show the poisoned cheese to Picard.",
+      go_to = 'proof_reaction'
+    },
+    no_proof = {
+      text = "I'm sorry, but I cannot count on your word alone.",
+      go_to = 'end'
+    },
+    proof_reaction = {
+      text = "By the gods! You are right. We must contact the guards at once.",
+      go_to = 'end',
+      callback = function()
+        self.control.data.stop_poison_supply = true
+      end
     }
   }
+  if self.control.data.talk_to_picard and self.control.data.decided_to_help_rats then
+    table.insert(dialogue.start.options, { text = "Please, stop supplying poison to the inn.", go_to = 'stop_supply' })
+  end
+  if self.control.characters.player.data.stats.ability.cha >= 13 then
+    table.insert(dialogue.stop_supply.options, { text = "(Cha 13) He is poisoning the cheese.", go_to = 'poisoning' })
+  end
+
   sfml_dialogue(dialogue)
 end
 
