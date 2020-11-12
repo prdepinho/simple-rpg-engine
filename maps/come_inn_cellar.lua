@@ -40,37 +40,41 @@ function ComeInnCellar:wardrobe(event, x, y, character_name, object_name)
   local object = self.data.objects[object_name]
   if character_name == 'player' then
     if event == 'interact' then
-      local dialogue = {
-        start = {
-          text = "Change to your uniform?",
-          text = function()
-            if object.properties.changed then
-              return "Change back to your regular clothes?"
-            else
-              return "Change to your guild uniform?"
-            end
-          end,
-          options = {
-            { text = "Yes.", go_to = 'change' },
-            { text = "No.", go_to = 'end' },
+      if self.control.data.serve_inn or self.control.data.rats_quest_complete then
+        local dialogue = {
+          start = {
+            text = "Change to your uniform?",
+            text = function()
+              if object.properties.changed then
+                return "Change back to your regular clothes?"
+              else
+                return "Change to your guild uniform?"
+              end
+            end,
+            options = {
+              { text = "Yes.", go_to = 'change' },
+              { text = "No.", go_to = 'end' },
+            }
+          },
+          change = {
+           text = function()
+             if object.properties.changed then
+               object.properties.changed = false
+               self.control.characters.player:set_skin('cat_girl')
+               return "You put on back your clothes."
+             else
+               object.properties.changed = true
+               self.control.characters.player:set_skin('bunny_girl')
+               return "You put on your waitress uniform."
+             end
+           end,
+           go_to = 'end',
           }
-        },
-        change = {
-         text = function()
-           if object.properties.changed then
-             object.properties.changed = false
-             self.control.characters.player:set_skin('cat_girl')
-             return "You put on back your clothes."
-           else
-             object.properties.changed = true
-             self.control.characters.player:set_skin('bunny_girl')
-             return "You put on your waitress uniform."
-           end
-         end,
-         go_to = 'end',
         }
-      }
-      sfml_dialogue(dialogue)
+        sfml_dialogue(dialogue)
+      else
+        sfml_text_box("The uniforms for the waitresses are stored here.")
+      end
     end
   end
 end
@@ -82,7 +86,7 @@ function ComeInnCellar:front_of_wardrobe(event, x, y, character_name, object_nam
         local cinematics = {
           start = {
             foreground = {
-              image = "wizard_and_man.png",
+              image = "serving_girl.png",
               origin = {
                 x = 0,
                 y = 0,
@@ -114,6 +118,8 @@ function ComeInnCellar:front_of_wardrobe(event, x, y, character_name, object_nam
             go_to = 'end',
             callback = function()
               self.control.data.served_inn = true
+              self.control.data.come_inn_ruined = true
+              self.control.data.rats_quest_complete = true
             end
           }
         }

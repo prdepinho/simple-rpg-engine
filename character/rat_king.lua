@@ -83,6 +83,7 @@ function RatKing:on_interact(interactor_name)
         self.control:spend_money(self.name, 3, 'player')
         self.control:add_item_to_inventory('player', 'karni_mata_blessing', 'poison', 'spell', 5)
         self.control.data.got_rats_reward = true
+        self.control.data.rats_quest_complete = true
       end
     },
     convinced = {
@@ -91,6 +92,7 @@ function RatKing:on_interact(interactor_name)
       callback = function()
         self.control:spend_money(self.name, 3, 'player')
         self.control.data.got_rats_reward = true
+        self.control.data.rats_quest_complete = true
       end
     }
   }

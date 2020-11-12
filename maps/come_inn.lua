@@ -17,8 +17,7 @@ end
 
 function ComeInn:enter()
   Map.enter(self)
-  if self.control.data.served_inn then
-    print('should work')
+  if self.control.data.come_inn_ruined then
     self.control:remove_character('come_inn_keeper')
     self.control:remove_character('come_inn_waitress')
     self.control:remove_character('come_inn_patron')

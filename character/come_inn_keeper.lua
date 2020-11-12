@@ -65,6 +65,9 @@ function ComeInnKeeper:on_interact(interactor_name)
       options = {
         { text = "I'm glad I was of help.", go_to = 'end' },
       },
+      callback = function()
+        self.control.data.rats_quest_complete = true
+      end
     },
     risked = {
       text = "I'm sure you did, darling. Here, you can always have a free room in my in from now on, and let it not be said that I don't appreciate a job well done.",
@@ -99,10 +102,11 @@ function ComeInnKeeper:on_interact(interactor_name)
       },
     },
     leave_them_be = {
-      text = "They will destroy my inn!",
+      text = "And you expect me to just hope that they go away? I don't have time for this. I trust you and I will take the poison from the cellar. I hope you are right.",
       go_to = 'end',
       callback = function()
         self.control.data.leave_rats_be = true
+        self.control.data.rats_quest_complete = true
       end
     },
     hunt_them_yourself = {
