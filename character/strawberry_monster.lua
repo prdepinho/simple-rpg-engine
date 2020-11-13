@@ -15,8 +15,8 @@ function StrawberryMonster:new(o, control)
 end
 
 function StrawberryMonster:create()
-  self.data.animation = "strawberry_monster"
   Character.create(self)
+  self.data.skin = "strawberry_monster"
 end
 
 

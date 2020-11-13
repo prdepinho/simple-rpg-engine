@@ -15,8 +15,8 @@ function RatKing:new(o, control)
 end
 
 function RatKing:create()
+  self.data.skin = "rat_king"
   Rat.create(self)
-  self.data.animation = "rat_king"
 
   local stats = self.data.stats
   stats.name = "Mss. Laffevre"

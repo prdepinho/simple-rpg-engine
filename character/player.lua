@@ -15,6 +15,8 @@ function Player:new(o, control)
 end
 
 function Player:create()
+  self.data.skin = "cat_girl"
+  self.data.mini_skin = 'cat_girl_mini'
   self.data.animation = "cat_girl"
   sfml_set_character_skin(self.name, self.data.animation)
   self.data.enemy = false

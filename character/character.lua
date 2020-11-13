@@ -16,7 +16,10 @@ function Character:new(o, control)
 end
 
 function Character:create()
-  self.data.animation = "human_male"
+  self.data.skin = self.data.skin or "human_male"
+  self.data.mini_skin = self.data.mini_skin or 'human_mini'
+
+  self.data.animation = self.data.skin
   self.data.enemy = false
   self.data.npc = true
   self.data.stats = rules.new_character()
@@ -24,6 +27,23 @@ end
 
 function Character:set_skin(skin)
   self.data.animation = skin
+  self.data.skin = skin
+  sfml_set_character_skin(self.name, self.data.animation)
+end
+
+function Character:set_mini_skin(skin)
+  self.data.animation = skin
+  self.data.mini_skin = skin
+  sfml_set_character_skin(self.name, self.data.animation)
+end
+
+function Character:change_to_mini_skin()
+  self.data.animation = self.data.mini_skin
+  sfml_set_character_skin(self.name, self.data.animation)
+end
+
+function Character:change_to_regular_skin()
+  self.data.animation = self.data.skin
   sfml_set_character_skin(self.name, self.data.animation)
 end
 

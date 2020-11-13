@@ -1,18 +1,29 @@
 
 package.path = package.path .. ";../maps/?.lua"
-require "common"
+local Map = require "map"
 
-local M = {}
+local Overworld = Map:new()
 
-M.door = door
-
-function M.create()
+function Overworld:new(o, control)
+  o = o or Map:new(o, control)
+  setmetatable(o, self)
+  self.__index = self
+  return o
 end
 
-function M.enter()
+function Overworld:create()
+  Map.create(self)
 end
 
-function M.exit()
+function Overworld:enter()
+  Map.enter(self)
+  local player = self.control.characters.player
+  player:change_to_mini_skin()
 end
 
-return M
+function Overworld:exit()
+  Map.exit(self)
+  self.control.characters.player:change_to_regular_skin()
+end
+
+return Overworld

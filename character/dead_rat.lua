@@ -15,13 +15,11 @@ function DeadRat:new(o, control)
 end
 
 function DeadRat:create()
+  self.data.skin = "rat"
   Rat.create(self)
-  self.data.animation = "rat"
   self.data.stats.current_hp = 0
   self.control:kill_character(self.name)
 end
-
-animation = "rat"
 
 
 return DeadRat

@@ -15,8 +15,8 @@ function ComeInnKeeper:new(o, control)
 end
 
 function ComeInnKeeper:create()
+  self.data.skin = "inn_keeper"
   Character.create(self)
-  self.data.animation = "inn_keeper"
 
   local stats = self.data.stats
   stats.name = "Marshal"
@@ -30,6 +30,10 @@ function ComeInnKeeper:create()
     wis = 13,
     cha = 13,
   })
+end
+
+function ComeInnKeeper:on_death()
+  self.control.data.come_inn_ruined = true
 end
 
 function ComeInnKeeper:on_interact(interactor_name)

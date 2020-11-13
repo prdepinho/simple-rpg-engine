@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="8" height="8" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="5">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="8" height="8" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="6">
  <properties>
   <property name="for_of_war" type="bool" value="false"/>
   <property name="vision_radius" type="int" value="5"/>
@@ -108,5 +108,11 @@
   </object>
   <object id="3" name="counter" x="33.3333" y="50" width="76.6667" height="11"/>
   <object id="4" name="front_of_door" x="50.3333" y="66.5" width="43.5" height="43.75"/>
+  <object id="5" name="guard4" x="26.25" y="43.25">
+   <properties>
+    <property name="type" value="city_guard"/>
+   </properties>
+   <point/>
+  </object>
  </objectgroup>
 </map>

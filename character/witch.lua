@@ -15,8 +15,8 @@ function Witch:new(o, control)
 end
 
 function Witch:create()
+  self.data.skin = "witch"
   Character.create(self)
-  self.data.animation = "witch"
 end
 
 

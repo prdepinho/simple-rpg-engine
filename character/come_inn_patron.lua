@@ -15,8 +15,8 @@ function ComeInnPatron:new(o, control)
 end
 
 function ComeInnPatron:create()
+  self.data.skin = "hobo"
   Character.create(self)
-  self.data.animation = "hobo"
 
   local stats = self.data.stats
   stats.name = "Grasshopper"

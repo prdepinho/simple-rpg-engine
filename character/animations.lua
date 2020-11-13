@@ -12,6 +12,45 @@ local defaults = {
   }
 }
 
+local mini_animation = {
+  stand = {
+    fps = 1,
+    frames = { 0 }
+  },
+  walk = {
+    fps = 4,
+    frames = { 0, 1, 0, 1 }
+  },
+  attack = {
+    fps = 1,
+    frames = { 0 }
+  },
+  use = {
+    fps = 1,
+    frames = { 0 }
+  },
+  cast = {
+    fps = 1,
+    frames = { 0 }
+  },
+  hurt = {
+    fps = 1,
+    frames = { 0 }
+  },
+  down = {
+    fps = 1,
+    frames = { 0 }
+  },
+  dead = {
+    fps = 1,
+    frames = { 0 }
+  },
+  fear = {
+    fps = 1,
+    frames = { 0 }
+  },
+}
+
 local basic_animation = {
   stand = {
     fps = 1,
@@ -61,6 +100,14 @@ animations.types = {
     },
     animations = basic_animation
   },
+  human_mini = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 16,
+      y = 16 * 0
+    },
+    animations = mini_animation
+  },
   human_female = {
     basic = defaults,
     coordinates = {
@@ -92,6 +139,14 @@ animations.types = {
       y = 16 * 4
     },
     animations = basic_animation
+  },
+  cat_girl_mini = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 16,
+      y = 16 * 4
+    },
+    animations = mini_animation
   },
   evana = {
     basic = defaults,

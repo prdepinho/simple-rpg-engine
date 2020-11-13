@@ -15,8 +15,8 @@ function BunnyGirl:new(o, control)
 end
 
 function BunnyGirl:create()
+  self.data.skin = "bunny_girl"
   Character.create(self)
-  self.data.animation = "bunny_girl"
 end
 
 

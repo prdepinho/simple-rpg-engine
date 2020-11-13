@@ -15,8 +15,8 @@ function PoisonSalesman:new(o, control)
 end
 
 function PoisonSalesman:create()
+  self.data.skin = "trenchcoat"
   Character.create(self)
-  self.data.animation = "trenchcoat"
 
   local stats = self.data.stats
   stats.name = "Picard"
@@ -30,6 +30,10 @@ function PoisonSalesman:create()
     wis = 10,
     cha = 14,
   })
+end
+
+function PoisonSalesman:on_death()
+  self.control.data.stop_poison_supply = true
 end
 
 function PoisonSalesman:on_interact(interactor_name)

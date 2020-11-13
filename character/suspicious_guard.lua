@@ -15,8 +15,8 @@ function SuspiciousGuard:new(o, control)
 end
 
 function SuspiciousGuard:create()
+  self.data.skin = "viking"
   CityGuard.create(self)
-  self.data.animation = "viking"
 end
 
 function SuspiciousGuard:on_interact(interactor_name)
