@@ -707,7 +707,7 @@ public:
 	static int sfml_get_characters_in_sight(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		std::string character_name = lua_tostring(state, -2);
-		int radius = lua_tointeger(state, -1);
+		int radius = (int)lua_tointeger(state, -1);
 
 		Character *center_character = screen->get_character_by_name(character_name);
 		auto center = screen->character_position(*center_character);
@@ -1072,9 +1072,15 @@ public:
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		std::string character_name = lua_tostring(state, -2);
 		std::string skin = lua_tostring(state, -1);
-
 		Character *character = screen->get_character_by_name(character_name);
 		character->set_skin(skin);
+		return 1;
+	}
+
+	static int sfml_set_turns_per_second(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		float tps = (float)lua_tonumber(state, -1);
+		screen->set_turn_duration(1.f / tps);
 		return 1;
 	}
 
@@ -1141,6 +1147,7 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_set_player_control", LuaFunction::sfml_set_player_control);
 	lua_register(lua.get_state(), "sfml_is_player_in_control", LuaFunction::sfml_is_player_in_control);
 	lua_register(lua.get_state(), "sfml_set_character_skin", LuaFunction::sfml_set_character_skin);
+	lua_register(lua.get_state(), "sfml_set_turns_per_second", LuaFunction::sfml_set_turns_per_second);
 
 
 }

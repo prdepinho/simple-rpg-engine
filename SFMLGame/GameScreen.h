@@ -56,6 +56,8 @@ public:
 	Character *get_player_character() { return player_character; }
 	std::vector<Character*> get_characters() { return characters; }
 
+	void set_turn_duration(float duration) { turn_duration = duration; }
+
 private:
 	void load_map();
 
