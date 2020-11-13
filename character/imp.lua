@@ -15,8 +15,8 @@ function Imp:new(o, control)
 end
 
 function Imp:create()
-  self.data.skin = "imp"
   Character.create(self)
+  self:set_skin("imp")
 end
 
 

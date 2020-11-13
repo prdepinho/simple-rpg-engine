@@ -15,8 +15,8 @@ function Ranger:new(o, control)
 end
 
 function Ranger:create()
-  self.data.skin = "ranger"
   Character.create(self)
+  self:set_skin("ranger")
   self.data.enemy = true
   self.data.stats = rules.new_character()
 

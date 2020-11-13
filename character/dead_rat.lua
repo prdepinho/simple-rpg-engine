@@ -15,8 +15,8 @@ function DeadRat:new(o, control)
 end
 
 function DeadRat:create()
-  self.data.skin = "rat"
   Rat.create(self)
+  self:set_skin("rat")
   self.data.stats.current_hp = 0
   self.control:kill_character(self.name)
 end

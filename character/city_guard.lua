@@ -15,8 +15,8 @@ function CityGuard:new(o, control)
 end
 
 function CityGuard:create()
-  self.data.skin = "viking"
   Character.create(self)
+  self:set_skin("viking")
 
   local stats = self.data.stats
   stats.name = "City Guard"

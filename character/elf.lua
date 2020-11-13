@@ -15,8 +15,8 @@ function Elf:new(o, control)
 end
 
 function Elf:create()
-  self.data.skin = "elf"
   Character.create(self)
+  self:set_skin("elf")
 
   self.data.enemy = false
 

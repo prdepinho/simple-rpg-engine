@@ -15,8 +15,8 @@ function Evana:new(o, control)
 end
 
 function Evana:create()
-  self.data.skin = "evana"
   Character.create(self)
+  self:set_skin("evana")
 end
 
 

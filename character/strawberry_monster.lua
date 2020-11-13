@@ -16,7 +16,7 @@ end
 
 function StrawberryMonster:create()
   Character.create(self)
-  self.data.skin = "strawberry_monster"
+  self:set_skin("strawberry_monster")
 end
 
 

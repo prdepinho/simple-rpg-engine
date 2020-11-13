@@ -15,8 +15,8 @@ function PoisonSalesman:new(o, control)
 end
 
 function PoisonSalesman:create()
-  self.data.skin = "trenchcoat"
   Character.create(self)
+  set:set_skin("trenchcoat")
 
   local stats = self.data.stats
   stats.name = "Picard"

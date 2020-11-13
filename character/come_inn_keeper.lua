@@ -15,8 +15,8 @@ function ComeInnKeeper:new(o, control)
 end
 
 function ComeInnKeeper:create()
-  self.data.skin = "inn_keeper"
   Character.create(self)
+  self:set_skin("inn_keeper")
 
   local stats = self.data.stats
   stats.name = "Marshal"

@@ -15,8 +15,8 @@ function ComeInnWaitress:new(o, control)
 end
 
 function ComeInnWaitress:create()
-  self.data.skin = "bunny_girl"
   Character.create(self)
+  self:set_skin("bunny_girl")
 
   local stats = self.data.stats
   stats.name = "Debbie"
