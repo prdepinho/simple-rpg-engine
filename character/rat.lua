@@ -15,9 +15,8 @@ function Rat:new(o, control)
 end
 
 function Rat:create()
-  self.data.skin = "rat"
+  self.data.skin = self.data.skin or "rat"
   Character.create(self)
-  self.data.enemy = false
 
   local stats = self.data.stats
   stats.name = "Rat"
