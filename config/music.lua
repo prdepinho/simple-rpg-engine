@@ -6,4 +6,6 @@ music = {
   "marching.wav",
   "dungeon.wav",
   "death.wav",
+  "crystal.wav",
+  "get_crystal.wav",
 }

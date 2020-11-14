@@ -588,6 +588,17 @@ public:
 		return 1;
 	}
 
+	static int sfml_stop_music(lua_State *state) {
+		try {
+			Resources::stop_music();
+		}
+		catch (ResourcesException &e) {
+			Log("%s", e.what());
+			Resources::play_sound(Default::SOUND);
+		}
+		return 1;
+	}
+
 	static int sfml_change_floor_texture(lua_State *state) {
 		// map.change_floor_texture(tile_x, tile_y, 2, tile.open_coords.x, tile.open_coords.y);
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
@@ -1111,6 +1122,7 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_play_sound", LuaFunction::sfml_play_sound);
 	lua_register(lua.get_state(), "sfml_play_music", LuaFunction::sfml_play_music);
 	lua_register(lua.get_state(), "sfml_loop_music", LuaFunction::sfml_loop_music);
+	lua_register(lua.get_state(), "sfml_stop_music", LuaFunction::sfml_stop_music);
 	lua_register(lua.get_state(), "sfml_change_floor_texture", LuaFunction::sfml_change_floor_texture);
 	lua_register(lua.get_state(), "sfml_change_ceiling_texture", LuaFunction::sfml_change_ceiling_texture);
 	lua_register(lua.get_state(), "sfml_text_box", LuaFunction::sfml_text_box);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="16">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="17">
  <properties>
   <property name="for_of_war" type="bool" value="false"/>
   <property name="vision_radius" type="int" value="5"/>
@@ -69,7 +69,7 @@
 0,0,147,0,147,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,147,0,145,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,129,0,0,0,0,
+0,0,0,0,0,0,0,0,0,255,0,0,0,0,0,129,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,145,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -250,6 +250,11 @@
     <property name="key" value=""/>
     <property name="locked" type="bool" value="false"/>
     <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="16" name="hit_die" x="145.364" y="225.273" width="13.9091" height="13.6364">
+   <properties>
+    <property name="type" value="hit_die"/>
    </properties>
   </object>
  </objectgroup>

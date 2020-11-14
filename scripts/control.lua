@@ -193,7 +193,7 @@ function Control:set_ability_scores(name, str, dex, con, int, wis, cha)
   rules.set_ability_scores(character.stats, str, dex, con, int, wis, cha)
 end
 
-function Control:level_up(name, total_hp)
+function Control:level_up(name)
   local character = self.characters[name].data
   rules.level_up(character.stats)
 end

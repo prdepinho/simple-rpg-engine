@@ -137,6 +137,17 @@ function Map:set_objects()
               end
             end
           end
+        elseif object.properties.type == 'hit_die' then
+          if event == 'interact' and character_name == 'player' and not object.properties.taken then
+            sfml_play_music("get_crystal.wav")
+            self.control:level_up('player')
+            sfml_text_box(self.control.characters.player.data.stats.name .. " gained a hit die! Your total hit points increased.")
+            object.properties.taken = true
+            for index, coords in ipairs(object.coords) do
+              sfml_change_floor_texture(coords.x, coords.y, 2, 0, 0)
+              sfml_set_obstacle(false, coords.x, coords.y)
+            end
+          end
         end
       end
 
@@ -169,11 +180,31 @@ function Map:enter()
         local y = object.coords[1].y
         self:open_tile(x, y, object)
       end
+
+    elseif object.properties.type == 'hit_die' then
+      if not object.properties.taken then
+        sfml_loop_music("crystal.wav")
+        for index, coords in ipairs(object.coords) do
+          sfml_set_obstacle(true, coords.x, coords.y)
+        end
+      else
+        for index, coords in ipairs(object.coords) do
+          sfml_change_floor_texture(coords.x, coords.y, 2, 0, 0)
+          sfml_set_obstacle(false, coords.x, coords.y)
+        end
+      end
     end
   end
 end
 
 function Map:exit()
+  for object_name, object in pairs(self.data.objects) do
+    if object.properties.type == 'hit_die' then
+      if not object.properties.taken then
+        sfml_stop_music()
+      end
+    end
+  end
 end
 
 

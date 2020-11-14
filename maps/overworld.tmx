@@ -125,7 +125,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="6" name="obstacle" width="20" height="20">
+ <layer id="6" name="obstacle" width="20" height="20" visible="0">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,
@@ -149,7 +149,7 @@
 2,2,2,2,2,2,2,2,2,2,0,0,0,2,2,0,0,0,0,0
 </data>
  </layer>
- <layer id="7" name="invisible" width="20" height="20">
+ <layer id="7" name="invisible" width="20" height="20" visible="0">
   <data encoding="csv">
 0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,4,4,4,
 0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,4,4,4,4,
@@ -175,8 +175,8 @@
  </layer>
  <objectgroup id="8" name="objects">
   <object id="1" name="castrum" x="241.75" y="66.5" width="11.75" height="11"/>
-  <object id="3" name="temple" x="82" y="209.75" width="11.25" height="12.25"/>
-  <object id="4" name="agros" x="242.25" y="226" width="11.25" height="12.75"/>
+  <object id="3" name="templum" x="82" y="209.75" width="11.25" height="12.25"/>
+  <object id="4" name="ager" x="242.25" y="226" width="11.25" height="12.75"/>
   <object id="6" name="polis" x="210.375" y="50.286" width="10.875" height="11.6364">
    <properties>
     <property name="destiny" value="polis:entrance"/>

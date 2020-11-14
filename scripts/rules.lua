@@ -260,6 +260,7 @@ function rules.level_up(stats)
     rules.set_max_hit_points(stats, stats.total_hp + 3 + rules.ability_modifier[stats.ability.con])
   end
   stats.level = stats.level + 1
+  sfml_refresh_overlay()
 end
 
 function rules.set_max_hit_points(stats, total_hp)

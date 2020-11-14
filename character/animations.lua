@@ -268,6 +268,14 @@ animations.types = {
     },
     animations = basic_animation
   },
+  santa = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 20
+    },
+    animations = basic_animation
+  },
 }
 
 return animations

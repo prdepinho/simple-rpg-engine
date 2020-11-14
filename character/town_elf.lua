@@ -25,8 +25,11 @@ function TownElf:on_interact(interactor_name)
     local dialogue = {
       start = {
         text = "Welcome to Normindia.",
-        callback = function() self.data.interacted = true end,
-        go_to = "end"
+        go_to = "end",
+        callback = function()
+          self.data.interacted = true 
+          self.control:level_up('player')
+        end
       }
     }
     sfml_dialogue(dialogue)
