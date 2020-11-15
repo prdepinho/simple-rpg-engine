@@ -318,8 +318,12 @@ void GameScreen::control_move_up() {
 				schedule_character_attack(*player_character, *target);
 			}
 			else {
+#if false
 				auto *action = new InteractionAction(player_character, dst_x, dst_y);
 				player_character->schedule_action(action);
+#else
+				interact_character(*player_character, dst_x, dst_y);
+#endif
 			}
 		}
 		player_busy = true;
@@ -342,8 +346,12 @@ void GameScreen::control_move_down() {
 				schedule_character_attack(*player_character, *target);
 			}
 			else {
+#if false
 				auto *action = new InteractionAction(player_character, dst_x, dst_y);
 				player_character->schedule_action(action);
+#else
+				interact_character(*player_character, dst_x, dst_y);
+#endif
 			}
 		}
 		player_busy = true;
@@ -366,8 +374,12 @@ void GameScreen::control_move_left() {
 				schedule_character_attack(*player_character, *target);
 			}
 			else {
+#if false
 				auto *action = new InteractionAction(player_character, dst_x, dst_y);
 				player_character->schedule_action(action);
+#else
+				interact_character(*player_character, dst_x, dst_y);
+#endif
 			}
 		}
 		player_busy = true;
@@ -390,8 +402,12 @@ void GameScreen::control_move_right() {
 				schedule_character_attack(*player_character, *target);
 			}
 			else {
+#if false
 				auto *action = new InteractionAction(player_character, dst_x, dst_y);
 				player_character->schedule_action(action);
+#else
+				interact_character(*player_character, dst_x, dst_y);
+#endif
 			}
 		}
 		player_busy = true;
@@ -620,8 +636,12 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			// do
 			{
 				auto position = character_position(*player_character);
+#if false
 				auto *action = new InteractionAction(player_character, position.x, position.y);
 				player_character->schedule_action(action);
+#else
+				interact_character(*player_character, position.x, position.y);
+#endif
 				player_busy = true;
 			}
 			break;
@@ -1069,8 +1089,12 @@ void GameScreen::schedule_character_movement(Character &character, int tile_x, i
 }
 
 void GameScreen::schedule_character_interaction(Character &character, int tile_x, int tile_y) {
+#if false
 	auto *action = new InteractionAction(&character, tile_x, tile_y);
 	character.schedule_action(action);
+#else
+	interact_character(*player_character, tile_x, tile_y);
+#endif
 }
 
 void GameScreen::schedule_character_attack(Character &attacker, Character &defender) {
