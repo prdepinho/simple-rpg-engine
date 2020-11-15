@@ -30,6 +30,7 @@ function RatKing:create()
   })
   rules.level_up(stats)
   stats.inventory[1] = {code = "Rat queen's treasure", name = "money", type = "item", quantity = 3 }
+  stats.inventory[2] = {code = "armory_key", name = "armory_key", type = "item" }
 end
 
 function RatKing:on_interact(interactor_name)
@@ -116,8 +117,9 @@ function RatKing:on_interact(interactor_name)
       text = "May the blessings of Karni Mata be upon you, my savior! You are a friend to the rats and let it be published for all the world to know. Please, accept this from my personal treasure.",
       go_to = 'end',
       callback = function()
-        self.control:spend_money(self.name, 3, 'player')
-        self.control:add_item_to_inventory('player', 'karni_mata_blessing', 'poison', 'spell', 5)
+        -- self.control:spend_money(self.name, 3, 'player')
+        -- self.control:add_item_to_inventory('player', 'karni_mata_blessing', 'poison', 'spell', 5)
+        self.control:add_item_to_inventory('player', 'armory_key', 'armory_key', 'item')
         self.control.data.got_rats_reward = true
         self.control.data.rats_quest_complete = true
       end

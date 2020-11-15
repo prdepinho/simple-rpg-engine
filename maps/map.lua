@@ -139,6 +139,7 @@ function Map:set_objects()
           end
         elseif object.properties.type == 'hit_die' then
           if event == 'interact' and character_name == 'player' and not object.properties.taken then
+            sfml_start_animation('player', 'cast')
             sfml_play_music("get_crystal.wav")
             self.control:level_up('player')
             sfml_text_box(self.control.characters.player.data.stats.name .. " gained a hit die! Your total hit points increased.")

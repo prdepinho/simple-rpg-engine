@@ -33,16 +33,31 @@ function ComeInnPatron:create()
 end
 
 function ComeInnPatron:on_interact(interactor_name)
-  local dialogue = {
-    start = {
-      text = "The cheese of this place is delicious.",
-      go_to = "end",
-      callback = function()
-        self.control.data.know_cheese_fame = true
-      end
+  if not self.data.next_dialogue then
+    local dialogue = {
+      start = {
+        text = "The cheese of this place is delicious.",
+        go_to = "end",
+        callback = function()
+          self.control.data.know_cheese_fame = true
+        end
+      }
     }
-  }
-  sfml_dialogue(dialogue)
+    sfml_dialogue(dialogue)
+    self.data.next_dialogue = true
+  else
+    local dialogue = {
+      start = {
+        text = "Once I had been bitten by a rat and felt horrible. I thought I was going to die. Then, a morcel of this god-given cheese and I was fine. This is a true life saver.",
+        go_to = "end",
+        callback = function()
+          self.control.data.know_cheese_fame = true
+        end
+      }
+    }
+    sfml_dialogue(dialogue)
+    self.data.next_dialogue = false
+  end
 end
 
 
