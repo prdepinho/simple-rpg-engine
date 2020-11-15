@@ -96,6 +96,11 @@ Component *LoadGameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			button_index = 0;
 		select(buttons[button_index]);
 		break;
+
+	case Control::B:
+	case Control::START:
+		game->change_to_main_menu_screen();
+		break;
 	}
 
 	switch (event.type) {

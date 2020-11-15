@@ -198,6 +198,7 @@ Component *ItemContextMenu::on_key_pressed(sf::Keyboard::Key key) {
 		get_screen()->select(buttons[cursor]);
 		return this;
 
+	case Control::START:
 	case Control::B:
 		call_functions(this);
 		get_screen()->remove_component(*this);

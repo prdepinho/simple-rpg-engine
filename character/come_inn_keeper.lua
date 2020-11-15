@@ -30,6 +30,8 @@ function ComeInnKeeper:create()
     wis = 13,
     cha = 13,
   })
+
+  self.data.stats.inventory[8] = {code = "inn_keeper's money", name = "money", type = "item", quantity = 5 }
 end
 
 function ComeInnKeeper:on_death()

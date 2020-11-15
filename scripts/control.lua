@@ -14,7 +14,7 @@ local start_game_map = 'polis'
 local Control = {
 
   player_map = start_game_map,
-  player_position = nil,
+  player_position = { x = 4, y = 16 },
 
   item_code = 0,
 
@@ -38,6 +38,7 @@ function Control:new(o)
   self.__index = self
   self.magic = Magic:new(nil, o)
   math.randomseed(os.time())
+
   return o
 end
 
@@ -774,11 +775,8 @@ function Control:save_game(filename, title)
   data.title = title
   -- data.player_position = sfml_get_player_position()
   data.map_data = self.loaded_map_data
-  data.character_data = {}
 
-  for name, character in pairs(self.characters) do
-    data.character_data[name] = character.data
-  end
+  data.character_data = self.loaded_character_data
 
   data.data = self.data
 
@@ -821,27 +819,38 @@ function Control:item_stats(name, item_type)
 end
 
 function Control:character_stats(name)
-  return self.characters[name].data.stats
+  return self.loaded_character_data[name].stats
 end
 
 function Control:character_base_ac(name)
-  local stats = self.characters[name].data.stats
+  local stats = self.loaded_character_data[name].stats
   return rules.base_armor_class(stats)
 end
 
 function Control:character_base_to_hit(name)
-  local stats = self.characters[name].data.stats
+  local stats = self.loaded_character_data[name].stats
   return rules.base_to_hit(stats)
 end
 
 function Control:character_base_damage_bonus(name)
-  local stats = self.characters[name].data.stats
+  local stats = self.loaded_character_data[name].stats
   return rules.base_damage_bonus(stats)
 end
 
-function Control:add_character(script, name)
+function Control:insert_character(type, name, x, y)
+  if not self:is_character_removed(name) then
+    sfml_add_character(type, name, x, y)
+  end
+end
+
+function Control:add_character(type, name)
+  if self.loaded_character_data[name] and self.loaded_character_data[name].removed then
+    print('character ' .. name .. ' is removed')
+    return
+  end
+
   if self.character_modules[name] == nil then
-    self.character_modules[name] = require(script)
+    self.character_modules[name] = require(type)
   end
 
 
@@ -852,6 +861,7 @@ function Control:add_character(script, name)
       self.characters[name].data = self.loaded_character_data[name]
     else
       self.characters[name].data = {}
+      self.loaded_character_data[name] = self.characters[name].data
     end
 
     self.characters[name].name = name
@@ -893,8 +903,8 @@ end
 
 function Control:is_character_removed(name)
   local removed = false
-  if self.characters[name] then
-    removed = self.characters[name].data.removed
+  if self.loaded_character_data[name] then
+    removed = self.loaded_character_data[name].removed
   end
   return removed
 end

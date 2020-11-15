@@ -75,6 +75,7 @@ function PoisonSalesman:on_interact(interactor_name)
       text = "Why would you ask me that?",
       options = {
         { text = "Never mind.", go_to = 'end' },
+        { text = "He is poisoning the cheese.", go_to = 'poisoning' },
       }
     },
     poisoning = {
@@ -108,9 +109,6 @@ function PoisonSalesman:on_interact(interactor_name)
   if not self.control.data.come_inn_ruined then
     if self.control.data.talk_to_picard and self.control.data.decided_to_help_rats then
       table.insert(dialogue.start.options, { text = "Please, stop supplying poison to the inn.", go_to = 'stop_supply' })
-    end
-    if self.control.characters.player.data.stats.ability.cha >= 13 then
-      table.insert(dialogue.stop_supply.options, { text = "(Cha 13) He is poisoning the cheese.", go_to = 'poisoning' })
     end
   end
 

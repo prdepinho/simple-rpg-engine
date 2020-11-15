@@ -22,8 +22,8 @@ function RatLair:enter()
   if self.control.data.served_inn then
     local x = self.data.objects.inn_keeper_place.coords[1].x
     local y = self.data.objects.inn_keeper_place.coords[1].y
-    sfml_add_character('come_inn_keeper', 'come_inn_keeper', x, y)
-    if not self.control.characters.come_inn_keeper.data.stats.status.dead then 
+    self.control:insert_character('come_inn_keeper', 'come_inn_keeper', x, y)
+    if not self.control.loaded_character_data.come_inn_keeper.stats.status.dead then 
       self.control:kill_character('come_inn_keeper')
     end
   end
