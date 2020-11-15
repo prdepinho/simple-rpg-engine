@@ -184,6 +184,7 @@ Component *SaveOptionMenu::on_key_pressed(sf::Keyboard::Key key) {
 		get_screen()->select(buttons[button_index]);
 		return this;
 
+	case Control::START:
 	case Control::B:
 		call_functions(this);
 		get_screen()->remove_component(*this);
@@ -332,6 +333,7 @@ Component *SavePanel::on_key_pressed(sf::Keyboard::Key key) {
 		get_screen()->select(buttons[button_index]);
 		return this;
 
+	case Control::START:
 	case Control::B:
 		call_functions(this);
 		get_screen()->remove_component(*this);

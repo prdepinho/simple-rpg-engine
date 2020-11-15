@@ -18,10 +18,10 @@ end
 function ComeInn:enter()
   Map.enter(self)
   if self.control.data.come_inn_ruined then
-    self.control:remove_character('come_inn_keeper')
-    self.control:remove_character('come_inn_waitress')
-    self.control:remove_character('come_inn_patron')
-    self.control:remove_character('guard3')
+    sfml_remove_character('come_inn_keeper')
+    sfml_remove_character('come_inn_waitress')
+    sfml_remove_character('come_inn_patron')
+    sfml_remove_character('guard3')
   end
 end
 
@@ -42,7 +42,7 @@ end
 
 function ComeInn:inn_counter(event, x, y, character_name, object_name)
   if character_name == 'player' then
-    if event == 'interact' then
+    if event == 'interact' and not self.control.data.come_inn_ruined then
       local inn_keeper = self.control.characters.come_inn_keeper
       if not inn_keeper.data.stats.status.dead then
         inn_keeper:on_interact(character_name)

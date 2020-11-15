@@ -40,25 +40,6 @@ function RatKing:on_interact(interactor_name)
         { text = "I must be going.", go_to = 'end' },
       }
     },
-    quest = {
-      text = "Have you come to help my children? I beg of you, my children are being poisoned. They are dying and I do not know that is causing this. Help me! I will give you my treasure.",
-      options = {
-        { text = "I will dispose of the poison for you.", go_to = 'help' },
-        { text = "You have to leave.", go_to = 'leave' },
-        { text = "Your infestation will end here.", go_to = 'kill' },
-      }
-    },
-    help = {
-      text = "Thank you. Come back when you are finished.",
-      go_to = 'end',
-      callback = function() self.control.data.decided_to_help_rats = true end
-    },
-    leave = {
-      text = "Leave? But where?",
-      options = {
-        { text = "I don't know.", go_to = 'dont_know' },
-      },
-    },
     kill = {
       text = "I knew I shouldn't trust a cat. Come my children! Protect your mother!",
       go_to = 'end',
@@ -72,11 +53,66 @@ function RatKing:on_interact(interactor_name)
         self.control.characters.rat_king.data.enemy = true
       end
     },
-    dont_know = {
+  }
+
+  if self.control.data.decided_to_help_rats then
+    dialogue.start.text = "Have you dealt with the poison yet?"
+  end
+
+  if self.control.data.got_rats_reward then
+    dialogue.start.text = "Welcome back, my friend."
+  end
+
+  if self.control.data.served_inn and not self.control.data.got_rats_reward then
+    dialogue.start.text = "Welcome back, my friend. It is a glorious day for us. We have defeated our hated enemy and now we can live in peace."
+    self.control.data.got_rats_reward = true
+  end
+
+
+  if self.control.data.rats_quest_accepted and not self.control.data.decided_to_help_rats then
+    table.insert(dialogue.start.options, { text = "I have the message. Is this the place?", go_to = 'quest' })
+    dialogue.quest = {
+      text = "Have you come to help my children? I beg of you, my children are being poisoned. They are dying and I do not know that is causing this. Help me! I will give you my treasure.",
+      options = {
+        { text = "I will dispose of the poison for you.", go_to = 'help' },
+        { text = "You have to leave.", go_to = 'leave' },
+        { text = "Your infestation will end here.", go_to = 'kill' },
+      }
+    }
+    dialogue.help = {
+      text = "Thank you. Come back when you are finished.",
+      go_to = 'end',
+      callback = function() self.control.data.decided_to_help_rats = true end
+    }
+    dialogue.leave = {
+      text = "Leave? But where?",
+      options = {
+        { text = "I don't know.", go_to = 'dont_know' },
+      },
+    }
+    if self.control.data.thieves_guild_member then
+      table.insert(dialogue.leave.options, { text = "Go to the thieves' guild.", go_to = 'go_to_thieves_guild' })
+    end
+    dialogue.dont_know = {
       text = "This is the only place we have.",
       go_to = 'end'
-    },
-    stopped_poison_supply = {
+    }
+    dialogue.go_to_thieves_guild = {
+      text = "Are you sure about that? Alright, I'll talk to the others. Babies! We have a new home. Let's go.",
+      go_to = 'end',
+      callback = function()
+        self.control.data.rats_in_the_guild = true
+      end
+    }
+  end
+
+  if self.control.data.kill_rats_myself then 
+    table.insert(dialogue.start.options, { text = "You pests rot in hell.", go_to = 'kill' })
+  end
+
+  if self.control.data.stop_poison_supply and not self.control.data.got_rats_reward then
+    table.insert(dialogue.start.options, { text = "I have stopped the poison supply.", go_to = 'stopped_poison_supply' })
+    dialogue.stopped_poison_supply = {
       text = "May the blessings of Karni Mata be upon you, my savior! You are a friend to the rats and let it be published for all the world to know. Please, accept this from my personal treasure.",
       go_to = 'end',
       callback = function()
@@ -85,8 +121,12 @@ function RatKing:on_interact(interactor_name)
         self.control.data.got_rats_reward = true
         self.control.data.rats_quest_complete = true
       end
-    },
-    convinced = {
+    }
+  end
+
+  if self.control.data.leave_rats_be and not self.control.data.got_rats_reward then
+    table.insert(dialogue.start.options, { text = "I convinced the innkeeper to leave you alone.", go_to = 'convinced' })
+    dialogue.convinced = {
       text = "Thank you, my friend. I won't forget what you did for my people.",
       go_to = 'end',
       callback = function()
@@ -95,29 +135,6 @@ function RatKing:on_interact(interactor_name)
         self.control.data.rats_quest_complete = true
       end
     }
-  }
-
-  if self.control.data.rats_quest_accepted and not self.control.data.decided_to_help_rats then
-    table.insert(dialogue.start.options, { text = "I have the message. Is this the place?", go_to = 'quest' })
-  end
-  if self.control.data.decided_to_help_rats then
-    dialogue.start.text = "Have you dealt with the poison yet?"
-  end
-  if self.control.data.kill_rats_myself then 
-    table.insert(dialogue.start.options, { text = "You pests rot in hell.", go_to = 'kill' })
-  end
-  if self.control.data.stop_poison_supply and not self.control.data.got_rats_reward then
-    table.insert(dialogue.start.options, { text = "I have stopped the poison supply.", go_to = 'stopped_poison_supply' })
-  end
-  if self.control.data.leave_rats_be and not self.control.data.got_rats_reward then
-    table.insert(dialogue.start.options, { text = "I convinced the innkeeper to leave you alone.", go_to = 'convinced' })
-  end
-  if self.control.data.got_rats_reward then
-    dialogue.start.text = "Welcome back, my friend."
-  end
-  if self.control.data.served_inn and not self.control.data.got_rats_reward then
-    dialogue.start.text = "Welcome back, my friend. It is a glorious day for us. We have defeated our hated enemy and now we can live in peace."
-    self.control.data.got_rats_reward = true
   end
 
   sfml_dialogue(dialogue)

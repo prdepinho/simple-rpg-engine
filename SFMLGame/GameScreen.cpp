@@ -822,6 +822,10 @@ void GameScreen::remove_character(Character *character) {
 		if (character == *it) {
 			if (*it == target)
 				clear_target();
+
+			auto tile = character_position(**it);
+			map.get_tile(tile.x, tile.y).obstacle = false;
+
 			characters.erase(it);
 			delete character;
 			break;

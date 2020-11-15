@@ -1,6 +1,8 @@
 
+package.path = package.path .. ";../scripts/?.lua"
 package.path = package.path .. ";../maps/?.lua"
 local Map = require "map"
+local save = require "save"
 
 local RatLair = Map:new()
 
@@ -13,15 +15,18 @@ end
 
 function RatLair:create()
   Map.create(self)
-  if self.control.data.served_inn then
-    -- self.control:add_character('come_inn_keeper', 'come_inn_keeper')
-    -- self.control:kill_character('come_inn_keeper')
-    -- sfml_put_character_on_tile('come_inn_keeper', 11, 5)
-  end
 end
 
 function RatLair:enter()
   Map.enter(self)
+  if self.control.data.served_inn then
+    local x = self.data.objects.inn_keeper_place.coords[1].x
+    local y = self.data.objects.inn_keeper_place.coords[1].y
+    sfml_add_character('come_inn_keeper', 'come_inn_keeper', x, y)
+    if not self.control.characters.come_inn_keeper.data.stats.status.dead then 
+      self.control:kill_character('come_inn_keeper')
+    end
+  end
 end
 
 function RatLair:exit()

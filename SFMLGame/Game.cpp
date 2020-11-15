@@ -890,8 +890,15 @@ public:
 		std::string type = lua_tostring(state, -3);
 		int x = (int) lua_tointeger(state, -2);
 		int y = (int) lua_tointeger(state, -1);
-		screen->add_character(type, name, x, y);
+		// screen->add_character(type, name, x, y);
 		// _game.get_lua()->add_character(character->get_id(), type, code);
+
+		// game_screen->add_character(type, code, x, y);
+		// _game.get_lua()->add_character(type, code);
+
+		screen->add_character(type, name, x, y);
+		_game.get_lua()->add_character(type, name);
+
 		return 1;
 	}
 

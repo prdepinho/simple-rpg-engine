@@ -36,7 +36,10 @@ function ComeInnPatron:on_interact(interactor_name)
   local dialogue = {
     start = {
       text = "The cheese of this place is delicious.",
-      go_to = "end"
+      go_to = "end",
+      callback = function()
+        self.control.data.know_cheese_fame = true
+      end
     }
   }
   sfml_dialogue(dialogue)

@@ -37,8 +37,8 @@
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,145,0,203,0,0,0,0,0,0,0,0,0,0,0,
-0,0,233,219,99,115,0,0,0,0,0,0,0,232,0,
-0,0,0,0,115,115,0,115,115,0,0,0,117,232,0,
+0,0,233,219,99,115,0,0,0,0,0,0,0,116,0,
+0,0,0,0,115,115,0,115,115,0,0,0,117,101,0,
 0,0,0,117,115,115,0,115,115,0,0,0,117,101,0,
 0,0,0,0,115,115,0,115,115,0,0,0,99,99,0,
 0,101,0,0,115,115,0,115,115,0,216,216,217,217,0,
@@ -122,7 +122,7 @@
     <property name="type" value="door"/>
    </properties>
   </object>
-  <object id="4" name="dead_rat_3" x="185.75" y="73.5">
+  <object id="4" name="dead_rat_3" x="183.5" y="76">
    <properties>
     <property name="type" value="dead_rat"/>
    </properties>
@@ -141,8 +141,7 @@
    <point/>
   </object>
   <object id="7" name="obstacle" x="161.636" y="113.545" width="12.8182" height="12.8182"/>
-  <object id="8" name="poison_sacks" x="209.25" y="33.75" width="12.5" height="28.25"/>
-  <object id="10" name="cheese_wheels" x="162.75" y="97.75" width="59" height="11.25"/>
+  <object id="10" name="cheese_wheels" x="162.75" y="97.75" width="59.5455" height="11.25"/>
   <object id="11" name="wardrobe" x="48.875" y="22.125" width="12.75" height="24.25"/>
   <object id="12" name="front_of_wardrobe" x="35.5" y="49.75" width="26.25" height="28.25"/>
  </objectgroup>

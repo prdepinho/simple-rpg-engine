@@ -16,7 +16,7 @@ end
 
 function PoisonSalesman:create()
   Character.create(self)
-  set:set_skin("trenchcoat")
+  self:set_skin("trenchcoat")
 
   local stats = self.data.stats
   stats.name = "Picard"

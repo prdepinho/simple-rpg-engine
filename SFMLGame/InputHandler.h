@@ -59,14 +59,14 @@ protected:
 		{sf::Keyboard::Enter,		Control::A},
 		{sf::Keyboard::Space,		Control::A},
 
-		{sf::Keyboard::U,			Control::B},
+		{sf::Keyboard::O,			Control::B},
 		{sf::Keyboard::Q,			Control::B},
 		{sf::Keyboard::End,			Control::B},
 		{sf::Keyboard::Numpad1,		Control::B},
 
 		{sf::Keyboard::Add,			Control::SELECT},
 		{sf::Keyboard::E,			Control::SELECT},
-		{sf::Keyboard::O,			Control::SELECT},
+		{sf::Keyboard::U,			Control::SELECT},
 
 		{sf::Keyboard::Tab,			Control::START},
 		{sf::Keyboard::Insert,		Control::START},
@@ -79,9 +79,9 @@ protected:
 		{Control::LEFT,		{sf::Keyboard::Left,		sf::Keyboard::A,			sf::Keyboard::H,		sf::Keyboard::Numpad4}},
 		{Control::RIGHT,	{sf::Keyboard::Right,		sf::Keyboard::D,			sf::Keyboard::L,		sf::Keyboard::Numpad6}},
 		{Control::A,		{sf::Keyboard::Enter,		sf::Keyboard::Space}},
-		{Control::B,		{sf::Keyboard::End,			sf::Keyboard::U,			sf::Keyboard::Q,		sf::Keyboard::Numpad1}},
+		{Control::B,		{sf::Keyboard::End,			sf::Keyboard::O,			sf::Keyboard::Q,		sf::Keyboard::Numpad1}},
 
-		{Control::SELECT,	{sf::Keyboard::E,			sf::Keyboard::O,			sf::Keyboard::Add}},
+		{Control::SELECT,	{sf::Keyboard::E,			sf::Keyboard::U,			sf::Keyboard::Add}},
 		{Control::START,	{sf::Keyboard::I,			sf::Keyboard::Tab,			sf::Keyboard::I,		sf::Keyboard::Numpad0}},
 	};
 private:

@@ -25,8 +25,7 @@ function ComeInnCellar:enter()
     sfml_set_invisible(false, x, y)
   end
   if self.control.data.disposed_of_poison then
-    for index, coords in ipairs(self.data.objects.poison_sacks.coords) do
-      sfml_set_obstacle(false, coords.x, coords.y)
+    for index, coords in ipairs(self.data.objects.cheese_wheels.coords) do
       sfml_change_floor_texture(coords.x, coords.y, 2, 0, 0)
     end
   end
@@ -131,45 +130,18 @@ end
 
 function ComeInnCellar:cheese_wheels(event, x, y, character_name, object_name)
   if character_name == 'player' then
-    if event == 'interact' then
-      local dialogue = {
-        start = {
-          text = "You see stacks of cheese wheel on the table.",
-          options = {
-            { text = "Leave them.", go_to = 'end' },
-            { text = "Take some.", go_to = 'take' },
-          },
-        },
-        take = {
-          text = "You take a slice of cheese for yourself.",
-          go_to = 'end',
-          callback = function()
-            self.control:add_item_to_inventory('player', self.control:next_item_code(), 'poisoned_cheese', 'item', 1)
-            self.control.data.checked_poison = true
-          end
-        }
-      }
-      sfml_dialogue(dialogue)
-    end
-  end
-end
-
-function ComeInnCellar:poison_sacks(event, x, y, character_name, object_name)
-  if character_name == 'player' then
     if event == 'interact' and not self.control.data.disposed_of_poison then
       local object = self.data.objects[object_name]
       local dialogue = {
         start = {
-          text = "There are some sacks of rat poison here.",
+          text = "You see stacks of cheese wheel on the table.",
+          go_to = 'end',
+        },
+        dispose = {
+          text = "You dispose of the cheese wheels.",
           go_to = 'end',
           callback = function()
             self.control.data.checked_poison = true
-          end
-        },
-        dispose = {
-          text = "You dispose of the poison sacks.",
-          go_to = 'end',
-          callback = function()
             self.control.data.disposed_of_poison = true
             for index, coords in ipairs(object.coords) do
               sfml_set_obstacle(false, coords.x, coords.y)
@@ -178,24 +150,34 @@ function ComeInnCellar:poison_sacks(event, x, y, character_name, object_name)
           end
         },
         take = {
-          text = "You separate some poison for yourself and dipose of the bulk you can't carry.",
+          text = "You separate some cheese for yourself and dipose of the bulk you can't carry.",
           go_to = 'end',
           callback = function()
             self.control.data.disposed_of_poison = true
             for index, coords in ipairs(object.coords) do
-              sfml_set_obstacle(false, coords.x, coords.y)
               sfml_change_floor_texture(coords.x, coords.y, 2, 0, 0)
             end
-            self.control:add_item_to_inventory('player', self.control:next_item_code(), 'rat_poison', 'item', 2)
+            self.control:add_item_to_inventory('player', self.control:next_item_code(), 'poisoned_cheese', 'item', 3)
+            self.control.data.checked_poison = true
           end
         }
       }
-      if self.control.data.decided_to_help_rats then
+      if self.control.characters.player.data.stats.ability.wis >= 13 then
+        dialogue.start.text = dialogue.start.text .. " (Wis 13) Looking closely, you notice that the cheese is poisoned."
         dialogue.start.go_to = nil
         dialogue.start.options = {
           { text = "Leave them.", go_to = 'end' },
-          { text = "Dispose of the poison.", go_to = 'dispose' },
-          { text = "Take the poison.", go_to = 'take' },
+          { text = "Dispose of the cheese.", go_to = 'dispose' },
+          { text = "Take the cheese.", go_to = 'take' },
+        }
+      end
+      if self.control.data.decided_to_help_rats then
+        dialogue.start.text = dialogue.start.text .. " The cheese is definitely poisoned."
+        dialogue.start.go_to = nil
+        dialogue.start.options = {
+          { text = "Leave them.", go_to = 'end' },
+          { text = "Dispose of the cheese.", go_to = 'dispose' },
+          { text = "Take the cheese.", go_to = 'take' },
         }
       end
       sfml_dialogue(dialogue)

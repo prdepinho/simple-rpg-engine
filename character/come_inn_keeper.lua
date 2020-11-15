@@ -170,6 +170,30 @@ function ComeInnKeeper:on_interact(interactor_name)
       table.insert(dialogue.poison.options, {text = "(Int 13) You risk poisoning your customers.", go_to = 'risk' })
     end
   end
+  if self.control.data.know_cheese_fame then
+    table.insert(dialogue.start.options, { text = "I would like some of your famous cheese.", go_to = 'buy_cheese' })
+    dialogue.buy_cheese = {
+      text = "Of course. That will be one copper.",
+      options = {
+        { text = "Here you go.", go_to = 'pay' },
+        { text = "Maybe later.", go_to = 'end' },
+      }
+    }
+    dialogue.pay = {
+      text = function()
+        local rval = self.control:spend_money('player', 1, self.name)
+        if rval then
+          local code = self.control:next_item_code()
+          self.control:add_item_to_inventory('player', code, 'cheese', 'item', 1)
+          sfml_play_sound("plim.wav")
+          return "Thank you."
+        else
+          return "Poor kitty. You don't have a copper."
+        end
+      end,
+      go_to = 'end'
+    }
+  end
 
   sfml_dialogue(dialogue)
 end
