@@ -589,9 +589,17 @@ void DialogueBox::next() {
 					OptionButton *button = dynamic_cast<OptionButton*>(c);
 					push_text(button->get_label(), true);
 					go_to = button->get_dst();
-					next();
 					get_screen()->remove_component(options_panel);
 					get_screen()->select(*this);
+
+					if (go_to == "end") {
+						get_screen()->remove_component(*this);
+						get_screen()->select_container();
+						call_functions(this);
+					}
+					else
+						next();
+
 					return true;
 				});
 			}
