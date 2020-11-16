@@ -232,7 +232,7 @@
    </properties>
    <point/>
   </object>
-  <object id="13" name="suspicious_guard" x="252" y="282.333">
+  <object id="13" name="suspicious_guard" x="213.25" y="233.083">
    <properties>
     <property name="type" value="suspicious_guard"/>
    </properties>

@@ -104,7 +104,7 @@
    <properties>
     <property name="item1" value="se_house_magic1:spell:magic_missile:5"/>
     <property name="key" value=""/>
-    <property name="locked" type="bool" value="false"/>
+    <property name="locked" type="bool" value="true"/>
     <property name="open_delta_x" type="int" value="1"/>
     <property name="open_delta_y" type="int" value="0"/>
     <property name="type" value="chest"/>

@@ -204,7 +204,7 @@
     <property name="type" value="door"/>
    </properties>
   </object>
-  <object id="9" name="come_inn_keeper" x="182.75" y="135.25">
+  <object id="9" name="come_inn_keeper" x="169.417" y="137.25">
    <properties>
     <property name="type" value="come_inn_keeper"/>
    </properties>
@@ -217,13 +217,13 @@
    </properties>
    <point/>
   </object>
-  <object id="12" name="come_inn_patron" x="54.4773" y="187">
+  <object id="12" name="come_inn_patron" x="85.8106" y="188">
    <properties>
     <property name="type" value="come_inn_patron"/>
    </properties>
    <point/>
   </object>
-  <object id="13" name="come_inn_waitress" x="103.818" y="137.273">
+  <object id="13" name="come_inn_waitress" x="123.151" y="138.606">
    <properties>
     <property name="type" value="come_inn_waitress"/>
    </properties>
@@ -232,7 +232,7 @@
   <object id="14" name="bed" x="18.7273" y="20.9091" width="10.5455" height="22.9091"/>
   <object id="15" name="bed" x="98.9091" y="20.1818" width="10.5455" height="22.9091"/>
   <object id="16" name="bed" x="178.545" y="20.3636" width="10.5455" height="22.9091"/>
-  <object id="17" name="guard3" x="87.5" y="188.75">
+  <object id="17" name="guard3" x="119.5" y="189.417">
    <properties>
     <property name="type" value="city_guard"/>
    </properties>

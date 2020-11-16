@@ -395,6 +395,10 @@ public:
 			lua_pushboolean(state, tile.invisible);
 			lua_settable(state, -3);
 
+			lua_pushliteral(state, "object_name");
+			lua_pushstring(state, tile.object_name.c_str());
+			lua_settable(state, -3);
+
 			lua_pushliteral(state, "tex_x");
 			lua_pushnumber(state, tile.tex_x);
 			lua_settable(state, -3);

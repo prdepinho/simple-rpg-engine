@@ -117,8 +117,6 @@ function RatKing:on_interact(interactor_name)
       text = "May the blessings of Karni Mata be upon you, my savior! You are a friend to the rats and let it be published for all the world to know. Please, accept this from my personal treasure.",
       go_to = 'end',
       callback = function()
-        -- self.control:spend_money(self.name, 3, 'player')
-        -- self.control:add_item_to_inventory('player', 'karni_mata_blessing', 'poison', 'spell', 5)
         self.control:add_item_to_inventory('player', 'armory_key', 'armory_key', 'item')
         self.control.data.got_rats_reward = true
         self.control.data.rats_quest_complete = true

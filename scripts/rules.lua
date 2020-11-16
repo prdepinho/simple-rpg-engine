@@ -134,7 +134,8 @@ rules.item = {
   poisoned_cheese = { name = "Poisoned Cheese", icon = {x = 16*0, y = 16*11}, stack_capacity = 3,     range_radius = 1, effect_radius = 0, usable = true,  use = "rat_poison", desc = "Poisoned cheese. Don't eat it." },
   cloak           = { name = "Thief Cloak",     icon = {x = 16*3, y = 16*10}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = true,  use = "cloak",      desc = "A cloak made to blend with the background and avoid detection." },
   key             = { name = "Key",             icon = {x = 16*0, y = 16*9},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A brass key." },
-  armory_key      = { name = "Old rusty key",   icon = {x = 16*4, y = 16*11}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A rusty iron key that once belonged to the rat queen Mss. Laffevre." },
+  armory_key      = { name = "Old rusty key",   icon = {x = 16*4, y = 16*11}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A rusty iron key that opens the armory under Come Inn." },
+  lockpick        = { name = "Lockpick",        icon = {x = 16*5, y = 16*11}, stack_capacity = 5,     range_radius = 1, effect_radius = 0, usable = true,  use = "lockpick",   desc = "A lockpick that can be used to unlock doors and chests." },
 }
 
 rules.spell = {

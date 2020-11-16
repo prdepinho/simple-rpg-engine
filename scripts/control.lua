@@ -85,7 +85,6 @@ function Control:shop_dialogue(items, shop_keeper_name, greetings)
     }
   end
 
-  -- sfml_dialogue(dialogue)
   return dialogue
 end
 

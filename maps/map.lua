@@ -19,8 +19,10 @@ function Map:create()
   for object_name, object in pairs(self.data.objects) do
     if object.properties.type == 'door' then
       object.properties.closed = true
+      object.properties.lockpick_skill = object.properties.lockpick_skill or 13
     elseif object.properties.type == 'chest' then
       object.properties.closed = true
+      object.properties.lockpick_skill = object.properties.lockpick_skill or 13
     elseif object.properties.type == 'hoard' then
       local x = object.coords[1].x
       local y = object.coords[1].y
@@ -66,14 +68,16 @@ function Map:set_objects()
           elseif event == "interact" then
             if character_name == 'player' then 
               if object.properties.locked then
-                local index = nil
-                if object.properties.key then
-                  index = self.control:find_in_inventory(character_name, object.properties.key)
+
+                local key_index = nil
+                if object.properties.key and object.properties.key ~= "" then
+                  key_index = self.control:find_in_inventory(character_name, object.properties.key)
                 end
-                if index then
+
+                if key_index then
                   sfml_play_sound("plim.wav")
                   
-                  local item = rules.item[self.control.characters[character_name].data.stats.inventory[index].name]
+                  local item = rules.item[self.control.characters[character_name].data.stats.inventory[key_index].name]
                   sfml_text_box("You used " .. item.name .. " to unlock the door.")
 
                   sfml_start_animation(character_name, 'use')
@@ -81,6 +85,7 @@ function Map:set_objects()
                   for index, coords in ipairs(object.coords) do
                     sfml_set_obstacle(false, coords.x, coords.y)
                   end
+
                 else
                   sfml_play_sound("boop.wav")
                   sfml_text_box(object.properties.locked_message or "The door is locked.")
@@ -94,7 +99,7 @@ function Map:set_objects()
             if object.properties.closed then
               if object.properties.locked then
                 local index = nil
-                if object.properties.key then
+                if object.properties.key and object.properties.key ~= "" then
                   index = self.control:find_in_inventory(character_name, object.properties.key)
                 end
                 if index then
@@ -207,7 +212,6 @@ function Map:exit()
     end
   end
 end
-
 
 function Map:open_tile(x, y, object)
   local tile = sfml_get_tile(x, y)

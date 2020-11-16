@@ -28,7 +28,7 @@ void SelectTileMode::create_range_shapes() {
 		range_tiles = { center };
 	else
 		range_tiles = generate_field_of_vision(game_screen->map, center, range_radius - 1);
-	range_tiles = remove_obstacles(range_tiles);
+	// range_tiles = remove_obstacles(range_tiles);
 
 	range_shapes = std::vector<sf::RectangleShape>(range_tiles.size());
 	int i = 0;
@@ -47,7 +47,7 @@ void SelectTileMode::create_effect_shapes() {
 		effect_tiles = { cursor };
 	else
 		effect_tiles = generate_field_of_vision(game_screen->map, cursor, effect_radius - 1);
-	effect_tiles = remove_obstacles(effect_tiles);
+	// effect_tiles = remove_obstacles(effect_tiles);
 
 	effect_shapes = std::vector<sf::RectangleShape>(effect_tiles.size());
 	int i = 0;
@@ -127,6 +127,7 @@ Component *SelectTileMode::handle_event(sf::Event &event, float elapsed_time) {
 		break;
 	case Control::START:
 		Log("SelectTileMode - Start");
+		exit();
 		break;
 	case Control::SELECT:
 		Log("SelectTileMode - Select");

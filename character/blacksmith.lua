@@ -34,7 +34,6 @@ function Blacksmith:create()
 end
 
 function Blacksmith:on_interact(interactor_name)
-
   local shop = {
     sword  = { price = 3, name = 'falcion', type = 'weapon' },
     mace   = { price = 3, name = 'mace', type = 'weapon' },
@@ -49,26 +48,13 @@ function Blacksmith:on_interact(interactor_name)
     options = {
       { text = "I'm just browsing.", go_to = 'end' },
       { text = "I would like to sell some gear.", go_to = 'sell' },
-      { text = "What have you for sale?", go_to = 'buy' },
+      { text = "What have you for sale?", go_to = 'buy' },  -- this has to be the last option or it crashes
     }
   }
   dialogue.sell = {
     text = "Sorry, miss, but I am not in a position to buy with the economy the way it is.",
     go_to = 'end'
   }
-
-  -- dialogue.start = {
-  --   text = "Welcome, miss. How can I help you?",
-  --   options = {
-  --     { text = "I'm just browsing.", go_to = 'end' },
-  --     { text = "What have you for sale?", go_to = 'buy' },
-  --     { text = "I would like to sell some gear.", go_to = 'sell' },
-  --   }
-  -- }
-  -- dialogue.sell = {
-  --   text = "Sorry, miss, but I am not in a position to buy with the economy the way it is.",
-  --   go_to = 'end'
-  -- }
 
   sfml_dialogue(dialogue)
 end
