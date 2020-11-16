@@ -17,6 +17,29 @@ end
 
 function ThievesGuild:enter()
   Map.enter(self)
+  if self.control.data.rats_in_the_guild then
+    local character_name = 'rat_king'
+    local character_data = self.control.loaded_character_data[character_name]
+    local object_name = 'rat_king_position'
+    local object = self.data.objects[object_name]
+    local x = object.coords[1].x
+    local y = object.coords[1].y
+    if not character_data.stats.status.dead then
+      self.control:insert_character(character_name, 'rat_king', x, y)
+    end
+
+    for i = 1, 5, 1 do
+      character_name = 'rat'.. tostring(i)
+      character_data = self.control.loaded_character_data[character_name]
+      object_name = 'rat' .. tostring(i) .. '_position'
+      object = self.data.objects[object_name]
+      x = object.coords[1].x
+      y = object.coords[1].y
+      if not character_data.stats.status.dead then
+        self.control:insert_character(character_name, 'rat', x, y)
+      end
+    end
+  end
 end
 
 function ThievesGuild:exit()

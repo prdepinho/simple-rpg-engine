@@ -146,7 +146,11 @@ function ComeInnKeeper:on_interact(interactor_name)
   rats_dead = rats_dead and self.control.data.rat5_dead
   rats_dead = rats_dead and self.control.data.rat_king_dead
 
-  if rats_dead and not self.control.data.rats_decimated then
+  if rats_dead and not self.control.data.rats_gone then
+    self.control.data.rats_gone = true
+  end
+
+  if rats_gone and not self.control.data.rats_decimated then
     table.insert(dialogue.start.options, { text = "I have dealt with the rats in the basement.", go_to = 'rats_dead' })
     self.control.data.rats_decimated = true
   end

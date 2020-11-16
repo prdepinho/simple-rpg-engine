@@ -51,6 +51,19 @@ function ThievedGuildReceptionist:on_interact(interactor_name)
       }
     }
     sfml_dialogue(dialogue)
+
+  elseif self.data.rats_in_the_guild and not self.data.boasted then
+    local dialogue = {
+      start = {
+        text = "I'm going to make these rats the best thieves in town.",
+        go_to = 'end',
+        callback = function()
+          self.data.boasted = true
+        end
+      }
+    }
+    sfml_dialogue(dialogue)
+
   else
     if self.data.explained_dagger then
       local dialogue = {

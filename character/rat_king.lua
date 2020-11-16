@@ -54,6 +54,28 @@ function RatKing:on_interact(interactor_name)
         self.control.characters.rat_king.data.enemy = true
       end
     },
+    accept_transformation = {
+      text = function()
+        if self.data.transformed then
+           self.data.transformed = false
+           self.control.characters.player:set_skin('cat_girl')
+           local position = sfml_get_character_position('player')
+           sfml_start_fireworks("healing", position.x, position.y)
+          return "You are back into your skin."
+        else
+           self.data.transformed = true
+           self.control.characters.player:set_skin('rat')
+           local position = sfml_get_character_position('player')
+           sfml_start_fireworks("healing", position.x, position.y)
+          return "You are now one of us."
+        end
+      end,
+      go_to = 'end'
+    },
+    reject_transformation = {
+      text = "I see.",
+      go_to = 'end'
+    }
   }
 
   if self.control.data.decided_to_help_rats then
@@ -100,9 +122,17 @@ function RatKing:on_interact(interactor_name)
     }
     dialogue.go_to_thieves_guild = {
       text = "Are you sure about that? Alright, I'll talk to the others. Babies! We have a new home. Let's go.",
-      go_to = 'end',
+      go_to = 'go_away',
       callback = function()
         self.control.data.rats_in_the_guild = true
+        self.control.data.rats_gone = true
+      end
+    }
+    dialogue.go_away = {
+      text = "The rats move from their lair.",
+      go_to = 'end',
+      callback = function()
+        self.control.map:remove_rats()
       end
     }
   end
@@ -134,6 +164,47 @@ function RatKing:on_interact(interactor_name)
         self.control.data.got_rats_reward = true
         self.control.data.rats_quest_complete = true
       end
+    }
+  end
+
+  if self.control.data.rats_in_the_guild and not self.control.data.got_rats_reward then
+    dialogue.start = {
+      text = "Hello, my friend. We are getting accustomed with the new place. Mr. Garret is very receptive to us and is teaching my children. Thank you. You have my gratitude. Take this. I couldn't take my treasure with me, but I'm sure we will make up for it in no time.",
+      go_to = 'end',
+      callback = function()
+        self.control:add_item_to_inventory('player', 'armory_key', 'armory_key', 'item')
+        self.control.data.got_rats_reward = true
+        self.control.data.rats_quest_complete = true
+      end
+    }
+  end
+
+  if self.control.data.got_rats_reward and not self.data.informed_about_transformation then
+    dialogue.start = {
+      text = "Excuse, me, my friend. I have another gift for you, if you are interested. I could transform you into one of my kin. It would be a great honor to us.",
+      options = {
+        { text = "I would love to be one of you.", go_to = 'accept_transformation' },
+        { text = "I must decline.", go_to = 'reject_transformation' },
+      },
+      callback = function()
+        self.data.informed_about_transformation = true
+      end
+    }
+  end
+
+  if self.data.informed_about_transformation then
+    dialogue.start = {
+      text = function()
+        if self.data.transformed then
+          return "Would you like to go back to your original form?"
+        else
+          return "Would you like to take on the form of our kin?"
+        end
+      end,
+      options = {
+        { text = "Yes.", go_to = 'accept_transformation' },
+        { text = "No.", go_to = 'end' },
+      }
     }
   end
 

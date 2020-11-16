@@ -27,6 +27,21 @@ function RatLair:enter()
       self.control:kill_character('come_inn_keeper')
     end
   end
+  if self.control.data.rats_in_the_guild then
+    self:remove_rats()
+  end
+end
+
+function RatLair:remove_rats()
+  if not self.control.loaded_character_data.rat_king.stats.status.dead then
+    sfml_remove_character('rat_king')
+  end
+  for i = 1, 5, 1 do
+    local name = 'rat' .. tostring(i)
+    if not self.control.loaded_character_data[name].stats.status.dead then
+      sfml_remove_character(name)
+    end
+  end
 end
 
 function RatLair:exit()
