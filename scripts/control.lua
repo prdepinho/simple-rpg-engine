@@ -53,6 +53,44 @@ function Control:next_item_code(str)
 end
 
 
+function Control:shop_dialogue(items, shop_keeper_name, greetings)
+  local dialogue = {
+    start = {
+      text = greetings,
+      options = {
+        { text = "I'm just browsing.", go_to = 'end' },
+        { text = "I would like to buy.", go_to = 'buy' },
+      }
+    },
+    buy = {
+      text = "What have you in mind?",
+      options = {
+        { text = "Never mind.", go_to = 'end' },
+      }
+    }
+  }
+
+  for name, item in pairs(items) do
+    table.insert(dialogue.buy.options, { text = rules[item.type][item.name].name .. ' (' .. item.price .. ' copper)', go_to = name })
+    dialogue[name] = {
+      text = function()
+        if self:spend_money('player', item.price, shop_keeper_name) then
+          self:add_item_to_inventory('player', self:next_item_code(), item.name, item.type)
+          return "Thank you."
+        else
+          return "You don't have enough money."
+        end
+      end,
+      go_to = 'end'
+    }
+  end
+
+  -- sfml_dialogue(dialogue)
+  return dialogue
+end
+
+
+
 function Control:rest()
   local stats = self.characters.player.data.stats
 

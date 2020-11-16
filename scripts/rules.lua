@@ -53,7 +53,7 @@ rules.armor = {
   chain_mail        = { name = "Hauberk",         ac = 16, type = "chain", icon = {x = 16*3, y = 16*4}, desc = "Riveted chain armor worn over padding." },
   scale_mail        = { name = "Scale Armor",     ac = 16, type = "chain", icon = {x = 16*4, y = 16*4}, desc = "Armor made of bronze scales." },
 
-  brigantine        = { name = "Brigantine",      ac = 18, type = "plate", icon = {x = 16*6, y = 16*4}, desc = "Steel plates attached to a textile cover." },
+  brigandine        = { name = "Brigandine",      ac = 18, type = "plate", icon = {x = 16*6, y = 16*4}, desc = "Steel plates attached to a textile cover." },
   lamellar_armor    = { name = "Lamellar Armor",  ac = 18, type = "plate", icon = {x = 16*7, y = 16*4}, desc = "Armor made of square steel parts sown together." },
   cuirass           = { name = "Cuirass",         ac = 18, type = "plate", icon = {x = 16*8, y = 16*4}, desc = "Steel armor for the breast and the back." },
   full_plate_mail   = { name = "Full Plate Mail", ac = 20, type = "plate", icon = {x = 16*9, y = 16*4}, desc = "Complete steel knightly armor." },

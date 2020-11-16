@@ -52,7 +52,7 @@ end
 function Magic:cure_wounds(caster, center, tiles, targets)
   sfml_start_animation(caster, "cast")
 
-  local caster_name = self.characters[caster].data.stats.name 
+  local caster_name = self.control.characters[caster].data.stats.name 
   sfml_push_log(caster_name .. ' - casts ' .. rules.spell.cure_wounds.name)
 
 
