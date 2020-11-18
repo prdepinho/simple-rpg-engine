@@ -279,6 +279,8 @@ void TiledTilemapDAO::load_map(GameScreen *game_screen, std::string filename, Ti
 		int vision_radius = 3;
 
 		auto properties = tmx_map.getProperties();
+		_game.get_lua()->set_map_properties(properties);
+
 		for (auto &prop : properties) {
 			if (prop.getName() == "for_of_war") {
 				fog_of_war = prop.getBoolValue();
@@ -292,6 +294,7 @@ void TiledTilemapDAO::load_map(GameScreen *game_screen, std::string filename, Ti
 		if (fog_of_war) {
 			game_screen->set_vision_radius(vision_radius);
 		}
+
 	}
 
 	// objects

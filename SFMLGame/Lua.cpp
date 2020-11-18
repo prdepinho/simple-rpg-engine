@@ -308,6 +308,38 @@ void Lua::change_map(std::string script) {
 	lua_pop(state, 1);
 }
 
+void Lua::set_map_properties(std::vector<tmx::Property> properties) {
+	lua_getglobal(state, "set_map_properties");
+
+	lua_newtable(state);
+	for (tmx::Property &prop : properties) {
+		lua_pushstring(state, prop.getName().c_str());
+		switch (prop.getType()) {
+		case tmx::Property::Type::Float:
+			lua_pushnumber(state, prop.getFloatValue());
+			break;
+		case tmx::Property::Type::Int:
+			lua_pushinteger(state, prop.getIntValue());
+			break;
+		case tmx::Property::Type::String:
+			lua_pushstring(state, prop.getStringValue().c_str());
+			break;
+		case tmx::Property::Type::Boolean:
+			lua_pushboolean(state, prop.getBoolValue());
+			break;
+		}
+		lua_settable(state, -3);
+	}
+
+	int result = lua_pcall(state, 1, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	lua_pop(state, 1);
+}
+
 void Lua::set_map_object(std::string name, int x, int y, std::vector<tmx::Property> properties) {
 	lua_getglobal(state, "set_map_object");
 	lua_pushstring(state, name.c_str());
@@ -616,6 +648,17 @@ sf::Vector2i Lua::get_player_position() {
 	}
 	lua_pop(state, 1);
 	return position;
+}
+
+void Lua::game_over() {
+	lua_getglobal(state, "game_over");
+	int result = lua_pcall(state, 0, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	lua_pop(state, 1);
 }
 
 void Lua::reset_data() {

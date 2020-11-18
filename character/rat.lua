@@ -36,6 +36,7 @@ function Rat:create()
 end
 
 function Rat:on_death()
+  Character.on_death(self)
   self.control.data[self.name .. '_dead'] = true
 end
 

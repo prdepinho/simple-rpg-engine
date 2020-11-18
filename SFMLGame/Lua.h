@@ -62,6 +62,7 @@ public:
 	void call_event(std::string function, std::string event, int tile_x, int tile_y, std::string character_name);
 	void character_interaction(std::string target_name, std::string interactor_name);
 	void change_map(std::string script);
+	void set_map_properties(std::vector<tmx::Property> properties);
 	void set_map_object(std::string name, int x, int y, std::vector<tmx::Property> properties);
 	void add_character(std::string script, std::string name);
 	bool is_character_removed(std::string name);
@@ -89,6 +90,8 @@ public:
 
 	std::string get_player_map();
 	sf::Vector2i get_player_position();
+
+	void game_over();
 
 
 

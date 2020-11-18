@@ -41,9 +41,23 @@ function CityGuard:create()
 end
 
 function CityGuard:on_interact(interactor_name)
+
+  local texts = {
+    "Press Start to look at you pockets, equip weapons and use items.",
+    "Use your equipped weapon to wack an unsuspecting person.",
+    "Press B to shoot with your equipped bow.",
+    "Bludgeoning weapons are more effective against armor, but edged weapons do more damage.",
+    "Intelligent casters cast spells that last longer.",
+    "Dexterous people use items like the cloak, poison and the lockpick more effectively",
+    "Healing spells are more effective cast by wise casters.",
+    "I don't want to see you causing any trouble.",
+    "If it is advantageous, press Select to wait for your enemy to come to you before wacking him in the head.",
+  }
+  local roll = rules.roll_dice('d' .. tostring(#texts))
+
   local dialogue = {
     start = {
-      text = "I want no trouble from you.",
+      text = texts[roll],
       go_to = 'end'
     }
   }

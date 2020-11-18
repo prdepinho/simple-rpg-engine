@@ -184,6 +184,11 @@ void Resources::play_music(std::string filename) {
 	music->play();
 	music->setLoop(false);
 	get().playing_music = music;
+	get().playing_music_name = filename;
+}
+
+std::string Resources::get_current_music() {
+	return get().playing_music_name;
 }
 
 void Resources::loop_music(std::string filename) {
@@ -192,12 +197,14 @@ void Resources::loop_music(std::string filename) {
 	music->play();
 	music->setLoop(true);
 	get().playing_music = music;
+	get().playing_music_name = filename;
 }
 
 void Resources::stop_music() {
 	if (get().playing_music) {
 		get().playing_music->stop();
 		get().playing_music = nullptr;
+		get().playing_music_name = "";
 	}
 }
 

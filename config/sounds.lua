@@ -6,4 +6,5 @@ sounds = {
   "vwuuu.wav",
   "crrreee.wav",
   "plim.wav",
+  "fire.wav",
 }

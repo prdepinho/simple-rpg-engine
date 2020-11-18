@@ -112,6 +112,7 @@ void GameScreen::create() {
 	busy.set_texture(Resources::get_texture("gui"));
 	add_component(busy, false);
 
+	game_over = false;
 
 	// update fog of war
 	if (show_fog_of_war)
@@ -284,7 +285,9 @@ bool GameScreen::update(float elapsed_time) {
 		}
 
 		else {
-			if (!player_character->is_active()) {
+			if (!player_character->is_active() && !game_over) {
+				game_over = true;
+				_game.get_lua()->game_over();
 				MessagePanel::show("You died.", *this, [&]() {
 					_game.get_lua()->reset_data();
 					_game.change_to_main_menu_screen();

@@ -154,7 +154,7 @@ std::vector<sf::Vector2i> generate_line_of_sight(Tilemap &map, sf::Vector2i src,
 	for (int i = 0; i < line.size() -1; i++) {
 		sf::Vector2i line_point = line[i];
 		rval.push_back(line_point);
-		if (line_point != src && map.get_tile(line_point.x, line_point.y).obstacle) {
+		if (line_point != src && map.get_tile(line_point.x, line_point.y).invisible) {
 			rval.clear();
 			break;
 		}

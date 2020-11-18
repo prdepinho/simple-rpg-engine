@@ -81,6 +81,7 @@ public:
 	static void play_music(std::string filename);
 	static void loop_music(std::string filename);
 	static void stop_music();
+	static std::string get_current_music();
 
 	static void play_sound(std::string filename);
 
@@ -119,6 +120,7 @@ private:
 	std::vector<sf::SoundBuffer*> sound_buffers;
 
 	sf::Music *playing_music = nullptr;
+	std::string playing_music_name = "";
 
 	Lua *lua;
 	LuaObject rules;

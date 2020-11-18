@@ -11,6 +11,9 @@ local magic = require "magic"
 
 local control = Control:new(nil) 
 
+function game_over()
+  return control.game_over()
+end
 
 function get_player_map()
   return control.player_map
@@ -165,6 +168,10 @@ end
 
 function character_on_idle(name, id)
   control:character_on_idle(name, id)
+end
+
+function set_map_properties(properties)
+  control:set_map_properties(properties)
 end
 
 function change_map(new_map)

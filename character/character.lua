@@ -58,8 +58,11 @@ function Character:on_turn()
       return
     end
     if self.data.enemy then
-      if self:is_player_in_sight(4) then
+      if self:is_player_in_sight(6) then
+        self.control:enemy_on_player_in_sight(self.name)
         self:attack("player")
+      else
+        self.control:enemy_on_lost_sight_of_player(self.name)
       end
     end
   end
@@ -117,6 +120,9 @@ function Character:on_attacked(attacker_name)
 end
 
 function Character:on_death()
+  if self.data.enemy then
+    self.control:enemy_on_lost_sight_of_player(self.name)
+  end
 end
 
 -- walk here and there.

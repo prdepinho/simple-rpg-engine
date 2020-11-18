@@ -236,6 +236,7 @@ private:
 	bool in_control;
 	sf::Keyboard::Key player_input;
 
+	bool game_over = false;
 	int turn;
 	float turn_duration;  // in seconds
 	float turn_count;

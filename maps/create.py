@@ -69,6 +69,7 @@ if __name__ == '__main__':
 <properties>
 <property name="for_of_war" type="bool" value="false"/>
 <property name="vision_radius" type="int" value="5"/>
+<property name="music" type="string" value=""/>
 </properties>"""
     id = 0
     for layer in layers:

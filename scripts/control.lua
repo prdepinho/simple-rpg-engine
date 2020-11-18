@@ -30,6 +30,10 @@ local Control = {
 
   current_map = "",
   magic = {},
+
+
+  enemies_aware = {}  -- elemies aware of the player in the map
+
 }
 
 function Control:new(o)
@@ -52,6 +56,36 @@ function Control:next_item_code(str)
   end
 end
 
+
+function Control:enemy_on_player_in_sight(enemy)
+  self.enemies_aware[enemy] = true
+  local size = 0
+  for key, elm in pairs(self.enemies_aware) do
+    size = size + 1
+  end
+  if size > 0 and sfml_get_current_music() ~= "you_are_the_carpenters_son.wav" then
+    sfml_loop_music("you_are_the_carpenters_son.wav")
+  end
+end
+
+function Control:enemy_on_lost_sight_of_player(enemy)
+  self.enemies_aware[enemy] = nil
+  local size = 0
+  for key, elm in pairs(self.enemies_aware) do
+    size = size + 1
+  end
+  if size == 0 and sfml_get_current_music() == "you_are_the_carpenters_son.wav" then
+    sfml_stop_music()
+    if self.map.data.properties.music and self.map.data.properties.music ~= '' then
+      sfml_loop_music(self.map.data.properties.music)
+    end
+  end
+end
+
+function Control:game_over()
+  sfml_play_music("give_thanks_to_the_lord_for_he_is_good.wav")
+  print('game over')
+end
 
 function Control:shop_dialogue(items, shop_keeper_name, greetings)
   local dialogue = {
@@ -765,6 +799,7 @@ function Control:reset_data()
   self.characters = {}
   self.loaded_map_data = {}
   self.data = {}
+  enemies_aware = {}
 end
 
 function Control:get_save_files()
@@ -803,6 +838,7 @@ function Control:new_game()
   self.data = {}
   self.map_module = {}
   self.current_map = ""
+  enemies_aware = {}
 end
 
 function Control:save_game(filename, title)
@@ -982,8 +1018,14 @@ function Control:character_on_idle(name, id)
   end
 end
 
+function Control:test()
+  print('works')
+end
+
 function Control:change_map(new_map)
+  self.enemies_aware = {}
   self.current_map = new_map
+  print('current map: ' .. self.current_map)
   if not self.loaded_map_data[self.current_map] then
     self.loaded_map_data[self.current_map] = {}
     self.loaded_map_data[self.current_map].items = {}
@@ -999,8 +1041,13 @@ function Control:change_map(new_map)
   print('Load module: ' .. self.current_map)
 end
 
-function Control:test()
-  print('works')
+function Control:set_map_properties(properties)
+  if not self.map.data.created then
+    self.map.data.properties = self.map.data.properties or {}
+    for key, property in pairs(properties) do
+      self.map.data.properties[key] = self.map.data.properties[key] or properties[key] 
+    end
+  end
 end
 
 function Control:set_map_object(name, tile_x, tile_y, properties)

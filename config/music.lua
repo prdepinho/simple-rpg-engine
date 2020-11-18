@@ -8,4 +8,8 @@ music = {
   "death.wav",
   "crystal.wav",
   "get_crystal.wav",
+  "give_thanks_to_the_lord_for_he_is_good.wav",
+  "adagio.wav",
+  "c_major_piece.wav",
+  "you_are_the_carpenters_son.wav",
 }

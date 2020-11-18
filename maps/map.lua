@@ -163,6 +163,13 @@ end
 
 function Map:enter()
   self:set_objects()
+
+  if self.data.properties.music and self.data.properties.music ~= '' then
+    if sfml_get_current_music() ~= self.data.properties.music then
+      sfml_loop_music(self.data.properties.music)
+    end
+  end
+
   for object_name, object in pairs(self.data.objects) do
 
     if object.properties.type == 'door' then
@@ -201,6 +208,7 @@ function Map:enter()
       end
     end
   end
+
 end
 
 function Map:exit()

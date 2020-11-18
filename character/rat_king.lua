@@ -212,8 +212,8 @@ function RatKing:on_interact(interactor_name)
 end
 
 
-function Rat:on_death()
-  self.control.data[self.name .. '_dead'] = true
+function RatKing:on_death()
+  Rat.on_death(self)
 end
 
 

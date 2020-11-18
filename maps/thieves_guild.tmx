@@ -213,6 +213,7 @@
   <object id="25" name="hoard" x="34.125" y="177.875" width="12.25" height="12.75">
    <properties>
     <property name="item1" value="guild_lockpick:item:lockpick:2"/>
+    <property name="music" value=""/>
     <property name="type" value="hoard"/>
    </properties>
   </object>
