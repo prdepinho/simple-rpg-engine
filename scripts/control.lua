@@ -9,12 +9,12 @@ local Character = require "character"
 local Map = require "map"
 
 
-local start_game_map = 'polis'
+local start_game_map = 'silva'
 
 local Control = {
 
   player_map = start_game_map,
-  player_position = { x = 4, y = 16 },
+  player_position = nil,
 
   item_code = 0,
 

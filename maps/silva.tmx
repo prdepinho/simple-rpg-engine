@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="5">
+ <properties>
+  <property name="for_of_war" type="bool" value="false"/>
+  <property name="music" value="crystal.wav"/>
+  <property name="vision_radius" type="int" value="5"/>
+ </properties>
+ <tileset firstgid="1" source="tiled_tileset.tsx"/>
+ <layer id="1" name="floor" width="10" height="10">
+  <data encoding="csv">
+19,19,19,19,17,19,18,19,17,17,
+19,19,19,19,19,19,19,19,18,18,
+17,19,19,49,49,49,19,19,19,19,
+17,19,19,49,17,49,19,19,19,17,
+18,19,19,49,17,49,19,19,19,17,
+19,17,19,19,19,19,17,19,17,18,
+17,17,18,19,17,19,18,17,17,17,
+18,19,17,17,18,18,17,18,18,18,
+19,19,17,19,17,17,18,17,19,19,
+18,17,17,17,17,18,17,18,18,17
+</data>
+ </layer>
+ <layer id="2" name="overfloor" width="10" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="3" name="furniture" width="10" height="10">
+  <data encoding="csv">
+165,165,165,165,165,165,165,165,165,165,
+165,165,165,181,181,181,165,165,165,165,
+165,165,165,0,0,0,181,165,165,165,
+165,181,181,0,197,0,0,181,181,165,
+165,0,0,0,0,0,0,0,0,165,
+165,0,0,0,0,0,0,0,0,165,
+165,0,0,0,0,0,0,0,0,165,
+165,229,0,0,0,0,0,0,229,165,
+165,165,165,165,0,0,165,165,165,165,
+181,181,181,181,0,0,181,181,181,181
+</data>
+ </layer>
+ <layer id="4" name="ceiling" width="10" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="5" name="overceiling" width="10" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="6" name="obstacle" width="10" height="10">
+  <data encoding="csv">
+2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,0,2,2,2,
+2,0,0,2,0,2,0,0,0,2,
+2,0,0,0,0,0,0,0,0,2,
+2,0,0,0,0,0,0,0,0,2,
+2,2,0,0,0,0,0,0,2,2,
+2,2,2,2,0,0,2,2,2,2,
+2,2,2,2,0,0,2,2,2,2
+</data>
+ </layer>
+ <layer id="7" name="invisible" width="10" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="8" name="objects">
+  <object id="1" name="player" x="103.773" y="106.195">
+   <properties>
+    <property name="type" value="player"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="2" name="priestess" x="56.0782" y="104.145">
+   <properties>
+    <property name="type" value="priestess"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="3" name="entrance" x="66.2256" y="145.408" width="27.0271" height="11">
+   <properties>
+    <property name="destiny" value="overworld:silva"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="4" name="olive" x="65.7662" y="50.1164" width="12.2962" height="12.4825"/>
+ </objectgroup>
+</map>

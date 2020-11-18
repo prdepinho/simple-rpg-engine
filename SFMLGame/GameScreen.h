@@ -195,6 +195,7 @@ public:
 	void set_player_control(bool in_control);
 	bool is_player_in_control() const { return in_control; }
 
+	void show_character_edit_panel(bool give_points);
 private:
 
 	std::priority_queue<Action*, std::vector<Action*>, ActionComparison> turn_actions; // the actions that take place in a single turn

@@ -196,12 +196,6 @@
     <property name="type" value="door"/>
    </properties>
   </object>
-  <object id="4" name="player" x="72.3333" y="265.334">
-   <properties>
-    <property name="type" value="player"/>
-   </properties>
-   <point/>
-  </object>
   <object id="9" name="town_elf" x="152.333" y="279.333">
    <properties>
     <property name="type" value="town_elf"/>

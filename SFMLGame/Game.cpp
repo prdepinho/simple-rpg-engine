@@ -1112,6 +1112,13 @@ public:
 		return 1;
 	}
 
+	static int sfml_show_character_edit(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		bool give_points = (bool)lua_toboolean(state, -1);
+		screen->show_character_edit_panel(give_points);
+		return 1;
+	}
+
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -1178,6 +1185,7 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_is_player_in_control", LuaFunction::sfml_is_player_in_control);
 	lua_register(lua.get_state(), "sfml_set_character_skin", LuaFunction::sfml_set_character_skin);
 	lua_register(lua.get_state(), "sfml_set_turns_per_second", LuaFunction::sfml_set_turns_per_second);
+	lua_register(lua.get_state(), "sfml_show_character_edit", LuaFunction::sfml_show_character_edit);
 
 
 }

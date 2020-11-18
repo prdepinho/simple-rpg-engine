@@ -668,7 +668,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		}
 	}
 
-#if true
+#if false
 	switch (event.type) {
 	case sf::Event::MouseButtonPressed:
 		if (selected_component == &container) {
@@ -2048,3 +2048,11 @@ void GameScreen::set_player_control(bool in_control) {
 	this->in_control = in_control;
 }
 
+void GameScreen::show_character_edit_panel(bool give_points) {
+	block_input = true;
+	CharacterEditPanel::show(player_character, give_points, *this, [&](Component*) {
+		Overlay::refresh(*this, player_character);
+		block_input = false;
+		return true;
+	});
+}
