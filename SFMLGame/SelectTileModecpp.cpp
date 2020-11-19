@@ -114,11 +114,11 @@ Component *SelectTileMode::handle_event(sf::Event &event, float elapsed_time) {
 		Log("SelectTileMode - A");
 		{
 			if (on_select(cursor, effect_tiles)) {
-				Resources::get_sound("crrreee.wav")->play();
+				Resources::play_sound("crrreee.wav");
 				exit();
 			}
 			else 
-				Resources::get_sound("boop.wav")->play();
+				Resources::play_sound("boop.wav");
 		}
 		break;
 	case Control::B:
@@ -167,10 +167,10 @@ void SelectTileMode::move_cursor(Direction direction) {
 		cursor = new_cursor;
 		game_screen->center_map_on_tile(cursor);
 		create_effect_shapes();
-		Resources::get_sound("vwuuu.wav")->play();
+		Resources::play_sound("vwuuu.wav");
 	}
 	else {
-		Resources::get_sound("boop.wav")->play();
+		Resources::play_sound("boop.wav");
 	}
 }
 

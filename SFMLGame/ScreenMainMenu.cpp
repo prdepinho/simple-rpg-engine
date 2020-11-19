@@ -148,7 +148,6 @@ Component *ScreenMainMenu::handle_event(sf::Event &event, float elapsed_time) {
 		else
 			button_index = buttons.size() - 1;
 		select(buttons[button_index]);
-		// Resources::get_sound("vwuuu.wav")->play();
 		break;
 	case Control::DOWN:
 		if ((size_t)button_index < buttons.size() - 1)
@@ -156,14 +155,12 @@ Component *ScreenMainMenu::handle_event(sf::Event &event, float elapsed_time) {
 		else
 			button_index = 0;
 		select(buttons[button_index]);
-		// Resources::get_sound("vwuuu.wav")->play();
 		break;
 	case Control::LEFT:
 		break;
 	case Control::RIGHT:
 		break;
 	case Control::A:
-		// Resources::get_sound("crrreee.wav")->play();
 		break;
 	case Control::B:
 		window->close();

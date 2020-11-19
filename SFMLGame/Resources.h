@@ -85,6 +85,11 @@ public:
 
 	static void play_sound(std::string filename);
 
+	static void set_music_volume(float volume) { get().music_volume = volume; }
+	static void set_sound_volume(float volume) { get().sound_volume = volume; }
+	static float get_music_volume() { return get().music_volume; }
+	static float get_sound_volume() { return get().sound_volume; }
+
 	static void load_rules();
 	static void load_textures();
 	static void load_sounds();
@@ -118,6 +123,9 @@ private:
 	std::map<std::string, FireworksResources> fireworks_map;
 	std::map<std::string, AnimationResources> animation_map;
 	std::vector<sf::SoundBuffer*> sound_buffers;
+
+	float music_volume = 100.f;
+	float sound_volume = 100.f;
 
 	sf::Music *playing_music = nullptr;
 	std::string playing_music_name = "";

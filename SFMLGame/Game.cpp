@@ -137,6 +137,11 @@ void Game::configure_game()
 	framerate =         lua.get_int("set_framerate", Default::FRAMERATE);
 	turn_duration =		1.f / lua.get_float("turns_per_second", 1.f);
 
+	std::cout << "Music volume: " << lua.get_float("music_volume") << std::endl;
+	std::cout << "Sound volume: " << lua.get_float("sound_volume") << std::endl;
+	Resources::set_music_volume(lua.get_float("music_volume"));
+	Resources::set_sound_volume(lua.get_float("sound_volume"));
+
 	int screen_style = sf::Style::Default;
 	if (fullscreen) {
 		screen_style |= sf::Style::Fullscreen;

@@ -112,7 +112,7 @@ Component* Button::on_key_pressed(sf::Keyboard::Key key) {
 
 Component* Button::on_click() {
 	if (!activated) {
-		Resources::get_sound("boop.wav")->play();
+		Resources::play_sound("boop.wav");
 		return this;
 	}
 	bool rval = false;
@@ -121,16 +121,16 @@ Component* Button::on_click() {
 		// function(this);
 	}
 	if (rval) {
-		Resources::get_sound("crrreee.wav")->play();
+		Resources::play_sound("crrreee.wav");
 	}
 	else {
-		Resources::get_sound("boop.wav")->play();
+		Resources::play_sound("boop.wav");
 	}
 	return this;
 }
 
 void Button::on_clic_inactive() {
-	Resources::get_sound("boop.wav")->play();
+	Resources::play_sound("boop.wav");
 }
 
 void Button::on_activated() {
@@ -153,7 +153,7 @@ void Button::set_label(std::string str)
 
 void Button::on_selected(bool show_outline) {
 	Component::on_selected(show_outline);
-	Resources::get_sound("vwuuu.wav")->play();
+	Resources::play_sound("vwuuu.wav");
 }
 
 void Button::set_icon(int pix_x, int pix_y) {

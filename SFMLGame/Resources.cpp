@@ -159,6 +159,7 @@ void Resources::play_sound(std::string filename) {
 	sf::Sound *sound = new sf::Sound(*loaded_sound);
 	get().sounds_inedx = (get().sounds_inedx + 1) % get().max_sounds;
 	
+	sound->setVolume(get().sound_volume);
 	sound->play();
 	if (get().sounds[get().sounds_inedx] != nullptr)
 		delete get().sounds[get().sounds_inedx];
@@ -181,6 +182,7 @@ void Resources::load_music() {
 void Resources::play_music(std::string filename) {
 	stop_music();
 	sf::Music *music = get_music(filename);
+	music->setVolume(get().music_volume);
 	music->play();
 	music->setLoop(false);
 	get().playing_music = music;
@@ -194,6 +196,7 @@ std::string Resources::get_current_music() {
 void Resources::loop_music(std::string filename) {
 	stop_music();
 	sf::Music *music = get_music(filename);
+	music->setVolume(get().music_volume);
 	music->play();
 	music->setLoop(true);
 	get().playing_music = music;
