@@ -35,7 +35,7 @@ void LoadGameScreen::create() {
 			return true;
 		});
 		button.set_save_file(save_files[i]);
-		add_component(button);
+		add_component(button, false);
 		button.create();
 		if (!save_files[i].active)
 			button.disactivate();
@@ -49,7 +49,7 @@ void LoadGameScreen::create() {
 			game->change_to_main_menu_screen();
 			return true;
 		});
-		add_component(button);
+		add_component(button, false);
 		button.create();
 	}
 

@@ -57,6 +57,8 @@ rules.armor = {
   lamellar_armor    = { name = "Lamellar Armor",  ac = 18, type = "plate", icon = {x = 16*7, y = 16*4}, desc = "Armor made of square steel parts sown together." },
   cuirass           = { name = "Cuirass",         ac = 18, type = "plate", icon = {x = 16*8, y = 16*4}, desc = "Steel armor for the breast and the back." },
   full_plate_mail   = { name = "Full Plate Mail", ac = 20, type = "plate", icon = {x = 16*9, y = 16*4}, desc = "Complete steel knightly armor." },
+
+  skeleton_bones    = { name = "Skeleton Bones",  ac = 12, type = "plate", icon = {x = 16*0, y = 16*0}, desc = "Skeletons have a special protection due to the constitution of their fleshless bones." },
 }
 
 rules.shield = {
@@ -147,6 +149,7 @@ rules.spell = {
   armor         = { name = "Armor",         category = "arcane", stack_capacity = 10, icon = {x = 16*1,  y = 16*6}, range_radius = 1, effect_radius = 0, usable = true, use = "armor",         desc = "Creates a magic armor that grants ac 20 to a creature."},
   strength      = { name = "Strength",      category = "divine", stack_capacity = 10, icon = {x = 16*4,  y = 16*8}, range_radius = 1, effect_radius = 0, usable = true, use = "strength",      desc = "Grants a creature the inhuman strength of 19."},
   cure_wounds   = { name = "Cure Wounds",   category = "divine", stack_capacity = 10, icon = {x = 16*0,  y = 16*8}, range_radius = 1, effect_radius = 0, usable = true, use = "cure_wounds",   desc = "Recover hit points to the amount of 2d4 + Wisdom Modifier." },
+  raise_dead    = { name = "Raise Dead",    category = "divine", stack_capacity = 10, icon = {x = 16*8,  y = 16*8}, range_radius = 0, effect_radius = 3, usable = true, use = "raise_dead",    desc = "Raise the dead in a radius around the caster." },
 }
 
 

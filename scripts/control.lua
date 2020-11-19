@@ -910,12 +910,28 @@ function Control:character_base_damage_bonus(name)
   return rules.base_damage_bonus(stats)
 end
 
-function Control:insert_character(type, name, x, y)
+-- insert a new character (used in scripts)
+function Control:insert_character(name, type, x, y)
   if not self:is_character_removed(name) then
-    sfml_add_character(type, name, x, y)
+    sfml_add_character(name, type, x, y)
   end
 end
 
+-- remove a character (used in scripts)
+function Control:remove_character(name)
+  self.characters[name].data.removed = true
+  sfml_remove_character(name)
+end
+
+function Control:is_character_removed(name)
+  local removed = false
+  if self.loaded_character_data[name] then
+    removed = self.loaded_character_data[name].removed
+  end
+  return removed
+end
+
+-- callback that the engine calls when inserting a new character
 function Control:add_character(type, name)
   if self.loaded_character_data[name] and self.loaded_character_data[name].removed then
     print('character ' .. name .. ' is removed')
@@ -967,19 +983,6 @@ function Control:add_character(type, name)
     end
   end
   self.characters[name]:on_enter()
-end
-
-function Control:remove_character(name)
-  self.characters[name].data.removed = true
-  sfml_remove_character(name)
-end
-
-function Control:is_character_removed(name)
-  local removed = false
-  if self.loaded_character_data[name] then
-    removed = self.loaded_character_data[name].removed
-  end
-  return removed
 end
 
 function Control:character_on_interact(target_name, interactor_name)

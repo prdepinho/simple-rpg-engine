@@ -28,7 +28,7 @@ void ScreenMainMenu::create()
 			game->change_to_game_screen();
 			return true;
 		});
-		add_component(button);
+		add_component(button, false);
 		button.create();
 		i++;
 	}
@@ -44,7 +44,7 @@ void ScreenMainMenu::create()
 			game->change_to_load_game_screen();
 			return true;
 		});
-		add_component(button);
+		add_component(button, false);
 		button.create();
 		i++;
 
@@ -64,7 +64,7 @@ void ScreenMainMenu::create()
 			game->change_to_test_screen();
 			return true;
 		});
-		add_component(button);
+		add_component(button, false);
 		button.create();
 		i++;
 	}
@@ -79,7 +79,7 @@ void ScreenMainMenu::create()
 			game->change_to_map_editor_screen();
 			return true;
 		});
-		add_component(button);
+		add_component(button, false);
 		button.create();
 		i++;
 	}
@@ -106,7 +106,7 @@ void ScreenMainMenu::create()
 			game->exit();
 			return true;
 		});
-		add_component(button);
+		add_component(button, false);
 		button.create();
 		i++;
 	}

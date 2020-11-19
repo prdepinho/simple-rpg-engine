@@ -49,6 +49,10 @@ local mini_animation = {
     fps = 1,
     frames = { 0 }
   },
+  rise = {
+    fps = 1,
+    frames = { 0 }
+  }
 }
 
 local basic_animation = {
@@ -89,6 +93,10 @@ local basic_animation = {
     fps = 2 * turns_per_second,
     frames = {12, 13},
   },
+  rise = {
+    fps = 2 * turns_per_second,
+    frames = { 11, 10, 0 }
+  }
 }
 
 animations.types = {
@@ -273,6 +281,14 @@ animations.types = {
     coordinates = {
       x = 0,
       y = 16 * 20
+    },
+    animations = basic_animation
+  },
+  skeleton = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 21
     },
     animations = basic_animation
   },

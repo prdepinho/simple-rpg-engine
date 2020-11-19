@@ -419,6 +419,54 @@ end
 
 
 
+function Magic:raise_dead(caster, center, tiles, targets)
+  sfml_start_animation(caster, 'cast')
+
+  local caster_name = self.control.characters[caster].data.stats.name
+  sfml_push_log(caster_name .. ' - casts ' .. rules.spell.raise_dead.name)
+
+  local caster_stats = self.control.characters[caster].data.stats
+
+  local position = sfml_get_character_position(caster)
+  sfml_start_fireworks('raise_dead', position.x, position.y)
+
+  local turns = rules.roll_dice('3d6')
+  turns = turns + rules.divine_spell_bonus(caster_stats)
+
+  for index, position in ipairs(tiles) do 
+    local characters = sfml_get_characters_on_tile(position.x, position.y)
+
+    for cindex, character_name in ipairs(characters) do
+      local character = self.control.characters[character_name]
+
+      if character.data.stats.status.dead then
+        local skeleton_name = 'skeleton_' .. character_name
+        print(skeleton_name)
+
+        -- local inventory = self.control.characters[character_name].data.stats.inventory
+        self.control:strip_character_items(character_name)
+        self.control:remove_character(character_name)
+
+        self.control:insert_character(skeleton_name, 'timed_skeleton', position.x, position.y)
+        sfml_loop_animation(skeleton_name, 'walk')
+        sfml_start_animation(skeleton_name, 'rise')
+
+        self.control.characters[skeleton_name]:set_timeout(turns)
+        self.control.characters[skeleton_name].data.ally = true
+
+        local name = self.control.characters[character_name].data.stats.name 
+        local msg = name .. ' - has risen for ' .. tostring(turns) .. ' turns'
+        sfml_push_log(msg)
+
+        -- self.control.characters[skeleton_name].data.stats.inventory = inventory
+
+      end
+    end
+  end
+end
+
+
+
 
 function Magic:cheese(caster, center, tiles, targets)
   sfml_start_animation(caster, "use")
@@ -574,6 +622,7 @@ function Magic:lockpick(caster, center, tiles, targets)
   end
 
 end
+
 
 
 return Magic

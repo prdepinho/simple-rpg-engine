@@ -7,4 +7,5 @@ sounds = {
   "crrreee.wav",
   "plim.wav",
   "fire.wav",
+  "shhh.wav",
 }

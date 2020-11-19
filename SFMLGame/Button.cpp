@@ -134,13 +134,11 @@ void Button::on_clic_inactive() {
 }
 
 void Button::on_activated() {
-	Log("on activated");
 	Component::on_activated();
 	vertices = released_vertices;
 }
 
 void Button::on_disactivated() {
-	Log("on disactivated");
 	Component::on_disactivated();
 	vertices = pressed_vertices;
 }
