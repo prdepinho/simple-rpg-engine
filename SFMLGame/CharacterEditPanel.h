@@ -25,7 +25,7 @@ public:
 	CharacterEditPanel(Character *character=nullptr, int x=0, int y=0, int w=0, int h=0);
 	virtual ~CharacterEditPanel();
 	virtual void create() override;
-	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
+	virtual Component *on_key_pressed(sf::Event &event) override;
 	static void show(Character *character, bool give_points, Screen &screen, Callback callback);
 	void move_cursor(Direction direction);
 	void set_cursor(int i);

@@ -135,11 +135,38 @@ Component* Component::on_key_pressed(sf::Keyboard::Key key){
 	return interacted;
 }
 
+Component* Component::on_key_pressed(sf::Event &event) {
+	if (!activated) {
+		// return parent_component;
+		return nullptr;
+	}
+	// if (parent_component != nullptr)
+	// 	return parent_component->on_key_pressed(key);
+	Component *interacted = nullptr;
+	for (Component *child : components) {
+		if (child->is_selected())
+			interacted = child->on_key_pressed(event);
+	}
+	return interacted;
+}
+
 Component* Component::on_text_input(char c) {
 	if (!activated) {
 		return parent_component;
 	}
 	return this;
+}
+
+Component* Component::on_joystick_event(sf::Event &event) {
+	if (!activated) {
+		return nullptr;
+	}
+	Component *interacted = nullptr;
+	for (Component *child : components) {
+		if (child->is_selected())
+			interacted = child->on_joystick_event(event);
+	}
+	return interacted;
 }
 
 inline void Component::show() {

@@ -355,12 +355,12 @@ void CharacterEditPanel::move_cursor(Direction direction) {
 	}
 }
 
-Component *CharacterEditPanel::on_key_pressed(sf::Keyboard::Key key) {
-	Component *interacted = Component::on_key_pressed(key);
+Component *CharacterEditPanel::on_key_pressed(sf::Event &event) {
+	Component *interacted = Component::on_key_pressed(event);
 	if (interacted)
 		return interacted;
 
-	switch (InputHandler::get_control_input(key)) {
+	switch (InputHandler::get_input(event)) {
 	case Control::UP:
 		move_cursor(Direction::UP);
 		return this;

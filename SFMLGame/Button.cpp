@@ -93,20 +93,21 @@ Component* Button::on_released(int x, int y) {
 	return this;
 }
 
-Component* Button::on_key_pressed(sf::Keyboard::Key key) {
+Component* Button::on_key_pressed(sf::Event &event) {
 	// if (!activated) {
 	// 	on_clic_inactive();
 	// 	return nullptr;
 	// }
-	Component *interacted = Component::on_key_pressed(key);
+	Component *interacted = Component::on_key_pressed(event);
 	if (interacted)
 		return interacted;
 
-	switch (InputHandler::get_control_input(key)) {
+	switch (InputHandler::get_input(event)) {
 	case Control::A:
 		on_click();
 		return this;
 	}
+
 	return nullptr;
 }
 

@@ -136,13 +136,13 @@ void ChoicePanel::show( std::string msg, Screen &screen, std::function<void()> y
 		screen.select(choice_panel.no_button);
 }
 
-Component *ChoicePanel::on_key_pressed(sf::Keyboard::Key key) {
-	Component *interacted = Panel::on_key_pressed(key);
+Component *ChoicePanel::on_key_pressed(sf::Event &event) {
+	Component *interacted = Panel::on_key_pressed(event);
 	if (interacted) {
 		return interacted;
 	}
 
-	switch (InputHandler::get_control_input(key)) {
+	switch (InputHandler::get_input(event)) {
 	case Control::UP:
 		if (!no_button.is_selected())
 			get_screen()->select(no_button);

@@ -23,7 +23,7 @@ public:
 	virtual void set_position(int x, int y) override;
 	virtual Component* on_pressed(int x, int y) override; 
 	virtual Component* on_released(int x, int y) override;
-	virtual Component* on_key_pressed(sf::Keyboard::Key key) override;
+	virtual Component* on_key_pressed(sf::Event &event) override;
 	virtual Component* on_click() override;
 	virtual void on_selected(bool show_outline = true);
 

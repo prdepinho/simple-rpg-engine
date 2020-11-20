@@ -179,10 +179,18 @@ Component *Screen::handle_event(sf::Event &event, float elapsed_time) {
 			{
 				if (selected_component != nullptr) {
 					// interacted_component = selected_component->on_key_pressed(event.key.code);
-					interacted_component = container.on_key_pressed(event.key.code);
+					// interacted_component = container.on_key_pressed(event.key.code);
+					interacted_component = container.on_key_pressed(event);
 				}
 			}
 			break;
+		}
+		break;
+	case sf::Event::JoystickButtonPressed:
+	case sf::Event::JoystickMoved:
+		if (selected_component != nullptr) {
+			// interacted_component = container.on_joystick_event(event);
+			interacted_component = container.on_key_pressed(event);
 		}
 		break;
 	case sf::Event::MouseButtonPressed:

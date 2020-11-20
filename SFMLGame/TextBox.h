@@ -18,7 +18,7 @@ public:
 	OptionsPanel(int x = 0, int y = 0, int w = 0) : Panel(x, y, w, 0) {}
 	virtual ~OptionsPanel() {}
 	virtual void create() override;
-	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
+	virtual Component *on_key_pressed(sf::Event &event) override;
 	void add_option(std::string text, Callback callback);
 	void add_option(std::string text, std::string dst, Callback callback);
 private:
@@ -36,7 +36,7 @@ public:
 	virtual void create() override;
 	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 	virtual void update(float elapsed_time) override;
-	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
+	virtual Component *on_key_pressed(sf::Event &event) override;
 	virtual Component *on_pressed(int x, int y) override;
 
 	static void show(std::string msg, Screen &screen, Callback callback=Callback());
@@ -80,7 +80,7 @@ public:
 	virtual void create() override;
 	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 	virtual void update(float elapsed_time) override;
-	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
+	virtual Component *on_key_pressed(sf::Event &event) override;
 	virtual Component *on_pressed(int x, int y) override;
 
 	static void show(LuaObject dialog_object, Screen &screen, Callback callback=Callback(), bool illustrated=false, bool box_at_bottom=false);

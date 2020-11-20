@@ -114,12 +114,12 @@ void TextBox::update(float elapsed_time) {
 
 }
 
-Component *TextBox::on_key_pressed(sf::Keyboard::Key key) {
-	Component *interacted = Component::on_key_pressed(key);
+Component *TextBox::on_key_pressed(sf::Event &event) {
+	Component *interacted = Component::on_key_pressed(event);
 	if (interacted)
 		return interacted;
 
-	switch (InputHandler::get_control_input(key)) {
+	switch (InputHandler::get_input(event)) {
 	case Control::A:
 		if (completely_written) {
 			if (end_line == text_lines.size()) {
@@ -316,12 +316,12 @@ void OptionsPanel::create() {
 	}
 }
 
-Component *OptionsPanel::on_key_pressed(sf::Keyboard::Key key) {
-	Component *interacted = Component::on_key_pressed(key);
+Component *OptionsPanel::on_key_pressed(sf::Event &event) {
+	Component *interacted = Component::on_key_pressed(event);
 	if (interacted)
 		return interacted;
 
-	switch (InputHandler::get_control_input(key)) {
+	switch (InputHandler::get_input(event)) {
 	case Control::A:
 		break;
 	case Control::UP:
@@ -420,12 +420,12 @@ void DialogueBox::update(float elapsed_time) {
 
 }
 
-Component *DialogueBox::on_key_pressed(sf::Keyboard::Key key) {
-	Component *interacted = Component::on_key_pressed(key);
+Component *DialogueBox::on_key_pressed(sf::Event &event) {
+	Component *interacted = Component::on_key_pressed(event);
 	if (interacted)
 		return interacted;
 
-	switch (InputHandler::get_control_input(key)) {
+	switch (InputHandler::get_input(event)) {
 	case Control::A:
 		if (completely_written) {
 			if (end_line == text_lines.size()) {

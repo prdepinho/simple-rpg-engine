@@ -141,7 +141,7 @@ Component *ScreenMainMenu::handle_event(sf::Event &event, float elapsed_time) {
 	// if (interacted_component)
 	// 	return interacted_component;
 
-	switch (InputHandler::get_control_input(event)) {
+	switch (InputHandler::get_input(event)) {
 	case Control::UP:
 		if (button_index > 0)
 			button_index--;
@@ -162,16 +162,38 @@ Component *ScreenMainMenu::handle_event(sf::Event &event, float elapsed_time) {
 		break;
 	case Control::A:
 		break;
+	case Control::START:
 	case Control::B:
 		window->close();
-		break;
-	case Control::START:
 		break;
 	case Control::SELECT:
 		break;
 	case Control::OTHER:
 		break;
 	}
+
+#if false
+	switch (InputHandler::get_joystick_input(event)) {
+	case Control::UP:
+		if (button_index > 0)
+			button_index--;
+		else
+			button_index = buttons.size() - 1;
+		select(buttons[button_index]);
+		break;
+	case Control::DOWN:
+		if ((size_t)button_index < buttons.size() - 1)
+			button_index++;
+		else
+			button_index = 0;
+		select(buttons[button_index]);
+		break;
+	case Control::START:
+	case Control::B:
+		window->close();
+		break;
+	}
+#endif
 
 
 #if false

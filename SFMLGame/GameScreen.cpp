@@ -42,6 +42,12 @@ void GameScreen::create() {
 
 	Json json(Path::SCREENS + "game.json");
 
+	{
+		std::cout << "Joystick connected: " << (sf::Joystick::isConnected(0) ? "true" : "false") << std::endl;
+		// std::cout << "Button count: " << sf::Joystick::getButtonCount(0) << std::endl;
+		// std::cout << "Has Z axis: " << sf::Joystick::hasAxis(0, sf::Joystick::Z) << std::endl;
+	}
+
 	// set up variables
 	{
 		turn = 0;
@@ -572,19 +578,87 @@ void GameScreen::poll_events(float elapsed_time) {
 			} 
 		}
 		else {
-			if (InputHandler::is_pressed(Control::UP)) {
+			if (InputHandler::is_input(Control::UP)) {
 				control_move_up();
 			}
-			else if (InputHandler::is_pressed(Control::DOWN)) {
+			else if (InputHandler::is_input(Control::DOWN)) {
 				control_move_down();
 			}
-			else if (InputHandler::is_pressed(Control::LEFT)) {
+			else if (InputHandler::is_input(Control::LEFT)) {
 				control_move_left();
 			}
-			else if (InputHandler::is_pressed(Control::RIGHT)) {
+			else if (InputHandler::is_input(Control::RIGHT)) {
 				control_move_right();
 			}
 		}
+
+#if false
+		// joystick controls
+		{
+			for (int i = 0; i < 31; i++) {
+				if (sf::Joystick::isButtonPressed(0, i)) {
+					std::cout << "Button " << i << " is pressed" << std::endl;
+				}
+			}
+
+			float axisx = sf::Joystick::getAxisPosition(0, sf::Joystick::X);
+			float axisy = sf::Joystick::getAxisPosition(0, sf::Joystick::Y);
+
+			if (axisx > 50.f) {
+				std::cout << "L RIGHT" << std::endl;
+			}
+			else if (axisx <= -50.f) {
+				std::cout << "L LEFT" << std::endl;
+			}
+			else if (axisy > 50.f) {
+				std::cout << "L DOWN" << std::endl;
+			}
+			else if (axisy <= -50.f) {
+				std::cout << "L UP" << std::endl;
+			}
+
+			float axisz = sf::Joystick::getAxisPosition(0, sf::Joystick::Z);
+			if (axisz > 50.f) {
+				std::cout << "L2" << std::endl;
+			}
+			else if (axisz <= -50.f) {
+				std::cout << "R2" << std::endl;
+			}
+
+			float axisu = sf::Joystick::getAxisPosition(0, sf::Joystick::U);
+			float axisv = sf::Joystick::getAxisPosition(0, sf::Joystick::V);
+			if (axisu > 50.f) {
+				std::cout << "R RIGHT" << std::endl;
+			}
+			else if (axisu <= -50.f) {
+				std::cout << "R LEFT" << std::endl;
+			}
+			else if (axisv > 50.f) {
+				std::cout << "R DOWN" << std::endl;
+			}
+			else if (axisv <= -50.f) {
+				std::cout << "R UP" << std::endl;
+			}
+
+			float axispovx = sf::Joystick::getAxisPosition(0, sf::Joystick::PovX);
+			float axispovy = sf::Joystick::getAxisPosition(0, sf::Joystick::PovY);
+			if (axispovx > 50) {
+				std::cout << "DPAD RIGHT" << std::endl;
+			}
+			else if (axispovx <= -50) {
+				std::cout << "DPAD LEFT" << std::endl;
+			}
+			else if (axispovy > 50) {
+				std::cout << "DPAD UP" << std::endl;
+			}
+			else if (axispovy <= -50) {
+				std::cout << "DPAD DOWN" << std::endl;
+			}
+
+			float axisr = sf::Joystick::getAxisPosition(0, sf::Joystick::R);
+
+		}
+#endif
 
 #if false
 		if (selected_component == &container) {
@@ -634,7 +708,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 
 
 	if (!player_busy && in_control) {
-		switch (InputHandler::get_control_input(event)) {
+		switch (InputHandler::get_input(event)) {
 		case Control::A:
 			// do
 			{
@@ -666,10 +740,14 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			player_busy = true;
 			break;
 		}
+
 	}
 
-#if false
+#if true
 	switch (event.type) {
+	// case sf::Event::JoystickButtonPressed:
+	// 	std::cout << "button: " << event.joystickButton.button << ", " << event.joystickButton.joystickId << std::endl;
+	// 	break;
 	case sf::Event::MouseButtonPressed:
 		if (selected_component == &container) {
 			if (event.mouseButton.button == sf::Mouse::Left) {

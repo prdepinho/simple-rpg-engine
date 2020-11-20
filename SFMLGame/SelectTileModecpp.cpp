@@ -93,25 +93,20 @@ Component *SelectTileMode::handle_event(sf::Event &event, float elapsed_time) {
 		return nullptr;
 	}
 
-	switch (InputHandler::get_control_input(event)) {
+	switch (InputHandler::get_input(event)) {
 	case Control::UP:
-		Log("SelectTileMode - up");
 		move_cursor(Direction::UP);
 		break;
 	case Control::DOWN:
-		Log("SelectTileMode - down");
 		move_cursor(Direction::DOWN);
 		break;
 	case Control::LEFT:
-		Log("SelectTileMode - left");
 		move_cursor(Direction::LEFT);
 		break;
 	case Control::RIGHT:
-		Log("SelectTileMode - right");
 		move_cursor(Direction::RIGHT);
 		break;
 	case Control::A:
-		Log("SelectTileMode - A");
 		{
 			if (on_select(cursor, effect_tiles)) {
 				Resources::play_sound("crrreee.wav");
@@ -122,18 +117,16 @@ Component *SelectTileMode::handle_event(sf::Event &event, float elapsed_time) {
 		}
 		break;
 	case Control::B:
-		Log("SelectTileMode - B");
 		exit();
 		break;
 	case Control::START:
-		Log("SelectTileMode - Start");
 		exit();
 		break;
 	case Control::SELECT:
-		Log("SelectTileMode - Select");
 		exit();
 		break;
 	}
+
 	return interacted_component;
 }
 

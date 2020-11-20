@@ -162,12 +162,12 @@ void SaveOptionMenu::show(Screen &screen, Resources::SaveFile save_file, bool al
 	screen.select(save_option_panel.buttons.front());
 }
 
-Component *SaveOptionMenu::on_key_pressed(sf::Keyboard::Key key) {
-	Component *interacted = Component::on_key_pressed(key);
+Component *SaveOptionMenu::on_key_pressed(sf::Event &event) {
+	Component *interacted = Component::on_key_pressed(event);
 	if (interacted)
 		return interacted;
 
-	switch (InputHandler::get_control_input(key)) {
+	switch (InputHandler::get_input(event)) {
 	case Control::UP:
 		if (button_index > 0)
 			button_index--;
@@ -311,12 +311,12 @@ void SavePanel::refresh_buttons() {
 	}
 }
 
-Component *SavePanel::on_key_pressed(sf::Keyboard::Key key) {
-	Component *interacted = Component::on_key_pressed(key);
+Component *SavePanel::on_key_pressed(sf::Event &event) {
+	Component *interacted = Component::on_key_pressed(event);
 	if (interacted)
 		return interacted;
 
-	switch (InputHandler::get_control_input(key)) {
+	switch (InputHandler::get_input(event)) {
 	case Control::UP:
 		if (button_index > 0)
 			button_index--;

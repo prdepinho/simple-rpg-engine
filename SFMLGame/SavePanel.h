@@ -22,7 +22,7 @@ public:
 	SaveOptionMenu();
 	~SaveOptionMenu();
 	virtual void create() override;
-	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
+	virtual Component *on_key_pressed(sf::Event &event) override;
 	static void show(Screen &screen, Resources::SaveFile save_file, bool allow_save, bool allow_delete, Callback callback=Callback());
 private:
 	int border = 5;
@@ -41,7 +41,7 @@ public:
 	SavePanel();
 	~SavePanel();
 	virtual void create() override;
-	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
+	virtual Component *on_key_pressed(sf::Event &event) override;
 	static void show(Screen &screen, Callback callback=Callback());
 	static void refresh_buttons();
 	static SavePanel &get() { static SavePanel panel; return panel; }

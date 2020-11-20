@@ -80,7 +80,7 @@ Component *LoadGameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	if (interacted_component)
 		return nullptr;
 
-	switch (InputHandler::get_control_input(event)) {
+	switch (InputHandler::get_input(event)) {
 	case Control::UP:
 		if (button_index > 0)
 			button_index--;
@@ -102,6 +102,7 @@ Component *LoadGameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		game->change_to_main_menu_screen();
 		break;
 	}
+
 
 	switch (event.type) {
 	case sf::Event::Closed:

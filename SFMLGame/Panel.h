@@ -45,7 +45,7 @@ public:
 
 	static void show(std::string msg, Screen &screen, std::function<void()> yes_func = []() {}, std::function<void()> no_func = []() {}, bool default_yes=false);
 	virtual void create() override;
-	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
+	virtual Component *on_key_pressed(sf::Event &event) override;
 
 private:
 	std::function<void()> yes_func;

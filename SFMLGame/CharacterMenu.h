@@ -17,7 +17,7 @@ public:
 	ItemContextMenu();
 	~ItemContextMenu();
 	virtual void create() override;
-	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
+	virtual Component *on_key_pressed(sf::Event &event) override;
 	static void show(Screen &screen, Inventory *inventory, Item item, Character *character, int x, int y, Callback callback = Callback());
 private:
 	Inventory *inventory;
@@ -81,7 +81,7 @@ public:
 	Inventory(int x=0, int y=0);
 	~Inventory();
 	virtual void create() override;
-	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
+	virtual Component *on_key_pressed(sf::Event &event) override;
 	void set_cursor(int i);
 	void move_cursor(Direction direction);
 	int get_button_size() const { return button_size; }
@@ -106,7 +106,7 @@ public:
 	CharacterMenu();
 	~CharacterMenu();
 	virtual void create() override;
-	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
+	virtual Component *on_key_pressed(sf::Event &event) override;
 	static void show(Screen &screen, Character *character, Callback callback=Callback());
 	static CharacterMenu &get() { static CharacterMenu menu; return menu; }
 	Character *get_character() { return character; }
@@ -149,7 +149,7 @@ public:
 	LootMenu();
 	~LootMenu();
 	virtual void create() override;
-	virtual Component *on_key_pressed(sf::Keyboard::Key key) override;
+	virtual Component *on_key_pressed(sf::Event &event) override;
 	static void show(Screen &screen, Character *character, std::vector<Item*> items, Callback callback=Callback());
 	static LootMenu &get() { static LootMenu menu; return menu; }
 	Character *get_character() { return character; }

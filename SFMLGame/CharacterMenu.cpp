@@ -175,13 +175,13 @@ void ItemContextMenu::show(Screen &screen, Inventory *inventory, Item item, Char
 	screen.select(menu.buttons[0]);
 }
 
-Component *ItemContextMenu::on_key_pressed(sf::Keyboard::Key key) {
-	Component *interacted = Panel::on_key_pressed(key);
+Component *ItemContextMenu::on_key_pressed(sf::Event &event) {
+	Component *interacted = Panel::on_key_pressed(event);
 	if (interacted) {
 		return interacted;
 	}
 
-	switch (InputHandler::get_control_input(key)) {
+	switch (InputHandler::get_input(event)) {
 	case Control::UP:
 		if (cursor > 0)
 			cursor--;
@@ -556,14 +556,14 @@ void Inventory::create() {
 	}
 }
 
-Component *Inventory::on_key_pressed(sf::Keyboard::Key key) {
-	Component *interacted = Panel::on_key_pressed(key);
+Component *Inventory::on_key_pressed(sf::Event &event) {
+	Component *interacted = Panel::on_key_pressed(event);
 	if (interacted) {
 		return interacted;
 	}
 
 	int rval = 0;
-	switch (InputHandler::get_control_input(key)) {
+	switch (InputHandler::get_input(event)) {
 	case Control::UP:
 		move_cursor(Direction::UP);
 		return this;
@@ -718,14 +718,14 @@ void CharacterMenu::create() {
 	Panel::create();
 }
 
-Component *CharacterMenu::on_key_pressed(sf::Keyboard::Key key) {
-	Component *interacted = Panel::on_key_pressed(key);
+Component *CharacterMenu::on_key_pressed(sf::Event &event) {
+	Component *interacted = Panel::on_key_pressed(event);
 	if (interacted) {
 		return interacted;
 	}
 
 	int rval = 0;
-	switch (InputHandler::get_control_input(key)) {
+	switch (InputHandler::get_input(event)) {
 	case Control::UP:
 		break;
 	case Control::DOWN:
@@ -987,14 +987,14 @@ void LootMenu::create() {
 	Panel::create();
 }
 
-Component *LootMenu::on_key_pressed(sf::Keyboard::Key key) {
-	Component *interacted = Panel::on_key_pressed(key);
+Component *LootMenu::on_key_pressed(sf::Event &event) {
+	Component *interacted = Panel::on_key_pressed(event);
 	if (interacted) {
 		return interacted;
 	}
 
 	int rval = 0;
-	switch (InputHandler::get_control_input(key)) {
+	switch (InputHandler::get_input(event)) {
 	case Control::UP:
 		loot.move_cursor(Direction::UP);
 		return this;

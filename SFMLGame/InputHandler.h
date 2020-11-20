@@ -24,9 +24,18 @@ public:
 	virtual void poll_events(float elapsed_time) {}
 	virtual void handle_events(sf::Event &event, float elapsed_time) {}
 
+	static Control get_input(sf::Event &event);
+	static bool is_input(Control control);
+
+	Control _get_joystick_input(sf::Event &event);
+	bool _is_joystick_pressed(Control control);
+
 	Control _get_control_input(sf::Event &event);
 	Control _get_control_input(sf::Keyboard::Key key);
 	bool _is_pressed(Control control);
+
+	static Control get_joystick_input(sf::Event &event) { return get()._get_joystick_input(event); }
+	static bool is_joystick_pressed(Control control) { return get()._is_joystick_pressed(control); }
 
 	static Control get_control_input(sf::Event &event) { return get()._get_control_input(event); }
 	static Control get_control_input(sf::Keyboard::Key key) { return get()._get_control_input(key); }

@@ -60,8 +60,10 @@ public:
 	virtual Component* on_released(int x, int y);
 	virtual Component* on_held(int x, int y);
 	virtual Component* on_key_pressed(sf::Keyboard::Key key);
+	virtual Component* on_key_pressed(sf::Event &event);
 	virtual Component* on_text_input(char c);
 	virtual Component* on_click() { return nullptr; }
+	virtual Component* on_joystick_event(sf::Event &event);
 	virtual void on_activated() {}
 	virtual void on_disactivated() {}
 
