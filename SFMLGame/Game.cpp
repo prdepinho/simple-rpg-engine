@@ -96,12 +96,10 @@ void Game::change_to_game_screen() {
 #if true
 	Resources::stop_music();
 	to_change_screen = new GameScreen();
-	to_change_screen->config_filename = Path::SCREENS + "game.json";
 #else
 	Resources::stop_music();
 	game_screen = GameScreen();
 	to_change_screen = &game_screen;
-	to_change_screen->config_filename = Path::SCREENS + "game.json";
 #endif
 }
 

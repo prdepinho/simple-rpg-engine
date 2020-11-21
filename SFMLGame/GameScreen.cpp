@@ -40,8 +40,6 @@ GameScreen::~GameScreen() {
 void GameScreen::create() {
 	Screen::create();
 
-	Json json(Path::SCREENS + "game.json");
-
 	{
 		std::cout << "Joystick connected: " << (sf::Joystick::isConnected(0) ? "true" : "false") << std::endl;
 		// std::cout << "Button count: " << sf::Joystick::getButtonCount(0) << std::endl;
@@ -52,7 +50,6 @@ void GameScreen::create() {
 	{
 		turn = 0;
 		turn_count = 0.f;
-		// turn_duration = 1 / json.get_float("turns_per_second", 1.f);
 		turn_duration = _game.get_turn_duration();
 	}
 	
@@ -89,10 +86,6 @@ void GameScreen::create() {
 
 	// load map
 	{
-#if false
-		std::string filename = json.get_string("map");
-		next_map = filename;
-#else
 		std::string filename = _game.get_lua()->get_player_map();
 
 		auto position = _game.get_lua()->get_player_position();
@@ -102,7 +95,6 @@ void GameScreen::create() {
 		}
 
 		next_map = filename;
-#endif
 		load_map();
 	}
 
