@@ -727,6 +727,19 @@ public:
 		return 1;
 	}
 
+	static int sfml_get_characters_on_map(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		lua_newtable(state);
+		int i = 1;
+		for (Character *character : screen->get_characters()) {
+			if (character) {
+				lua_pushnumber(state, i++);
+				lua_pushstring(state, character->get_name().c_str());
+				lua_settable(state, -3);
+			}
+		}
+		return 1;
+	}
 
 	static int sfml_get_characters_in_sight(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
@@ -1157,6 +1170,7 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_get_field_of_vision", LuaFunction::sfml_get_field_of_vision);
 	lua_register(lua.get_state(), "sfml_get_line_of_sight", LuaFunction::sfml_get_line_of_sight);
 	lua_register(lua.get_state(), "sfml_is_in_line_of_sight", LuaFunction::sfml_is_in_line_of_sight);
+	lua_register(lua.get_state(), "sfml_get_characters_on_map", LuaFunction::sfml_get_characters_on_map);
 	lua_register(lua.get_state(), "sfml_get_characters_in_sight", LuaFunction::sfml_get_characters_in_sight);
 	lua_register(lua.get_state(), "sfml_get_idle_walk_destination", LuaFunction::sfml_get_idle_walk_destination);
 	lua_register(lua.get_state(), "sfml_loop_animation", LuaFunction::sfml_loop_animation);

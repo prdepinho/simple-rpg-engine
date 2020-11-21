@@ -21,6 +21,7 @@ function Player:create()
   sfml_set_character_skin(self.name, self.data.animation)
   self.data.enemy = false
   self.data.npc = false
+  self.data.ally = true
   self.data.stats = rules.new_character()
   self.data.stats.portrait = {x = 0, y = 224}
   self.data.stats.name = "Mumu"

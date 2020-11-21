@@ -57,6 +57,110 @@ function Control:next_item_code(str)
 end
 
 
+
+function Control:get_allies()
+  local allies = {}
+  for index, character in ipairs(sfml_get_characters_on_map()) do
+    if self.characters[character].data.ally then
+      table.insert(allies, character)
+    end
+  end
+  return allies
+end
+
+function Control:get_enemies()
+  local enemies = {}
+  for index, character in ipairs(sfml_get_characters_on_map()) do
+    if self.characters[character].data.enemy then
+      table.insert(enemies, character)
+    end
+  end
+  return enemies
+end
+
+function Control:is_ally(name)
+  local allies = self:get_allies()
+  for index, ally in ipairs(allies) do
+    if ally == name then
+      return true
+    end
+  end
+  return false
+end
+
+function Control:is_enemy(name)
+  local enemies = self:get_enemies()
+  for index, enemy in ipairs(enemies) do
+    if enemy == name then
+      return true
+    end
+  end
+  return false
+end
+
+
+function Control:closest_ally_on_sight(observer, radius)
+  radius = radius or 6
+  local closest_ally = nil
+  local closest_distance = 10000
+  local allies = self:get_allies()
+
+  for index, ally in ipairs(allies) do
+    local stats = self.characters[ally].data.stats
+    if not stats.status.dead and not stats.status.invisible then
+      local src = sfml_get_character_position(observer)
+      local dst = sfml_get_character_position(ally)
+      local delta_x = (src.x - dst.x) * (src.x - dst.x)
+      local delta_y = (src.y - dst.y) * (src.y - dst.y)
+      local distance = math.sqrt(delta_x + delta_y)
+      local is_in_sight = sfml_is_in_line_of_sight(src.x, src.y, dst.x, dst.y, radius)
+      if is_in_sight and closest_distance > distance then
+        closest_distance = distance
+        closest_ally = ally
+      end
+    end
+  end
+  return closest_ally
+end
+
+
+function Control:closest_enemy_on_sight(observer, radius)
+  radius = radius or 6
+  local closest_enemy = nil
+  local closest_distance = 10000
+  local enemies = self:get_enemies()
+
+  for index, enemy in ipairs(enemies) do
+    local stats = self.characters[enemy].data.stats
+    if not stats.status.dead and not stats.status.invisible then
+      local src = sfml_get_character_position(observer)
+      local dst = sfml_get_character_position(enemy)
+      local delta_x = (src.x - dst.x) * (src.x - dst.x)
+      local delta_y = (src.y - dst.y) * (src.y - dst.y)
+      local distance = math.sqrt(delta_x + delta_y)
+      local is_in_sight = sfml_is_in_line_of_sight(src.x, src.y, dst.x, dst.y, radius)
+      if is_in_sight and closest_distance > distance then
+        closest_distance = distance
+        closest_enemy = enemy
+      end
+    end
+  end
+  return closest_enemy
+end
+
+function Control:is_player_in_sight(radius)
+  if self.characters.player.data.stats.status.invisible then
+    radius = 0
+  end
+  local src = sfml_get_character_position(self.name)
+  local dst = sfml_get_player_position()
+  return sfml_is_in_line_of_sight(src.x, src.y, dst.x, dst.y, radius)
+end
+
+
+
+
+
 function Control:enemy_on_player_in_sight(enemy)
   self.enemies_aware[enemy] = true
   local size = 0

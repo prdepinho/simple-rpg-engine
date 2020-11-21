@@ -57,15 +57,30 @@ function Character:on_turn()
     if self.data.stats.status.fear then
       return
     end
+
+    -- if self.data.enemy then
+    --   if self:is_player_in_sight(6) then
+    --     self.control:enemy_on_player_in_sight(self.name)
+    --     self:attack("player")
+    --   else
+    --     self.control:enemy_on_lost_sight_of_player(self.name)
+    --   end
+    -- end
+
     if self.data.enemy then
-      if self:is_player_in_sight(6) then
+      local target = self.control:closest_ally_on_sight(self.name)
+      if target then
         self.control:enemy_on_player_in_sight(self.name)
-        self:attack("player")
-      else
-        self.control:enemy_on_lost_sight_of_player(self.name)
+        self:attack(target)
+      end
+    elseif self.data.ally then
+      local target = self.control:closest_enemy_on_sight(self.name)
+      if target then
+        self:attack(target)
       end
     end
   end
+
 end
 
 
@@ -94,14 +109,20 @@ function Character:on_idle()
 
   if self.data.npc then
     if self.data.enemy then
-      if self:is_player_in_sight(6) then
-        local pos = sfml_get_player_position()
+      local target = self.control:closest_ally_on_sight(self.name)
+      if target then
+        local pos = sfml_get_character_position(target)
         sfml_move(self.name, pos.x, pos.y)
-        return
       end
+    elseif self.data.ally then
+      local target = self.control:closest_enemy_on_sight(self.name)
+      if target then
+        local pos = sfml_get_character_position(target)
+        sfml_move(self.name, pos.x, pos.y)
+      end
+    else
+      self:idle_walk(self.name)
     end
-
-    self:idle_walk(self.name)
   end
 end
 
@@ -110,11 +131,15 @@ function Character:on_interact(interactor_name)
 end
 
 function Character:on_attacked(attacker_name)
-  if attacker_name == 'player' then
-    self.data.enemy = true
+  if self.control:is_ally(attacker_name) then
+    if not self.data.ally and not self.data.enemy then
+      self.data.enemy = true
+    end
     local in_sight = sfml_get_characters_in_sight(attacker_name, 6)
     for index, name in ipairs(in_sight) do
-      self.control.characters[name].data.enemy = true
+      if not self.control.characters[name].data.ally and not self.control.characters[name].data.enemy then
+        self.control.characters[name].data.enemy = true
+      end
     end
   end
 end
@@ -143,17 +168,6 @@ function Character:idle_walk(radius)
     -- sfml_wait(self.name, math.random(4))
     sfml_wait(self.name, rules.roll_dice("d4"))
   end
-end
-
-function Character:is_player_in_sight(radius)
-  
-  if self.control.characters.player.data.stats.status.invisible then
-    radius = 0
-  end
-
-  local src = sfml_get_character_position(self.name)
-  local dst = sfml_get_player_position()
-  return sfml_is_in_line_of_sight(src.x, src.y, dst.x, dst.y, radius)
 end
 
 -- attack character if in range.

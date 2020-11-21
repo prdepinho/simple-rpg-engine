@@ -118,22 +118,6 @@ Control InputHandler::get_input(sf::Event &event) {
 	Control rval = get()._get_control_input(event);
 	if (rval == Control::OTHER)
 		rval = get()._get_joystick_input(event);
-	switch (rval) {
-	case Control::A:
-		std::cout << "A" << std::endl;
-		break;
-	case Control::B:
-		std::cout << "B" << std::endl;
-		break;
-	case Control::START:
-		std::cout << "START" << std::endl;
-		break;
-	case Control::SELECT:
-		std::cout << "SELECT" << std::endl;
-		break;
-	default:
-		break;
-	}
 	return rval;
 }
 
