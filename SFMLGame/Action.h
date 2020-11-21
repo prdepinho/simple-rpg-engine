@@ -24,13 +24,14 @@ struct ActionComparison {
 
 class MoveAction : public Action {
 public:
-	MoveAction(Character *character = nullptr, Direction direction = Direction::UP);
+	MoveAction(Character *character = nullptr, Direction direction = Direction::UP, bool ignore_obstacle=false);
 	virtual void execute(GameScreen *screen) override;
 	virtual std::string to_string() const override { return "MoveAction"; }
 
 private:
 	Direction direction;
 	Character *character;
+	bool ignore_obstacle;
 };
 
 

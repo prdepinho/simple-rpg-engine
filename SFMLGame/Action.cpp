@@ -12,8 +12,8 @@ bool ActionComparison::operator() (const Action *lhs, const Action *rhs) {
 
 
 
-MoveAction::MoveAction(Character *character, Direction direction)
-	: Action(1), character(character), direction(direction) {}
+MoveAction::MoveAction(Character *character, Direction direction, bool ignore_obstacle)
+	: Action(1), character(character), direction(direction), ignore_obstacle(ignore_obstacle) {}
 
 void MoveAction::execute(GameScreen *screen) {
 	if (character) {
@@ -25,7 +25,7 @@ void MoveAction::execute(GameScreen *screen) {
 		case Direction::LEFT: position.x--; break;
 		case Direction::RIGHT: position.x++; break;
 		}
-		screen->move_character(*character, direction);
+		screen->move_character(*character, direction, ignore_obstacle);
 	}
 }
 

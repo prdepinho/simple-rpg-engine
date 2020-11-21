@@ -441,9 +441,7 @@ function Magic:raise_dead(caster, center, tiles, targets)
 
       if character.data.stats.status.dead then
         local skeleton_name = 'skeleton_' .. character_name
-        print(skeleton_name)
 
-        -- local inventory = self.control.characters[character_name].data.stats.inventory
         self.control:strip_character_items(character_name)
         self.control:remove_character(character_name)
 
@@ -452,13 +450,16 @@ function Magic:raise_dead(caster, center, tiles, targets)
         sfml_start_animation(skeleton_name, 'rise')
 
         self.control.characters[skeleton_name]:set_timeout(turns)
-        self.control.characters[skeleton_name].data.ally = true
+
+        if self.control.characters[caster].data.ally then
+          self.control.characters[skeleton_name].data.ally = true
+        elseif self.control.characters[caster].data.enemy then
+          self.control.characters[skeleton_name].data.enemy = true
+        end
 
         local name = self.control.characters[character_name].data.stats.name 
         local msg = name .. ' - has risen for ' .. tostring(turns) .. ' turns'
         sfml_push_log(msg)
-
-        -- self.control.characters[skeleton_name].data.stats.inventory = inventory
 
       end
     end

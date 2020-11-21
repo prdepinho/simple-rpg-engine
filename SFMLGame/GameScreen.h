@@ -87,19 +87,19 @@ public:
 	void center_map_on_character(Character &character);
 
 	void schedule_character_wait(Character &character, int turns);
-	void schedule_character_movement(Character &character, int tile_x, int tile_y);
+	void schedule_character_movement(Character &character, int tile_x, int tile_y, bool ignore_obstacle=false);
 	void schedule_character_interaction(Character &character, int tile_x, int tile_y);
 	void schedule_character_attack(Character &attacker, Character &defender);
 	void schedule_character_cast_magic(std::string magic_name, Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> tiles, std::vector<std::string> targets, int inventory_index);
 
-	void move_character(Character &character, Direction direction);
+	void move_character(Character &character, Direction direction, bool ignore_obstacle=false);
 	void wait_character(Character &character);
 	void attack_character(Character &attacker, Character &defender);
 	void interact_character(Character &character, int tile_x, int tile_y);
 	void cast_magic(Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> tiles, std::vector<std::string> targets, std::string magic_name, int inventory_index);
 
-	bool can_move(Character &character, Direction direction);
-	bool can_move(Character &character, int tile_x, int tile_y);
+	bool can_move(Character &character, Direction direction, bool ignore_obstacle=false);
+	bool can_move(Character &character, int tile_x, int tile_y, bool ignore_obstacle=false);
 	Character* get_character_on_tile(int tile_x, int tile_y);
 	Character* get_live_character_on_tile(int tile_x, int tile_y);
 	std::vector<Character*> get_characters_on_tile(int tile_x, int tile_y);

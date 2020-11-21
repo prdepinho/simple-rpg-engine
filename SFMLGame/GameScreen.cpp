@@ -464,8 +464,8 @@ void GameScreen::control_mouse_move() {
 		int tile_y = tile_coord.y;
 
 		player_character->clear_schedule();
-		schedule_character_movement(*player_character, tile_x, tile_y);
-		schedule_character_interaction(*player_character, tile_x, tile_y);
+		schedule_character_movement(*player_character, tile_x, tile_y, true);
+		// schedule_character_interaction(*player_character, tile_x, tile_y);
 	}
 }
 
@@ -587,6 +587,17 @@ void GameScreen::poll_events(float elapsed_time) {
 #if false
 		// joystick controls
 		{
+			// button mapping:
+			// 0 = cross
+			// 1 = circle
+			// 2 = square
+			// 3 = triangle
+			// 4 = L1
+			// 5 = R1
+			// 6 = select
+			// 7 = start
+			// 8 = left stick button
+			// 9 = right stick button
 			for (int i = 0; i < 31; i++) {
 				if (sf::Joystick::isButtonPressed(0, i)) {
 					std::cout << "Button " << i << " is pressed" << std::endl;
@@ -1147,15 +1158,15 @@ void GameScreen::schedule_character_wait(Character &character, int turns) {
 	}
 }
 
-void GameScreen::schedule_character_movement(Character &character, int tile_x, int tile_y) {
+void GameScreen::schedule_character_movement(Character &character, int tile_x, int tile_y, bool ignore_obstacle) {
 	sf::Vector2i start(character_position(character));
 	sf::Vector2i end(tile_x, tile_y);
 
-	std::stack<Direction> path = AStar::search(map, start, end);
+	std::stack<Direction> path = AStar::search(map, start, end, 200, ignore_obstacle);
 
 	while (!path.empty()) {
 		Direction direction = path.top();
-		auto *action = new MoveAction(&character, direction);
+		auto *action = new MoveAction(&character, direction, ignore_obstacle);
 		character.schedule_action(action);
 		path.pop();
 	}
@@ -1183,7 +1194,7 @@ void GameScreen::schedule_character_cast_magic(std::string magic_name, Character
 
 // Character actions. These methods are called by scheduled Action objects and create an effect and don't take place if the character is inactive.
 
-void GameScreen::move_character(Character &character, Direction direction) {
+void GameScreen::move_character(Character &character, Direction direction, bool ignore_obstacle) {
 	if (!character.is_active())
 		return;
 	character_face(character, direction);
@@ -1201,7 +1212,7 @@ void GameScreen::move_character(Character &character, Direction direction) {
 	dst = position;
 
 	pick_tile(character, position);
-	if (!can_move(character, position.x, position.y)) {
+	if (!can_move(character, position.x, position.y, ignore_obstacle)) {
 		character.clear_schedule();
 		player_busy = false;
 		// Log("%s Clear", character.get_name().c_str());
@@ -1237,7 +1248,9 @@ void GameScreen::move_character(Character &character, Direction direction) {
 			{
 				MoveEffect *m = dynamic_cast<MoveEffect*>(e);
 				auto src = m->get_src();
-				map.get_tile(src.x, src.y).obstacle = false;
+
+				if (get_characters_on_tile(src.x, src.y).size() == 0)
+					map.get_tile(src.x, src.y).obstacle = false;
 			}
 			sf::Vector2i position = character_position(*player_character);
 			TileData tile = map.get_tile(position.x, position.y);
@@ -1466,7 +1479,7 @@ void GameScreen::push_character_to_bottom(Character &character) {
 	}
 }
 
-bool GameScreen::can_move(Character &character, Direction direction) {
+bool GameScreen::can_move(Character &character, Direction direction, bool ignore_obstacle) {
 	sf::Vector2i position = character_position(character);
 	int dst_x = position.x;
 	int dst_y = position.y;
@@ -1482,7 +1495,10 @@ bool GameScreen::can_move(Character &character, Direction direction) {
 	}
 	if (map.in_tile_bounds(dst_x, dst_y)) {
 		TileData &tile = map.get_tile(dst_x, dst_y);
-		return !tile.obstacle;
+		if (ignore_obstacle)
+			return true;
+		else
+			return !tile.obstacle;
 		// bool obstacle = tile.obstacle;
 		// bool picked = !is_picked_by_me(character, { dst_x, dst_y });
 		// return !(obstacle || picked);
@@ -1490,12 +1506,15 @@ bool GameScreen::can_move(Character &character, Direction direction) {
 	return false;
 }
 
-bool GameScreen::can_move(Character &character, int dst_x, int dst_y) {
+bool GameScreen::can_move(Character &character, int dst_x, int dst_y, bool ignore_obstacle) {
 	if (map.in_tile_bounds(dst_x, dst_y)) {
 		TileData &tile = map.get_tile(dst_x, dst_y);
 		bool obstacle = tile.obstacle;
 		bool picked = !is_picked_by_me(character, { dst_x, dst_y });
-		return !(obstacle || picked);
+		if (ignore_obstacle)
+			return !picked;
+		else
+			return !(obstacle || picked);
 	}
 	return false;
 }

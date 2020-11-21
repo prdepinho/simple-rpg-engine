@@ -349,15 +349,24 @@ public:
 
 	static int sfml_move(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
-
 		std::string name = lua_tostring(state, -3);
 		int x = (int) lua_tointeger(state, -2);
 		int y = (int) lua_tointeger(state, -1);
-
 		Character *character = screen->get_character_by_name(name);
 		screen->schedule_character_movement(*character, x, y);
 		return 0;
 	}
+
+	static int sfml_move_ignore_obstacle(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		std::string name = lua_tostring(state, -3);
+		int x = (int) lua_tointeger(state, -2);
+		int y = (int) lua_tointeger(state, -1);
+		Character *character = screen->get_character_by_name(name);
+		screen->schedule_character_movement(*character, x, y, true);
+		return 0;
+	}
+
 
 	static int sfml_wait(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
@@ -1147,6 +1156,7 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_get_map_height", LuaFunction::sfml_get_map_height);
 	lua_register(lua.get_state(), "sfml_get_map", LuaFunction::sfml_get_map);
 	lua_register(lua.get_state(), "sfml_move", LuaFunction::sfml_move);
+	lua_register(lua.get_state(), "sfml_move_ignore_obstacle", LuaFunction::sfml_move_ignore_obstacle);
 	lua_register(lua.get_state(), "sfml_wait", LuaFunction::sfml_wait);
 	lua_register(lua.get_state(), "sfml_get_character_position", LuaFunction::sfml_get_character_position);
 	lua_register(lua.get_state(), "sfml_get_player_position", LuaFunction::sfml_get_player_position);

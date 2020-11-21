@@ -36,7 +36,7 @@ namespace AStar {
 		}
 	};
 
-	std::stack<Direction> search(Tilemap &map, sf::Vector2i start, sf::Vector2i end, unsigned int limit = 200);
+	std::stack<Direction> search(Tilemap &map, sf::Vector2i start, sf::Vector2i end, unsigned int limit = 200, bool ignore_obstacles = false);
 
 	float distance(sf::Vector2i na, sf::Vector2i nb);
 }

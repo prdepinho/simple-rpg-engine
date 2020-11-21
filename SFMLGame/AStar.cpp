@@ -1,7 +1,7 @@
 #include "AStar.h"
 #include "Game.h"
 
-std::stack<Direction> AStar::search(Tilemap & map, sf::Vector2i start, sf::Vector2i end, unsigned int limit)
+std::stack<Direction> AStar::search(Tilemap & map, sf::Vector2i start, sf::Vector2i end, unsigned int limit, bool ignore_obstacles)
 {
 	static std::map<Direction, std::tuple<int, int>> direction_mods = {
 		{Direction::UP, std::make_tuple(0, -1)},
@@ -19,9 +19,12 @@ std::stack<Direction> AStar::search(Tilemap & map, sf::Vector2i start, sf::Vecto
 	}
 
 	// treat the dst tile as not obstacle for the algorithm.
-	bool is_end_obstacle = map.get_tile(end.x, end.y).obstacle;
-	if (is_end_obstacle)
-		map.get_tile(end.x, end.y).obstacle = false;
+	bool is_end_obstacle = false;
+	if (!ignore_obstacles) {
+		is_end_obstacle = map.get_tile(end.x, end.y).obstacle;
+		if (is_end_obstacle)
+			map.get_tile(end.x, end.y).obstacle = false;
+	}
 
 	int map_height = map.get_tile_height();
 	int map_width = map.get_tile_width();
@@ -48,7 +51,11 @@ std::stack<Direction> AStar::search(Tilemap & map, sf::Vector2i start, sf::Vecto
 		for (Direction &direction : directions) {
 			int x = current->coords.x + std::get<0>(direction_mods[direction]);
 			int y = current->coords.y + std::get<1>(direction_mods[direction]);
-			if (map.in_tile_bounds(x, y) && !map.get_tile(x, y).obstacle) {
+			if (
+				map.in_tile_bounds(x, y) 
+				&& 
+				(ignore_obstacles || !map.get_tile(x, y).obstacle)
+			) {
 				sf::Vector2i neighbor(x, y);
 				Node *neighbor_node = &search_grid[neighbor.y * map_width + neighbor.x];
 
@@ -71,10 +78,12 @@ std::stack<Direction> AStar::search(Tilemap & map, sf::Vector2i start, sf::Vecto
 	}
 
 	// set back the dst tile as obstacle.
-	if (is_end_obstacle) {
-		map.get_tile(end.x, end.y).obstacle = true;
-		if (dst_node)
-			dst_node = dst_node->parent;
+	if (!ignore_obstacles) {
+		if (is_end_obstacle) {
+			map.get_tile(end.x, end.y).obstacle = true;
+			if (dst_node)
+				dst_node = dst_node->parent;
+		}
 	}
 
 	// return a stack of directions to follow.

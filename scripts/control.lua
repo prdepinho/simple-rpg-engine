@@ -1093,11 +1093,21 @@ function Control:character_on_interact(target_name, interactor_name)
   if self.characters[target_name] ~= nil then
     local character = self.characters[target_name].data
     if character.stats.status.dead then
-      print(target_name .. ' is dead')
     -- elseif character.enemy then
     --   sfml_attack(interactor_name, target_name)
     else
-      self.characters[target_name]:on_interact(interactor_name)
+      if character.ally then
+        print('ally')
+        local dst = nil
+
+        dst = sfml_get_character_position(interactor_name)
+        sfml_move_ignore_obstacle(target_name, dst.x, dst.y)
+
+        dst = sfml_get_character_position(target_name)
+        sfml_move_ignore_obstacle(interactor_name, dst.x, dst.y)
+      else
+        self.characters[target_name]:on_interact(interactor_name)
+      end
     end
   else
     print('character module ' .. target_name .. ' is nil')
@@ -1137,6 +1147,12 @@ function Control:change_map(new_map)
     self.loaded_map_data[self.current_map] = {}
     self.loaded_map_data[self.current_map].items = {}
     self.loaded_map_data[self.current_map].objects = {}
+  end
+
+  for name, character in pairs(self.characters) do
+    if string.find(name, 'skeleton_') then
+      self.characters[name] = nil
+    end
   end
 
   self.map_module = {}
