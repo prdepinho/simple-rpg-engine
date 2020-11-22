@@ -5,6 +5,7 @@ local Character = {
   control = {},
   data = {},
   name = "",
+  talked = false,
 }
 
 function Character:new(o, control)
@@ -49,6 +50,7 @@ end
 
 function Character:on_enter()
   sfml_set_character_skin(self.name, self.data.animation)
+  self.talked = false
 end
 
 -- called every turn (things pcs and npcs do)

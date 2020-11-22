@@ -1089,6 +1089,16 @@ function Control:add_character(type, name)
   self.characters[name]:on_enter()
 end
 
+function Control:characters_exchange_position(interactor_name, target_name)
+  local dst = nil
+  sfml_clear_schedule(interactor_name)
+  sfml_clear_schedule(target_name)
+  dst = sfml_get_character_position(interactor_name)
+  sfml_move_ignore_obstacle(target_name, dst.x, dst.y)
+  dst = sfml_get_character_position(target_name)
+  sfml_move_ignore_obstacle(interactor_name, dst.x, dst.y)
+end
+
 function Control:character_on_interact(target_name, interactor_name)
   if self.characters[target_name] ~= nil then
     local character = self.characters[target_name].data
@@ -1097,16 +1107,15 @@ function Control:character_on_interact(target_name, interactor_name)
     --   sfml_attack(interactor_name, target_name)
     else
       if character.ally then
-        print('ally')
-        local dst = nil
-
-        dst = sfml_get_character_position(interactor_name)
-        sfml_move_ignore_obstacle(target_name, dst.x, dst.y)
-
-        dst = sfml_get_character_position(target_name)
-        sfml_move_ignore_obstacle(interactor_name, dst.x, dst.y)
+        self:characters_exchange_position(interactor_name, target_name)
       else
-        self.characters[target_name]:on_interact(interactor_name)
+        if self.characters[target_name].talked then
+          self:characters_exchange_position(interactor_name, target_name)
+          self.characters[target_name].talked = false
+        else
+          self.characters[target_name]:on_interact(interactor_name)
+          self.characters[target_name].talked = true
+        end
       end
     end
   else
