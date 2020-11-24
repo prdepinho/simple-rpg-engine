@@ -292,6 +292,14 @@ animations.types = {
     },
     animations = basic_animation
   },
+  sir_cavalion = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 22
+    },
+    animations = basic_animation
+  },
 }
 
 return animations
