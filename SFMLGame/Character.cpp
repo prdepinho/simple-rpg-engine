@@ -30,6 +30,8 @@ void Character::set_skin(std::string skin) {
 	animations = animation_resources.animations;
 	set_texture(Resources::get_texture(animation_resources.sprite_sheet));
 	set_animation(current_animation, true);
+	set_dimensions(animation_resources.sprite_height, animation_resources.sprite_width);
+	setOrigin(sf::Vector2f((float) animation_resources.sprite_height / 2, (float) animation_resources.sprite_width / 2));
 }
 
 void Character::set_animation(std::string type, bool loop) {

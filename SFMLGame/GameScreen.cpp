@@ -1106,7 +1106,9 @@ void GameScreen::put_character_on_tile(Character & character, int x, int y) {
 		}
 	}
 	auto tile_coords = map.get_tile_pix_coords(x, y);
-	character.set_position(map.get_x() + (int) tile_coords.x + 8, map.get_y() + (int) tile_coords.y + 8);
+	int half_height = 8; // character.get_height() / 2;
+	int half_width = 8; // character.get_width() / 2 - 3;
+	character.set_position(map.get_x() + (int) tile_coords.x + half_width, map.get_y() + (int) tile_coords.y + half_height);
 	{
 		TileData &tile = map.get_tile(x, y);
 		tile.obstacle = true;

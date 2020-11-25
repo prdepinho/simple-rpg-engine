@@ -300,6 +300,21 @@ animations.types = {
     },
     animations = basic_animation
   },
+
+  dragon = {
+    basic = {
+      file = "sprites",
+      size = {
+        height = 32,
+        width = 32
+      }
+    },
+    coordinates = {
+      x = 0,
+      y = 16 * 30
+    },
+    animations = basic_animation
+  }
 }
 
 return animations
