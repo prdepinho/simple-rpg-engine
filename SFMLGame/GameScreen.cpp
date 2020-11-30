@@ -1436,7 +1436,9 @@ void GameScreen::cast_magic(Character &caster, sf::Vector2i center, std::vector<
 	if (!caster.is_active())
 		return;
 	character_face(caster, center.x, center.y);
-	_game.get_lua()->inventory_stack_pop(inventory_index + 1, caster.get_name(), 1);
+	if (inventory_index >= 0) {
+		_game.get_lua()->inventory_stack_pop(inventory_index + 1, caster.get_name(), 1);
+	}
 	_game.get_lua()->cast_magic(magic_name, caster.get_name(), center, tiles, targets);
 
 	if (&caster == player_character) {

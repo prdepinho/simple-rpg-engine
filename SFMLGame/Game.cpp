@@ -947,6 +947,28 @@ public:
 		return 1;
 	}
 
+	static int sfml_cast_magic(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		std::string magic_name = lua_tostring(state, -5);
+		std::string caster_name = lua_tostring(state, -4);
+		int x = (int)lua_tointeger(state, -3);
+		int y = (int)lua_tointeger(state, -2);
+		int effect_radius = (int)lua_tointeger(state, -1);
+		Character *caster = screen->get_character_by_name(caster_name);
+
+		std::vector<std::string> targets;
+		std::vector<sf::Vector2i> tiles = generate_field_of_vision(screen->get_map(), { x, y }, effect_radius);
+		for (auto &tile : tiles) {
+			Character *character = screen->get_live_character_on_tile(tile.x, tile.y);
+			if (character)
+				targets.push_back(character->get_name());
+		}
+
+		screen->schedule_character_cast_magic(magic_name, *caster, { x, y }, tiles, targets, -1);
+
+		return 1;
+	}
+
 
 	static int sfml_show_floating_message(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
@@ -1193,6 +1215,7 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_remove_character", LuaFunction::sfml_remove_character);
 	lua_register(lua.get_state(), "sfml_add_character", LuaFunction::sfml_add_character);
 	lua_register(lua.get_state(), "sfml_attack", LuaFunction::sfml_attack);
+	lua_register(lua.get_state(), "sfml_cast_magic", LuaFunction::sfml_cast_magic);
 	lua_register(lua.get_state(), "sfml_show_floating_message", LuaFunction::sfml_show_floating_message);
 	lua_register(lua.get_state(), "sfml_push_log", LuaFunction::sfml_push_log);
 	lua_register(lua.get_state(), "sfml_push_character_to_bottom", LuaFunction::sfml_push_character_to_bottom);

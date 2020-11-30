@@ -407,6 +407,11 @@ function Control:is_in_range(attacker_name, defender_name)
 
 end
 
+function Control:is_in_magic_range(caster_name, target_x, target_y, effect_radius)
+  local caster_pos = sfml_get_character_position(caster_name)
+  return sfml_is_in_line_of_sight(caster_pos.x, caster_pos.y, target_x, target_y, effect_radius)
+end
+
 function Control:character_on_attacked(attacker_name, defender_name)
   self.characters[defender_name]:on_attacked(attacker_name)
 end

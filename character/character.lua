@@ -60,29 +60,29 @@ function Character:on_turn()
       return
     end
 
-    -- if self.data.enemy then
-    --   if self:is_player_in_sight(6) then
-    --     self.control:enemy_on_player_in_sight(self.name)
-    --     self:attack("player")
-    --   else
-    --     self.control:enemy_on_lost_sight_of_player(self.name)
-    --   end
-    -- end
-
     if self.data.enemy then
-      local target = self.control:closest_ally_on_sight(self.name)
-      if target then
-        self.control:enemy_on_player_in_sight(self.name)
-        self:attack(target)
-      end
+      self:enemy_procedure()
     elseif self.data.ally then
-      local target = self.control:closest_enemy_on_sight(self.name)
-      if target then
-        self:attack(target)
-      end
+      self:ally_procedure()
     end
+
   end
 
+end
+
+function Character:enemy_procedure()
+  local target = self.control:closest_ally_on_sight(self.name)
+  if target then
+    self.control:enemy_on_player_in_sight(self.name)
+    self:attack(target)
+  end
+end
+
+function Character:ally_procedure()
+  local target = self.control:closest_enemy_on_sight(self.name)
+  if target then
+    self:attack(target)
+  end
 end
 
 
@@ -177,6 +177,15 @@ function Character:attack(character_name)
   if self.control:is_in_range(self.name, character_name) then
     sfml_clear_schedule(self.name)
     sfml_attack(self.name, character_name)
+    return true
+  end
+  return false
+end
+
+function Character:cast_magic(magic_name, x, y, range_radius, effect_radius)
+  if self.control:is_in_magic_range(self.name, x, y, effect_radius) then
+    sfml_clear_schedule(self.name)
+    sfml_cast_magic(magic_name, self.name, x, y, effect_radius)
     return true
   end
   return false
