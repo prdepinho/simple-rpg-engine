@@ -37,5 +37,4 @@ function Dragon:create()
 
 end
 
-
 return Dragon

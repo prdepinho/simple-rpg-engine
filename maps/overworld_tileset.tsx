@@ -7,4 +7,10 @@
    <frame tileid="18" duration="500"/>
   </animation>
  </tile>
+ <tile id="21">
+  <animation>
+   <frame tileid="21" duration="500"/>
+   <frame tileid="22" duration="500"/>
+  </animation>
+ </tile>
 </tileset>
