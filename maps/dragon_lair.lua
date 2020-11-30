@@ -2,25 +2,27 @@
 package.path = package.path .. ";../maps/?.lua"
 local Map = require "map"
 
-local Temple = Map:new()
+local DragonLair = Map:new()
 
-function Temple:new(o, control)
+function DragonLair:new(o, control)
   o = o or Map:new(o, control)
   setmetatable(o, self)
   self.__index = self
   return o
 end
 
-function Temple:create()
+function DragonLair:create()
   Map.create(self)
 end
 
-function Temple:enter()
+function DragonLair:enter()
   Map.enter(self)
 end
 
-function Temple:exit()
+function DragonLair:exit()
   Map.exit(self)
 end
 
-return Temple
+return DragonLair
+
+

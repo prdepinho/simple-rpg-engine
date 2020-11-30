@@ -126,11 +126,5 @@
    </properties>
   </object>
   <object id="4" name="olive" x="65.7662" y="50.1164" width="12.2962" height="12.4825"/>
-  <object id="5" name="dragon" x="74.5" y="118">
-   <properties>
-    <property name="type" value="dragon"/>
-   </properties>
-   <point/>
-  </object>
  </objectgroup>
 </map>
