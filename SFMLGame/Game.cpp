@@ -407,8 +407,16 @@ public:
 			lua_pushboolean(state, tile.invisible);
 			lua_settable(state, -3);
 
-			lua_pushliteral(state, "object_name");
-			lua_pushstring(state, tile.object_name.c_str());
+			lua_pushliteral(state, "object_names");
+			lua_newtable(state);
+			{
+				int i = 1;
+				for (std::string object : tile.object_names) {
+					lua_pushinteger(state, i++);
+					lua_pushstring(state, object.c_str());
+					lua_settable(state, -3);
+				}
+			}
 			lua_settable(state, -3);
 
 			lua_pushliteral(state, "tex_x");
@@ -539,8 +547,10 @@ public:
 		for (size_t x = 0; x < width; x++) {
 			for (size_t y = 0; y < height; y++) {
 				TileData tile = screen->get_map().get_tile((int)x, (int)y);
-				if (tile.object_name == door_name) {
-					screen->get_map().get_tile((int)x, (int)y).obstacle = obstacle;
+				for (std::string &object_name : tile.object_names) {
+					if (object_name == door_name) {
+						screen->get_map().get_tile((int)x, (int)y).obstacle = obstacle;
+					}
 				}
 			}
 		}

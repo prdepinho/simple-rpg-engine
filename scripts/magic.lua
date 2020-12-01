@@ -596,30 +596,39 @@ function Magic:lockpick(caster, center, tiles, targets)
   local tile = tiles[1]
   sfml_show_floating_message(rules.item.lockpick.name, tile.x, tile.y)
 
-  local object_name = sfml_get_tile(tile.x, tile.y).object_name
-  local object = self.control.map.data.objects[object_name]
+  print('lockpick')
+  local ttt = sfml_get_tile(tile.x, tile.y)
+  save.print_data(ttt)
 
-  if object and (object.properties.type == 'door' or object.properties.type == 'chest') then
-    local lockpick_index = self.control:find_in_inventory_by_name(caster, 'lockpick')
-    if lockpick_index then
-      if self.control.characters[caster].data.stats.ability.dex >= object.properties.lockpick_skill then
-        sfml_play_sound("plim.wav")
-        sfml_text_box("(Dex ".. object.properties.lockpick_skill ..") You used a " .. rules.item.lockpick.name .. '.')
-        sfml_start_animation(caster, 'use')
-        object.properties.locked = false
+  local object_names = sfml_get_tile(tile.x, tile.y).object_names
+  for index, object_name in ipairs(object_names) do
+    print(tostring(index) .. object_name)
 
-        if object.properties.type == 'door' then
-          for index, coords in ipairs(object.coords) do
-            sfml_set_obstacle(false, coords.x, coords.y)
+    -- local object_name = sfml_get_tile(tile.x, tile.y).object_name
+    local object = self.control.map.data.objects[object_name]
+
+    if object and (object.properties.type == 'door' or object.properties.type == 'chest') then
+      local lockpick_index = self.control:find_in_inventory_by_name(caster, 'lockpick')
+      if lockpick_index then
+        if self.control.characters[caster].data.stats.ability.dex >= object.properties.lockpick_skill then
+          sfml_play_sound("plim.wav")
+          sfml_text_box("(Dex ".. object.properties.lockpick_skill ..") You used a " .. rules.item.lockpick.name .. '.')
+          sfml_start_animation(caster, 'use')
+          object.properties.locked = false
+
+          if object.properties.type == 'door' then
+            for index, coords in ipairs(object.coords) do
+              sfml_set_obstacle(false, coords.x, coords.y)
+            end
           end
-        end
 
-      else
-        sfml_text_box("You do not have sufficient skill to unlock this (Dex ".. object.properties.lockpick_skill ..")") 
+        else
+          sfml_text_box("You do not have sufficient skill to unlock this (Dex ".. object.properties.lockpick_skill ..")") 
+        end
       end
+    -- else
+    --   print('lockpick fail')
     end
-  else
-    print('lockpick fail')
   end
 
 end

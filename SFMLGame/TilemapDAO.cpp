@@ -307,7 +307,7 @@ void TiledTilemapDAO::load_map(GameScreen *game_screen, std::string filename, Ti
 				int width  = (int)std::ceil(object.getAABB().width / 16);
 				for (int x = left; x < left + width; x++) {
 					for (int y = top; y < top + height; y++) {
-						map.get_tile(x, y).object_name = object.getName();
+						map.get_tile(x, y).object_names.push_back(object.getName());
 						map.get_tile(x, y).left = left;
 						map.get_tile(x, y).top = top;
 						map.get_tile(x, y).height = height;

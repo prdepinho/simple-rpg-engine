@@ -256,6 +256,7 @@
   <object id="3" name="templum" x="82.5" y="370.25" width="11.25" height="12.25">
    <properties>
     <property name="destiny" value="temple:entrance"/>
+    <property name="invisible" type="bool" value="false"/>
     <property name="key" value=""/>
     <property name="locked" type="bool" value="false"/>
     <property name="type" value="door"/>

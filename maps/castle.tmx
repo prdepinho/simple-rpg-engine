@@ -255,6 +255,7 @@
   </object>
   <object id="3" name="come_inn_door" x="241.045" y="418.136" width="13.909" height="12.4545">
    <properties>
+    <property name="invisible" type="bool" value="true"/>
     <property name="locked" type="bool" value="false"/>
     <property name="open_delta_x" type="int" value="3"/>
     <property name="open_delta_y" type="int" value="0"/>

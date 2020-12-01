@@ -175,7 +175,7 @@ function Map:enter()
     if object.properties.type == 'door' then
       for index, coords in ipairs(object.coords) do
         sfml_set_obstacle(object.properties.locked, coords.x, coords.y)
-        sfml_set_invisible(not object.properties.open, coords.x, coords.y)
+        sfml_set_invisible(not object.properties.open and object.properties.invisible, coords.x, coords.y)
       end
 
       object.properties.closed = true

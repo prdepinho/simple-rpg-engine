@@ -1134,10 +1134,12 @@ void GameScreen::put_character_on_tile(Character &character, std::string object_
 	for (size_t x = 0; x < width; x++) {
 		for (size_t y = 0; y < height; y++) {
 			TileData &tile = get_map().get_tile((int)x, (int)y);
-			if (tile.object_name == object_name) {
-				dst_tile_x = (int)x;
-				dst_tile_y = (int)y;
-				goto end_loop;
+			for (std::string &object: tile.object_names) {
+				if (object == object_name) {
+					dst_tile_x = (int)x;
+					dst_tile_y = (int)y;
+					goto end_loop;
+				}
 			}
 		}
 	}
@@ -1224,7 +1226,8 @@ void GameScreen::move_character(Character &character, Direction direction, bool 
 
 	try {
 		TileData &tile = map.get_tile(position.x, position.y);
-		_game.get_lua()->call_event(tile.object_name, "enter_tile", position.x, position.y, character.get_name());
+		for (std::string &object_name : tile.object_names)
+			_game.get_lua()->call_event(object_name, "enter_tile", position.x, position.y, character.get_name());
 	}
 	catch (LuaException &e) {
 		Log("Lua Error: %s", e.what());
@@ -1257,7 +1260,8 @@ void GameScreen::move_character(Character &character, Direction direction, bool 
 			sf::Vector2i position = character_position(*player_character);
 			TileData tile = map.get_tile(position.x, position.y);
 			try {
-				_game.get_lua()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_name());
+				for (std::string &object_name : tile.object_names)
+					_game.get_lua()->call_event(object_name, "step_on", position.x, position.y, character.get_name());
 			}
 			catch (LuaException &e) {
 				Log("Lua Error: %s", e.what());
@@ -1287,7 +1291,8 @@ void GameScreen::move_character(Character &character, Direction direction, bool 
 			sf::Vector2i position = character_position(character);
 			TileData tile = map.get_tile(position.x, position.y);
 			try {
-				_game.get_lua()->call_event(tile.object_name, "step_on", position.x, position.y, character.get_name());
+				for (std::string &object_name : tile.object_names)
+					_game.get_lua()->call_event(object_name, "step_on", position.x, position.y, character.get_name());
 			}
 			catch (LuaException &e) {
 				Log("Lua Error: %s", e.what());
@@ -1405,7 +1410,8 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 				// if nothing is there, interact with the map
 				else {
 					TileData tile = map.get_tile(tile_x, tile_y);
-					_game.get_lua()->call_event(tile.object_name, "interact", tile_x, tile_y, character.get_name());
+					for (std::string &object_name : tile.object_names)
+						_game.get_lua()->call_event(object_name, "interact", tile_x, tile_y, character.get_name());
 					character_face(character, tile_x, tile_y);
 				}
 			}

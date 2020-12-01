@@ -11,7 +11,7 @@ class TilemapDAO;
 struct TileData {
 	bool obstacle = false;
 	bool invisible = false;
-	std::string object_name;
+	std::vector<std::string> object_names = {};
 	bool open = false;
 	float tex_x;
 	float tex_y;
