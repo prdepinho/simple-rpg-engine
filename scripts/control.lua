@@ -958,6 +958,10 @@ function Control:save_game(filename, title)
   -- data.player_position = sfml_get_player_position()
   data.map_data = self.loaded_map_data
 
+  for index, name in ipairs(sfml_get_characters_on_map()) do
+    self.characters[name].data.position = sfml_get_character_position(name)
+  end
+
   data.character_data = self.loaded_character_data
 
   data.data = self.data
@@ -1214,10 +1218,24 @@ function Control:map_enter()
     sfml_add_item(code, item.name, item.type, item.quantity or 0, item.x, item.y)
   end
 
+  for index, name in ipairs(sfml_get_characters_on_map()) do
+    print('character on map: ' .. name)
+    if name ~= 'player' then
+      local pos = self.characters[name].data.position
+      if pos then
+        sfml_put_character_on_tile(name, pos.x, pos.y)
+      else
+        self.characters[name].data.position = sfml_get_character_position(name)
+      end
+    end
+  end
 end
 
 function Control:map_exit()
   self.map:exit()
+  for index, name in ipairs(sfml_get_characters_on_map()) do
+    self.characters[name].data.position = sfml_get_character_position(name)
+  end
 end
 
 function Control:map_event(function_name, event, x, y, character_name)
