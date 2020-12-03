@@ -34,7 +34,12 @@
  <tile id="70" terrain=",1,,1"/>
  <tile id="71" terrain="1,1,1,1"/>
  <tile id="72" terrain="1,,1,"/>
- <tile id="74" terrain=",0,,0"/>
+ <tile id="74" terrain=",0,,0">
+  <animation>
+   <frame tileid="74" duration="500"/>
+   <frame tileid="75" duration="500"/>
+  </animation>
+ </tile>
  <tile id="75" terrain="0,0,0,0"/>
  <tile id="76" terrain="0,,0,"/>
  <tile id="86" terrain=",1,,"/>
