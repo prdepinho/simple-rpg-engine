@@ -24,7 +24,7 @@ turns_per_second = 5
 
 -- game volume: from 0 (silent) to 100 (full volume)
 music_volume = 0
-sound_volume = 100
+sound_volume = 15
 
 
 text_box_speed = 50  -- letters per seconds

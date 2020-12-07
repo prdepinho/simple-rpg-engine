@@ -133,7 +133,7 @@
 </data>
  </layer>
  <objectgroup id="8" name="objects">
-  <object id="1" name="hall_door" x="162.939" y="210.104" width="12" height="12.7614">
+  <object id="1" name="south_door" x="162.939" y="210.104" width="12" height="12.7614">
    <properties>
     <property name="destiny" value="castle:hall_door"/>
     <property name="key" value=""/>
