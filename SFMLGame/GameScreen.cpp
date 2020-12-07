@@ -1098,7 +1098,8 @@ sf::Vector2f GameScreen::get_tile_position(sf::Vector2i v) {
 }
 
 void GameScreen::put_character_on_tile(Character & character, int x, int y) {
-	{
+	bool dead = is_dead(&character);
+	if (!dead){
 		sf::Vector2i position = character_position(character);
 		if (map.in_bounds(position.x, position.y)) {
 			TileData &original_tile = map.get_tile(position.x, position.y);
@@ -1109,7 +1110,8 @@ void GameScreen::put_character_on_tile(Character & character, int x, int y) {
 	int half_height = 8; // character.get_height() / 2;
 	int half_width = 8; // character.get_width() / 2 - 3;
 	character.set_position(map.get_x() + (int) tile_coords.x + half_width, map.get_y() + (int) tile_coords.y + half_height);
-	{
+
+	if (!dead) {
 		TileData &tile = map.get_tile(x, y);
 		tile.obstacle = true;
 	}
@@ -1254,7 +1256,7 @@ void GameScreen::move_character(Character &character, Direction direction, bool 
 				MoveEffect *m = dynamic_cast<MoveEffect*>(e);
 				auto src = m->get_src();
 
-				if (get_characters_on_tile(src.x, src.y).size() == 0)
+				if (!get_live_character_on_tile(src.x, src.y))
 					map.get_tile(src.x, src.y).obstacle = false;
 			}
 			sf::Vector2i position = character_position(*player_character);
