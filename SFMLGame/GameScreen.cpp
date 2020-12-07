@@ -1071,6 +1071,7 @@ void GameScreen::load_map() {
 
 	next_map = "";
 
+	player_character->set_position(-1600, -1600);  // put the player in an out of bounds position so it does not mess with obstacles in the next step.
 	if (next_position_is_tile) {
 		put_character_on_tile(*player_character, new_tile_position.x, new_tile_position.y);
 	}
@@ -1098,12 +1099,26 @@ sf::Vector2f GameScreen::get_tile_position(sf::Vector2i v) {
 }
 
 void GameScreen::put_character_on_tile(Character & character, int x, int y) {
+	{
+		sf::Vector2i src = character_position(character);
+		sf::Vector2i dst = { x, y };
+		Log("Move '%s' from (%d, %d) to (%d, %d)",
+			character.get_name().c_str(), 
+			src.x, src.y,
+			dst.x, dst.y 
+		);
+	}
+
+
 	bool dead = is_dead(&character);
+
 	if (!dead){
 		sf::Vector2i position = character_position(character);
-		if (map.in_bounds(position.x, position.y)) {
+		bool inbounds = map.in_tile_bounds(position.x, position.y);
+		if (inbounds) {
 			TileData &original_tile = map.get_tile(position.x, position.y);
 			original_tile.obstacle = false;
+			Log("obstacle: false");
 		}
 	}
 	auto tile_coords = map.get_tile_pix_coords(x, y);
