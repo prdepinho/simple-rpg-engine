@@ -1243,6 +1243,8 @@ void GameScreen::move_character(Character &character, Direction direction, bool 
 		map.get_tile(dst.x, dst.y).obstacle = true;
 	}
 
+	character.set_moving(true);
+
 	// player character
 	if (&character == player_character) {
 		Effect *effect = new MoveEffect(player_character, direction, 16  / turn_duration, src, dst);
@@ -1276,9 +1278,11 @@ void GameScreen::move_character(Character &character, Direction direction, bool 
 			if (show_fog_of_war)
 				map.get_fog_of_war().update_fog(player_character->get_field_of_vision()); 
 			player_busy = false;
+			player_character->set_moving(false);
 		});
 		effect->set_on_interrupt([&](Effect*) {
 			player_busy = false;
+			player_character->set_moving(false);
 		});
 		add_effect(effect);
 	}
@@ -1302,6 +1306,7 @@ void GameScreen::move_character(Character &character, Direction direction, bool 
 				Log("Lua Error: %s", e.what());
 			}
 			update_field_of_vision(&character);
+			character.set_moving(false);
 		});
 		add_effect(effect);
 	}
@@ -1391,7 +1396,7 @@ void GameScreen::interact_character(Character &character, int tile_x, int tile_y
 
 				std::vector<Item*> target_items = get_items_on_tile(tile_x, tile_y);
 				// if it is another character, interact with that character
-				if (target_character != nullptr) {
+				if (target_character != nullptr && !target_character->is_moving()) {
 					// bool target_dead = _game.get_lua()->character_stats(target_character->get_name()).get_boolean("status.dead");
 					bool target_dead = is_dead(target_character);
 					if (!target_dead) {

@@ -54,6 +54,9 @@ public:
 
 	void set_skin(std::string skin);
 
+	bool is_moving() const { return moving; }
+	void set_moving(bool moving) { this->moving = moving; }
+
 private:
 	std::queue<Action*> schedule;  // actions are created and deleted by GameScreen class, unless all schedule is discarted or character deleted.
 
@@ -73,5 +76,6 @@ private:
 	std::vector<sf::Vector2i> field_of_vision;
 
 	bool active = true;
+	bool moving = false;
 
 };
