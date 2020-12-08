@@ -1099,26 +1099,13 @@ sf::Vector2f GameScreen::get_tile_position(sf::Vector2i v) {
 }
 
 void GameScreen::put_character_on_tile(Character & character, int x, int y) {
-	{
-		sf::Vector2i src = character_position(character);
-		sf::Vector2i dst = { x, y };
-		Log("Move '%s' from (%d, %d) to (%d, %d)",
-			character.get_name().c_str(), 
-			src.x, src.y,
-			dst.x, dst.y 
-		);
-	}
-
-
 	bool dead = is_dead(&character);
-
 	if (!dead){
 		sf::Vector2i position = character_position(character);
 		bool inbounds = map.in_tile_bounds(position.x, position.y);
 		if (inbounds) {
 			TileData &original_tile = map.get_tile(position.x, position.y);
 			original_tile.obstacle = false;
-			Log("obstacle: false");
 		}
 	}
 	auto tile_coords = map.get_tile_pix_coords(x, y);

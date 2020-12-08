@@ -113,7 +113,7 @@ function RatKing:on_interact(interactor_name)
         { text = "I don't know.", go_to = 'dont_know' },
       },
     }
-    if self.control.data.thieves_guild_member then
+    if self.control.data.thieves_guild_member and not self.control.data.thieves_guild_ruined then
       table.insert(dialogue.leave.options, { text = "Go to the thieves' guild.", go_to = 'go_to_thieves_guild' })
     end
     dialogue.dont_know = {
@@ -168,8 +168,12 @@ function RatKing:on_interact(interactor_name)
   end
 
   if self.control.data.rats_in_the_guild and not self.control.data.got_rats_reward then
+    local text = "Hello, my friend. We are getting accustomed with the new place. Mr. Garret is very receptive to us and is teaching my children. Thank you. You have my gratitude. Take this. I couldn't take my treasure with me, but I'm sure we will make up for it in no time."
+    if self.control.data.thieves_guild_ruined then
+      text = "Dont' worry about the absence of Mr. Garret. We will take care of things around here."
+    end
     dialogue.start = {
-      text = "Hello, my friend. We are getting accustomed with the new place. Mr. Garret is very receptive to us and is teaching my children. Thank you. You have my gratitude. Take this. I couldn't take my treasure with me, but I'm sure we will make up for it in no time.",
+      text = text,
       go_to = 'end',
       callback = function()
         self.control:add_item_to_inventory('player', 'armory_key', 'armory_key', 'item')

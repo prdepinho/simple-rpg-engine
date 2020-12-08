@@ -112,6 +112,16 @@ function PoisonSalesman:on_interact(interactor_name)
     end
   end
 
+  if self.control.data.call_guards_on_come_inn and not self.control.data.come_inn_ruined then
+    dialogue = {
+      start = {
+        text = "Let's go.",
+        go_to = 'end'
+      }
+    }
+  end
+
+
   sfml_dialogue(dialogue)
 end
 

@@ -94,6 +94,8 @@ protected:
 	bool show_options = false;
 
 private:
+	void on_end();
+
 	std::string go_to = "start";
 	LuaObject dialogue;
 	bool box_at_bottom = false;

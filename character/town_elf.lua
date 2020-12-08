@@ -30,7 +30,9 @@ function TownElf:on_interact(interactor_name)
           self.data.interacted = true 
           self.control:level_up('player')
         end
-      }
+      },
+      on_end = function()
+      end
     }
     sfml_dialogue(dialogue)
   else

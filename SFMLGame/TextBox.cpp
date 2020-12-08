@@ -78,8 +78,6 @@ void TextBox::update(float elapsed_time) {
 	// open window vertically
 	if (!completely_open) {
 		int increase = (int)std::ceil(open_speed * elapsed_time);
-		//Log("height: %d, increase: %d", get_height(), increase);
-
 		if (increase + get_height() >= total_height) {
 			completely_open = true;
 			set_dimensions(get_width(), total_height);
@@ -377,8 +375,6 @@ void DialogueBox::update(float elapsed_time) {
 	// open window vertically
 	if (!completely_open) {
 		int increase = (int)std::ceil(open_speed * elapsed_time);
-		Log("height: %d, increase: %d", get_height(), increase);
-
 		if (increase + get_height() >= total_height) {
 			completely_open = true;
 			set_dimensions(get_width(), total_height);
@@ -433,6 +429,7 @@ Component *DialogueBox::on_key_pressed(sf::Event &event) {
 					next();
 				}
 				else {
+					on_end();
 					get_screen()->remove_component(*this);
 					get_screen()->select_container();
 					call_functions(this);
@@ -593,6 +590,7 @@ void DialogueBox::next() {
 					get_screen()->select(*this);
 
 					if (go_to == "end") {
+						on_end();
 						get_screen()->remove_component(*this);
 						get_screen()->select_container();
 						call_functions(this);
@@ -622,4 +620,8 @@ void DialogueBox::next() {
 	}
 }
 
-
+void DialogueBox::on_end() {
+	if (dialogue.get_token("on_end")->get_type() == LuaObject::Type::FUNCTION) {
+		std::string rval = dialogue.call_function("on_end");
+	}
+}

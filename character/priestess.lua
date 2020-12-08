@@ -44,7 +44,9 @@ function Priestess:on_interact(interactor_name)
       yes = {
         text = "Go over to the olive tree and reach out.",
         go_to = 'end',
-      }
+      },
+      on_end = function()
+      end
     }
     sfml_dialogue(dialogue)
 
