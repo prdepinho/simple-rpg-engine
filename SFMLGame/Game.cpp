@@ -1176,6 +1176,15 @@ public:
 		return 1;
 	}
 
+	static int sfml_center_camera(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		std::string name = lua_tostring(state, -1);
+		Character *character = screen->get_character_by_name(name);
+		if (character)
+			screen->center_game_view(character->getPosition());
+		return 1;
+	}
+
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -1246,6 +1255,7 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_set_character_skin", LuaFunction::sfml_set_character_skin);
 	lua_register(lua.get_state(), "sfml_set_turns_per_second", LuaFunction::sfml_set_turns_per_second);
 	lua_register(lua.get_state(), "sfml_show_character_edit", LuaFunction::sfml_show_character_edit);
+	lua_register(lua.get_state(), "sfml_center_camera", LuaFunction::sfml_center_camera);
 
 
 }

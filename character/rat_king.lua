@@ -116,6 +116,9 @@ function RatKing:on_interact(interactor_name)
     if self.control.data.thieves_guild_member and not self.control.data.thieves_guild_ruined then
       table.insert(dialogue.leave.options, { text = "Go to the thieves' guild.", go_to = 'go_to_thieves_guild' })
     end
+    if self.control.data.send_rats_to_dragon then
+      table.insert(dialogue.leave.options, { text = "Go to the mountains. I know a place.", go_to = 'go_to_the_mountains' })
+    end
     dialogue.dont_know = {
       text = "This is the only place we have.",
       go_to = 'end'
@@ -128,11 +131,31 @@ function RatKing:on_interact(interactor_name)
         self.control.data.rats_gone = true
       end
     }
+    dialogue.go_to_the_mountains = {
+      text = "Really? Well, I don't know about the mountains, but if you say it is safe, I trust you. Come my babies! We have a new home.",
+      go_to = 'go_away_and_die',
+      callback = function()
+        self.control.data.rats_went_to_dragon = true
+        self.control.data.rats_gone = true
+      end
+    }
     dialogue.go_away = {
       text = "The rats move from their lair.",
       go_to = 'end',
       callback = function()
         self.control.map:remove_rats()
+      end
+    }
+    dialogue.go_away_and_die = {
+      text = "The rats move from their lair.",
+      go_to = 'end',
+      callback = function()
+        self.control.map:remove_rats()
+        for i = 1, 5, 1 do
+          character_name = 'rat' .. tostring(i)
+          self.control.loaded_character_data[character_name].stats.status.dead = true
+        end
+        self.control.loaded_character_data['rat_king'].stats.status.dead = true
       end
     }
   end

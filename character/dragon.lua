@@ -56,4 +56,74 @@ function Dragon:enemy_procedure()
   end
 end
 
+function Dragon:on_interact(interactor_name)
+  local dialogue = {
+    start = {
+      text = "Give me just one reason not to eat you.",
+      options = {
+        { text = "I must be going.", go_to = 'exit' },
+        { text = "Die, monster! You don't belong in this world!", go_to = 'attack' },
+      },
+      callback = function()
+        self.control.data.met_dragon = true
+      end
+    },
+    exit = {
+      text = "Please, stay for dinner.",
+      go_to = 'end',
+      callback = function()
+        self.control.characters.dragon.data.enemy = true
+      end
+    },
+    attack = {
+      text = "Well, it is, like they say, your funeral.",
+      go_to = 'end',
+      callback = function()
+        self.control.characters.dragon.data.enemy = true
+      end
+    }
+  }
+
+  if not self.control.data.received_dragon_reward then
+    if self.control.data.send_rats_to_dragon then
+      dialogue.start.text = "I await anxiously for your tribute."
+      dialogue.start.options[1].go_to = 'end'
+
+    elseif self.control.data.rats_quest_accepted then
+      table.insert(dialogue.start.options, { text = "I know a rat colony you might enjoy.", go_to = 'rats' })
+      dialogue.rats = {
+        text = "Hehehehe. Send them in.",
+        go_to = 'end',
+        callback = function()
+          self.control.data.send_rats_to_dragon = true
+        end
+      }
+    end
+  end
+
+  if self.control.data.rats_went_to_dragon and not self.control.data.received_dragon_reward then
+    dialogue = {
+      start = {
+        text = "Your friends were delicious, little furry friend. Take this as a token of my gratitude.",
+        go_to = 'next',
+        callback = function()
+          self.control:add_item_to_inventory('player', 'dragon_fire', 'fireball', 'spell', 3)
+          self.control.data.received_dragon_reward = true
+        end
+      },
+      next = {
+        text = "Now please, be greatful that I am feeling benevolent and leave before I decide to have you for dessert.",
+        go_to = 'end'
+      }
+    }
+  end
+
+  sfml_dialogue(dialogue)
+end
+
+function Dragon:on_death()
+  Character.on_death(self)
+  self.control.data.dragon_dead = true
+end
+
 return Dragon
