@@ -316,6 +316,14 @@ animations.types = {
     },
     animations = basic_animation
   },
+  queen = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 24
+    },
+    animations = basic_animation
+  },
 
   dragon = {
     basic = {
