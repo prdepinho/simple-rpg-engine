@@ -300,6 +300,22 @@ animations.types = {
     },
     animations = basic_animation
   },
+  sir_cavalion_mini = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 16,
+      y = 16 * 22
+    },
+    animations = mini_animation
+  },
+  mountain_man = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 23
+    },
+    animations = basic_animation
+  },
 
   dragon = {
     basic = {

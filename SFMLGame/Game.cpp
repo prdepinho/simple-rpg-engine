@@ -996,14 +996,6 @@ public:
 		return 1;
 	}
 
-	static int sfml_push_character_to_bottom(lua_State *state) {
-		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
-		std::string character_name = lua_tostring(state, -1);
-		Character *character = screen->get_character_by_name(character_name);
-		screen->push_character_to_bottom(*character);
-		return 1;
-	}
-
 	static int sfml_get_characters_on_tile(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		int tile_x = (int)lua_tointeger(state, -2);
@@ -1185,6 +1177,33 @@ public:
 		return 1;
 	}
 
+	static int sfml_is_moving(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		std::string name = lua_tostring(state, -1);
+		Character *character = screen->get_character_by_name(name);
+		bool is_moving = false;
+		if (character)
+			is_moving = character->is_moving();
+		lua_pushboolean(state, is_moving);
+		return 1;
+	}
+
+	static int sfml_push_character_to_bottom(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		std::string name = lua_tostring(state, -1);
+		Character *character = screen->get_character_by_name(name);
+		screen->push_character_to_bottom(*character);
+		return 1;
+	}
+
+	static int sfml_push_character_to_top(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		std::string name = lua_tostring(state, -1);
+		Character *character = screen->get_character_by_name(name);
+		screen->push_character_to_top(*character);
+		return 1;
+	}
+
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -1237,7 +1256,6 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_cast_magic", LuaFunction::sfml_cast_magic);
 	lua_register(lua.get_state(), "sfml_show_floating_message", LuaFunction::sfml_show_floating_message);
 	lua_register(lua.get_state(), "sfml_push_log", LuaFunction::sfml_push_log);
-	lua_register(lua.get_state(), "sfml_push_character_to_bottom", LuaFunction::sfml_push_character_to_bottom);
 	lua_register(lua.get_state(), "sfml_get_characters_on_tile", LuaFunction::sfml_get_characters_on_tile);
 	lua_register(lua.get_state(), "sfml_get_live_character_on_tile", LuaFunction::sfml_get_live_character_on_tile);
 	lua_register(lua.get_state(), "sfml_cast_magic_missile", LuaFunction::sfml_cast_magic_missile);
@@ -1256,6 +1274,9 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_set_turns_per_second", LuaFunction::sfml_set_turns_per_second);
 	lua_register(lua.get_state(), "sfml_show_character_edit", LuaFunction::sfml_show_character_edit);
 	lua_register(lua.get_state(), "sfml_center_camera", LuaFunction::sfml_center_camera);
+	lua_register(lua.get_state(), "sfml_is_moving", LuaFunction::sfml_is_moving);
+	lua_register(lua.get_state(), "sfml_push_character_to_bottom", LuaFunction::sfml_push_character_to_bottom);
+	lua_register(lua.get_state(), "sfml_push_character_to_top", LuaFunction::sfml_push_character_to_top);
 
 
 }

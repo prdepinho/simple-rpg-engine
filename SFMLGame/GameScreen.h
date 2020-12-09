@@ -110,6 +110,7 @@ public:
 	void put_character_on_tile(Character &character, std::string object_name);
 	sf::Vector2i character_position(Character &character);
 	void push_character_to_bottom(Character &character);
+	void push_character_to_top(Character &character);
 
 	bool is_block_input() const { return block_input; }
 	void set_block_input(bool block) { block_input = block; }

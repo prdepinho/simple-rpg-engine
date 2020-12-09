@@ -32,7 +32,8 @@ local Control = {
   magic = {},
 
 
-  enemies_aware = {}  -- elemies aware of the player in the map
+  enemies_aware = {},  -- elemies aware of the player in the map
+  companions = {}
 
 }
 
@@ -56,6 +57,14 @@ function Control:next_item_code(str)
   end
 end
 
+
+function Control:set_companion(name)
+  self.companions[name] = self.characters[name]
+end
+
+function Control:remove_companion(name)
+  self.companions[name] = nil
+end
 
 
 function Control:get_allies()
@@ -908,7 +917,8 @@ function Control:reset_data()
   self.characters = {}
   self.loaded_map_data = {}
   self.data = {}
-  enemies_aware = {}
+  self.enemies_aware = {}
+  self.companions = {}
 end
 
 function Control:get_save_files()
@@ -947,7 +957,8 @@ function Control:new_game()
   self.data = {}
   self.map_module = {}
   self.current_map = ""
-  enemies_aware = {}
+  self.enemies_aware = {}
+  self.companions = {}
 end
 
 function Control:save_game(filename, title)
@@ -963,6 +974,7 @@ function Control:save_game(filename, title)
   end
 
   data.character_data = self.loaded_character_data
+  data.companions = self.companions
 
   data.data = self.data
 
@@ -981,6 +993,7 @@ function Control:load_game(filename)
   self.loaded_map_data = module.data.map_data
 
   self.loaded_character_data = module.data.character_data
+  self.companions = module.data.companions
   self.data = module.data.data
 
   self.player_position = module.data.player_position.coords
@@ -1067,6 +1080,7 @@ function Control:add_character(type, name)
     end
 
     self.characters[name].name = name
+    self.characters[name].type = type
   end
 
   if not self.characters[name].data.created then
@@ -1212,7 +1226,7 @@ function Control:map_enter()
     self.map.data.created = true
     self.map:create()
   end
-  self.map:enter()
+
   -- populate items
   for code, item in pairs(self.map.data.items) do
     sfml_add_item(code, item.name, item.type, item.quantity or 0, item.x, item.y)
@@ -1229,6 +1243,15 @@ function Control:map_enter()
       end
     end
   end
+
+  for name, character in pairs(self.companions) do
+    local pos = sfml_get_character_position('player')
+    sfml_remove_character(character.name)
+    self:insert_character(character.name, character.type, pos.x, pos.y)
+  end
+  sfml_push_character_to_top('player')
+
+  self.map:enter()
 end
 
 function Control:map_exit()

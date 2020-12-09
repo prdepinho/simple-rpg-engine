@@ -120,7 +120,7 @@
 </data>
  </layer>
  <objectgroup id="8" name="objects">
-  <object id="1" name="dragon" x="104" y="74.25">
+  <object id="1" name="dragon" x="87.6796" y="59.7181">
    <properties>
     <property name="type" value="dragon"/>
    </properties>

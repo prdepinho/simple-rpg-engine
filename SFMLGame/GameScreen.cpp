@@ -1498,6 +1498,17 @@ void GameScreen::push_character_to_bottom(Character &character) {
 	}
 }
 
+// print the character last so that it is on top of others.
+void GameScreen::push_character_to_top(Character &character) {
+	for (auto it = characters.begin(); it != characters.end(); ++it) {
+		if (*it == &character) {
+			characters.erase(it);
+			break;
+		}
+	}
+	characters.push_back(&character);
+}
+
 bool GameScreen::can_move(Character &character, Direction direction, bool ignore_obstacle) {
 	sf::Vector2i position = character_position(character);
 	int dst_x = position.x;
