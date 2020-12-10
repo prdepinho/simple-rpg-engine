@@ -239,7 +239,10 @@ bool GameScreen::update(float elapsed_time) {
 			picked_tiles.clear();
 
 			// determine the scheduled actions that take place this turn
-			for (Character *character : characters) {
+			// for (Character *character : characters) {
+			for (auto it = characters.rbegin(); it != characters.rend(); ++it) {
+				Character *character = *it;
+
 
 				_game.get_lua()->on_turn(*character);
 				Action *action = character->next_action();
