@@ -52,6 +52,7 @@ function CityGuard:on_interact(interactor_name)
     "Healing spells are more effective cast by wise casters.",
     "I don't want to see you causing any trouble.",
     "If it is advantageous, press Select to wait for your enemy to come to you before wacking him in the head.",
+    "If someone is in your way, keep pressing through.",
   }
   local roll = rules.roll_dice('d' .. tostring(#texts))
 

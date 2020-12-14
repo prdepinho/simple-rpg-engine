@@ -324,6 +324,22 @@ animations.types = {
     },
     animations = basic_animation
   },
+  french_maid = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 25
+    },
+    animations = basic_animation
+  },
+  cook = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 26
+    },
+    animations = basic_animation
+  },
 
   dragon = {
     basic = {
