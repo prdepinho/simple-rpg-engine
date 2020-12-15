@@ -35,6 +35,7 @@ function Dragon:create()
   rules.level_up(stats)
   rules.level_up(stats)
 
+  stats.armor = { code = self.name .. "_armor", name = "dragon_scales", type = "armor" }
 end
 
 function Dragon:on_enter()

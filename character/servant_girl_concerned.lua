@@ -22,7 +22,10 @@ function ServantGirlConcerned:on_interact(interactor_name)
   local dialogue = {
     start = {
       text = "The Lady is going to skin me alive if I don't find the lost cutlery.",
-      go_to = 'end'
+      go_to = 'end',
+      callback = function()
+        self.control.data.know_of_thefts = true
+      end
     }
   }
   sfml_dialogue(dialogue)

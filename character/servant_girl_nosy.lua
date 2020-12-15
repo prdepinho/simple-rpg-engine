@@ -22,11 +22,14 @@ function ServantGirlNosy:on_interact(interactor_name)
   local dialogue = {
     start = {
       text = "One night I got up to get water and I heard weird chantings in the tower.",
-      go_to = 'next'
+      go_to = 'next',
     },
     next = {
       text = "The door was locked, but I saw through the keyhole that the cook was talking with someone that I couldn't see.",
-      go_to = 'end'
+      go_to = 'end',
+      callback = function()
+        self.control.data.know_of_cook_in_the_tower = true
+      end
     }
   }
   sfml_dialogue(dialogue)

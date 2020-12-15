@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="30" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="9">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="30" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="11">
  <tileset firstgid="1" source="mansion_tileset.tsx"/>
  <layer id="1" name="floor" width="30" height="10">
   <data encoding="csv">
@@ -143,6 +143,18 @@
     <property name="open_delta_y" type="int" value="0"/>
     <property name="type" value="door"/>
    </properties>
+  </object>
+  <object id="9" name="castle_guard_concerned" x="201" y="58">
+   <properties>
+    <property name="type" value="castle_guard_concerned"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="10" name="castle_guard3" x="280.333" y="56.3333">
+   <properties>
+    <property name="type" value="castle_guard"/>
+   </properties>
+   <point/>
   </object>
  </objectgroup>
 </map>

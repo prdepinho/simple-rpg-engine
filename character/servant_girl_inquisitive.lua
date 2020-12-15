@@ -22,7 +22,10 @@ function ServantGirlInquisitive:on_interact(interactor_name)
   local dialogue = {
     start = {
       text = "Only the steel forks and knives have been stolen. All silverware has been left untouched.",
-      go_to = 'end'
+      go_to = 'end',
+      callback = function()
+        self.control.data.know_of_thefts = true
+      end
     }
   }
   sfml_dialogue(dialogue)

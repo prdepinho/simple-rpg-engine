@@ -59,6 +59,7 @@ rules.armor = {
   full_plate_mail   = { name = "Full Plate Mail", ac = 20, type = "plate", icon = {x = 16*9, y = 16*4}, desc = "Complete steel knightly armor." },
 
   skeleton_bones    = { name = "Skeleton Bones",  ac = 12, type = "plate", icon = {x = 16*0, y = 16*0}, desc = "Skeletons have a special protection due to the constitution of their fleshless bones." },
+  dragon_scales     = { name = "Dragon Scales",   ac = 16, type = "chain", icon = {x = 16*0, y = 16*0}, desc = "Dragon scales give it a formidable protection from weapons." },
 }
 
 rules.shield = {
@@ -138,6 +139,8 @@ rules.item = {
   key             = { name = "Key",             icon = {x = 16*0, y = 16*9},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A brass key." },
   armory_key      = { name = "Old rusty key",   icon = {x = 16*4, y = 16*11}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A rusty iron key that opens the armory under Come Inn." },
   lockpick        = { name = "Lockpick",        icon = {x = 16*5, y = 16*11}, stack_capacity = 10,    range_radius = 1, effect_radius = 0, usable = true,  use = "lockpick",   desc = "A lockpick that can be used to unlock doors and chests." },
+  cook_key        = { name = "Cook Key",        icon = {x = 16*6, y = 16*11}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "The key to the cook's room in Normindia Castle." },
+  tower_key       = { name = "Tower Key",       icon = {x = 16*7, y = 16*11}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "The key to the north-west tower of Normindia Castle." },
 }
 
 rules.spell = {

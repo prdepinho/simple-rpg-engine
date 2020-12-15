@@ -41,4 +41,8 @@ end
 function CastleGuard:on_interact(interactor_name)
 end
 
+function CastleGuard:on_idle()
+  -- stay put
+end
+
 return CastleGuard

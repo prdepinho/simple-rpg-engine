@@ -46,4 +46,9 @@ function Queen:on_interact(interactor_name)
   sfml_dialogue(dialogue)
 end
 
+function Queen:on_idle()
+  -- stay put
+end
+
+
 return Queen
