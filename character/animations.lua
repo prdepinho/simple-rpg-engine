@@ -340,6 +340,14 @@ animations.types = {
     },
     animations = basic_animation
   },
+  knight_female = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 27
+    },
+    animations = basic_animation
+  },
 
   dragon = {
     basic = {

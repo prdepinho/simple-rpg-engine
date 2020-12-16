@@ -154,6 +154,40 @@ function Map:set_objects()
               sfml_set_obstacle(false, coords.x, coords.y)
             end
           end
+
+        elseif object.properties.type == 'wardrobe' then
+          if event == 'interact' and character_name == 'player' then
+            local dialogue = {
+              start = {
+                text = function()
+                  if object.properties.changed then
+                    return object.properties.revert_msg or "Change back to your regular clothes?"
+                  else
+                    return object.properties.change_msg or "Change to your new clothes?"
+                  end
+                end,
+                options = {
+                  { text = "Yes.", go_to = 'change' },
+                  { text = "No.", go_to = 'end' },
+                }
+              },
+              change = {
+               text = function()
+                 if object.properties.changed then
+                   object.properties.changed = false
+                   self.control.characters.player:set_skin('cat_girl')
+                   return "You put on back your clothes."
+                 else
+                   object.properties.changed = true
+                   self.control.characters.player:set_skin(object.properties.skin)
+                   return "You changed clothes."
+                 end
+               end,
+               go_to = 'end',
+              }
+            }
+            sfml_dialogue(dialogue)
+          end
         end
       end
 

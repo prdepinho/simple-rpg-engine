@@ -39,15 +39,14 @@ function ComeInnCellar:wardrobe(event, x, y, character_name, object_name)
   local object = self.data.objects[object_name]
   if character_name == 'player' then
     if event == 'interact' then
-      if self.control.data.serve_inn or self.control.data.rats_quest_complete then
+      if self.control.data.serve_inn or self.control.data.rats_quest_complete or self.control.data.come_inn_ruined then
         local dialogue = {
           start = {
-            text = "Change to your uniform?",
             text = function()
               if object.properties.changed then
                 return "Change back to your regular clothes?"
               else
-                return "Change to your guild uniform?"
+                return "Change to a waitress uniform?"
               end
             end,
             options = {

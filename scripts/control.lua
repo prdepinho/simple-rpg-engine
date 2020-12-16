@@ -10,6 +10,7 @@ local Map = require "map"
 
 
 local start_game_map = 'silva'
+-- local start_game_map = 'thieves_guild'
 
 local Control = {
 
