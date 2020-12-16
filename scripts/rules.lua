@@ -53,10 +53,10 @@ rules.armor = {
   chain_mail        = { name = "Hauberk",         ac = 16, type = "chain", icon = {x = 16*3, y = 16*4}, desc = "Riveted chain armor worn over padding." },
   scale_mail        = { name = "Scale Armor",     ac = 16, type = "chain", icon = {x = 16*4, y = 16*4}, desc = "Armor made of bronze scales." },
 
-  brigandine        = { name = "Brigandine",      ac = 18, type = "plate", icon = {x = 16*6, y = 16*4}, desc = "Steel plates attached to a textile cover." },
-  lamellar_armor    = { name = "Lamellar Armor",  ac = 18, type = "plate", icon = {x = 16*7, y = 16*4}, desc = "Armor made of square steel parts sown together." },
-  cuirass           = { name = "Cuirass",         ac = 18, type = "plate", icon = {x = 16*8, y = 16*4}, desc = "Steel armor for the breast and the back." },
-  full_plate_mail   = { name = "Full Plate Mail", ac = 20, type = "plate", icon = {x = 16*9, y = 16*4}, desc = "Complete steel knightly armor." },
+  brigandine        = { name = "Brigandine",      ac = 18, type = "plate", icon = {x = 16*5, y = 16*4}, desc = "Steel plates attached to a textile cover." },
+  lamellar_armor    = { name = "Lamellar Armor",  ac = 18, type = "plate", icon = {x = 16*6, y = 16*4}, desc = "Armor made of square steel parts sown together." },
+  cuirass           = { name = "Cuirass",         ac = 18, type = "plate", icon = {x = 16*7, y = 16*4}, desc = "Steel armor for the breast and the back." },
+  full_plate_mail   = { name = "Full Plate Mail", ac = 20, type = "plate", icon = {x = 16*8, y = 16*4}, desc = "Complete steel knightly armor." },
 
   skeleton_bones    = { name = "Skeleton Bones",  ac = 12, type = "plate", icon = {x = 16*0, y = 16*0}, desc = "Skeletons have a special protection due to the constitution of their fleshless bones." },
   dragon_scales     = { name = "Dragon Scales",   ac = 16, type = "chain", icon = {x = 16*0, y = 16*0}, desc = "Dragon scales give it a formidable protection from weapons." },
@@ -141,6 +141,8 @@ rules.item = {
   lockpick        = { name = "Lockpick",        icon = {x = 16*5, y = 16*11}, stack_capacity = 10,    range_radius = 1, effect_radius = 0, usable = true,  use = "lockpick",   desc = "A lockpick that can be used to unlock doors and chests." },
   cook_key        = { name = "Cook Key",        icon = {x = 16*6, y = 16*11}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "The key to the cook's room in Normindia Castle." },
   tower_key       = { name = "Tower Key",       icon = {x = 16*7, y = 16*11}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "The key to the north-west tower of Normindia Castle." },
+  silver_cutlery  = { name = "Silver Cutlery",  icon = {x = 16*4, y = 16*10}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Silver forks and knives that you stole from Normindia Castle." },
+  steel_cutlery   = { name = "Steel Cutlery",   icon = {x = 16*5, y = 16*10}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Steel forks and knives that the cook stole from Normindia Castle to arm imps in exchange for elf-dust." },
 }
 
 rules.spell = {

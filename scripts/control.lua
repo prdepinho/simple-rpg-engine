@@ -714,6 +714,7 @@ function Control:add_item_to_inventory(character_name, code, name, type, quantit
   self.map.data.items[code] = {name = name, type = type, x = position.x, y = position.y, quantity = quantity}
   sfml_add_item(code, name, type, quantity or 0, position.x, position.y)
   self:loot_item(code, character_name)
+  sfml_play_sound("plim.wav")
 end
 
 -- Drops an item from character's inventory. Returns false if item was not in the inventory.

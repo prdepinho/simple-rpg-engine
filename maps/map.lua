@@ -231,6 +231,7 @@ function Map:enter()
     elseif object.properties.type == 'hit_die' then
       if not object.properties.taken then
         sfml_loop_music("crystal.wav")
+        sfml_play_sound("plim.wav")
         for index, coords in ipairs(object.coords) do
           sfml_set_obstacle(true, coords.x, coords.y)
         end

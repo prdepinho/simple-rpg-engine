@@ -63,6 +63,16 @@ function TownElf:on_interact(interactor_name)
         go_to = "end"
       }
     }
+
+    if self.control.data.know_of_fighting_elves then
+      table.insert(dialogue.start.options
+        { text = "A gang of imps is going to attack the elves.", go_to = 'attack' }
+      )
+      dialogue.attack = {
+        text = "Are you sure? They wouldn't be so stupid. What? They are even getting armed by the castle? Now that changes things. Come with me. We have to warn my people.",
+        go_to = 'end'
+      }
+    end
     sfml_dialogue(dialogue)
   end
 end
