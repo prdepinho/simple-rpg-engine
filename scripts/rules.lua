@@ -60,6 +60,7 @@ rules.armor = {
 
   skeleton_bones    = { name = "Skeleton Bones",  ac = 12, type = "plate", icon = {x = 16*0, y = 16*0}, desc = "Skeletons have a special protection due to the constitution of their fleshless bones." },
   dragon_scales     = { name = "Dragon Scales",   ac = 16, type = "chain", icon = {x = 16*0, y = 16*0}, desc = "Dragon scales give it a formidable protection from weapons." },
+  imp_scales        = { name = "Imp Scales",      ac = 12, type = "chain", icon = {x = 16*0, y = 16*0}, desc = "Imp scales give it an improved protection from weapons." },
 }
 
 rules.shield = {

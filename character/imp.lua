@@ -26,16 +26,50 @@ function Imp:create()
   rules.set_ability_scores_map(stats, {
     str = 15,
     dex = 10,
-    con = 10,
-    int = 13,
-    wis = 13,
+    con = 13,
+    int = 15,
+    wis = 18,
     cha = 8,
   })
   rules.level_up(stats)
 
   stats.inventory[3] = {code = self.name .. "_dagger", name = "dagger", type = "weapon"}
   stats.weapon = stats.inventory[3]
+  stats.armor = { code = self.name .. "_armor", name = "imp_scales", type = "armor" }
 end
 
+function Imp:enemy_procedure()
+  local target = self.control:closest_ally_on_sight(self.name)
+  if target then
+    self.control:enemy_on_player_in_sight(self.name)
+    if rules.roll_dice('d4') == 1 then
+      local pos = sfml_get_character_position(target)
+      self:cast_magic('fear', pos.x, pos.y, rules.spell.fear.range_radius, rules.spell.fear.effect_radius)
+    else
+      self:attack(target)
+    end
+  end
+end
+
+function Imp:ally_procedure()
+  local target = self.control:closest_enemy_on_sight(self.name)
+  if target then
+    self.control:enemy_on_player_in_sight(self.name)
+    if rules.roll_dice('d4') == 1 then
+      local pos = sfml_get_character_position(target)
+      self:cast_magic('fear', pos.x, pos.y, rules.spell.fear.range_radius, rules.spell.fear.effect_radius)
+    else
+      self:attack(target)
+    end
+  else
+    local dst = sfml_get_character_position('player')
+    local src = sfml_get_character_position(self.name)
+    local distance = math.sqrt((dst.x - src.x) * (dst.x - src.x) + (dst.y - src.y) * (dst.y - src.y))
+    if distance > 1 then
+      sfml_clear_schedule(self.name)
+      sfml_move(self.name, dst.x, dst.y)
+    end
+  end
+end
 
 return Imp

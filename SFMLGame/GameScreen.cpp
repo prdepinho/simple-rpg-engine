@@ -1390,6 +1390,8 @@ void GameScreen::attack_character(Character &attacker, Character &defender) {
 void GameScreen::interact_character(Character &character, int tile_x, int tile_y) {
 	if (!character.is_active())
 		return;
+	if (character.is_moving())
+		return;
 	auto pos = character_position(character);
 
 	if (std::abs(pos.x - tile_x) <= 1 && std::abs(pos.y - tile_y) <= 1) {  // is adjacent

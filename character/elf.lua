@@ -35,11 +35,24 @@ function Elf:create()
   rules.level_up(stats)
 
   stats.inventory[1] = {code = self.name .. "_bow", name = "short_bow", type = 'weapon'}
-  stats.inventory[2] = {code = self.name .. "_arrows", name = "arrow", type = "ammo", quantity = 20}
+  stats.inventory[2] = {code = self.name .. "_arrows", name = "arrow", type = "ammo", quantity = 5}
   stats.inventory[3] = {code = self.name .. "_dagger", name = "dagger", type = "weapon"}
   stats.weapon = stats.inventory[1]
   stats.ammo = stats.inventory[2]
 end
 
+function Elf:enemy_procedure()
+  if self.data.stats.weapon.name == 'short_bow' and self.data.stats.ammo.quantity == 0 then
+    self.data.stats.weapon = self.data.stats.inventory[3]
+  end
+  Character.enemy_procedure(self)
+end
+
+function Elf:ally_procedure()
+  if self.data.stats.weapon.name == 'short_bow' and self.data.stats.ammo.quantity == 0 then
+    self.data.stats.weapon = self.data.stats.inventory[3]
+  end
+  Character.ally_procedure(self)
+end
 
 return Elf
