@@ -25,18 +25,19 @@ function Elf:create()
   stats.hit_die = "d6",
 
   rules.set_ability_scores_map(stats, {
-    str = 8,
+    str = 13,
     dex = 15,
-    con = 9,
-    int = 9,
+    con = 10,
+    int = 15,
     wis = 13,
-    cha = 15,
+    cha = 18,
   })
   rules.level_up(stats)
 
   stats.inventory[1] = {code = self.name .. "_bow", name = "short_bow", type = 'weapon'}
   stats.inventory[2] = {code = self.name .. "_arrows", name = "arrow", type = "ammo", quantity = 5}
   stats.inventory[3] = {code = self.name .. "_dagger", name = "dagger", type = "weapon"}
+  -- stats.inventory[3] = {code = self.name .. "_cutlery", name = "silver_cutlery", type = "weapon"}
   stats.weapon = stats.inventory[1]
   stats.ammo = stats.inventory[2]
 end

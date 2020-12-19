@@ -120,6 +120,8 @@ rules.weapon = {
 
 
   rat_tooth     = { name = "Rat Tooth",     damage = "1d1",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, bulk = 0, ranged = false, range = 1, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*0, y = 16*0}, effect = "rat_desease",   desc = "The tooth and claws of a plague rat has a chance to poison its victim." },
+  steel_cutlery = { name = "Steel Cutelry", damage = "1d4",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, bulk = 1, ranged = false, range = 1, gun = false, cutthroat = true , ammo_category = "",              icon = {x = 16*5, y = 16*10},effect = "",              desc = "Steel cutlery, fork and knife." },
+  silver_cutlery= { name = "Silver Cutelry",damage = "1d4",  to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, bulk = 1, ranged = false, range = 1, gun = false, cutthroat = true , ammo_category = "",              icon = {x = 16*4, y = 16*10},effect = "silver_attack", desc = "Silver cutlery, fork and knife. Silver weapons deal an additional 1d6 damage and may cause poiton to neather creatures." },
 }
 
 rules.ammo = {
@@ -160,18 +162,18 @@ rules.spell = {
 
 
 rules.status = {
-  hold          = { name = "Hold",           on_enter = "",                  on_start = "",                on_end = "",              on_update = "",                 character_animation = "stand",  icon = { x = 8*26, y = 8*0 } },
-  invisible     = { name = "Invisible",      on_enter = "invisible_enter",   on_start = "invisible_start", on_end = "invisible_end", on_update = "invisible_update", character_animation = "",       icon = { x = 8*27, y = 8*0 } },
-  poison        = { name = "Poison",         on_enter = "",                  on_start = "poison_start",    on_end = "poison_end",    on_update = "poison_update",    character_animation = "down",   icon = { x = 8*28, y = 8*0 } },
-  fear          = { name = "Fear",           on_enter = "",                  on_start = "fear_start",      on_end = "fear_end",      on_update = "fear_update",      character_animation = "fear",   icon = { x = 8*29, y = 8*0 } },
-  charm         = { name = "Charm",          on_enter = "",                  on_start = "",                on_end = "",              on_update = "",                 character_animation = "down",   icon = { x = 8*30, y = 8*0 } },
-  dead          = { name = "Dead",           on_enter = "",                  on_start = "",                on_end = "",              on_update = "",                 character_animation = "dead",   icon = { x = 8*31, y = 8*0 } },
-  bless         = { name = "Bless",          on_enter = "",                  on_start = "",                on_end = "",              on_update = "",                 character_animation = "",       icon = { x = 8*26, y = 8*1 } },
-  true_seeing   = { name = "True Seeing",    on_enter = "",                  on_start = "",                on_end = "",              on_update = "",                 character_animation = "",       icon = { x = 8*27, y = 8*1 } },
-  resist_poison = { name = "Resist Poison",  on_enter = "",                  on_start = "",                on_end = "",              on_update = "",                 character_animation = "",       icon = { x = 8*28, y = 8*1 } },
-  courage       = { name = "Courage",        on_enter = "",                  on_start = "",                on_end = "",              on_update = "",                 character_animation = "",       icon = { x = 8*29, y = 8*1 } },
-  armor         = { name = "Armor",          on_enter = "",                  on_start = "armor_start",     on_end = "armor_end",     on_update = "armor_update",     character_animation = "",       icon = { x = 8*30, y = 8*1 } },
-  strength      = { name = "Strength",       on_enter = "",                  on_start = "strength_start",  on_end = "strength_end",  on_update = "strength_update",  character_animation = "",       icon = { x = 8*31, y = 8*1 } },
+  hold                = { name = "Hold",                  on_enter = "",                  on_start = "",                on_end = "",              on_update = "",                 character_animation = "stand",  icon = { x = 8*26, y = 8*0 } },
+  invisible           = { name = "Invisible",             on_enter = "invisible_enter",   on_start = "invisible_start", on_end = "invisible_end", on_update = "invisible_update", character_animation = "",       icon = { x = 8*27, y = 8*0 } },
+  poison              = { name = "Poison",                on_enter = "",                  on_start = "poison_start",    on_end = "poison_end",    on_update = "poison_update",    character_animation = "down",   icon = { x = 8*28, y = 8*0 } },
+  fear                = { name = "Fear",                  on_enter = "",                  on_start = "fear_start",      on_end = "fear_end",      on_update = "fear_update",      character_animation = "fear",   icon = { x = 8*29, y = 8*0 } },
+  charm               = { name = "Charm",                 on_enter = "",                  on_start = "",                on_end = "",              on_update = "",                 character_animation = "down",   icon = { x = 8*30, y = 8*0 } },
+  dead                = { name = "Dead",                  on_enter = "",                  on_start = "",                on_end = "",              on_update = "",                 character_animation = "dead",   icon = { x = 8*31, y = 8*0 } },
+  bless               = { name = "Bless",                 on_enter = "",                  on_start = "",                on_end = "",              on_update = "",                 character_animation = "",       icon = { x = 8*26, y = 8*1 } },
+  true_seeing         = { name = "True Seeing",           on_enter = "",                  on_start = "",                on_end = "",              on_update = "",                 character_animation = "",       icon = { x = 8*27, y = 8*1 } },
+  resist_poison       = { name = "Resist Poison",         on_enter = "",                  on_start = "",                on_end = "",              on_update = "",                 character_animation = "",       icon = { x = 8*28, y = 8*1 } },
+  courage             = { name = "Courage",               on_enter = "",                  on_start = "",                on_end = "",              on_update = "",                 character_animation = "",       icon = { x = 8*29, y = 8*1 } },
+  armor               = { name = "Armor",                 on_enter = "",                  on_start = "armor_start",     on_end = "armor_end",     on_update = "armor_update",     character_animation = "",       icon = { x = 8*30, y = 8*1 } },
+  strength            = { name = "Strength",              on_enter = "",                  on_start = "strength_start",  on_end = "strength_end",  on_update = "strength_update",  character_animation = "",       icon = { x = 8*31, y = 8*1 } },
 }
 
 function rules.new_character() 
@@ -204,7 +206,7 @@ function rules.new_character()
       {code = "", name = "no_item", type = "item"}, 
     },
     status = { 
-      -- when not nil       = { duration = 0, challenge_level = 0 }
+      -- when not nil       = { duration = 0, challenge_level = 0 } -- duration -1 is permanent
       hold                  = nil,  -- vs str
       poison                = nil,  -- vs con
       invisible             = nil,  -- vs int
@@ -222,6 +224,9 @@ function rules.new_character()
       ac = 0,
       to_hit = 0,
       magic_ac = 0,
+    },
+    weakness = {
+      silver_vulnerable     = false,
     },
     portrait = {x = 0, y = 192},
   }
@@ -259,6 +264,7 @@ function rules.set_ability_scores_map(stats, map)
 end
 
 function rules.level_up(stats)
+  print('LEVEL UP')
   if stats.hit_die == "d12" then
     rules.set_max_hit_points(stats, stats.total_hp + 7 + rules.ability_modifier[stats.ability.con])
   elseif stats.hit_die == "d10" then

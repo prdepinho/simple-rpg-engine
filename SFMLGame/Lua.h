@@ -55,6 +55,8 @@ public:
 	
 	void print_character_data(Character &character);
 
+	void turn_begin();
+	void turn_end();
 	void on_idle(Character &character);
 	void on_turn(Character &character);
 	void on_interact(Character &character, int tile_x, int tile_y);

@@ -162,6 +162,14 @@ function character_on_interact(target_name, interactor_name)
   control:character_on_interact(target_name, interactor_name)
 end
 
+function turn_begin()
+  control:turn_begin()
+end
+
+function turn_end()
+  control:turn_end()
+end
+
 function character_on_turn(name, id)
   control:character_on_turn(name, id)
 end

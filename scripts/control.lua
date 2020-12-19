@@ -172,28 +172,28 @@ end
 
 
 function Control:enemy_on_player_in_sight(enemy)
-  self.enemies_aware[enemy] = true
-  local size = 0
-  for key, elm in pairs(self.enemies_aware) do
-    size = size + 1
-  end
-  if size > 0 and sfml_get_current_music() ~= "you_are_the_carpenters_son.wav" then
-    sfml_loop_music("you_are_the_carpenters_son.wav")
-  end
+--   self.enemies_aware[enemy] = true
+--   local size = 0
+--   for key, elm in pairs(self.enemies_aware) do
+--     size = size + 1
+--   end
+--   if size > 0 and sfml_get_current_music() ~= "you_are_the_carpenters_son.wav" then
+--     sfml_loop_music("you_are_the_carpenters_son.wav")
+--   end
 end
 
 function Control:enemy_on_lost_sight_of_player(enemy)
-  self.enemies_aware[enemy] = nil
-  local size = 0
-  for key, elm in pairs(self.enemies_aware) do
-    size = size + 1
-  end
-  if size == 0 and sfml_get_current_music() == "you_are_the_carpenters_son.wav" then
-    sfml_stop_music()
-    if self.map.data.properties.music and self.map.data.properties.music ~= '' then
-      sfml_loop_music(self.map.data.properties.music)
-    end
-  end
+--   self.enemies_aware[enemy] = nil
+--   local size = 0
+--   for key, elm in pairs(self.enemies_aware) do
+--     size = size + 1
+--   end
+--   if size == 0 and sfml_get_current_music() == "you_are_the_carpenters_son.wav" then
+--     sfml_stop_music()
+--     if self.map.data.properties.music and self.map.data.properties.music ~= '' then
+--       sfml_loop_music(self.map.data.properties.music)
+--     end
+--   end
 end
 
 function Control:game_over()
@@ -353,7 +353,9 @@ function Control:update_status(name)
         self:remove_status(name, status_name)
 
       else
-        character_status.duration = character_status.duration - 1
+        if character_status.duration > 0 then
+          character_status.duration = character_status.duration - 1
+        end
         if character_status.duration == 0 then
           self:remove_status(name, status_name)
         end
@@ -1145,6 +1147,49 @@ function Control:character_on_interact(target_name, interactor_name)
     end
   else
     print('character module ' .. target_name .. ' is nil')
+  end
+end
+
+function Control:turn_begin()
+  -- handle battle and background music
+  local in_sight = false
+  local characters = sfml_get_characters_on_map()
+  for _, enemy_name in ipairs(characters) do
+    local data = self.characters[enemy_name].data
+    if data.enemy and not data.stats.status.dead then
+      if self:closest_ally_on_sight(enemy_name) then
+        in_sight = true
+        break;
+      end
+    end
+  end
+  if in_sight then
+    if sfml_get_current_music() ~= "you_are_the_carpenters_son.wav" then
+      sfml_loop_music("you_are_the_carpenters_son.wav")
+    end
+  end
+end
+
+function Control:turn_end()
+  -- handle battle and background music
+  local in_sight = false
+  local characters = sfml_get_characters_on_map()
+  for _, enemy_name in ipairs(characters) do
+    local data = self.characters[enemy_name].data
+    if data.enemy and not data.stats.status.dead then
+      if self:closest_ally_on_sight(enemy_name) then
+        in_sight = true
+        break;
+      end
+    end
+  end
+  if not in_sight then
+    if sfml_get_current_music() == "you_are_the_carpenters_son.wav" then
+      sfml_stop_music()
+      if self.map.data.properties.music and self.map.data.properties.music ~= '' then
+        sfml_loop_music(self.map.data.properties.music)
+      end
+    end
   end
 end
 

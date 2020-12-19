@@ -220,6 +220,24 @@ void Lua::print_character_data(Character &character) {
 	lua_pop(state, 1);
 }
 
+void Lua::turn_begin() {
+	lua_getglobal(state, "turn_begin");
+	int result = lua_pcall(state, 0, 1, 0);
+	if (result != LUA_OK) {
+		throw LuaException(get_error(state));
+	}
+	lua_pop(state, 1);
+}
+
+void Lua::turn_end() {
+	lua_getglobal(state, "turn_end");
+	int result = lua_pcall(state, 0, 1, 0);
+	if (result != LUA_OK) {
+		throw LuaException(get_error(state));
+	}
+	lua_pop(state, 1);
+}
+
 void Lua::on_idle(Character &character) {
 	lua_getglobal(state, "character_on_idle");
 	lua_pushstring(state, character.get_name().c_str());

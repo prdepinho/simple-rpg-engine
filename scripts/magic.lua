@@ -222,6 +222,47 @@ function Magic:rat_desease(attacker_name, defender_name, hit_result, damage_resu
 end
 
 
+function Magic:silver_attack(attacker_name, defender_name, hit_result, damage_result)
+  if hit_result.critical_hit or hit_result.hit then
+    local attacker = self.control.characters[attacker_name].data.stats
+    local defender = self.control.characters[defender_name].data.stats
+
+    if not defender.weakness.silver_vulnerable then
+      return
+    end
+
+    local position = sfml_get_character_position(defender_name)
+
+    local damage = rules.roll_dice('1d6')
+    self.control:damage_character(defender_name, damage)
+    sfml_show_floating_message(tostring(damage), position.x, position.y)
+    sfml_push_log(defender.name .. ' has taken ' .. tostring(damage) .. ' silver damage')
+
+    local stats = self.control.characters[defender_name].data.stats
+    if not stats.status.dead then
+
+      local challenge = rules.arcane_spell_challenge(attacker)
+      local save = rules.roll_con_save(stats, challenge)
+
+      self.control:log_save(defender_name, 'Con', save)
+
+      if save.success then
+        sfml_show_floating_message("saved", position.x, position.y)
+      else 
+        sfml_show_floating_message(rules.status.poison.name, position.x, position.y)
+
+        local duration = rules.roll_dice("3d6")
+        duration = duration + rules.arcane_spell_bonus(attacker)
+
+        sfml_start_fireworks("poison", position.x, position.y)
+        self.control:set_status(defender_name, "poison", challenge, duration)
+      end
+
+    end
+  end
+end
+
+
 
 
 function Magic:invisibility(caster, center, tiles, targets)

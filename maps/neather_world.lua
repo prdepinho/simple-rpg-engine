@@ -17,12 +17,13 @@ end
 
 function NeatherWorld:enter()
   Map.enter(self)
-  for i = 1, 4, 1 do
-    local name = ''
-    name = 'imp' .. tostring(i)
+  for i = 1, 6, 1 do
+    local name = 'imp' .. tostring(i)
     self.control.loaded_character_data[name].enemy = self.control.data.elf_ally or false
     self.control.loaded_character_data[name].ally = self.control.data.imp_ally or false
-    name = 'elf' .. tostring(i)
+  end
+  for i = 1, 4, 1 do
+    local name = 'elf' .. tostring(i)
     self.control.loaded_character_data[name].enemy = self.control.data.imp_ally or false
     self.control.loaded_character_data[name].ally = self.control.data.elf_ally or false
   end

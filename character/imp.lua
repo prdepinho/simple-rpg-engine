@@ -33,7 +33,10 @@ function Imp:create()
   })
   rules.level_up(stats)
 
-  stats.inventory[3] = {code = self.name .. "_dagger", name = "dagger", type = "weapon"}
+  stats.weakness.silver_vulnerable = true
+
+  -- stats.inventory[3] = {code = self.name .. "_dagger", name = "dagger", type = "weapon"}
+  stats.inventory[3] = {code = self.name .. "_cutlery", name = "steel_cutlery", type = "weapon"}
   stats.weapon = stats.inventory[3]
   stats.armor = { code = self.name .. "_armor", name = "imp_scales", type = "armor" }
 end
@@ -47,6 +50,15 @@ function Imp:enemy_procedure()
       self:cast_magic('fear', pos.x, pos.y, rules.spell.fear.range_radius, rules.spell.fear.effect_radius)
     else
       self:attack(target)
+    end
+  else
+    -- local dst = sfml_get_character_position('player')
+    local dst = self.control.map.data.objects.player_elf_spawn_point.coords[1]
+    local src = sfml_get_character_position(self.name)
+    local distance = math.sqrt((dst.x - src.x) * (dst.x - src.x) + (dst.y - src.y) * (dst.y - src.y))
+    if distance > 1 then
+      sfml_clear_schedule(self.name)
+      sfml_move(self.name, dst.x, dst.y)
     end
   end
 end

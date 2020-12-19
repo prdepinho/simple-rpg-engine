@@ -233,6 +233,8 @@ bool GameScreen::update(float elapsed_time) {
 			++turn;
 			turn_count = 0.f;
 
+			_game.get_lua()->turn_begin();
+
 			// Log("---- turn: %d ---------------------------------", turn);
 			// log_box.push_line("Turn " + std::to_string(turn));
 
@@ -283,6 +285,7 @@ bool GameScreen::update(float elapsed_time) {
 				delete action;
 			}
 
+			_game.get_lua()->turn_end();
 		}
 
 		else {
