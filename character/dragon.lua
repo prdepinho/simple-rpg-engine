@@ -46,7 +46,6 @@ end
 function Dragon:enemy_procedure()
   local target = self.control:closest_ally_on_sight(self.name)
   if target then
-    self.control:enemy_on_player_in_sight(self.name)
     if self.breath_attack then
       local pos = sfml_get_character_position(target)
       self:cast_magic('fireball', pos.x, pos.y, rules.spell.fireball.range_radius, rules.spell.fireball.effect_radius)

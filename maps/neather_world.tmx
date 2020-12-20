@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="15">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="17">
  <properties>
   <property name="for_of_war" type="bool" value="true"/>
   <property name="music" value=""/>
@@ -318,6 +318,18 @@
   <object id="14" name="imp5" x="279.636" y="84.9091">
    <properties>
     <property name="type" value="imp"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="15" name="imp_crystal" x="246.909" y="37.4545">
+   <properties>
+    <property name="type" value="crystal"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="16" name="elf_crystal" x="72.3636" y="458.364">
+   <properties>
+    <property name="type" value="crystal"/>
    </properties>
    <point/>
   </object>

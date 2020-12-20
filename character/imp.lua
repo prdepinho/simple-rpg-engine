@@ -44,7 +44,6 @@ end
 function Imp:enemy_procedure()
   local target = self.control:closest_ally_on_sight(self.name)
   if target then
-    self.control:enemy_on_player_in_sight(self.name)
     if rules.roll_dice('d4') == 1 then
       local pos = sfml_get_character_position(target)
       self:cast_magic('fear', pos.x, pos.y, rules.spell.fear.range_radius, rules.spell.fear.effect_radius)
@@ -66,7 +65,6 @@ end
 function Imp:ally_procedure()
   local target = self.control:closest_enemy_on_sight(self.name)
   if target then
-    self.control:enemy_on_player_in_sight(self.name)
     if rules.roll_dice('d4') == 1 then
       local pos = sfml_get_character_position(target)
       self:cast_magic('fear', pos.x, pos.y, rules.spell.fear.range_radius, rules.spell.fear.effect_radius)

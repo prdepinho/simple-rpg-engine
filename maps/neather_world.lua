@@ -22,11 +22,15 @@ function NeatherWorld:enter()
     self.control.loaded_character_data[name].enemy = self.control.data.elf_ally or false
     self.control.loaded_character_data[name].ally = self.control.data.imp_ally or false
   end
+  self.control.loaded_character_data.imp_crystal.enemy = self.control.data.elf_ally or false
+  self.control.loaded_character_data.imp_crystal.ally = self.control.data.imp_ally or false
   for i = 1, 4, 1 do
     local name = 'elf' .. tostring(i)
     self.control.loaded_character_data[name].enemy = self.control.data.imp_ally or false
     self.control.loaded_character_data[name].ally = self.control.data.elf_ally or false
   end
+  self.control.loaded_character_data.elf_crystal.enemy = self.control.data.imp_ally or false
+  self.control.loaded_character_data.elf_crystal.ally = self.control.data.elf_ally or false
 end
 
 function NeatherWorld:exit()

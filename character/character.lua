@@ -74,7 +74,6 @@ end
 function Character:enemy_procedure()
   local target = self.control:closest_ally_on_sight(self.name)
   if target then
-    self.control:enemy_on_player_in_sight(self.name)
     self:attack(target)
   end
 end
@@ -157,9 +156,6 @@ function Character:on_attacked(attacker_name)
 end
 
 function Character:on_death()
-  if self.data.enemy then
-    self.control:enemy_on_lost_sight_of_player(self.name)
-  end
 end
 
 -- walk here and there.

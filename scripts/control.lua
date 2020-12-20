@@ -33,7 +33,6 @@ local Control = {
   magic = {},
 
 
-  enemies_aware = {},  -- elemies aware of the player in the map
   companions = {}
 
 }
@@ -170,31 +169,6 @@ end
 
 
 
-
-function Control:enemy_on_player_in_sight(enemy)
---   self.enemies_aware[enemy] = true
---   local size = 0
---   for key, elm in pairs(self.enemies_aware) do
---     size = size + 1
---   end
---   if size > 0 and sfml_get_current_music() ~= "you_are_the_carpenters_son.wav" then
---     sfml_loop_music("you_are_the_carpenters_son.wav")
---   end
-end
-
-function Control:enemy_on_lost_sight_of_player(enemy)
---   self.enemies_aware[enemy] = nil
---   local size = 0
---   for key, elm in pairs(self.enemies_aware) do
---     size = size + 1
---   end
---   if size == 0 and sfml_get_current_music() == "you_are_the_carpenters_son.wav" then
---     sfml_stop_music()
---     if self.map.data.properties.music and self.map.data.properties.music ~= '' then
---       sfml_loop_music(self.map.data.properties.music)
---     end
---   end
-end
 
 function Control:game_over()
   sfml_play_music("give_thanks_to_the_lord_for_he_is_good.wav")
@@ -921,7 +895,6 @@ function Control:reset_data()
   self.characters = {}
   self.loaded_map_data = {}
   self.data = {}
-  self.enemies_aware = {}
   self.companions = {}
 end
 
@@ -961,7 +934,6 @@ function Control:new_game()
   self.data = {}
   self.map_module = {}
   self.current_map = ""
-  self.enemies_aware = {}
   self.companions = {}
 end
 
@@ -1219,7 +1191,6 @@ function Control:test()
 end
 
 function Control:change_map(new_map)
-  self.enemies_aware = {}
   self.current_map = new_map
   print('current map: ' .. self.current_map)
   if not self.loaded_map_data[self.current_map] then

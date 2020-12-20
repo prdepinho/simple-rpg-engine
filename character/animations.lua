@@ -12,6 +12,49 @@ local defaults = {
   }
 }
 
+local crystal_animation = {
+  stand = {
+    fps = 1,
+    frames = { 0 }
+  },
+  walk = {
+    fps = 4,
+    frames = { 0, 1, 0, 1 }
+  },
+  attack = {
+    fps = 1,
+    frames = { 0 }
+  },
+  use = {
+    fps = 1,
+    frames = { 0 }
+  },
+  cast = {
+    fps = 1,
+    frames = { 0 }
+  },
+  hurt = {
+    fps = 1,
+    frames = { 0 }
+  },
+  down = {
+    fps = 1,
+    frames = { 0 }
+  },
+  dead = {
+    fps = 1,
+    frames = { 2 }
+  },
+  fear = {
+    fps = 1,
+    frames = { 0 }
+  },
+  rise = {
+    fps = 1,
+    frames = { 0 }
+  }
+}
+
 local mini_animation = {
   stand = {
     fps = 1,
@@ -362,7 +405,23 @@ animations.types = {
       y = 16 * 30
     },
     animations = basic_animation
-  }
+  },
+
+  crystal = {
+    basic = {
+      file = "sprites",
+      size = {
+        height = 32,
+        width = 32
+      }
+    },
+    coordinates = {
+      x = 16 * 26,
+      y = 16 * 27
+    },
+    animations = crystal_animation
+  },
+
 }
 
 return animations

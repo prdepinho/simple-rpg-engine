@@ -61,6 +61,7 @@ rules.armor = {
   skeleton_bones    = { name = "Skeleton Bones",  ac = 12, type = "plate", icon = {x = 16*0, y = 16*0}, desc = "Skeletons have a special protection due to the constitution of their fleshless bones." },
   dragon_scales     = { name = "Dragon Scales",   ac = 16, type = "chain", icon = {x = 16*0, y = 16*0}, desc = "Dragon scales give it a formidable protection from weapons." },
   imp_scales        = { name = "Imp Scales",      ac = 12, type = "chain", icon = {x = 16*0, y = 16*0}, desc = "Imp scales give it an improved protection from weapons." },
+  crystal_shell     = { name = "Crystal Shell",   ac = 20, type = "plate", icon = {x = 16*0, y = 16*0}, desc = "Crystal shell of the neather crystal." },
 }
 
 rules.shield = {
@@ -264,7 +265,7 @@ function rules.set_ability_scores_map(stats, map)
 end
 
 function rules.level_up(stats)
-  print('LEVEL UP')
+  print('LEVEL UP: ' .. stats.name)
   if stats.hit_die == "d12" then
     rules.set_max_hit_points(stats, stats.total_hp + 7 + rules.ability_modifier[stats.ability.con])
   elseif stats.hit_die == "d10" then
@@ -572,7 +573,7 @@ function rules.roll_damage(attacker, defender, hit_result)
   elseif hit_result.critical_miss then
 
   else
-    print('oops')
+    -- print('oops')
   end
 
   if result.total_damage < 0 then
