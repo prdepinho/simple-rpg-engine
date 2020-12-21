@@ -59,7 +59,10 @@ function CastleSteward:on_interact(interactor_name)
     )
     dialogue.confessed = {
       text = "I'll inform the queen. About the imps, we don't have the men to protect the castle if they intent on attacking us, even armed with forks and whatnot.",
-      go_to = 'end'
+      go_to = 'end',
+      callback = function()
+        self.control.data.cook_arrested = true
+      end
     }
 
   else
@@ -76,6 +79,13 @@ function CastleSteward:on_interact(interactor_name)
         end
       }
     end
+  end
+
+  if self.control.data.cook_arrested then
+    dialogue.start = {
+      text = "Nice day to you.",
+      go_to = 'end'
+    }
   end
 
   sfml_dialogue(dialogue)

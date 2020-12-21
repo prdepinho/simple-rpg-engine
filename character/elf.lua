@@ -32,12 +32,15 @@ function Elf:create()
     wis = 13,
     cha = 18,
   })
-  rules.level_up(stats)
+  rules.level_up(self.data.stats)
 
   stats.inventory[1] = {code = self.name .. "_bow", name = "short_bow", type = 'weapon'}
   stats.inventory[2] = {code = self.name .. "_arrows", name = "arrow", type = "ammo", quantity = 5}
-  stats.inventory[3] = {code = self.name .. "_dagger", name = "dagger", type = "weapon"}
-  -- stats.inventory[3] = {code = self.name .. "_cutlery", name = "silver_cutlery", type = "weapon"}
+  if self.control.data.gave_elves_silverware then
+    stats.inventory[3] = {code = self.name .. "_cutlery", name = "silver_cutlery", type = "weapon"}
+  else
+    stats.inventory[3] = {code = self.name .. "_dagger", name = "dagger", type = "weapon"}
+  end
   stats.weapon = stats.inventory[1]
   stats.ammo = stats.inventory[2]
 end

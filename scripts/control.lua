@@ -1123,6 +1123,7 @@ function Control:character_on_interact(target_name, interactor_name)
 end
 
 function Control:turn_begin()
+  self.map:turn_begin()
   -- handle battle and background music
   local in_sight = false
   local characters = sfml_get_characters_on_map()
@@ -1143,6 +1144,7 @@ function Control:turn_begin()
 end
 
 function Control:turn_end()
+  self.map:turn_end()
   -- handle battle and background music
   local in_sight = false
   local characters = sfml_get_characters_on_map()

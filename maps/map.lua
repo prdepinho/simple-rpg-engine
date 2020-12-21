@@ -256,6 +256,12 @@ function Map:exit()
   end
 end
 
+function Map:turn_begin()
+end
+
+function Map:turn_end()
+end
+
 function Map:open_tile(x, y, object)
   local tile = sfml_get_tile(x, y)
   if not tile.open then

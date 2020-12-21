@@ -65,11 +65,51 @@ function TownElf:on_interact(interactor_name)
     }
 
     if self.control.data.know_of_fighting_elves then
-      table.insert(dialogue.start.options
-        { text = "A gang of imps is going to attack the elves.", go_to = 'attack' }
-      )
-      dialogue.attack = {
-        text = "Are you sure? They wouldn't be so stupid. What? They are even getting armed by the castle? Now that changes things. Come with me. We have to warn my people.",
+      dialogue.come_with_us = {
+        text = "Are you ready to come with us?",
+        options = {
+          { text = "Not yet.", go_to = 'yes' },
+          { text = "Let's go.", go_to = 'end' },
+        }
+      }
+      dialogue.yes = {
+        text = "You are wrapped to the neather world. The imps are coming. Protect the cristal from the invading horde and defeat the imps.",
+        go_to = 'end',
+        callback = function() 
+          sfml_change_map('neather_world:player_elf_spawn_point')
+        end
+      }
+      if not self.control.data.joined_elves then
+        table.insert(dialogue.start.options
+          { text = "A gang of imps is going to attack the elves.", go_to = 'attack' }
+        )
+        dialogue.attack = {
+          text = "I know. We have little time. You should come with us.",
+          go_to = 'come_with_us',
+          callback = function()
+            self.control.data.joined_elves = true
+          end
+        }
+      else
+        dialogue.start = dialogue.come_with_us
+      end
+      if self.control.data.took_silverware then
+        table.insert(dialogue.start.options,
+          { text = "I took the silverware from the castle.", go_to = 'took_silver' },
+        )
+        dialogue.silver = {
+          text = "Great! We shall have great advantage against our enemy using these weapons.",
+          go_to = 'end',
+          callback = function()
+            self.control.data.gave_elves_silverware = true
+          end
+        }
+      end
+    end
+
+    if self.control.data.elves_win then
+      dialogue.start = {
+        text = "We are safe for now.",
         go_to = 'end'
       }
     end

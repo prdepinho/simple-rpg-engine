@@ -17,6 +17,9 @@ end
 
 function CastleKitchen:enter()
   Map.enter(self)
+  if self.control.data.imps_win or self.control.data.cook_arrested then
+    sfml_remove_character('cook')
+  end
 end
 
 function CastleKitchen:exit()

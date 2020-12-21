@@ -31,7 +31,7 @@ function Imp:create()
     wis = 18,
     cha = 8,
   })
-  rules.level_up(stats)
+  rules.level_up(self.data.stats)
 
   stats.weakness.silver_vulnerable = true
 

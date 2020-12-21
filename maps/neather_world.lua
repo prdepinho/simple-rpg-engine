@@ -53,6 +53,60 @@ function NeatherWorld:player_imp_spawn_point(event, x, y, character_name, object
   end
 end
 
+
+function NeatherWorld:turn_end()
+  local elf_victory = true
+  for i = 1, 6, 1 do
+    local name = 'imp' .. tostring(i)
+    elf_victory = elf_victory and self.control.loaded_character_data[name].stats.status.dead
+  end
+  local imp_victory = self.control.loaded_character_data.elf_crystal.stats.status.dead
+
+  if not self.control.data.elves_win and not self.control.data.imps_win then
+    if elf_victory then
+      self:elf_victory()
+      self.control.data.elves_win = true
+    elseif imp_victory then
+      self.imp_victory()
+      self.control.data.imps_win = true
+    end
+  end
+end
+
+function NeatherWorld:elf_victory()
+  local dialogue = {
+    start = {
+      foreground = {
+        image = "elf_victory.png",
+        origin = {
+          x = 0,
+          y = 0,
+        }
+      },
+      text = "The elves managed to protect themselves against the imp attack.",
+      go_to = 'end',
+    }
+  }
+  sfml_illustrated_dialogue(dialogue)
+end
+
+function NeatherWorld:imp_victory()
+  local dialogue = {
+    start = {
+      foreground = {
+        image = "imp_victory.png",
+        origin = {
+          x = 0,
+          y = 0,
+        }
+      },
+      text = "The imps destroyed the elf crystal successfully.",
+      go_to = 'end',
+    }
+  }
+  sfml_illustrated_dialogue(dialogue)
+end
+
 return NeatherWorld
 
 

@@ -73,6 +73,28 @@ function Tower:crystal_ball(event, x, y, character_name, object_name)
           self.control.data.know_of_fighting_elves = true
         end
       }
+      if self.control.data.know_of_fighting_elves then
+        table.insert(dialogue.dialogue.options,
+          { text = "I want to kill elves with you.", go_to = 'kill' }
+        )
+        dialogue.kill = {
+          text = "You do? Wait, you are not really the fatass are you? Well, since you are so willing to help, come. I will take care of him afterwards.",
+          go_to = 'travel',
+        }
+        dialogue.travel = {
+          text = "You are wrapped to the neather world. The imps are eager to go hunting. Lead them and destroy the elf crystal.",
+          go_to = 'end',
+          callback = function()
+            sfml_change_map('neather_world:player_imp_spawn_point')
+          end
+        }
+      end
+    end
+    if self.control.data.elves_win or self.control.data.imps_win then
+      dialogue = {
+        text = "The crystal ball lost its shine.",
+        go_to = 'end'
+      }
     end
     sfml_dialogue(dialogue)
   end

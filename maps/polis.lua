@@ -26,6 +26,9 @@ function Polis:enter()
       end
     end
   end
+  if self.control.data.imps_win then
+    sfml_remove_character('town_elf')
+  end
 end
 
 function Polis:exit()
