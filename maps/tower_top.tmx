@@ -152,8 +152,6 @@
     <property name="destiny" value="tower:stairs"/>
     <property name="key" value=""/>
     <property name="locked" type="bool" value="false"/>
-    <property name="open_delta_x" type="int" value="1"/>
-    <property name="open_delta_y" type="int" value="0"/>
     <property name="type" value="door"/>
    </properties>
   </object>

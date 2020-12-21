@@ -76,6 +76,8 @@ function TownElf:on_interact(interactor_name)
         text = "You are wrapped to the neather world. The imps are coming. Protect the cristal from the invading horde and defeat the imps.",
         go_to = 'end',
         callback = function() 
+          self.control.data.elf_ally = true
+          self.control.data.imp_ally = false
           sfml_change_map('neather_world:player_elf_spawn_point')
         end
       }
@@ -95,7 +97,7 @@ function TownElf:on_interact(interactor_name)
       end
       if self.control.data.took_silverware then
         table.insert(dialogue.start.options,
-          { text = "I took the silverware from the castle.", go_to = 'took_silver' },
+          { text = "I took the silverware from the castle.", go_to = 'took_silver' }
         )
         dialogue.silver = {
           text = "Great! We shall have great advantage against our enemy using these weapons.",

@@ -40,7 +40,11 @@ end
 function NeatherWorld:player_elf_spawn_point(event, x, y, character_name, object_name)
   if event == 'step_on' and character_name == 'player' then
     if self.control.data.elf_ally then
-      sfml_change_map('silva:elf_wrap')
+      if self.control.data.elf_victory then
+        sfml_change_map('silva:elf_wrap')
+      else
+        sfml_text_box("You may go back to your world after defeating the imps.")
+      end
     end
   end
 end
@@ -48,7 +52,11 @@ end
 function NeatherWorld:player_imp_spawn_point(event, x, y, character_name, object_name)
   if event == 'step_on' and character_name == 'player' then
     if self.control.data.imp_ally then
-      sfml_change_map('silva:imp_wrap')
+      if self.control.data.imp_victory then
+        sfml_change_map('silva:imp_wrap')
+      else
+        sfml_text_box("You may go back to your world after defeating the elves.")
+      end
     end
   end
 end

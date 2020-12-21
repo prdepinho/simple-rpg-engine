@@ -29,8 +29,8 @@ function Tower:crystal_ball(event, x, y, character_name, object_name)
       start = {
         text = "You see a crystal ball before you.",
         go_to = 'interact'
-      }
-      dialogue.interact = {
+      },
+      interact = {
         text = "It's preety, but you have no idea how to use it.",
         go_to = 'end'
       }
@@ -85,6 +85,8 @@ function Tower:crystal_ball(event, x, y, character_name, object_name)
           text = "You are wrapped to the neather world. The imps are eager to go hunting. Lead them and destroy the elf crystal.",
           go_to = 'end',
           callback = function()
+            self.control.data.imp_ally = true
+            self.control.data.elf_ally = false
             sfml_change_map('neather_world:player_imp_spawn_point')
           end
         }
