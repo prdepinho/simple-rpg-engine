@@ -7,6 +7,7 @@ textures = {
   castle_tileset = "castle_tileset.png",
   temple_tileset = "temple_tileset.png",
   neather_world_tileset = "neather_world_tileset.png",
+  houses_tileset = "houses_tileset.png",
   sprites = "sprite_sheet.png",
   items = "items.png",
   effects = "effects.png",

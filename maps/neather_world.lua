@@ -92,7 +92,20 @@ function NeatherWorld:elf_victory()
         }
       },
       text = "The elves managed to protect themselves against the imp attack.",
+      go_to = function()
+        if self.control.data.elf_ally then
+          return 'reward'
+        else
+          return 'end'
+        end
+      end
+    },
+    reward = {
+      text = "The elves give you a boon for your decisive help.",
       go_to = 'end',
+      callback = function()
+        self.control:add_item_to_inventory('player', self.control:next_item_code(), 'invisibility', 'spell', 3)
+      end
     }
   }
   sfml_illustrated_dialogue(dialogue)
@@ -109,7 +122,20 @@ function NeatherWorld:imp_victory()
         }
       },
       text = "The imps destroyed the elf crystal successfully.",
+      go_to = function()
+        if self.control.data.imp_ally then
+          return 'reward'
+        else
+          return 'end'
+        end
+      end
+    },
+    reward = {
+      text = "Then imps give you a boon for your help against their mortal enemies.",
       go_to = 'end',
+      callback = function()
+        self.control:add_item_to_inventory('player', self.control:next_item_code(), 'fear', 'spell', 3)
+      end
     }
   }
   sfml_illustrated_dialogue(dialogue)

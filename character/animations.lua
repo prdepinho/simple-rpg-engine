@@ -35,11 +35,11 @@ local crystal_animation = {
   },
   hurt = {
     fps = 1,
-    frames = { 0 }
+    frames = { 0, 1, 0, 1 }
   },
   down = {
     fps = 1,
-    frames = { 0 }
+    frames = { 0, 1, 0, 1 }
   },
   dead = {
     fps = 1,
@@ -47,7 +47,7 @@ local crystal_animation = {
   },
   fear = {
     fps = 1,
-    frames = { 0 }
+    frames = { 0, 1, 0, 1 }
   },
   rise = {
     fps = 1,
