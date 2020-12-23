@@ -262,6 +262,41 @@ function Magic:silver_attack(attacker_name, defender_name, hit_result, damage_re
   end
 end
 
+function Magic:muramasa(attacker_name, defender_name, hit_result, damage_result)
+  if hit_result.critical_hit or hit_result.hit then
+    print('Muramasa: hit')
+    if not self.control.data.muramasa_hits then
+      self.control.data.muramasa_hits = 0
+      self.control.data.muramasa_level = 1
+      print('Muramasa hits: 0')
+    end
+    self.control.data.muramasa_hits = self.control.data.muramasa_hits + 1
+    print('Muramasa hits: self.control.data.muramasa_hits')
+
+    local attacker_stats = self.control.characters[attacker_name].data.stats
+    local muramasa_index = self.control:find_in_inventory(attacker_name, 'muramasa')
+    local muramasa = attacker_stats.inventory[muramasa_index]
+    local table = {
+      { hits = 10, next = 'muramasa_a' },
+      { hits = 30, next = 'muramasa_b' },
+      { hits = 60, next = 'muramasa_c' },
+      { hits = 100, next = 'muramasa_d' },
+      { hits = 0, next = '' }
+    }
+
+    if self.control.data.muramasa_hits == table[self.control.data.muramasa_level].hits then
+      print('Muramasa level up')
+      local position = sfml_get_character_position(attacker_name)
+      sfml_show_floating_message("I feel satisfied.", position.x, position.y)
+      sfml_push_log("Muramasa: I feel satisfied.")
+      sfml_start_fireworks('raise_dead', position.x, position.y)
+
+      attacker_stats.inventory[muramasa_index].name = table[self.control.data.muramasa_level].next
+      self.control.data.muramasa_level = self.control.data.muramasa_level + 1
+    end
+  end
+end
+
 
 
 
