@@ -157,7 +157,12 @@ void GameScreen::draw() {
 bool GameScreen::update(float elapsed_time) {
 	Screen::update(elapsed_time);
 
-	busy.draw_line(_game.get_resolution_width() - 40, 0, (player_busy ? "busy" : "free"), sf::Color::White);
+	// status line
+	{
+		std::string status = player_busy ? "busy" : "free";
+		status = !is_player_in_control() ? "wait" : status;
+		busy.draw_line(_game.get_resolution_width() - 40, 0, status, sf::Color::White);
+	}
 
 	if (current_mode)
 		current_mode->update(elapsed_time);
@@ -715,41 +720,50 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		return nullptr;
 	}
 
-
-	if (!player_busy && in_control) {
+	if (!player_busy) {
 		switch (InputHandler::get_input(event)) {
-		case Control::A:
-			// do
-			{
-				auto position = character_position(*player_character);
-#if false
-				auto *action = new InteractionAction(player_character, position.x, position.y);
-				player_character->schedule_action(action);
-#else
-				interact_character(*player_character, position.x, position.y);
-#endif
-				player_busy = true;
-			}
+		case Control::Y:
+			Log("Control::Y Pressed");
+			set_player_control(false);
 			break;
-		case Control::B: 
-			{
-				select_tile_to_shoot();
-			}
-			break;
-		case Control::START:
-			// open menu
-			block_input = true;
-			CharacterMenu::show(*this, player_character, [&](Component *) {
-				block_input = false;
-				return true;
-			});
-			break;
-		case Control::SELECT:
-			schedule_character_wait(*player_character, 1);
-			player_busy = true;
+		}
+		switch (InputHandler::get_input_released(event)) {
+		case Control::Y:
+			Log("Control::Y Released");
+			set_player_control(true);
 			break;
 		}
 
+		if (in_control) {
+			switch (InputHandler::get_input(event)) {
+			case Control::A:
+				// do
+				{
+					auto position = character_position(*player_character);
+					interact_character(*player_character, position.x, position.y);
+					player_busy = true;
+				}
+				break;
+			case Control::B: 
+				{
+					select_tile_to_shoot();
+				}
+				break;
+			case Control::START:
+				// open menu
+				block_input = true;
+				CharacterMenu::show(*this, player_character, [&](Component *) {
+					block_input = false;
+					return true;
+				});
+				break;
+			case Control::SELECT:
+				schedule_character_wait(*player_character, 1);
+				player_busy = true;
+				break;
+			}
+
+		}
 	}
 
 #if true

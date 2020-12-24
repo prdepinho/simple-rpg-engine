@@ -75,7 +75,7 @@ function NeatherWorld:turn_end()
       self:elf_victory()
       self.control.data.elves_win = true
     elseif imp_victory then
-      self.imp_victory()
+      self:imp_victory()
       self.control.data.imps_win = true
     end
   end

@@ -53,6 +53,7 @@ function CityGuard:on_interact(interactor_name)
     "I don't want to see you causing any trouble.",
     "If it is advantageous, press Select to wait for your enemy to come to you before wacking him in the head.",
     "If someone is in your way, keep pressing through.",
+    "If you want to chill for a while, hold Y, and release it when you fell like working again.",
   }
   local roll = rules.roll_dice('d' .. tostring(#texts))
 

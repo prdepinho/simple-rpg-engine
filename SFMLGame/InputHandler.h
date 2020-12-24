@@ -12,6 +12,10 @@ enum class Control {
 	RIGHT,
 	A,
 	B,
+	X,
+	Y,
+	LB,
+	RB,
 	SELECT,
 	START,
 	OTHER
@@ -25,12 +29,15 @@ public:
 	virtual void handle_events(sf::Event &event, float elapsed_time) {}
 
 	static Control get_input(sf::Event &event);
+	static Control get_input_released(sf::Event &event);
 	static bool is_input(Control control);
 
 	Control _get_joystick_input(sf::Event &event);
+	Control _get_joystick_input_released(sf::Event &event);
 	bool _is_joystick_pressed(Control control);
 
 	Control _get_control_input(sf::Event &event);
+	Control _get_control_input_released(sf::Event &event);
 	Control _get_control_input(sf::Keyboard::Key key);
 	bool _is_pressed(Control control);
 
@@ -73,6 +80,11 @@ protected:
 		{sf::Keyboard::End,			Control::B},
 		{sf::Keyboard::Numpad1,		Control::B},
 
+		{sf::Keyboard::Y,			Control::Y},
+		{sf::Keyboard::C,			Control::Y},
+		{sf::Keyboard::Numpad3,		Control::Y},
+		{sf::Keyboard::PageDown,	Control::Y},
+
 		{sf::Keyboard::Add,			Control::SELECT},
 		{sf::Keyboard::E,			Control::SELECT},
 		{sf::Keyboard::U,			Control::SELECT},
@@ -89,6 +101,7 @@ protected:
 		{Control::RIGHT,	{sf::Keyboard::Right,		sf::Keyboard::D,			sf::Keyboard::L,		sf::Keyboard::Numpad6}},
 		{Control::A,		{sf::Keyboard::Enter,		sf::Keyboard::Space}},
 		{Control::B,		{sf::Keyboard::End,			sf::Keyboard::O,			sf::Keyboard::Q,		sf::Keyboard::Numpad1}},
+		{Control::Y,		{sf::Keyboard::Y,			sf::Keyboard::C,			sf::Keyboard::Numpad3,	sf::Keyboard::PageDown}},
 
 		{Control::SELECT,	{sf::Keyboard::E,			sf::Keyboard::U,			sf::Keyboard::Add}},
 		{Control::START,	{sf::Keyboard::I,			sf::Keyboard::Tab,			sf::Keyboard::I,		sf::Keyboard::Numpad0}},
