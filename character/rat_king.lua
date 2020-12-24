@@ -80,6 +80,19 @@ function RatKing:on_interact(interactor_name)
 
   if self.control.data.decided_to_help_rats then
     dialogue.start.text = "Have you dealt with the poison yet?"
+
+    if self.control.data.disposed_of_poison and self.control.data.come_inn_ruined then
+      table.insert(dialogue.start.options, { text = "I have delt with the poison and the innkeeper.", go_to = 'disposed' })
+      dialogue.disposed = {
+        text = "Thank you, friend. You have done my people a great deed. This key opens the armory in the back. Feel free to take what you want from there.",
+        go_to = 'end',
+        callback = function()
+          self.control:add_item_to_inventory('player', 'armory_key', 'armory_key', 'item')
+          self.control.data.got_rats_reward = true
+          self.control.data.rats_quest_complete = true
+        end
+      }
+    end
   end
 
   if self.control.data.got_rats_reward then

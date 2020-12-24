@@ -85,12 +85,12 @@
 2,0,0,0,2,2,0,2,2,0,0,0,0,2,2,
 2,0,0,0,2,2,0,2,2,0,0,0,2,2,2,
 2,2,0,0,2,2,0,2,2,0,2,2,2,2,2,
-2,2,2,0,0,0,0,2,2,0,2,0,0,0,2,
+2,2,2,0,0,0,0,2,2,0,0,0,0,0,2,
 2,2,2,2,2,2,2,2,2,2,2,2,2,0,2,
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
 </data>
  </layer>
- <layer id="7" name="invisible" width="15" height="10">
+ <layer id="7" name="invisible" width="15" height="10" visible="0">
   <data encoding="csv">
 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
 4,0,0,0,4,4,0,0,0,0,0,0,0,0,4,
@@ -141,7 +141,7 @@
    </properties>
    <point/>
   </object>
-  <object id="7" name="obstacle" x="161.636" y="113.545" width="12.8182" height="12.8182"/>
+  <object id="7" name="obstacle" x="180.303" y="146.212" width="12.8182" height="12.8182"/>
   <object id="10" name="cheese_wheels" x="162.75" y="97.75" width="59.5455" height="11.25"/>
   <object id="11" name="wardrobe" x="48.875" y="22.125" width="12.75" height="24.25"/>
   <object id="12" name="front_of_wardrobe" x="35.5" y="49.75" width="26.25" height="28.25"/>

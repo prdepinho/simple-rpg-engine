@@ -724,7 +724,6 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	if (!player_busy) {
 		switch (InputHandler::get_input_released(event)) {
 		case Control::Y:
-			Log("Control::Y Released");
 			if (waiting) {
 				set_player_control(true);
 				waiting = false;
@@ -735,7 +734,6 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		if (in_control) {
 			switch (InputHandler::get_input(event)) {
 			case Control::Y:
-				Log("Control::Y Pressed");
 				if (!waiting) {
 					set_player_control(false);
 					waiting = true;
