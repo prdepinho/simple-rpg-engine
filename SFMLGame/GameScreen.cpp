@@ -105,6 +105,7 @@ void GameScreen::create() {
 
 	player_busy = false;
 	in_control = true;
+	waiting = false;
 
 	busy = Font();
 	busy.set_texture(Resources::get_texture("gui"));
@@ -721,21 +722,25 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	}
 
 	if (!player_busy) {
-		switch (InputHandler::get_input(event)) {
-		case Control::Y:
-			Log("Control::Y Pressed");
-			set_player_control(false);
-			break;
-		}
 		switch (InputHandler::get_input_released(event)) {
 		case Control::Y:
 			Log("Control::Y Released");
-			set_player_control(true);
+			if (waiting) {
+				set_player_control(true);
+				waiting = false;
+			}
 			break;
 		}
 
 		if (in_control) {
 			switch (InputHandler::get_input(event)) {
+			case Control::Y:
+				Log("Control::Y Pressed");
+				if (!waiting) {
+					set_player_control(false);
+					waiting = true;
+				}
+				break;
 			case Control::A:
 				// do
 				{

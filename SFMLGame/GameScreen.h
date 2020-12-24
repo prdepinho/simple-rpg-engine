@@ -236,6 +236,7 @@ private:
 	Character *player_character;
 	bool player_busy;
 	bool in_control;
+	bool waiting;
 	sf::Keyboard::Key player_input;
 
 	bool game_over = false;

@@ -40,11 +40,13 @@ end
 function NeatherWorld:player_elf_spawn_point(event, x, y, character_name, object_name)
   if event == 'step_on' and character_name == 'player' then
     if self.control.data.elf_ally then
-      if self.control.data.elf_victory then
+      if self.control.data.elves_win then
         sfml_change_map('silva:elf_wrap')
       else
         sfml_text_box("You may go back to your world after defeating the imps.")
       end
+    else
+      sfml_text_box("Go to the elf spawn point in order to go back to your world.")
     end
   end
 end
@@ -52,31 +54,35 @@ end
 function NeatherWorld:player_imp_spawn_point(event, x, y, character_name, object_name)
   if event == 'step_on' and character_name == 'player' then
     if self.control.data.imp_ally then
-      if self.control.data.imp_victory then
+      if self.control.data.imps_win then
         sfml_change_map('silva:imp_wrap')
       else
         sfml_text_box("You may go back to your world after defeating the elves.")
       end
+    else
+      sfml_text_box("Go to the imp spawn point in order to go back to your world.")
     end
   end
 end
 
 
 function NeatherWorld:turn_end()
-  local elf_victory = true
-  for i = 1, 6, 1 do
-    local name = 'imp' .. tostring(i)
-    elf_victory = elf_victory and self.control.loaded_character_data[name].stats.status.dead
-  end
-  local imp_victory = self.control.loaded_character_data.elf_crystal.stats.status.dead
+  if not self.control.characters.player.data.stats.status.dead then
+    local elf_victory = true
+    for i = 1, 6, 1 do
+      local name = 'imp' .. tostring(i)
+      elf_victory = elf_victory and self.control.loaded_character_data[name].stats.status.dead
+    end
+    local imp_victory = self.control.loaded_character_data.elf_crystal.stats.status.dead
 
-  if not self.control.data.elves_win and not self.control.data.imps_win then
-    if elf_victory then
-      self:elf_victory()
-      self.control.data.elves_win = true
-    elseif imp_victory then
-      self:imp_victory()
-      self.control.data.imps_win = true
+    if not self.control.data.elves_win and not self.control.data.imps_win then
+      if elf_victory then
+        self:elf_victory()
+        self.control.data.elves_win = true
+      elseif imp_victory then
+        self:imp_victory()
+        self.control.data.imps_win = true
+      end
     end
   end
 end
