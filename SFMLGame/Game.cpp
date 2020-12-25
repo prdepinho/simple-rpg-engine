@@ -741,6 +741,10 @@ public:
 		int dst_x = (int)lua_tointeger(state, -3);
 		int dst_y = (int)lua_tointeger(state, -2);
 		int radius = (int)lua_tointeger(state, -1);
+
+		if (src_x == dst_x && src_y == dst_y)
+			return true;
+
 		bool rval = is_in_line_of_sight(screen->get_map(), {src_x, src_y}, {dst_x, dst_y}, radius);
 		lua_pushboolean(state, rval);
 		return 1;

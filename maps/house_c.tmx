@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="11">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="12">
  <properties>
   <property name="for_of_war" type="bool" value="true"/>
   <property name="music" value=""/>
@@ -226,6 +226,12 @@
   <object id="10" name="strawberry_monster8" x="87" y="76">
    <properties>
     <property name="type" value="strawberry_monster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="11" name="dead_villager7" x="229.333" y="167.667">
+   <properties>
+    <property name="type" value="dead_villager"/>
    </properties>
    <point/>
   </object>

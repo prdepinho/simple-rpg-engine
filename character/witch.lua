@@ -16,63 +16,43 @@ end
 
 function Witch:create()
   Character.create(self)
-  self:set_sking("witch")
+  self:set_skin("witch")
+  self.data.enemy = true
+
+  local stats = self.data.stats
+  stats.name = "Witch"
+  rules.set_ability_scores_map(stats, {
+    str = 9,
+    dex = 13,
+    con = 13,
+    int = 15,
+    wis = 13,
+    cha = 15,
+  })
+  rules.level_up(stats)
+  rules.level_up(stats)
+
+  stats.inventory[1] = { code = self.name .. "_quarterstaff", name = "quarterstaff", type = "weapon" }
+  stats.inventory[2] = { code = self.name .. "_armor", name = "armor", type = "spell", quantity = 3 }
+  stats.inventory[3] = { code = self.name .. "_magic_missile", name = "magic_missile", type = "spell", quantity = 3 }
+  stats.weapon = stats.inventory[1]
+end
+
+function Witch:enemy_procedure()
+  if not self.has_cast_armor then
+    self.has_cast_armor = true
+    local pos = sfml_get_character_position(self.name)
+    self:cast_magic('armor', pos.x, pos.y, 3, 3)
+  else
+
+    local target = self.control:closest_ally_on_sight(self.name)
+    if target then
+      local pos = sfml_get_character_position(target)
+      self:cast_magic('magic_missile', pos.x, pos.y, rules.spell.magic_missile.range_radius, rules.spell.magic_missile.effect_radius)
+    end
+  end
 end
 
 
-function Witch:on_interact(interactor_name)
-  -- print('interact with witch')
-  local dialogue = {
-    start = {
-      text = "A wild maid appear, and she sais the following:",
-      go_to = "question",
-      callback = function() print('first callback') end,
-    },
-    question = {
-      text = "Would you like to have tea or coffee this afternoon? I could prepare some for you.",
-      callback = function() print('second callback') end,
-      options = {
-        {
-          text = "Tea, please",
-          go_to = "tea",
-        },
-        {
-          text = "I would like a some coffee, please.",
-          go_to = "coffee",
-        },
-        {
-          text = "None, thank you.",
-          go_to = "none",
-        }
-      }
-    },
-    tea = {
-      text = "I will prepare some tea right away.",
-      callback = function() print('*tea chosen'); chosen = "tea" end,
-      go_to = "result"
-    },
-    coffee = {
-      text = "Here, then, have some coffee.",
-      callback = function() print('*coffee chosen'); chosen = "coffe" end,
-      go_to = "result"
-    },
-    none = {
-      text = "Oh, suite yourself.",
-      callback = function() print('*none chosen') end,
-      go_to = "result_none"
-    },
-    result = {
-      text = "It's delicious.",
-      callback = function() print('chosen: ' .. chosen) end,
-      go_to = "end"
-    },
-    result_none = {
-      text = "You reain thirsty.",
-      callback = function() print('chosen: ' .. chosen) end,
-      go_to = "end"
-    }
-  }
- sfml_dialogue(dialogue)
-end
 
 return Witch

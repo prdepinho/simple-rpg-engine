@@ -189,7 +189,10 @@ function Character:attack(character_name)
 end
 
 function Character:cast_magic(magic_name, x, y, range_radius, effect_radius)
-  if self.control:is_in_magic_range(self.name, x, y, effect_radius) then
+  effect_radius = effect_radius - 1
+  range_radius = range_radius - 1
+  local is_in_range = self.control:is_in_magic_range(self.name, x, y, range_radius)
+  if is_in_range then
     sfml_clear_schedule(self.name)
     sfml_cast_magic(magic_name, self.name, x, y, effect_radius)
     return true
