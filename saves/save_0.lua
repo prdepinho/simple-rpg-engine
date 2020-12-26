@@ -34,9 +34,10 @@ M.data = {
             name = "lockpick",
           },
           {
-            type = "item",
-            code = "",
-            name = "no_item",
+            quantity = 2,
+            type = "spell",
+            code = "raise_dead_player",
+            name = "raise_dead",
           },
           {
             type = "item",

@@ -970,6 +970,9 @@ public:
 
 		std::vector<std::string> targets;
 		std::vector<sf::Vector2i> tiles = generate_field_of_vision(screen->get_map(), { x, y }, effect_radius);
+		if (effect_radius < 0) {
+			tiles = { { x, y } };
+		}
 		for (auto &tile : tiles) {
 			Character *character = screen->get_live_character_on_tile(tile.x, tile.y);
 			if (character)
