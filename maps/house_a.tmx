@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="28">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="30">
  <properties>
   <property name="for_of_war" type="bool" value="true"/>
   <property name="music" value=""/>
@@ -454,6 +454,18 @@
   <object id="27" name="dead_villager4" x="391" y="57.5">
    <properties>
     <property name="type" value="dead_villager"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="28" name="ghost1" x="342.333" y="444.333">
+   <properties>
+    <property name="type" value="ghost_girl"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="29" name="ghost" x="295.5" y="155.5">
+   <properties>
+    <property name="type" value="ghost_girl"/>
    </properties>
    <point/>
   </object>

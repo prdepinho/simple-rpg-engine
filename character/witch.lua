@@ -36,19 +36,23 @@ function Witch:create()
   stats.inventory[2] = { code = self.name .. "_armor", name = "armor", type = "spell", quantity = 3 }
   stats.inventory[3] = { code = self.name .. "_magic_missile", name = "magic_missile", type = "spell", quantity = 3 }
   stats.weapon = stats.inventory[1]
+
+  self.magic_missiles = 3
 end
 
 function Witch:enemy_procedure()
-  if not self.has_cast_armor then
-    self.has_cast_armor = true
-    local pos = sfml_get_character_position(self.name)
-    self:cast_magic('armor', pos.x, pos.y, 3, 3)
-  else
-
-    local target = self.control:closest_ally_on_sight(self.name)
-    if target then
+  local target = self.control:closest_ally_on_sight(self.name)
+  if target then
+    if not self.has_cast_armor then
+      local pos = sfml_get_character_position(self.name)
+      self:cast_magic('armor', pos.x, pos.y, 3, 3)
+      self.has_cast_armor = true
+    elseif self.magic_missiles > 0 then
       local pos = sfml_get_character_position(target)
       self:cast_magic('magic_missile', pos.x, pos.y, rules.spell.magic_missile.range_radius, rules.spell.magic_missile.effect_radius)
+      self.magic_missiles = self.magic_missiles - 1
+    else
+      self:attack(target)
     end
   end
 end

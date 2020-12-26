@@ -391,6 +391,14 @@ animations.types = {
     },
     animations = basic_animation
   },
+  ghost_girl = {
+    basic = defaults,
+    coordinates = {
+      x = 0,
+      y = 16 * 28
+    },
+    animations = basic_animation
+  },
 
   dragon = {
     basic = {
