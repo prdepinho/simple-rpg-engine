@@ -415,6 +415,7 @@ function Control:attack(attacker_name, defender_name)
 
   if self.characters[attacker_name].data.stats.status.invisible ~= nil then
     self:remove_status(attacker_name, 'invisible')
+    sfml_start_animation(attacker_name, "attack")
   end
   self:character_on_attacked(attacker_name, defender_name)
 

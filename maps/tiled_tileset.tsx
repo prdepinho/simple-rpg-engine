@@ -5,6 +5,12 @@
   <terrain name="dirt" tile="75"/>
   <terrain name="dirttransparent" tile="71"/>
  </terraintypes>
+ <tile id="13">
+  <animation>
+   <frame tileid="13" duration="500"/>
+   <frame tileid="14" duration="500"/>
+  </animation>
+ </tile>
  <tile id="23" terrain="1,1,1,"/>
  <tile id="24" terrain="1,1,,1"/>
  <tile id="27" terrain="0,0,0,"/>

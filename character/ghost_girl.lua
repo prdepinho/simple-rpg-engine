@@ -24,7 +24,7 @@ function GhostGirl:create()
   stats.hit_die = "d6",
 
   rules.set_ability_scores_map(stats, {
-    str = 9,
+    str = 10,
     dex = 18,
     con = 9,
     int = 15,

@@ -241,7 +241,7 @@
    </properties>
    <point/>
   </object>
-  <object id="13" name="ghost" x="214.333" y="169.333">
+  <object id="13" name="ghost" x="70.3333" y="166">
    <properties>
     <property name="type" value="ghost_girl"/>
    </properties>
