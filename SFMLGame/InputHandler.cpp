@@ -17,6 +17,8 @@ Control InputHandler::_get_joystick_input(sf::Event &event) {
 	if (event.joystickButton.joystickId != 0)
 		return Control::OTHER;
 
+	static bool pressed = false;
+
 	switch (event.type) {
 	case sf::Event::JoystickButtonPressed:
 		switch (event.joystickButton.button) {
@@ -56,6 +58,21 @@ Control InputHandler::_get_joystick_input(sf::Event &event) {
 			}
 			else if (event.joystickMove.position <= -50.f) {
 				return Control::DOWN;
+			}
+			break;
+		case sf::Joystick::Z:
+			if (!pressed) {
+				if (event.joystickMove.position > 50.f) {
+					pressed = true;
+					return Control::LT;
+				}
+				else if (event.joystickMove.position <= -50.f) {
+					pressed = true;
+					return Control::RT;
+				}
+			}
+			else if (event.joystickMove.position < 50.f && event.joystickMove.position > -50.f) {
+				pressed = false;
 			}
 			break;
 		}

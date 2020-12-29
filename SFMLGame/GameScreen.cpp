@@ -101,8 +101,9 @@ void GameScreen::create() {
 	Overlay::get().create();
 	add_component(Overlay::get(), false);
 
-	selected_item_index = 1;
+	selected_item_index = 0;
 	inventory_index = 0;
+	Overlay::set_select_item_index(selected_item_index);
 
 	Overlay::refresh(*this, player_character);
 	select(container);
@@ -721,11 +722,6 @@ void GameScreen::scroll_left_select_item() {
 		LuaObject item_stats = _game.get_lua()->item_stats(name, type);
 		if (item_stats.get_boolean("usable", false))
 		{
-			// int pix_x = item_stats.get_int("icon.x");
-			// int pix_y = item_stats.get_int("icon.y");
-			// int quantity = item->get_int("quantity");
-			// Overlay::set_select_item_icon(pix_x, pix_y, quantity);
-
 			selected_item_index = i;
 			Overlay::set_select_item_index(selected_item_index);
 			Overlay::refresh(*this, player_character);
@@ -753,11 +749,6 @@ void GameScreen::scroll_right_select_item() {
 		LuaObject item_stats = _game.get_lua()->item_stats(name, type);
 		if (item_stats.get_boolean("usable", false))
 		{
-			// int pix_x = item_stats.get_int("icon.x");
-			// int pix_y = item_stats.get_int("icon.y");
-			// int quantity = item->get_int("quantity");
-			// Overlay::set_select_item_icon(pix_x, pix_y, quantity);
-
 			selected_item_index = i;
 			Overlay::set_select_item_index(selected_item_index);
 			Overlay::refresh(*this, player_character);
@@ -770,17 +761,19 @@ void GameScreen::scroll_right_select_item() {
 }
 
 void GameScreen::use_selected_item() {
+	Log("selected item index: %d", selected_item_index);
 	LuaObject obj = _game.get_lua()->character_stats("player");
 	LuaObject *inventory = obj.get_object("inventory");
 	LuaObject *item = inventory->get_object(std::to_string(selected_item_index));
-	LuaObject item_stats = _game.get_lua()->item_stats(item->get_string("name"), item->get_string("type"));
+	if (selected_item_index && item) {
+		LuaObject item_stats = _game.get_lua()->item_stats(item->get_string("name"), item->get_string("type"));
 
-	if (item_stats.get_boolean("usable", false)) {
-		int range_radius = item_stats.get_int("range_radius");
-		int effect_radius = item_stats.get_int("effect_radius");
-		std::string magic_name = item_stats.get_string("use");
-		Log("selected item index: %d", selected_item_index);
-		select_tile_to_cast(range_radius, effect_radius, magic_name, selected_item_index - 1);
+		if (item_stats.get_boolean("usable", false)) {
+			int range_radius = item_stats.get_int("range_radius");
+			int effect_radius = item_stats.get_int("effect_radius");
+			std::string magic_name = item_stats.get_string("use");
+			select_tile_to_cast(range_radius, effect_radius, magic_name, selected_item_index - 1);
+		}
 	}
 }
 
@@ -855,6 +848,10 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				break;
 			case Control::X:
 				use_selected_item();
+				break;
+			case Control::RT:
+				break;
+			case Control::LT:
 				break;
 			}
 

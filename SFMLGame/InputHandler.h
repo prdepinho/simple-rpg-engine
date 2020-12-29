@@ -16,6 +16,8 @@ enum class Control {
 	Y,
 	LB,
 	RB,
+	LT,
+	RT,
 	SELECT,
 	START,
 	OTHER
