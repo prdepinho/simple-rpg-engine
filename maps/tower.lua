@@ -47,7 +47,7 @@ function Tower:crystal_ball(event, x, y, character_name, object_name)
       dialogue.dialogue = {
         text = "Is the next batch ready?",
         options = {
-          { text = "I am Mumu.", go_to = '' }.
+          { text = "I am Mumu.", go_to = 'end' },
           { text = "I'll get back to you.", go_to = 'end' },
           { text = "Who are you?", go_to = 'who' },
           { text = "What batch?", go_to = 'what_batch' },
