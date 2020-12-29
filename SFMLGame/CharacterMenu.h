@@ -178,9 +178,14 @@ public:
 	virtual void create() override;
 	static void refresh(Screen &screen, Character *character);
 	static Overlay &get() { static Overlay overlay; return overlay; }
+	static void set_select_item_index(int index);
 private:
 	Font hp;
 	Font ac;
 	Font status;
 	std::vector<Icon> status_icons;
+
+	int selected_item_index = 0;
+	Icon selected_item_icon;
+	Font selected_item_quantity;
 };

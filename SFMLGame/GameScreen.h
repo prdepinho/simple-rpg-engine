@@ -172,7 +172,7 @@ public:
 
 	void select_tile_to_shoot();
 	void select_tile_to_attack();
-	void select_tile_to_cast(int range_radius, int effect_radius, std::string magic_name);
+	void select_tile_to_cast(int range_radius, int effect_radius, std::string magic_name, int inventory_index);
 	void select_tile(sf::Vector2i center, int range_radius, int effect_radius, std::function<bool(sf::Vector2i center, std::vector<sf::Vector2i>&)> on_select);
 
 	void refresh_overlay();
@@ -197,6 +197,10 @@ public:
 	bool is_player_in_control() const { return in_control; }
 
 	void show_character_edit_panel(bool give_points);
+
+	void scroll_left_select_item();
+	void scroll_right_select_item();
+	void use_selected_item();
 private:
 
 	std::priority_queue<Action*, std::vector<Action*>, ActionComparison> turn_actions; // the actions that take place in a single turn
@@ -257,6 +261,9 @@ private:
 		bool showing_overlay = false;
 		bool showing_log = false;
 	} gui_status;
+
+	int selected_item_index = 1;
+	int inventory_index = 0;
 
 	LogBox log_box;
 

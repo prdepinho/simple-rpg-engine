@@ -100,6 +100,10 @@ void GameScreen::create() {
 
 	Overlay::get().create();
 	add_component(Overlay::get(), false);
+
+	selected_item_index = 1;
+	inventory_index = 0;
+
 	Overlay::refresh(*this, player_character);
 	select(container);
 
@@ -701,6 +705,85 @@ void GameScreen::poll_events(float elapsed_time) {
 	}
 }
 
+void GameScreen::scroll_left_select_item() {
+	LuaObject obj = _game.get_lua()->character_stats("player");
+	LuaObject *inventory = obj.get_object("inventory");
+
+	int i = selected_item_index;
+
+	do {
+		i = i <= 1 ? 8 : i - 1;
+		LuaObject *item = inventory->get_object(std::to_string(i));
+		std::string code = item->get_string("code");
+		std::string name = item->get_string("name");
+		std::string type = item->get_string("type");
+
+		LuaObject item_stats = _game.get_lua()->item_stats(name, type);
+		if (item_stats.get_boolean("usable", false))
+		{
+			// int pix_x = item_stats.get_int("icon.x");
+			// int pix_y = item_stats.get_int("icon.y");
+			// int quantity = item->get_int("quantity");
+			// Overlay::set_select_item_icon(pix_x, pix_y, quantity);
+
+			selected_item_index = i;
+			Overlay::set_select_item_index(selected_item_index);
+			Overlay::refresh(*this, player_character);
+
+			Log("Selected item: %s (%d)", name.c_str(), selected_item_index);
+			break;
+		}
+	} while (i != selected_item_index);
+
+}
+
+void GameScreen::scroll_right_select_item() {
+	LuaObject obj = _game.get_lua()->character_stats("player");
+	LuaObject *inventory = obj.get_object("inventory");
+
+	int i = selected_item_index;
+
+	do {
+		i = (i % 8) + 1;
+		LuaObject *item = inventory->get_object(std::to_string(i));
+		std::string code = item->get_string("code");
+		std::string name = item->get_string("name");
+		std::string type = item->get_string("type");
+
+		LuaObject item_stats = _game.get_lua()->item_stats(name, type);
+		if (item_stats.get_boolean("usable", false))
+		{
+			// int pix_x = item_stats.get_int("icon.x");
+			// int pix_y = item_stats.get_int("icon.y");
+			// int quantity = item->get_int("quantity");
+			// Overlay::set_select_item_icon(pix_x, pix_y, quantity);
+
+			selected_item_index = i;
+			Overlay::set_select_item_index(selected_item_index);
+			Overlay::refresh(*this, player_character);
+
+			Log("Selected item: %s (%d)", name.c_str(), selected_item_index);
+			break;
+		}
+	} while (i != selected_item_index);
+
+}
+
+void GameScreen::use_selected_item() {
+	LuaObject obj = _game.get_lua()->character_stats("player");
+	LuaObject *inventory = obj.get_object("inventory");
+	LuaObject *item = inventory->get_object(std::to_string(selected_item_index));
+	LuaObject item_stats = _game.get_lua()->item_stats(item->get_string("name"), item->get_string("type"));
+
+	if (item_stats.get_boolean("usable", false)) {
+		int range_radius = item_stats.get_int("range_radius");
+		int effect_radius = item_stats.get_int("effect_radius");
+		std::string magic_name = item_stats.get_string("use");
+		Log("selected item index: %d", selected_item_index);
+		select_tile_to_cast(range_radius, effect_radius, magic_name, selected_item_index - 1);
+	}
+}
+
 Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	if (!window->hasFocus())
 		return nullptr;
@@ -734,6 +817,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		if (in_control) {
 			switch (InputHandler::get_input(event)) {
 			case Control::Y:
+				// wait
 				if (!waiting) {
 					set_player_control(false);
 					waiting = true;
@@ -748,21 +832,29 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				}
 				break;
 			case Control::B: 
-				{
-					select_tile_to_shoot();
-				}
+				select_tile_to_shoot();
 				break;
 			case Control::START:
 				// open menu
 				block_input = true;
 				CharacterMenu::show(*this, player_character, [&](Component *) {
 					block_input = false;
+					Overlay::refresh(*this, player_character);
 					return true;
 				});
 				break;
 			case Control::SELECT:
-				schedule_character_wait(*player_character, 1);
-				player_busy = true;
+				// schedule_character_wait(*player_character, 1);
+				// player_busy = true;
+				break;
+			case Control::LB:
+				scroll_left_select_item();
+				break;
+			case Control::RB:
+				scroll_right_select_item();
+				break;
+			case Control::X:
+				use_selected_item();
 				break;
 			}
 
@@ -1490,6 +1582,7 @@ void GameScreen::cast_magic(Character &caster, sf::Vector2i center, std::vector<
 			player_busy = false;
 		});
 		add_effect(effect);
+		Overlay::refresh(*this, player_character);
 	}
 	else {
 		Effect *effect = new WaitEffect(&caster, turn_duration);
@@ -2068,7 +2161,8 @@ void GameScreen::select_tile_to_attack() {
 	}
 }
 
-void GameScreen::select_tile_to_cast(int range_radius, int effect_radius, std::string magic_name) {
+void GameScreen::select_tile_to_cast(int range_radius, int effect_radius, std::string magic_name, int inventory_index) {
+	this->inventory_index = inventory_index;
 	auto src = character_position(*player_character);
 	selected_magic = magic_name;
 	select_tile(src, range_radius, effect_radius, [&](sf::Vector2i center, std::vector<sf::Vector2i> &selected) {
@@ -2080,8 +2174,8 @@ void GameScreen::select_tile_to_cast(int range_radius, int effect_radius, std::s
 				targets.push_back(character->get_name());
 		}
 
-		int inventory_index = CharacterMenu::get().get_inventory().get_cursor();
-		schedule_character_cast_magic(selected_magic, *player_character, center, selected, targets, inventory_index);
+		Log("inventory index: %d", this->inventory_index);
+		schedule_character_cast_magic(selected_magic, *player_character, center, selected, targets, this->inventory_index);
 		return true;
 	});
 }

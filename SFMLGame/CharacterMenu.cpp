@@ -77,7 +77,9 @@ void ItemContextMenu::create() {
 
 						call_functions(this);
 						get_screen()->remove_component(*this);
-						screen->select_tile_to_cast(range_radius, effect_radius, magic_name);
+
+						int inventory_index = CharacterMenu::get().get_inventory().get_cursor();
+						screen->select_tile_to_cast(range_radius, effect_radius, magic_name, inventory_index);
 
 						// item_stats.call_function("use");
 						// item_stats.delete_functions();
@@ -1129,6 +1131,26 @@ void Overlay::create() {
 	add_component(hp);
 	add_component(ac);
 	add_component(status);
+
+
+	int margin = (get_height() - (hp.line_height() * 3)) / 2;
+	int x = get_x() + get_width() - 18;
+	int y = get_y() + margin;
+	int pix_x = 0;
+	int pix_y = 3 * 16;
+	selected_item_icon = Icon(x, y, 16, 16, pix_x, pix_y);
+	selected_item_icon.create();
+	add_component(selected_item_icon);
+
+	selected_item_quantity = Font();
+	selected_item_quantity.set_texture(Resources::get_texture("gui"));
+	add_component(selected_item_quantity);
+}
+
+
+void Overlay::set_select_item_index(int index) {
+	Overlay &overlay = get();
+	overlay.selected_item_index = index;
 }
 
 void Overlay::refresh(Screen &screen, Character *character) {
@@ -1142,6 +1164,35 @@ void Overlay::refresh(Screen &screen, Character *character) {
 	int margin = (overlay.get_height() - (overlay.hp.line_height() * 3)) / 2;
 	int x = overlay.get_x() + margin;
 	int y = overlay.get_y() + margin;
+
+	// selected item
+	{
+		if (overlay.selected_item_index > 0) {
+			LuaObject obj = _game.get_lua()->character_stats(character->get_name());
+			LuaObject *inventory = obj.get_object("inventory");
+			LuaObject *item = inventory->get_object(std::to_string(overlay.selected_item_index));
+			if (item) {
+				std::string name = item->get_string("name");
+				std::string type = item->get_string("type");
+				LuaObject item_stats = _game.get_lua()->item_stats(name, type);
+				if (item_stats.get_boolean("usable", false)) {
+					int pix_x = item_stats.get_int("icon.x");
+					int pix_y = item_stats.get_int("icon.y");
+					int quantity = item->get_int("quantity");
+					overlay.selected_item_icon.set_picture(16, 16, pix_x, pix_y);
+					int x = overlay.get_x() + overlay.get_width() - 18;
+					int y = overlay.get_y() + margin;
+					overlay.selected_item_quantity.draw_line(x, y + 16, std::to_string(quantity), sf::Color::Black);
+				}
+				else {
+					overlay.selected_item_icon.set_picture(16, 16, 0, 3 * 16);
+					int x = overlay.get_x() + overlay.get_width() - 18;
+					int y = overlay.get_y() + margin;
+					overlay.selected_item_quantity.draw_line(x, y + 16, "", sf::Color::Black);
+				}
+			}
+		}
+	}
 
 	// hp
 	{
