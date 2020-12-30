@@ -2,7 +2,7 @@
 <map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="12">
  <properties>
   <property name="for_of_war" type="bool" value="false"/>
-  <property name="music" value="later_folia.wav"/>
+  <property name="music" value="death_no_more.wav"/>
   <property name="vision_radius" type="int" value="5"/>
  </properties>
  <tileset firstgid="1" source="castle_tileset.tsx"/>
