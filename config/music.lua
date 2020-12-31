@@ -14,4 +14,5 @@ music = {
   "you_are_the_carpenters_son.wav",
   "later_folia.wav",
   "death_no_more.wav",
+  "sakura.wav",
 }
