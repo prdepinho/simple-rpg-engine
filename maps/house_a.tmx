@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="33">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="35">
  <properties>
   <property name="for_of_war" type="bool" value="true"/>
   <property name="music" value="sakura.wav"/>
@@ -83,7 +83,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,204,205,0,0,0,0,0,0,0,0,0,0,0,204,205,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,220,221,201,0,0,170,0,0,0,215,216,0,0,220,221,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,217,0,0,233,0,0,0,231,232,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,217,0,0,233,0,0,0,231,232,0,172,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,121,0,0,0,0,0,0,0,121,0,0,0,233,0,201,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,170,217,0,0,0,0,0,0,
 0,0,0,0,0,0,121,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -108,7 +108,7 @@
 0,0,145,0,0,0,0,0,145,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,248,145,248,204,205,0,0,145,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,188,0,0,220,221,0,0,0,0,0,145,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,126,127,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,126,127,0,171,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,142,143,0,0,218,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,145,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -497,6 +497,20 @@
     <property name="open_delta_x" type="int" value="1"/>
     <property name="open_delta_y" type="int" value="0"/>
     <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="33" name="diary" x="65.9583" y="450.583" width="10.75" height="11.5">
+   <properties>
+    <property name="description" value="You find a villager's diary on the floor."/>
+    <property name="text" value="Today a lady appeared in the village. She said she is a scholar and wants to have a look at our temple. Reverend Aoyama seemed excited to have someone from the city comming over to our village and is very proud when he is around her."/>
+    <property name="type" value="note"/>
+   </properties>
+  </object>
+  <object id="34" name="journal_1" x="387.625" y="49.5833" width="10.75" height="11.5">
+   <properties>
+    <property name="description" value="You find Minora's Journal 1."/>
+    <property name="text" value="My voyage to Nakamura village has been uneventful. When I arrived Reverend Aoyama received me warmly and took me to the temple. The odor from the underground fumes dominate the wooden structure. Stench would be a better word for it. There is a ledder that leads to the cave under the temple. During days of festival village Pythonists go down in the cave, breathe the gas that comes from the hole and receive visions from the ctonic gods. What virtues have this mysterious gas and what can I do to exploit it?"/>
+    <property name="type" value="note"/>
    </properties>
   </object>
  </objectgroup>

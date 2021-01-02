@@ -94,6 +94,33 @@ function Map:set_objects()
             end
           end
 
+        elseif object.properties.type == 'note' then
+          if event == 'interact' and character_name == 'player' then
+            local dialogue = {
+              start = {
+                text = object.properties.description or "There is a note here.",
+                options = {
+                  { text = "Leave it.", go_to = 'end' },
+                  { text = "Read it.", go_to = 'note' },
+                }
+              },
+              note = {
+                text = "",
+                go_to = 'end',
+                callback = function()
+                  local sub_dialogue = {
+                    lines = 8,
+                    start = {
+                      text = object.properties.text or "Quamusque abutere Catilina patientia nostra?",
+                      go_to = 'end'
+                    }
+                  }
+                  sfml_dialogue(sub_dialogue)
+                end,
+              }
+            }
+            sfml_dialogue(dialogue)
+          end
         elseif object.properties.type == 'chest' then
           if event == 'interact' and character_name == 'player' then
             if object.properties.closed then
