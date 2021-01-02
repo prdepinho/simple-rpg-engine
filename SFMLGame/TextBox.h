@@ -86,6 +86,8 @@ public:
 	static void show(LuaObject dialog_object, Screen &screen, Callback callback=Callback(), bool illustrated=false, bool box_at_bottom=false);
 	static DialogueBox &get() { static DialogueBox box; return box; }
 
+	static bool visible() { return get().shown; }
+
 protected:
 	virtual void update_view();
 	void next();
@@ -100,4 +102,6 @@ private:
 	LuaObject dialogue;
 	bool box_at_bottom = false;
 	bool illustrated = false;
+
+	bool shown = false;
 };

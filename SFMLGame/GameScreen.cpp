@@ -101,7 +101,7 @@ void GameScreen::create() {
 	Overlay::get().create();
 	add_component(Overlay::get(), false);
 
-	selected_item_index = 0;
+	selected_item_index = 1;
 	inventory_index = 0;
 	Overlay::set_select_item_index(selected_item_index);
 
@@ -233,13 +233,23 @@ bool GameScreen::update(float elapsed_time) {
 	if (next_map != "")
 		load_map();
 
+
+	// log scrolling
 	if ((scrolling_count += elapsed_time) > 0.1f) {
 		scrolling_count = 0.f;
-		// log scrolling
 		if (log_box_scrolling_up)
 			log_box.scroll_up(1);
 		else if (log_box_scrolling_down)
 			log_box.scroll_down(1);
+	}
+
+	// dialogue queue
+	{
+		if (dialogue_queue.size() > 0 && !DialogueBox::visible()) {
+			QueueableDialogue dialogue = dialogue_queue.front();
+			show_queued_dialogue_box(dialogue);
+			dialogue_queue.pop();
+		}
 	}
 
 	// if (turn_count + elapsed_time >= turn_duration / 2)
@@ -753,7 +763,6 @@ void GameScreen::scroll_right_select_item() {
 	if (i > 0) {
 		do {
 			i = (i % 8) + 1;
-			Log("i: %d", i);
 			LuaObject *item = inventory->get_object(std::to_string(i));
 			std::string code = item->get_string("code");
 			std::string name = item->get_string("name");
@@ -1777,23 +1786,45 @@ void GameScreen::show_text_box(std::string text) {
 }
 
 void GameScreen::show_dialogue_box(LuaObject dialogue) {
-	block_input = true;
-	// bool bottom = log_box.is_visible();
-	bool bottom = false;
-	DialogueBox::show(dialogue, *this, [&](Component *c) {
-		block_input = false;
-		return true;
-	}, false, bottom);
+	dialogue_queue.push({ dialogue, false });
+	// if (DialogueBox::visible()) {
+	// 	dialogue_queue.push({ dialogue, false });
+	// 	return;
+	// }
+	// block_input = true;
+	// // bool bottom = log_box.is_visible();
+	// bool bottom = false;
+	// DialogueBox::show(dialogue, *this, [&](Component *c) {
+	// 	block_input = false;
+	// 	return true;
+	// }, false, bottom);
 }
 
 void GameScreen::show_illustrated_dialogue_box(LuaObject dialogue) {
+	dialogue_queue.push({ dialogue, true });
+	// if (DialogueBox::visible()) {
+	// 	dialogue_queue.push({ dialogue, true });
+	// 	return;
+	// }
+	// block_input = true;
+	// show_foreground();
+	// DialogueBox::show(dialogue, *this, [&](Component *c) {
+	// 	block_input = false;
+	// 	hide_foreground();
+	// 	return true;
+	// }, true, true);
+}
+
+void GameScreen::show_queued_dialogue_box(QueueableDialogue dialogue) {
 	block_input = true;
-	show_foreground();
-	DialogueBox::show(dialogue, *this, [&](Component *c) {
+	if (dialogue.illustrated)
+		show_foreground();
+	bool bottom = dialogue.illustrated;
+	DialogueBox::show(dialogue.dialogue, *this, [&](Component *c) {
 		block_input = false;
 		hide_foreground();
 		return true;
-	}, true, true);
+	}, true, bottom);
 }
 
 void GameScreen::update_field_of_vision(Character *character) {

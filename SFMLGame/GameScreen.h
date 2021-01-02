@@ -119,6 +119,12 @@ public:
 	void show_dialogue_box(LuaObject dialogue);
 	void show_illustrated_dialogue_box(LuaObject dialogue);
 
+	struct QueueableDialogue {
+		LuaObject dialogue;
+		bool illustrated;
+	};
+	void show_queued_dialogue_box(QueueableDialogue dialogue);
+
 	void clean_temporary_characters();
 	void add_character(std::string type, std::string name, int tile_x, int tile_y);
 	void remove_character(Character *character);
@@ -269,6 +275,8 @@ private:
 	bool log_box_scrolling_up = false;
 	bool log_box_scrolling_down = false;
 	float scrolling_count = 0.f;
+
+	std::queue<QueueableDialogue> dialogue_queue;
 
 	std::map<std::string, Component*> mapped_components;
 

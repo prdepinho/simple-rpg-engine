@@ -96,6 +96,7 @@ function Map:set_objects()
 
         elseif object.properties.type == 'note' then
           if event == 'interact' and character_name == 'player' then
+            local show = false
             local dialogue = {
               start = {
                 text = object.properties.description or "There is a note here.",
@@ -105,13 +106,14 @@ function Map:set_objects()
                 }
               },
               note = {
-                text = "",
+                text = "You read the content.",
                 go_to = 'end',
                 callback = function()
+                  show = true
                   local sub_dialogue = {
                     lines = 8,
                     start = {
-                      text = object.properties.text or "Quamusque abutere Catilina patientia nostra?",
+                      text = object.properties.text or "Please, input text here.",
                       go_to = 'end'
                     }
                   }
@@ -172,7 +174,7 @@ function Map:set_objects()
         elseif object.properties.type == 'hit_die' then
           if event == 'interact' and character_name == 'player' and not object.properties.taken then
             sfml_start_animation('player', 'cast')
-            sfml_play_music("get_crystal.wav")
+            sfml_play_music("fanfare.wav")
             self.control:level_up('player')
             sfml_text_box(self.control.characters.player.data.stats.name .. " gained a hit die! Your total hit points increased.")
             object.properties.taken = true

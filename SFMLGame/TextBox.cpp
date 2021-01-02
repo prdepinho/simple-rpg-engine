@@ -423,6 +423,7 @@ Component *DialogueBox::on_key_pressed(sf::Event &event) {
 
 	switch (InputHandler::get_input(event)) {
 	case Control::A:
+		Log("Completely written: %s", (completely_written ? "true" : "false"));
 		if (completely_written) {
 			if (end_line == text_lines.size()) {
 				if (go_to != "end") {
@@ -525,6 +526,7 @@ void DialogueBox::show(LuaObject dialogue, Screen &screen, Callback callback, bo
 	dialogue_box.set_position(x, y);
 	screen.add_component(dialogue_box);
 
+	dialogue_box.shown = true;
 	dialogue_box.next();
 }
 
@@ -625,4 +627,5 @@ void DialogueBox::on_end() {
 	if (dialogue.get_token("on_end")->get_type() == LuaObject::Type::FUNCTION) {
 		std::string rval = dialogue.call_function("on_end");
 	}
+	shown = false;
 }
