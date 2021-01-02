@@ -1,6 +1,69 @@
 
 #include "InputHandler.h"
 
+InputHandler::InputHandler() {
+	// std::map<int, Control> control_map {
+	// std::map<Control, std::vector<int>> rcontrol_map{
+
+	control_map = std::map<int, Control>{
+		{sf::Keyboard::Up,			Control::UP},
+		{sf::Keyboard::K,			Control::UP},
+		{sf::Keyboard::Numpad8,		Control::UP},
+		{sf::Keyboard::Down,		Control::DOWN},
+		{sf::Keyboard::J,			Control::DOWN},
+		{sf::Keyboard::Numpad2,		Control::DOWN},
+		{sf::Keyboard::Left,		Control::LEFT},
+		{sf::Keyboard::H,			Control::LEFT},
+		{sf::Keyboard::Numpad4,		Control::LEFT},
+		{sf::Keyboard::Right,		Control::RIGHT},
+		{sf::Keyboard::L,			Control::RIGHT},
+		{sf::Keyboard::Numpad6,		Control::RIGHT},
+
+		{sf::Keyboard::Enter,		Control::A},
+		{sf::Keyboard::Space,		Control::A},
+		{sf::Keyboard::Z,			Control::A},
+
+		{sf::Keyboard::O,			Control::B},
+		{sf::Keyboard::End,			Control::B},
+		{sf::Keyboard::Numpad1,		Control::B},
+		{sf::Keyboard::X,			Control::B},
+
+		{sf::Keyboard::U,			Control::Y},
+		{sf::Keyboard::Numpad3,		Control::Y},
+		{sf::Keyboard::PageDown,	Control::Y},
+		{sf::Keyboard::S,			Control::Y},
+
+		{sf::Keyboard::A,			Control::X},
+		{sf::Keyboard::Add,			Control::X},
+
+		{sf::Keyboard::Q,			Control::LB},
+		{sf::Keyboard::Num7,		Control::LB},
+		{sf::Keyboard::Home,		Control::LB},
+
+		{sf::Keyboard::W,			Control::RB},
+		{sf::Keyboard::Num9,		Control::RB},
+		{sf::Keyboard::PageUp,		Control::RB},
+
+		{sf::Keyboard::Subtract,	Control::SELECT},
+		{sf::Keyboard::D,			Control::SELECT},
+
+		{sf::Keyboard::Tab,			Control::START},
+		{sf::Keyboard::Insert,		Control::START},
+		{sf::Keyboard::Numpad0,		Control::START},
+		{sf::Keyboard::I,			Control::START},
+		{sf::Keyboard::C,			Control::START},
+
+		{sf::Keyboard::Divide,		Control::LT},
+
+		{sf::Keyboard::Multiply,	Control::RT},
+	};
+	for (auto it = control_map.begin(); it != control_map.end(); ++it) {
+		int key = it->first;
+		Control control = it->second;
+		rcontrol_map[control].push_back(key);
+	}
+}
+
 // button mapping:
 //	   PS		    XBOX
 // 0 = X			A
@@ -16,8 +79,6 @@
 Control InputHandler::_get_joystick_input(sf::Event &event) {
 	if (event.joystickButton.joystickId != 0)
 		return Control::OTHER;
-
-	static bool pressed = false;
 
 	switch (event.type) {
 	case sf::Event::JoystickButtonPressed:
@@ -61,18 +122,18 @@ Control InputHandler::_get_joystick_input(sf::Event &event) {
 			}
 			break;
 		case sf::Joystick::Z:
-			if (!pressed) {
+			if (!zaxis_pressed) {
 				if (event.joystickMove.position > 50.f) {
-					pressed = true;
+					zaxis_pressed = true;
 					return Control::LT;
 				}
 				else if (event.joystickMove.position <= -50.f) {
-					pressed = true;
+					zaxis_pressed = true;
 					return Control::RT;
 				}
 			}
-			else if (event.joystickMove.position < 50.f && event.joystickMove.position > -50.f) {
-				pressed = false;
+			else if (event.joystickMove.position <= 50.f && event.joystickMove.position > -50.f) {
+				zaxis_pressed = false;
 			}
 			break;
 		}
@@ -107,6 +168,24 @@ Control InputHandler::_get_joystick_input_released(sf::Event &event) {
 			return Control::OTHER;
 		}
 		break;
+	case sf::Event::JoystickMoved:
+		switch (event.joystickMove.axis) {
+		case sf::Joystick::Z:
+			if (!zaxis_released) {
+				if (event.joystickMove.position <= 50.f) {
+					zaxis_released = true;
+					return Control::LT;
+				}
+				else if (event.joystickMove.position > -50.f) {
+					zaxis_released = true;
+					return Control::RT;
+				}
+			}
+			else if (event.joystickMove.position > 50.f && event.joystickMove.position <= -50.f) {
+				zaxis_released = false;
+			}
+			break;
+		}
 	}
 	return Control::OTHER;
 }

@@ -266,6 +266,9 @@ private:
 	int inventory_index = 0;
 
 	LogBox log_box;
+	bool log_box_scrolling_up = false;
+	bool log_box_scrolling_down = false;
+	float scrolling_count = 0.f;
 
 	std::map<std::string, Component*> mapped_components;
 

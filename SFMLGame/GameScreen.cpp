@@ -233,6 +233,15 @@ bool GameScreen::update(float elapsed_time) {
 	if (next_map != "")
 		load_map();
 
+	if ((scrolling_count += elapsed_time) > 0.1f) {
+		scrolling_count = 0.f;
+		// log scrolling
+		if (log_box_scrolling_up)
+			log_box.scroll_up(1);
+		else if (log_box_scrolling_down)
+			log_box.scroll_down(1);
+	}
+
 	// if (turn_count + elapsed_time >= turn_duration / 2)
 
 	// Turn handling. Wait player input to process the next turn.
@@ -712,24 +721,26 @@ void GameScreen::scroll_left_select_item() {
 
 	int i = selected_item_index;
 
-	do {
-		i = i <= 1 ? 8 : i - 1;
-		LuaObject *item = inventory->get_object(std::to_string(i));
-		std::string code = item->get_string("code");
-		std::string name = item->get_string("name");
-		std::string type = item->get_string("type");
+	if (i > 0) {
+		do {
+			i = i <= 1 ? 8 : i - 1;
+			LuaObject *item = inventory->get_object(std::to_string(i));
+			std::string code = item->get_string("code");
+			std::string name = item->get_string("name");
+			std::string type = item->get_string("type");
 
-		LuaObject item_stats = _game.get_lua()->item_stats(name, type);
-		if (item_stats.get_boolean("usable", false))
-		{
-			selected_item_index = i;
-			Overlay::set_select_item_index(selected_item_index);
-			Overlay::refresh(*this, player_character);
+			LuaObject item_stats = _game.get_lua()->item_stats(name, type);
+			if (item_stats.get_boolean("usable", false))
+			{
+				selected_item_index = i;
+				Overlay::set_select_item_index(selected_item_index);
+				Overlay::refresh(*this, player_character);
 
-			Log("Selected item: %s (%d)", name.c_str(), selected_item_index);
-			break;
-		}
-	} while (i != selected_item_index);
+				Log("Selected item: %s (%d)", name.c_str(), selected_item_index);
+				break;
+			}
+		} while (i != selected_item_index);
+	}
 
 }
 
@@ -739,24 +750,27 @@ void GameScreen::scroll_right_select_item() {
 
 	int i = selected_item_index;
 
-	do {
-		i = (i % 8) + 1;
-		LuaObject *item = inventory->get_object(std::to_string(i));
-		std::string code = item->get_string("code");
-		std::string name = item->get_string("name");
-		std::string type = item->get_string("type");
+	if (i > 0) {
+		do {
+			i = (i % 8) + 1;
+			Log("i: %d", i);
+			LuaObject *item = inventory->get_object(std::to_string(i));
+			std::string code = item->get_string("code");
+			std::string name = item->get_string("name");
+			std::string type = item->get_string("type");
 
-		LuaObject item_stats = _game.get_lua()->item_stats(name, type);
-		if (item_stats.get_boolean("usable", false))
-		{
-			selected_item_index = i;
-			Overlay::set_select_item_index(selected_item_index);
-			Overlay::refresh(*this, player_character);
+			LuaObject item_stats = _game.get_lua()->item_stats(name, type);
+			if (item_stats.get_boolean("usable", false))
+			{
+				selected_item_index = i;
+				Overlay::set_select_item_index(selected_item_index);
+				Overlay::refresh(*this, player_character);
 
-			Log("Selected item: %s (%d)", name.c_str(), selected_item_index);
-			break;
-		}
-	} while (i != selected_item_index);
+				Log("Selected item: %s (%d)", name.c_str(), selected_item_index);
+				break;
+			}
+		} while (i != selected_item_index);
+	}
 
 }
 
@@ -805,6 +819,14 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				waiting = false;
 			}
 			break;
+		case Control::LT:
+			log_box_scrolling_down = false;
+			scrolling_count = 0.f;
+			break;
+		case Control::RT:
+			log_box_scrolling_up = false;
+			scrolling_count = 0.f;
+			break;
 		}
 
 		if (in_control) {
@@ -849,9 +871,15 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			case Control::X:
 				use_selected_item();
 				break;
-			case Control::RT:
-				break;
 			case Control::LT:
+				log_box_scrolling_down = true;
+				log_box.scroll_down(1);
+				scrolling_count = 0.f;
+				break;
+			case Control::RT:
+				log_box_scrolling_up = true;
+				log_box.scroll_up(1);
+				scrolling_count = 0.f;
 				break;
 			}
 

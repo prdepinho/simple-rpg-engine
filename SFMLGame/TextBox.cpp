@@ -500,7 +500,8 @@ void DialogueBox::show(LuaObject dialogue, Screen &screen, Callback callback, bo
 	DialogueBox &dialogue_box = get();
 
 	Lua lua(Config::SETTINGS);
-	int height = (int) lua.get_float("text_box_lines");
+	int lines = dialogue.get_int("lines", 0);
+	int height = lines > 0 ? lines : (int) lua.get_float("text_box_lines");
 	int width  = (int) lua.get_float("text_box_width");
 	float speed = lua.get_float("text_box_speed");
 

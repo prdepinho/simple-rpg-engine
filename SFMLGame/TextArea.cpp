@@ -49,15 +49,7 @@ void TextArea::draw(sf::RenderTarget & target, sf::RenderStates states) const {
 	}
 }
 
-void TextArea::push_line(std::string text) {
-	std::vector<std::string> split_lines = lines[0].split_lines(text, get_width() - (border * 2));
-	for (std::string line : split_lines) {
-		current_line %= history_size;
-		history[current_line] = line;
-		current_line++;
-		total_lines++;
-	}
-
+void TextArea::update_text() {
 	for (int i = 0; i < visible_lines; i++) {
 		int x = get_x() + border;
 		int y = get_y() + get_height() - (lines[i].line_height() * (i + 1)) - border;
@@ -65,6 +57,18 @@ void TextArea::push_line(std::string text) {
 		std::string str = history[index];
 		lines[i].draw_line(x, y, str, sf::Color::Black);
 	}
+}
+
+void TextArea::push_line(std::string text) {
+	scroll_to_bottom();
+	std::vector<std::string> split_lines = lines[0].split_lines(text, get_width() - (border * 2));
+	for (std::string line : split_lines) {
+		current_line %= history_size;
+		history[current_line] = line;
+		current_line++;
+		total_lines++;
+	}
+	update_text();
 }
 
 void TextArea::clear() {
@@ -76,4 +80,19 @@ void TextArea::clear() {
 		int y = get_y() + get_height() - (lines[i].line_height() * (i + 1)) - border;
 		lines[i].draw_line(x, y, "", sf::Color::Black);
 	}
+}
+
+void TextArea::scroll_up(int line_count) {
+	current_line = current_line > 0 ? current_line - 1 : current_line;
+	update_text();
+}
+
+void TextArea::scroll_down(int line_count) {
+	current_line = current_line < total_lines ? current_line + 1 : current_line;
+	update_text();
+}
+
+void TextArea::scroll_to_bottom() {
+	current_line = total_lines;
+	update_text();
 }

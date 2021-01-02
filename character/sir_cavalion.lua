@@ -45,6 +45,9 @@ end
 
 
 function SirCavalion:on_interact(interactor_name)
+  if sfml_get_current_music() ~= "death_no_more.wav" then
+    sfml_loop_music("death_no_more.wav")
+  end
   local dialogue = {
     start = {
       text = "I am sir Cavalion du Mont Serrat, a knight with the noble quest to slay the serpent that lurks these mountains.",

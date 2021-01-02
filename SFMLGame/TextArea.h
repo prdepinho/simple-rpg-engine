@@ -13,7 +13,13 @@ public:
 
 	void clear();
 	void push_line(std::string str);
+
+	void scroll_up(int line_count);
+	void scroll_down(int line_count);
+	void scroll_to_bottom();
 protected:
+
+	void update_text();
 	std::vector<std::string> history;
 	std::vector<Font> lines;
 	int visible_lines;
