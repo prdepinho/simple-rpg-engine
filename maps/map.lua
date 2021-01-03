@@ -117,7 +117,7 @@ function Map:set_objects()
                       go_to = 'end'
                     }
                   }
-                  sfml_dialogue(sub_dialogue)
+                  sfml_illustrated_dialogue(sub_dialogue)
                 end,
               }
             }

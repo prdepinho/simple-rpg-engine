@@ -80,6 +80,7 @@ end
 function ComeInnCellar:front_of_wardrobe(event, x, y, character_name, object_name)
   if character_name == 'player' then
     if event == 'step_on' then
+      sfml_stop_music()
       if self.data.objects.wardrobe.properties.changed and self.control.data.serve_inn and not self.control.data.served_inn then
         local cinematics = {
           start = {

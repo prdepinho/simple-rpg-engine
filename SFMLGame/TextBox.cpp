@@ -423,7 +423,6 @@ Component *DialogueBox::on_key_pressed(sf::Event &event) {
 
 	switch (InputHandler::get_input(event)) {
 	case Control::A:
-		Log("Completely written: %s", (completely_written ? "true" : "false"));
 		if (completely_written) {
 			if (end_line == text_lines.size()) {
 				if (go_to != "end") {

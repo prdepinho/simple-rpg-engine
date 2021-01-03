@@ -247,8 +247,8 @@ bool GameScreen::update(float elapsed_time) {
 	{
 		if (dialogue_queue.size() > 0 && !DialogueBox::visible()) {
 			QueueableDialogue dialogue = dialogue_queue.front();
-			show_queued_dialogue_box(dialogue);
 			dialogue_queue.pop();
+			show_queued_dialogue_box(dialogue);
 		}
 	}
 
@@ -1787,44 +1787,30 @@ void GameScreen::show_text_box(std::string text) {
 
 void GameScreen::show_dialogue_box(LuaObject dialogue) {
 	dialogue_queue.push({ dialogue, false });
-	// if (DialogueBox::visible()) {
-	// 	dialogue_queue.push({ dialogue, false });
-	// 	return;
-	// }
-	// block_input = true;
-	// // bool bottom = log_box.is_visible();
-	// bool bottom = false;
-	// DialogueBox::show(dialogue, *this, [&](Component *c) {
-	// 	block_input = false;
-	// 	return true;
-	// }, false, bottom);
 }
 
 void GameScreen::show_illustrated_dialogue_box(LuaObject dialogue) {
 	dialogue_queue.push({ dialogue, true });
-	// if (DialogueBox::visible()) {
-	// 	dialogue_queue.push({ dialogue, true });
-	// 	return;
-	// }
-	// block_input = true;
-	// show_foreground();
-	// DialogueBox::show(dialogue, *this, [&](Component *c) {
-	// 	block_input = false;
-	// 	hide_foreground();
-	// 	return true;
-	// }, true, true);
 }
 
 void GameScreen::show_queued_dialogue_box(QueueableDialogue dialogue) {
 	block_input = true;
-	if (dialogue.illustrated)
+	if (dialogue.illustrated) {
 		show_foreground();
-	bool bottom = dialogue.illustrated;
-	DialogueBox::show(dialogue.dialogue, *this, [&](Component *c) {
-		block_input = false;
-		hide_foreground();
-		return true;
-	}, true, bottom);
+		bool bottom = true;
+		DialogueBox::show(dialogue.dialogue, *this, [&](Component *c) {
+			block_input = false;
+			hide_foreground();
+			return true;
+		}, true, bottom);
+	}
+	else {
+		bool bottom = false;
+		DialogueBox::show(dialogue.dialogue, *this, [&](Component *c) {
+			block_input = false;
+			return true;
+		}, true, bottom);
+	}
 }
 
 void GameScreen::update_field_of_vision(Character *character) {
@@ -1839,8 +1825,8 @@ void GameScreen::show_foreground() {
 	gui_status.showing_overlay = Overlay::get().is_visible();
 	gui_status.showing_log = log_box.is_visible();
 	Overlay::get().hide();
-	hide_log();
-	// log_box.hide();
+	// hide_log();
+	log_box.hide();
 }
 
 void GameScreen::pan_foreground(LuaObject data) {
@@ -1870,8 +1856,8 @@ void GameScreen::hide_foreground() {
 	if (gui_status.showing_overlay)
 		Overlay::get().show();
 	if (gui_status.showing_log)
-		show_log();
-		// log_box.show();
+		// show_log();
+		log_box.show();
 }
 
 
