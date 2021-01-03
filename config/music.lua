@@ -15,4 +15,5 @@ music = {
   "later_folia.wav",
   "death_no_more.wav",
   "sakura.wav",
+  "my_certainty.wav",
 }
