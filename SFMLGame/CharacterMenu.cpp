@@ -632,7 +632,7 @@ void Inventory::move_cursor(Direction direction) {
 			set_cursor(cursor + inventory_width);
 		break;
 	case Direction::LEFT:
-		if (CharacterMenu::get().is_loot_mode() && cursor < inventory_size && cursor % inventory_width == 0) {
+		if(CharacterMenu::get().is_loot_mode() && state == State::NORMAL && cursor < inventory_size && cursor % inventory_width == 0) {
 			Log("Cursor: %d -> %d", cursor, cursor + (inventory_width - 1));;
 			CharacterMenu::get().get_loot().set_cursor(cursor + (inventory_width - 1));
 		}
@@ -644,7 +644,7 @@ void Inventory::move_cursor(Direction direction) {
 		}
 		break;
 	case Direction::RIGHT:
-		if (CharacterMenu::get().is_loot_mode() && cursor < inventory_size && cursor % inventory_width == inventory_width - 1) {
+		if (CharacterMenu::get().is_loot_mode() && cursor < inventory_size && state == State::NORMAL && cursor % inventory_width == inventory_width - 1) {
 			Log("Cursor: %d -> %d", cursor, cursor - (inventory_width - 1));;
 			CharacterMenu::get().get_loot().set_cursor(cursor - (inventory_width - 1));
 		}
