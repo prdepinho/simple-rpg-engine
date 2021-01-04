@@ -194,6 +194,7 @@ public:
 
 	void set_fog_of_war(bool darkness);
 	void set_vision_radius(int radius);
+	bool is_fog_of_war() const { return show_fog_of_war; }
 
 	void add_icon(std::string key, int pix_x, int pix_y, int dst_x, int dst_y);
 	void write_line(std::string key, std::string line, int dst_x, int dst_y);

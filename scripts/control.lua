@@ -108,6 +108,13 @@ function Control:is_enemy(name)
 end
 
 
+-- returns true if observed is not invisible or the observer has true seeing
+function Control:can_see(observer, observed)
+  local observer_stats = self.characters[observer].data.stats
+  local observed_stats = self.characters[observed].data.stats
+  return rules.can_see(observer_stats, observed_stats)
+end
+
 function Control:closest_ally_on_sight(observer, radius)
   radius = radius or 6
   local closest_ally = nil
@@ -116,7 +123,7 @@ function Control:closest_ally_on_sight(observer, radius)
 
   for index, ally in ipairs(allies) do
     local stats = self.characters[ally].data.stats
-    if not stats.status.dead and not stats.status.invisible then
+    if not stats.status.dead and self:can_see(observer, ally) then
       local src = sfml_get_character_position(observer)
       local dst = sfml_get_character_position(ally)
       local delta_x = (src.x - dst.x) * (src.x - dst.x)
@@ -141,7 +148,7 @@ function Control:closest_enemy_on_sight(observer, radius)
 
   for index, enemy in ipairs(enemies) do
     local stats = self.characters[enemy].data.stats
-    if not stats.status.dead and not stats.status.invisible then
+    if not stats.status.dead and self:can_see(observer, enemy) then
       local src = sfml_get_character_position(observer)
       local dst = sfml_get_character_position(enemy)
       local delta_x = (src.x - dst.x) * (src.x - dst.x)
@@ -1064,6 +1071,7 @@ function Control:add_character(type, name)
     self.characters[name].data.removed = false
     self.characters[name].data.created = true
     self.characters[name]:create()
+    self.characters[name]:on_enter()
   else
     if self.characters[name].data.stats.status.dead then
       local position = sfml_get_character_position(name)
@@ -1071,8 +1079,10 @@ function Control:add_character(type, name)
       sfml_set_obstacle(false, position.x, position.y)
       sfml_loop_animation(name, 'dead')
       sfml_push_character_to_bottom(name)
+      self.characters[name]:on_enter()
     else
       local character = self.characters[name]
+      character:on_enter()
       for status_name, character_status in pairs(character.data.stats.status) do 
         if not character_status.dead then
           local status_data = rules.status[status_name]
@@ -1086,7 +1096,6 @@ function Control:add_character(type, name)
       end
     end
   end
-  self.characters[name]:on_enter()
 end
 
 function Control:characters_exchange_position(interactor_name, target_name)

@@ -326,20 +326,17 @@ function Magic:invisible_enter(character)
     sfml_character_set_transparency(character, 127)
     sfml_refresh_overlay()
   else
-    sfml_character_set_transparency(character, 0)
+    if not self.control.characters.player.data.stats.status.true_seeing then
+      sfml_character_set_transparency(character, 0)
+    end
   end
 end
 
 function Magic:invisible_start(character)
-  local stats = self.control.characters[character].data.stats
-  stats.bonus.ac = stats.bonus.ac + 2
-  stats.bonus.to_hit = stats.bonus.to_hit + 2
 end
 
 function Magic:invisible_end(character)
   local stats = self.control.characters[character].data.stats
-  stats.bonus.ac = stats.bonus.ac - 2
-  stats.bonus.to_hit = stats.bonus.to_hit - 2
   if character == 'player' then
     sfml_refresh_overlay()
   end
@@ -541,6 +538,73 @@ function Magic:raise_dead(caster, center, tiles, targets)
     end
   end
 end
+
+function Magic:true_seeing(caster, center, tiles, targets)
+  sfml_start_animation(caster, 'cast')
+
+  local caster_name = self.control.characters[caster].data.stats.name
+  sfml_push_log(caster_name .. ' - casts ' .. rules.spell.true_seeing.name)
+
+  local caster_stats = self.control.characters[caster].data.stats
+
+  for index, character_name in ipairs(targets) do
+    local position = sfml_get_character_position(character_name)
+    sfml_start_fireworks("true_seeing", position.x, position.y)
+
+    sfml_show_floating_message(rules.status.true_seeing.name, position.x, position.y)
+    
+    local duration = rules.roll_dice("3d6")
+    duration = duration + rules.divine_spell_bonus(caster_stats)
+
+    self.control:set_status(character_name, "true_seeing", 0, duration)
+  end
+end
+
+function Magic:true_seeing_enter(character)
+  if character == 'player' then
+    self.control.data.is_fog_of_war = sfml_is_fog_of_war()
+    if self.control.data.is_fog_of_war then
+      sfml_set_fog_of_war(false)
+    end
+
+
+    for index, name in ipairs(self.control:get_enemies()) do
+      if self.control.characters[name].data.stats.status.invisible then
+        sfml_character_set_transparency(name, 255)
+      end
+    end
+
+  end
+end
+
+function Magic:true_seeing_start(character)
+end
+
+function Magic:true_seeing_end(character)
+  if character == 'player' then
+    if self.control.data.is_fog_of_war then
+      sfml_set_fog_of_war(true)
+    end
+
+    for index, name in ipairs(self.control:get_enemies()) do
+      if self.control.characters[name].data.stats.status.invisible then
+        sfml_character_set_transparency(name, 0)
+      end
+    end
+
+  end
+end
+
+function Magic:true_seeing_update(character)
+  -- if character == 'player' then
+  --   for index, name in ipairs(self.control:get_enemies()) do
+  --     if self.control.characters[name].data.stats.status.invisible then
+  --       sfml_character_set_transparency(name, 255)
+  --     end
+  --   end
+  -- end
+end
+
 
 
 

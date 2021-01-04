@@ -141,50 +141,55 @@ rules.ammo = {
 }
 
 rules.item = {
-  no_item         = { name = "No item",         icon = {x = 16*0, y = 16*3},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "" },
-  money           = { name = "Money",           icon = {x = 16*2, y = 16*9},  stack_capacity = 100,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Copper coins." },
-  rat_poison      = { name = "Rat Poison",      icon = {x = 16*1, y = 16*10}, stack_capacity = 3,     range_radius = 1, effect_radius = 0, usable = true,  use = "rat_poison", desc = "Rat poison that can be used to poison someone without raising suspicion." },
-  cheese          = { name = "Gouda Cheese",    icon = {x = 16*0, y = 16*10}, stack_capacity = 3,     range_radius = 1, effect_radius = 0, usable = true,  use = "cheese",     desc = "Young matured Gouda Cheese with a lovely fruity tang. Restores 1d4 hit points and cures poison." },
-  poisoned_cheese = { name = "Poisoned Cheese", icon = {x = 16*0, y = 16*11}, stack_capacity = 3,     range_radius = 1, effect_radius = 0, usable = true,  use = "rat_poison", desc = "Poisoned cheese. Don't eat it." },
-  cloak           = { name = "Thief Cloak",     icon = {x = 16*3, y = 16*10}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = true,  use = "cloak",      desc = "A cloak made to blend with the background and avoid detection." },
-  key             = { name = "Key",             icon = {x = 16*0, y = 16*9},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A brass key." },
-  armory_key      = { name = "Old rusty key",   icon = {x = 16*4,y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A rusty iron key that opens the armory under Come Inn." },
-  lockpick        = { name = "Lockpick",        icon = {x = 16*5, y = 16*11}, stack_capacity = 10,    range_radius = 1, effect_radius = 0, usable = true,  use = "lockpick",   desc = "A lockpick that can be used to unlock doors and chests." },
-  cook_key        = { name = "Cook Key",        icon = {x = 16*6, y = 16*11}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "The key to the cook's room in Normindia Castle." },
-  tower_key       = { name = "Tower Key",       icon = {x = 16*7, y = 16*11}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "The key to the north-west tower of Normindia Castle." },
-  silver_cutlery  = { name = "Silver Cutlery",  icon = {x = 16*4, y = 16*10}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Silver forks and knives that you stole from Normindia Castle." },
-  steel_cutlery   = { name = "Steel Cutlery",   icon = {x = 16*5, y = 16*10}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Steel forks and knives that the cook stole from Normindia Castle to arm imps in exchange for elf-dust." },
-  gold_key        = { name = "Gold Key",        icon = {x = 16*1, y = 16*11}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Sun shaped gold key." },
-  silver_key      = { name = "Silver Key",      icon = {x = 16*2, y = 16*11}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Moon shaped silver key." },
-  copper_key      = { name = "Copper Key",      icon = {x = 16*3, y = 16*11}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Copper key with the symbol of Jupiter." },
+  no_item         = { name = "No item",         icon = {x = 16*0, y = 16*3},   stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "" },
+  money           = { name = "Money",           icon = {x = 16*2, y = 16*9},   stack_capacity = 100,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Copper coins." },
+  rat_poison      = { name = "Rat Poison",      icon = {x = 16*1, y = 16*10},  stack_capacity = 3,     range_radius = 1, effect_radius = 0, usable = true,  use = "rat_poison", desc = "Rat poison that can be used to poison someone without raising suspicion." },
+  cheese          = { name = "Gouda Cheese",    icon = {x = 16*0, y = 16*10},  stack_capacity = 3,     range_radius = 1, effect_radius = 0, usable = true,  use = "cheese",     desc = "Young matured Gouda Cheese with a lovely fruity tang. Restores 1d4 hit points and cures poison." },
+  poisoned_cheese = { name = "Poisoned Cheese", icon = {x = 16*0, y = 16*11},  stack_capacity = 3,     range_radius = 1, effect_radius = 0, usable = true,  use = "rat_poison", desc = "Poisoned cheese. Don't eat it." },
+  cloak           = { name = "Thief Cloak",     icon = {x = 16*3, y = 16*10},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = true,  use = "cloak",      desc = "A cloak made to blend with the background and avoid detection." },
+  key             = { name = "Key",             icon = {x = 16*0, y = 16*9},   stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A brass key." },
+  armory_key      = { name = "Old rusty key",   icon = {x = 16*4,y = 16*11},   stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A rusty iron key that opens the armory under Come Inn." },
+  lockpick        = { name = "Lockpick",        icon = {x = 16*5, y = 16*11},  stack_capacity = 10,    range_radius = 1, effect_radius = 0, usable = true,  use = "lockpick",   desc = "A lockpick that can be used to unlock doors and chests." },
+  cook_key        = { name = "Cook Key",        icon = {x = 16*6, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "The key to the cook's room in Normindia Castle." },
+  tower_key       = { name = "Tower Key",       icon = {x = 16*7, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "The key to the north-west tower of Normindia Castle." },
+  silver_cutlery  = { name = "Silver Cutlery",  icon = {x = 16*4, y = 16*10},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Silver forks and knives that you stole from Normindia Castle." },
+  steel_cutlery   = { name = "Steel Cutlery",   icon = {x = 16*5, y = 16*10},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Steel forks and knives that the cook stole from Normindia Castle to arm imps in exchange for elf-dust." },
+  gold_key        = { name = "Gold Key",        icon = {x = 16*1, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Sun shaped gold key." },
+  silver_key      = { name = "Silver Key",      icon = {x = 16*2, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Moon shaped silver key." },
+  copper_key      = { name = "Copper Key",      icon = {x = 16*3, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Copper key with the symbol of Jupiter." },
+
+  rat_tail        = { name = "Rat Tail",        icon = {x = 16*8, y = 16*11},  stack_capacity = 10,    range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Tail of a rat. An effective offering to Bastet." },
+  looking_glass   = { name = "Looking Glass",   icon = {x = 16*9, y = 16*11},  stack_capacity = 10,    range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A looking glass. An effective offering to Bastet." },
+  aromatic_oil    = { name = "Aromatic Oil",    icon = {x = 16*10, y = 16*11}, stack_capacity = 10,    range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Aromatic oil. An effective offering to Bastet." },
 }
 
 rules.spell = {
-  magic_missile = { name = "Magic Missile", category = "arcane", stack_capacity = 10, icon = {x = 16*0,  y = 16*6}, range_radius = 6, effect_radius = 0, usable = true, use = "magic_missile", desc = "Cast an energy missile that causes 1d4+1 damage to a target. No Save." },
-  fireball      = { name = "Fireball",      category = "arcane", stack_capacity = 10, icon = {x = 16*9,  y = 16*6}, range_radius = 6, effect_radius = 3, usable = true, use = "fireball",      desc = "Cast a projectile that explodes causing 6d6 damage to an area. Dex save to halve." },
-  poison        = { name = "Poison",        category = "arcane", stack_capacity = 10, icon = {x = 16*14, y = 16*6}, range_radius = 6, effect_radius = 2, usable = true, use = "poison"     ,   desc = "Cast a poisonous gas to an area. Does 1 damage each turn. Con save to negate." },
-  invisibility  = { name = "Invisibility",  category = "arcane", stack_capacity = 10, icon = {x = 16*6,  y = 16*6}, range_radius = 1, effect_radius = 0, usable = true, use = "invisibility",  desc = "Turn a creature invisible. It gains +2 ac and attack bonus." },
-  fear          = { name = "Fear",          category = "arcane", stack_capacity = 10, icon = {x = 16*4,  y = 16*6}, range_radius = 6, effect_radius = 3, usable = true, use = "fear",          desc = "Inflicts fear in the heart of creatures in an area. Wis save to negate." },
-  armor         = { name = "Armor",         category = "arcane", stack_capacity = 10, icon = {x = 16*1,  y = 16*6}, range_radius = 1, effect_radius = 0, usable = true, use = "armor",         desc = "Creates a magic armor that grants ac 20 to a creature."},
-  strength      = { name = "Strength",      category = "divine", stack_capacity = 10, icon = {x = 16*4,  y = 16*8}, range_radius = 1, effect_radius = 0, usable = true, use = "strength",      desc = "Grants a creature the inhuman strength of 19."},
-  cure_wounds   = { name = "Cure Wounds",   category = "divine", stack_capacity = 10, icon = {x = 16*0,  y = 16*8}, range_radius = 1, effect_radius = 0, usable = true, use = "cure_wounds",   desc = "Recover hit points to the amount of 2d4 + Wisdom Modifier." },
-  raise_dead    = { name = "Raise Dead",    category = "divine", stack_capacity = 10, icon = {x = 16*8,  y = 16*8}, range_radius = 0, effect_radius = 3, usable = true, use = "raise_dead",    desc = "Raise the dead in a radius around the caster." },
+  magic_missile = { name = "Magic Missile", category = "arcane", stack_capacity = 10, icon = {x = 16*0,  y = 16*6},  range_radius = 6, effect_radius = 0, usable = true, use = "magic_missile", desc = "Cast an energy missile that causes 1d4+1 damage to a target. No Save." },
+  fireball      = { name = "Fireball",      category = "arcane", stack_capacity = 10, icon = {x = 16*9,  y = 16*6},  range_radius = 6, effect_radius = 3, usable = true, use = "fireball",      desc = "Cast a projectile that explodes causing 6d6 damage to an area. Dex save to halve." },
+  poison        = { name = "Poison",        category = "arcane", stack_capacity = 10, icon = {x = 16*14, y = 16*6},  range_radius = 6, effect_radius = 2, usable = true, use = "poison"     ,   desc = "Cast a poisonous gas to an area. Does 1 damage each turn. Con save to negate." },
+  invisibility  = { name = "Invisibility",  category = "arcane", stack_capacity = 10, icon = {x = 16*6,  y = 16*6},  range_radius = 1, effect_radius = 0, usable = true, use = "invisibility",  desc = "Turn a creature invisible. It gains +2 ac and attack bonus." },
+  fear          = { name = "Fear",          category = "arcane", stack_capacity = 10, icon = {x = 16*4,  y = 16*6},  range_radius = 6, effect_radius = 3, usable = true, use = "fear",          desc = "Inflicts fear in the heart of creatures in an area. Wis save to negate." },
+  armor         = { name = "Armor",         category = "arcane", stack_capacity = 10, icon = {x = 16*1,  y = 16*6},  range_radius = 1, effect_radius = 0, usable = true, use = "armor",         desc = "Creates a magic armor that grants ac 20 to a creature."},
+  strength      = { name = "Strength",      category = "divine", stack_capacity = 10, icon = {x = 16*4,  y = 16*8},  range_radius = 1, effect_radius = 0, usable = true, use = "strength",      desc = "Grants a creature the inhuman strength of 19."},
+  cure_wounds   = { name = "Cure Wounds",   category = "divine", stack_capacity = 10, icon = {x = 16*0,  y = 16*8},  range_radius = 1, effect_radius = 0, usable = true, use = "cure_wounds",   desc = "Recover hit points to the amount of 2d4 + Wisdom Modifier." },
+  raise_dead    = { name = "Raise Dead",    category = "divine", stack_capacity = 10, icon = {x = 16*8,  y = 16*8},  range_radius = 0, effect_radius = 3, usable = true, use = "raise_dead",    desc = "Raise the dead in a radius around the caster." },
+  true_seeing   = { name = "True Seeing",   category = "divine", stack_capacity = 10, icon = {x = 16*12,  y = 16*8}, range_radius = 0, effect_radius = 0, usable = true, use = "true_seeing",   desc = "You can see invisible creatures and places for the duration of the spell." },
 }
 
 
 rules.status = {
-  hold                = { name = "Hold",                  on_enter = "",                  on_start = "",                on_end = "",              on_update = "",                 character_animation = "stand",  icon = { x = 8*26, y = 8*0 } },
-  invisible           = { name = "Invisible",             on_enter = "invisible_enter",   on_start = "invisible_start", on_end = "invisible_end", on_update = "invisible_update", character_animation = "",       icon = { x = 8*27, y = 8*0 } },
-  poison              = { name = "Poison",                on_enter = "",                  on_start = "poison_start",    on_end = "poison_end",    on_update = "poison_update",    character_animation = "down",   icon = { x = 8*28, y = 8*0 } },
-  fear                = { name = "Fear",                  on_enter = "",                  on_start = "fear_start",      on_end = "fear_end",      on_update = "fear_update",      character_animation = "fear",   icon = { x = 8*29, y = 8*0 } },
-  charm               = { name = "Charm",                 on_enter = "",                  on_start = "",                on_end = "",              on_update = "",                 character_animation = "down",   icon = { x = 8*30, y = 8*0 } },
-  dead                = { name = "Dead",                  on_enter = "",                  on_start = "",                on_end = "",              on_update = "",                 character_animation = "dead",   icon = { x = 8*31, y = 8*0 } },
-  bless               = { name = "Bless",                 on_enter = "",                  on_start = "",                on_end = "",              on_update = "",                 character_animation = "",       icon = { x = 8*26, y = 8*1 } },
-  true_seeing         = { name = "True Seeing",           on_enter = "",                  on_start = "",                on_end = "",              on_update = "",                 character_animation = "",       icon = { x = 8*27, y = 8*1 } },
-  resist_poison       = { name = "Resist Poison",         on_enter = "",                  on_start = "",                on_end = "",              on_update = "",                 character_animation = "",       icon = { x = 8*28, y = 8*1 } },
-  courage             = { name = "Courage",               on_enter = "",                  on_start = "",                on_end = "",              on_update = "",                 character_animation = "",       icon = { x = 8*29, y = 8*1 } },
-  armor               = { name = "Armor",                 on_enter = "",                  on_start = "armor_start",     on_end = "armor_end",     on_update = "armor_update",     character_animation = "",       icon = { x = 8*30, y = 8*1 } },
-  strength            = { name = "Strength",              on_enter = "",                  on_start = "strength_start",  on_end = "strength_end",  on_update = "strength_update",  character_animation = "",       icon = { x = 8*31, y = 8*1 } },
+  hold                = { name = "Hold",                  on_enter = "",                  on_start = "",                  on_end = "",                on_update = "",                   character_animation = "stand",  icon = { x = 8*26, y = 8*0 } },
+  invisible           = { name = "Invisible",             on_enter = "invisible_enter",   on_start = "invisible_start",   on_end = "invisible_end",   on_update = "invisible_update",   character_animation = "",       icon = { x = 8*27, y = 8*0 } },
+  poison              = { name = "Poison",                on_enter = "",                  on_start = "poison_start",      on_end = "poison_end",      on_update = "poison_update",      character_animation = "down",   icon = { x = 8*28, y = 8*0 } },
+  fear                = { name = "Fear",                  on_enter = "",                  on_start = "fear_start",        on_end = "fear_end",        on_update = "fear_update",        character_animation = "fear",   icon = { x = 8*29, y = 8*0 } },
+  charm               = { name = "Charm",                 on_enter = "",                  on_start = "",                  on_end = "",                on_update = "",                   character_animation = "down",   icon = { x = 8*30, y = 8*0 } },
+  dead                = { name = "Dead",                  on_enter = "",                  on_start = "",                  on_end = "",                on_update = "",                   character_animation = "dead",   icon = { x = 8*31, y = 8*0 } },
+  bless               = { name = "Bless",                 on_enter = "",                  on_start = "",                  on_end = "",                on_update = "",                   character_animation = "",       icon = { x = 8*26, y = 8*1 } },
+  true_seeing         = { name = "True Seeing",           on_enter = "true_seeing_enter", on_start = "true_seeing_start", on_end = "true_seeing_end", on_update = "true_seeing_update", character_animation = "",       icon = { x = 8*27, y = 8*1 } },
+  resist_poison       = { name = "Resist Poison",         on_enter = "",                  on_start = "",                  on_end = "",                on_update = "",                   character_animation = "",       icon = { x = 8*28, y = 8*1 } },
+  courage             = { name = "Courage",               on_enter = "",                  on_start = "",                  on_end = "",                on_update = "",                   character_animation = "",       icon = { x = 8*29, y = 8*1 } },
+  armor               = { name = "Armor",                 on_enter = "",                  on_start = "armor_start",       on_end = "armor_end",       on_update = "armor_update",       character_animation = "",       icon = { x = 8*30, y = 8*1 } },
+  strength            = { name = "Strength",              on_enter = "",                  on_start = "strength_start",    on_end = "strength_end",    on_update = "strength_update",    character_animation = "",       icon = { x = 8*31, y = 8*1 } },
 }
 
 function rules.new_character() 
@@ -379,6 +384,10 @@ rules.ability_score_description = {
 
 -- rules
 
+function rules.can_see(observer, observed)
+  return (not observed.status.invisible) or observer.status.true_seeing ~= nil
+end
+
 function rules.base_armor_class(defender)
   local armor = rules.armor[defender.armor.name]
   local shield = rules.shield[defender.shield.name]
@@ -434,6 +443,14 @@ function rules.attack_to_hit(attacker, defender)
   local to_hit = rules.base_to_hit(attacker)
   to_hit = to_hit + attacker_weapon.armor_adjustment[defender_armor.type]
 
+  if not rules.can_see(defender, attacker) then
+    to_hit = to_hit + 3
+  end
+
+  if not rules.can_see(attacker, defender) then
+    to_hit = to_hit - 3
+  end
+
   return to_hit
 end
 
@@ -476,6 +493,8 @@ function rules.roll_attack(attacker, defender)
   local result = die + hit_bonus
 
 
+
+
   -- armor class calculation
   local ac_dex = 10 + rules.ability_modifier[defender.ability.dex]
   local ac_weapon = ac_dex + defender_weapon.ac_bonus
@@ -516,7 +535,8 @@ function rules.roll_attack(attacker, defender)
   hit_result.hit_total = result
   hit_result.ac = ac_armor
 
-  if (defender.status.hold or attacker.status.invisible) and attacker_weapon.cutthroat then
+
+  if (defender.status.hold or not rules.can_see(defender, attacker)) and attacker_weapon.cutthroat then
     hit_result.cut_throat = true
     print(string.format("Attacker: cut throat!"))
 
