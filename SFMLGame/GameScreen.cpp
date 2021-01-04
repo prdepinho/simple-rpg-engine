@@ -2099,10 +2099,15 @@ bool GameScreen::is_equipped_with_ranged_weapon(Character &character) {
 int GameScreen::equipped_weapon_range(Character &character) {
 	LuaObject character_stats = _game.get_lua()->character_stats(character.get_name());
 	std::string weapon_name = character_stats.get_string("weapon.name");
-	std::string ammo_name = character_stats.get_string("ammo.name");
 	LuaObject weapon_stats = _game.get_lua()->item_stats(weapon_name, "weapon");
-	LuaObject ammo_stats = _game.get_lua()->item_stats(ammo_name, "ammo");
-	return weapon_stats.get_int("range") + ammo_stats.get_int("range_bonus");
+	if (is_equipped_with_ranged_weapon(*player_character)) {
+		std::string ammo_name = character_stats.get_string("ammo.name");
+		LuaObject ammo_stats = _game.get_lua()->item_stats(ammo_name, "ammo");
+		return weapon_stats.get_int("range") + ammo_stats.get_int("range_bonus");
+	}
+	else {
+		return weapon_stats.get_int("range");
+	}
 }
 
 void GameScreen::target_character(Character &character) {
@@ -2148,7 +2153,7 @@ bool GameScreen::has_ammo(Character &character) {
 
 void GameScreen::select_tile_to_shoot() {
 	// if equipped with ranged weapon:
-	if (is_equipped_with_ranged_weapon(*player_character)) {
+	// if (is_equipped_with_ranged_weapon(*player_character)) {
 		//	if target_character == nullptr
 		if (target == nullptr) {
 			//    select target
@@ -2172,10 +2177,10 @@ void GameScreen::select_tile_to_shoot() {
 		else {
 			schedule_character_attack(*player_character, *target);
 		}
-	}
-	else {
-		Log("Is not equipped with ranged weapon");
-	}
+	// }
+	// else {
+	// 	Log("Is not equipped with ranged weapon");
+	// }
 }
 
 void GameScreen::select_tile_to_attack() {

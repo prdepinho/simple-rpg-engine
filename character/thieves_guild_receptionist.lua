@@ -88,7 +88,7 @@ function ThievedGuildReceptionist:on_interact(interactor_name)
 end
 
 function ThievedGuildReceptionist:on_death()
-  Character.on_death(self)
+  Thief.on_death(self)
   self.control.data.thieves_guild_ruined = true
 end
 

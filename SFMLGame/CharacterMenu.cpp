@@ -1178,11 +1178,14 @@ void Overlay::refresh(Screen &screen, Character *character) {
 				if (item_stats.get_boolean("usable", false)) {
 					int pix_x = item_stats.get_int("icon.x");
 					int pix_y = item_stats.get_int("icon.y");
-					int quantity = item->get_int("quantity");
+					int quantity = item->get_int("quantity", 0);
 					overlay.selected_item_icon.set_picture(16, 16, pix_x, pix_y);
 					int x = overlay.get_x() + overlay.get_width() - 18;
 					int y = overlay.get_y() + margin;
-					overlay.selected_item_quantity.draw_line(x, y + 16, std::to_string(quantity), sf::Color::Black);
+					if (quantity > 0)
+						overlay.selected_item_quantity.draw_line(x, y + 16, std::to_string(quantity), sf::Color::Black);
+					else
+						overlay.selected_item_quantity.draw_line(x, y + 16, "", sf::Color::Black);
 				}
 				else {
 					overlay.selected_item_icon.set_picture(16, 16, 0, 3 * 16);
