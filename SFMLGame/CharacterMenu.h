@@ -79,7 +79,7 @@ public:
 		SELECT_TO_EXCHANGE,
 	};
 	Inventory(int x=0, int y=0);
-	~Inventory();
+	virtual ~Inventory();
 	virtual void create() override;
 	virtual Component *on_key_pressed(sf::Event &event) override;
 	void set_cursor(int i);
@@ -101,40 +101,15 @@ private:
 	int cursor;
 };
 
-class CharacterMenu : public Panel, public CallbackCaller {
-public:
-	CharacterMenu();
-	~CharacterMenu();
-	virtual void create() override;
-	virtual Component *on_key_pressed(sf::Event &event) override;
-	static void show(Screen &screen, Character *character, Callback callback=Callback());
-	static CharacterMenu &get() { static CharacterMenu menu; return menu; }
-	Character *get_character() { return character; }
-	static void refresh_stats();
-	void exit();
-	Inventory &get_inventory() { return inventory; }
-	void display_info(Item item);
-private:
-	Character *character;
-	StatsPanel stats_panel;
-	Inventory inventory;
-	TextArea name_area;
-	TextArea info_area;
-	int margin = 5;
-};
-
-
-
-
-
 class Loot : public Panel {
 public:
 	Loot(int x = 0, int y = 0);
 	~Loot();
 	virtual void create() override;
+	virtual Component *on_key_pressed(sf::Event &event) override;
 	void set_cursor(int i);
 	void move_cursor(Direction direction);
-	void set_items(std::vector<Item*> items);
+	void set_items(int tile_x, int tile_y);
 	void update_items();
 private:
 	std::vector<ItemButton> buttons;
@@ -144,26 +119,38 @@ private:
 	int cursor;
 };
 
-class LootMenu : public Panel, public CallbackCaller {
+class CharacterMenu : public Panel, public CallbackCaller {
 public:
-	LootMenu();
-	~LootMenu();
+	CharacterMenu();
+	virtual ~CharacterMenu();
 	virtual void create() override;
 	virtual Component *on_key_pressed(sf::Event &event) override;
-	static void show(Screen &screen, Character *character, std::vector<Item*> items, Callback callback=Callback());
-	static LootMenu &get() { static LootMenu menu; return menu; }
+	static void show(Screen &screen, Character *character, Callback callback=Callback());
+	static void show_loot(Screen &screen, Character *character, int tile_x, int tile_y, Callback callback=Callback());
+	static CharacterMenu &get() { static CharacterMenu menu; return menu; }
 	Character *get_character() { return character; }
+	static void refresh_stats();
+	static void update_loot_items();
+	void exit();
+	Inventory &get_inventory() { return inventory; }
+	Loot &get_loot() { return loot; }
 	void display_info(Item item);
-	void update_buttons();
 	void close();
-private:
+	void update_loot_buttons();
+	bool is_loot_mode() const { return loot_mode; }
+	int get_loot_tile_x() const { return loot_tile_x; }
+	int get_loot_tile_y() const { return loot_tile_y; }
+protected:
+	Character *character;
 	StatsPanel stats_panel;
 	Inventory inventory;
 	Loot loot;
-	Character *character;
+	int loot_tile_x;
+	int loot_tile_y;
 	TextArea name_area;
 	TextArea info_area;
 	int margin = 5;
+	bool loot_mode = false;
 };
 
 

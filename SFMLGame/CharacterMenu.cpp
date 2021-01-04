@@ -150,8 +150,13 @@ void ItemContextMenu::create() {
 		buttons[i] = Button("Drop", x, y, w, h, [&](Component*) {
 			if (item.get_code() != "") {
 				_game.get_lua()->drop_item(item.get_code(), character->get_name(), tile_x, tile_y);
-				CharacterMenu::get().display_info(Item());
+				CharacterMenu &menu = CharacterMenu::get();
+				menu.display_info(Item());
 				CharacterMenu::refresh_stats();
+				if (menu.is_loot_mode()) {
+					menu.get_loot().set_items(menu.get_loot_tile_x(), menu.get_loot_tile_y());
+					menu.update_loot_buttons();
+				}
 			}
 			call_functions(this);
 			get_screen()->remove_component(*this);
@@ -559,7 +564,7 @@ void Inventory::create() {
 }
 
 Component *Inventory::on_key_pressed(sf::Event &event) {
-	Component *interacted = Panel::on_key_pressed(event);
+	Component *interacted = Component::on_key_pressed(event);
 	if (interacted) {
 		return interacted;
 	}
@@ -627,16 +632,28 @@ void Inventory::move_cursor(Direction direction) {
 			set_cursor(cursor + inventory_width);
 		break;
 	case Direction::LEFT:
-		if (cursor == 0)
-			set_cursor((int)buttons.size() - 1);
-		else
-			set_cursor(cursor - 1);
+		if (CharacterMenu::get().is_loot_mode() && cursor < inventory_size && cursor % inventory_width == 0) {
+			Log("Cursor: %d -> %d", cursor, cursor + (inventory_width - 1));;
+			CharacterMenu::get().get_loot().set_cursor(cursor + (inventory_width - 1));
+		}
+		else {
+			if (cursor == 0)
+				set_cursor((int)buttons.size() - 1);
+			else
+				set_cursor(cursor - 1);
+		}
 		break;
 	case Direction::RIGHT:
-		if (cursor == buttons.size() - 1)
-			set_cursor(0);
-		else
-			set_cursor(cursor + 1);
+		if (CharacterMenu::get().is_loot_mode() && cursor < inventory_size && cursor % inventory_width == inventory_width - 1) {
+			Log("Cursor: %d -> %d", cursor, cursor - (inventory_width - 1));;
+			CharacterMenu::get().get_loot().set_cursor(cursor - (inventory_width - 1));
+		}
+		else {
+			if (cursor == buttons.size() - 1)
+				set_cursor(0);
+			else
+				set_cursor(cursor + 1);
+		}
 		break;
 	}
 }
@@ -721,7 +738,17 @@ void CharacterMenu::create() {
 }
 
 Component *CharacterMenu::on_key_pressed(sf::Event &event) {
-	Component *interacted = Panel::on_key_pressed(event);
+	Log("CharacterMenu on key pressed");
+
+	Component *interacted = nullptr;
+	if (loot.is_selected()) {
+		interacted = loot.on_key_pressed(event);
+	}
+	else if (inventory.is_selected()) {
+		interacted = inventory.on_key_pressed(event);
+	}
+
+	// Component *interacted = Component::on_key_pressed(event);
 	if (interacted) {
 		return interacted;
 	}
@@ -760,6 +787,7 @@ void CharacterMenu::show(Screen &screen, Character *character, Callback callback
 	menu.add_function(callback);
 	menu.create();
 	menu.character = character;
+	menu.loot_mode = false;
 
 	int x = menu.get_x() + 0;
 	int y = menu.get_y() + 0;
@@ -800,231 +828,14 @@ void CharacterMenu::show(Screen &screen, Character *character, Callback callback
 	menu.inventory.set_cursor(0);
 }
 
-void CharacterMenu::refresh_stats() {
+void CharacterMenu::show_loot(Screen &screen, Character *character, int tile_x, int tile_y, Callback callback) {
 	CharacterMenu &menu = get();
-	menu.stats_panel.refresh(menu.character);
-	Overlay::refresh(*menu.get_screen(), menu.character);
-}
-
-void CharacterMenu::exit() {
-	get_screen()->remove_component(*this);
-	get_screen()->select_container();
-	call_functions(this);
-}
-
-void CharacterMenu::display_info(Item item) {
-	auto stats = _game.get_lua()->item_stats(item.get_name(), item.get_type());
-	name_area.clear();
-	name_area.push_line(stats.get_string("name", "noname"));
-
-	info_area.clear();
-	info_area.push_line(stats.get_string("desc", "nodescription"));
-}
-
-
-
-
-
-
-
-
-
-
-
-
-Loot::Loot(int x, int y) {
-	set_position(x, y);
-	set_dimensions(button_size * 2, (button_size * 4) + (button_size * 2));
-}
-
-Loot::~Loot() {}
-
-void Loot::create() {
-	buttons = std::vector<ItemButton>(loot_width * loot_height + 1);
-	int k = 0;
-	for (int i = 0; i < loot_height; i++) {
-		for (int j = 0; j < loot_width; j++) {
-			int x = get_x() + j * button_size;
-			int y = get_y() + i * button_size;
-			int w = button_size - 1;
-			int h = button_size - 1;
-			buttons[k] = ItemButton("", x, y, w, h, [&](Component* c) 
-			{
-				bool rval = false;
-				ItemButton *b = dynamic_cast<ItemButton*>(c);
-				std::string item_code = b->get_item().get_code();
-				if (item_code != "") {
-					LootMenu *menu = dynamic_cast<LootMenu*>(get_parent());
-					std::string character_name = menu->get_character()->get_name();
-					rval = _game.get_lua()->loot_item(item_code, character_name);
-					if (rval) {
-						b->set_item(Item());
-					}
-					menu->update_buttons();
-					menu->display_info(b->get_item());
-				}
-				else 
-					Log("Empty slot");
-				return rval;
-			});
-
-			buttons[k].create();
-			add_component(buttons[k]);
-			k++;
-		}
-	}
-	{
-		int w = get_width();
-		int h = button_size - 1;
-		int x = get_x();
-		int y = buttons[k - 1].get_y() + button_size;
-		buttons[k] = ItemButton("Leave", x, y, w, h, [&](Component*) {
-			LootMenu *menu = dynamic_cast<LootMenu*>(get_parent());
-			menu->close();
-			return true;
-		});
-		buttons[k].create();
-		add_component(buttons[k]);
-		k++;
-	}
-}
-
-void Loot::set_cursor(int i) {
-	get_screen()->select(buttons[i]);
-	cursor = i;
-
-	Item item = buttons[i].get_item();
-	LootMenu &menu = LootMenu::get();
-	menu.display_info(item);
-}
-
-void Loot::move_cursor(Direction direction) {
-	int inventory_size = loot_width * loot_height;
-	switch (direction) {
-	case Direction::UP:
-		if (cursor < loot_width)
-			set_cursor((int)buttons.size() - 1);
-		else if (cursor < inventory_size)
-			set_cursor(cursor - loot_width);
-		else
-			set_cursor(cursor - 1);
-		break;
-	case Direction::DOWN:
-		if (cursor == buttons.size() - 1)
-			set_cursor(0);
-		else if (cursor >= inventory_size - 1)
-			set_cursor(cursor + 1);
-		else
-			set_cursor(cursor + loot_width);
-		break;
-	case Direction::LEFT:
-		if (cursor == 0)
-			set_cursor((int)buttons.size() - 1);
-		else
-			set_cursor(cursor - 1);
-		break;
-	case Direction::RIGHT:
-		if (cursor == buttons.size() - 1)
-			set_cursor(0);
-		else
-			set_cursor(cursor + 1);
-		break;
-	}
-}
-
-void Loot::set_items(std::vector<Item*> items) {
-	size_t limit = std::min(items.size(), buttons.size() - 1);
-	for (size_t i = 0; i < limit; i++) {
-		ItemButton &button = buttons[i];
-		Item *item = items[i];
-		button.set_item(*item);
-	}
-}
-
-void Loot::update_items() {
-	for (auto it = buttons.begin(); it != buttons.end() - 1; ++it) {
-		if ((*it).get_item().get_code() == "") {
-			for (auto next = it + 1; next != buttons.end(); ++next) {
-				if ((*next).get_item().get_code() != "") {
-					(*it).set_item((*next).get_item());
-					(*next).set_item(Item());
-					break;
-				}
-			}
-		}
-	}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-LootMenu::LootMenu() {
-	// set_position(0, 100);
-	// set_dimensions(50, (32 * 2) + 2);
-
-	int w = _game.get_resolution_width() * 3 / 4;
-	int h = _game.get_resolution_height() * 2 / 3;
-	int x = (_game.get_resolution_width() / 2) - (w / 2);
-	int y = (_game.get_resolution_height() / 2) - (h / 2);
-	set_position(x, y);
-	set_dimensions(w, h);
-}
-
-LootMenu::~LootMenu() {
-}
-
-void LootMenu::create() {
-	Panel::create();
-}
-
-Component *LootMenu::on_key_pressed(sf::Event &event) {
-	Component *interacted = Panel::on_key_pressed(event);
-	if (interacted) {
-		return interacted;
-	}
-
-	int rval = 0;
-	switch (InputHandler::get_input(event)) {
-	case Control::UP:
-		loot.move_cursor(Direction::UP);
-		return this;
-	case Control::DOWN:
-		loot.move_cursor(Direction::DOWN);
-		return this;
-	case Control::LEFT:
-		loot.move_cursor(Direction::LEFT);
-		return this;
-	case Control::RIGHT:
-		loot.move_cursor(Direction::RIGHT);
-		return this;
-	case Control::A:
-		break;
-	case Control::B:
-	case Control::START:
-		close();
-		return this;
-	case Control::SELECT:
-		break;
-	}
-	return nullptr;
-}
-
-void LootMenu::show(Screen &screen, Character *character, std::vector<Item*> items, Callback callback) {
-	LootMenu &menu = get();
-	menu = LootMenu();
+	menu = CharacterMenu();
 	menu.add_function(callback);
 	menu.create();
-
+	menu.loot_mode = true;
+	menu.loot_tile_x = tile_x;
+	menu.loot_tile_y = tile_y;
 	menu.character = character;
 
 	int x = menu.get_x() + 0;
@@ -1071,12 +882,32 @@ void LootMenu::show(Screen &screen, Character *character, std::vector<Item*> ite
 
 	screen.add_component(menu);
 
-	menu.loot.set_items(items);
+	menu.loot.set_items(tile_x, tile_y);
 
+	menu.inventory.set_cursor(0);
 	menu.loot.set_cursor(0);
 }
 
-void LootMenu::display_info(Item item) {
+void CharacterMenu::refresh_stats() {
+	CharacterMenu &menu = get();
+	menu.stats_panel.refresh(menu.character);
+	Overlay::refresh(*menu.get_screen(), menu.character);
+}
+
+void CharacterMenu::update_loot_items() {
+	CharacterMenu &menu = get();
+	if (menu.is_loot_mode()) {
+		menu.loot.update_items();
+	}
+}
+
+void CharacterMenu::exit() {
+	get_screen()->remove_component(*this);
+	get_screen()->select_container();
+	call_functions(this);
+}
+
+void CharacterMenu::display_info(Item item) {
 	auto stats = _game.get_lua()->item_stats(item.get_name(), item.get_type());
 	name_area.clear();
 	name_area.push_line(stats.get_string("name", "noname"));
@@ -1085,18 +916,186 @@ void LootMenu::display_info(Item item) {
 	info_area.push_line(stats.get_string("desc", "nodescription"));
 }
 
-
-void LootMenu::close() {
+void CharacterMenu::close() {
 	get_screen()->remove_component(*this);
 	get_screen()->select_container();
 	call_functions(this);
 }
 
-
-void LootMenu::update_buttons() {
+void CharacterMenu::update_loot_buttons() {
 	inventory.update_items(character);
 	loot.update_items();
 }
+
+
+
+
+
+
+
+
+
+
+
+Loot::Loot(int x, int y) {
+	set_position(x, y);
+	set_dimensions(button_size * 2, (button_size * 4) + (button_size * 2));
+}
+
+Loot::~Loot() {}
+
+void Loot::create() {
+	buttons = std::vector<ItemButton>(loot_width * loot_height + 1);
+	int k = 0;
+	for (int i = 0; i < loot_height; i++) {
+		for (int j = 0; j < loot_width; j++) {
+			int x = get_x() + j * button_size;
+			int y = get_y() + i * button_size;
+			int w = button_size - 1;
+			int h = button_size - 1;
+			buttons[k] = ItemButton("", x, y, w, h, [&](Component* c) 
+			{
+				bool rval = false;
+				ItemButton *b = dynamic_cast<ItemButton*>(c);
+				std::string item_code = b->get_item().get_code();
+				if (item_code != "") {
+					CharacterMenu *menu = dynamic_cast<CharacterMenu*>(get_parent());
+					std::string character_name = menu->get_character()->get_name();
+					rval = _game.get_lua()->loot_item(item_code, character_name);
+					if (rval) {
+						b->set_item(Item());
+					}
+					menu->update_loot_buttons();
+					menu->display_info(b->get_item());
+				}
+				else 
+					Log("Empty slot");
+				return rval;
+			});
+
+			buttons[k].create();
+			add_component(buttons[k]);
+			k++;
+		}
+	}
+	{
+		int w = get_width();
+		int h = button_size - 1;
+		int x = get_x();
+		int y = buttons[k - 1].get_y() + button_size;
+		buttons[k] = ItemButton("Leave", x, y, w, h, [&](Component*) {
+			CharacterMenu *menu = dynamic_cast<CharacterMenu*>(get_parent());
+			menu->close();
+			return true;
+		});
+		buttons[k].create();
+		add_component(buttons[k]);
+		k++;
+	}
+}
+
+Component *Loot::on_key_pressed(sf::Event &event) {
+	Component *interacted = Component::on_key_pressed(event);
+	if (interacted) {
+		return interacted;
+	}
+	switch (InputHandler::get_input(event)) {
+	case Control::UP:
+		move_cursor(Direction::UP);
+		return this;
+	case Control::DOWN:
+		move_cursor(Direction::DOWN);
+		return this;
+	case Control::LEFT:
+		move_cursor(Direction::LEFT);
+		return this;
+	case Control::RIGHT:
+		move_cursor(Direction::RIGHT);
+		return this;
+	}
+	return nullptr;
+}
+
+void Loot::set_cursor(int i) {
+	get_screen()->select(buttons[i]);
+	cursor = i;
+
+	Item item = buttons[i].get_item();
+	CharacterMenu &menu = CharacterMenu::get();
+	menu.display_info(item);
+}
+
+void Loot::move_cursor(Direction direction) {
+	int inventory_size = loot_width * loot_height;
+	switch (direction) {
+	case Direction::UP:
+		if (cursor < loot_width)
+			set_cursor((int)buttons.size() - 1);
+		else if (cursor < inventory_size)
+			set_cursor(cursor - loot_width);
+		else
+			set_cursor(cursor - 1);
+		break;
+	case Direction::DOWN:
+		if (cursor == buttons.size() - 1)
+			set_cursor(0);
+		else if (cursor >= inventory_size - 1)
+			set_cursor(cursor + 1);
+		else
+			set_cursor(cursor + loot_width);
+		break;
+	case Direction::LEFT:
+		if (cursor % loot_width == 0) {
+			CharacterMenu::get().get_inventory().set_cursor(cursor + (loot_width - 1));
+		}
+		else {
+			if (cursor == 0)
+				set_cursor((int)buttons.size() - 1);
+			else
+				set_cursor(cursor - 1);
+		}
+		break;
+	case Direction::RIGHT:
+		if (cursor % loot_width == loot_width - 1) {
+			CharacterMenu::get().get_inventory().set_cursor(cursor - (loot_width - 1));
+		}
+		else {
+			if (cursor == buttons.size() - 1)
+				set_cursor(0);
+			else
+				set_cursor(cursor + 1);
+		}
+		break;
+	}
+}
+
+void Loot::set_items(int tile_x, int tile_y) {
+	GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+	std::vector<Item*> items = screen->get_items_on_tile(tile_x, tile_y);
+
+	size_t limit = std::min(items.size(), buttons.size() - 1);
+	for (size_t i = 0; i < limit; i++) {
+		ItemButton &button = buttons[i];
+		Item *item = items[i];
+		button.set_item(*item);
+	}
+}
+
+void Loot::update_items() {
+	for (auto it = buttons.begin(); it != buttons.end() - 1; ++it) {
+		if ((*it).get_item().get_code() == "") {
+			for (auto next = it + 1; next != buttons.end(); ++next) {
+				if ((*next).get_item().get_code() != "") {
+					(*it).set_item((*next).get_item());
+					(*next).set_item(Item());
+					break;
+				}
+			}
+		}
+	}
+}
+
+
 
 
 

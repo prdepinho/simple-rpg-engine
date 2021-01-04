@@ -481,10 +481,14 @@ void GameScreen::control_loot(int tile_x, int tile_y) {
 	std::vector<Item*> items_on_tile = get_items_on_tile(tile_x, tile_y);
 	if (items_on_tile.size() > 0) {
 		block_input = true;
-		LootMenu::show(*this, player_character, items_on_tile, [&](Component*) {
+		CharacterMenu::show_loot(*this, player_character, tile_x, tile_y, [&](Component*) {
 			block_input = false;
 			return true;
 		});
+		// LootMenu::show(*this, player_character, items_on_tile, [&](Component*) {
+		// 	block_input = false;
+		// 	return true;
+		// });
 	}
 }
 
