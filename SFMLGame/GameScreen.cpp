@@ -1017,30 +1017,39 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		switch (event.key.code) {
 		case sf::Keyboard::Num1:
 			player_character->loop_animation("stand");
+			log_box.push_line("1");
 			break;
 		case sf::Keyboard::Num2:
 			player_character->loop_animation("walk");
+			log_box.push_line("2");
 			break;
 		case sf::Keyboard::Num3:
 			player_character->start_animation("attack");
+			log_box.push_line("3");
 			break;
 		case sf::Keyboard::Num4:
 			player_character->start_animation("use");
+			log_box.push_line("4");
 			break;
 		case sf::Keyboard::Num5:
 			player_character->start_animation("cast");
+			log_box.push_line("5");
 			break;
 		case sf::Keyboard::Num6:
 			player_character->start_animation("hurt");
+			log_box.push_line("6");
 			break;
 		case sf::Keyboard::Num7:
 			player_character->loop_animation("down");
+			log_box.push_line("7");
 			break;
 		case sf::Keyboard::Num8:
 			player_character->loop_animation("dead");
+			log_box.push_line("8");
 			break;
 		case sf::Keyboard::Num9:
 			player_character->loop_animation("fear");
+			log_box.push_line("9");
 			break;
 
 		case sf::Keyboard::Tilde:
@@ -2152,35 +2161,32 @@ bool GameScreen::has_ammo(Character &character) {
 }
 
 void GameScreen::select_tile_to_shoot() {
-	// if equipped with ranged weapon:
-	// if (is_equipped_with_ranged_weapon(*player_character)) {
-		//	if target_character == nullptr
-		if (target == nullptr) {
-			//    select target
-			auto center = character_position(*player_character);
-			int range_radius = equipped_weapon_range(*player_character);
-			int effect_radius = 0;
-			select_tile(center, range_radius, effect_radius, [&](sf::Vector2i center, std::vector<sf::Vector2i> &selected) {
-				for (auto tile : selected) {
-					// Character *character = get_character_on_tile(tile.x, tile.y);
-					Character *character = get_live_character_on_tile(tile.x, tile.y);
-					if (character) {
-						target_character(*character);
-						schedule_character_attack(*player_character, *target);
-						return true;
-					}
+	if (target == nullptr) {
+		//    select target
+		auto center = character_position(*player_character);
+		int range_radius = equipped_weapon_range(*player_character);
+		int effect_radius = 0;
+		select_tile(center, range_radius, effect_radius, [&](sf::Vector2i center, std::vector<sf::Vector2i> &selected) {
+			for (auto tile : selected) {
+				Character *character = get_live_character_on_tile(tile.x, tile.y);
+				if (character) {
+					target_character(*character);
+					schedule_character_attack(*player_character, *target);
+					return true;
 				}
-				return false;
-			});
-		}
-		//  else
-		else {
+			}
+			return false;
+		});
+	}
+	//  else
+	else {
+		if (is_in_range(*player_character, *target)) {
 			schedule_character_attack(*player_character, *target);
 		}
-	// }
-	// else {
-	// 	Log("Is not equipped with ranged weapon");
-	// }
+		else {
+			Log("Is out of range.");
+		}
+	}
 }
 
 void GameScreen::select_tile_to_attack() {

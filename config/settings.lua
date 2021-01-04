@@ -26,6 +26,8 @@ turns_per_second = 5
 music_volume = 15
 sound_volume = 15
 
+log_box_history_size = 5
+
 
 text_box_speed = 50  -- letters per seconds
 text_box_lines = 3   -- lines per text box

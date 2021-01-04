@@ -223,7 +223,7 @@ void CharacterEditPanel::create() {
 		x = buttons[i-1].get_x() + buttons[i-1].get_width() + margin * 4;
 		y = name_label.get_y() + name_label.get_height() + margin;
 		w = 120;
-		text_area = TextArea(x, y, w, lines_per_page, 20);
+		text_area = TextArea(x, y, w, lines_per_page);
 		text_area.create();
 		text_area.push_line("Character creation.");
 		add_component(text_area);

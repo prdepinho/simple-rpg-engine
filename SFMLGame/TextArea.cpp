@@ -3,9 +3,8 @@
 #include "Resources.h"
 
 
-TextArea::TextArea(int x, int y, int w, int lines_per_page, int max_lines) {
+TextArea::TextArea(int x, int y, int w, int lines_per_page) {
 	visible_lines = lines_per_page;
-	history_size = max_lines;
 	set_position(x, y);
 	set_dimensions(w, 0);
 }
@@ -14,7 +13,7 @@ TextArea::~TextArea() {}
 
 void TextArea::create() {
 	{
-		history = std::vector<std::string>(history_size, "");
+		history = std::vector<std::string>();
 		lines = std::vector<Font>(visible_lines);
 		for (Font &font : lines) {
 			font.set_texture(Resources::get_texture("gui"));
@@ -50,12 +49,17 @@ void TextArea::draw(sf::RenderTarget & target, sf::RenderStates states) const {
 }
 
 void TextArea::update_text() {
-	for (int i = 0; i < visible_lines; i++) {
+	if (history.size() == 0)
+		return;
+
+	int limit = current_line < (int)lines.size() ? current_line : (int)lines.size();
+	for (int i = 1; i <= limit; i++) {
+		int log_index = (int) lines.size() - i;
 		int x = get_x() + border;
-		int y = get_y() + get_height() - (lines[i].line_height() * (i + 1)) - border;
-		int index = (current_line - 1 - i < 0) ? (history_size + (current_line - 1 - i)) : (current_line - 1 - i);
-		std::string str = history[index];
-		lines[i].draw_line(x, y, str, sf::Color::Black);
+		int y = get_y() + get_height() - (lines[log_index].line_height() * (i)) - border;
+		int history_index = current_line - i;
+		std::string str = history[history_index];
+		lines[log_index].draw_line(x, y, str, sf::Color::Black);
 	}
 }
 
@@ -63,8 +67,7 @@ void TextArea::push_line(std::string text) {
 	scroll_to_bottom();
 	std::vector<std::string> split_lines = lines[0].split_lines(text, get_width() - (border * 2));
 	for (std::string line : split_lines) {
-		current_line %= history_size;
-		history[current_line] = line;
+		history.push_back(line);
 		current_line++;
 		total_lines++;
 	}
@@ -72,7 +75,7 @@ void TextArea::push_line(std::string text) {
 }
 
 void TextArea::clear() {
-	history = std::vector<std::string>(history_size, "");
+	history = std::vector<std::string>();
 	current_line = 0;
 	total_lines = 0;
 	for (int i = 0; i < visible_lines; i++) {
@@ -83,6 +86,8 @@ void TextArea::clear() {
 }
 
 void TextArea::scroll_up(int line_count) {
+	if (current_line <= (int)lines.size())
+		return;
 	current_line = current_line > 0 ? current_line - 1 : current_line;
 	update_text();
 }

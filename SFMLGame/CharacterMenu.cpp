@@ -783,8 +783,7 @@ void CharacterMenu::show(Screen &screen, Character *character, Callback callback
 	y = menu.margin * 3 + menu.get_y() + menu.get_height() - 9 * 7;
 	int w = menu.get_width() - 70;
 	int lines = 1;
-	int max_lines = 1;
-	menu.name_area = TextArea(x, y, w, lines, max_lines);
+	menu.name_area = TextArea(x, y, w, lines);
 	menu.name_area.create();
 	menu.add_component(menu.name_area);
 
@@ -792,8 +791,7 @@ void CharacterMenu::show(Screen &screen, Character *character, Callback callback
 	y = menu.margin * 2 + menu.get_y() + menu.get_height() - 8 * 5;
 	w = menu.get_width() - 50;
 	lines = 4;
-	max_lines = 10;
-	menu.info_area = TextArea(x, y, w, lines, max_lines);
+	menu.info_area = TextArea(x, y, w, lines);
 	menu.info_area.create();
 	menu.add_component(menu.info_area);
 
@@ -1058,8 +1056,7 @@ void LootMenu::show(Screen &screen, Character *character, std::vector<Item*> ite
 	y = menu.margin * 3 + menu.get_y() + menu.get_height() - 9 * 7;
 	int w = menu.get_width() - 70;
 	int lines = 1;
-	int max_lines = 1;
-	menu.name_area = TextArea(x, y, w, lines, max_lines);
+	menu.name_area = TextArea(x, y, w, lines);
 	menu.name_area.create();
 	menu.add_component(menu.name_area);
 
@@ -1067,8 +1064,7 @@ void LootMenu::show(Screen &screen, Character *character, std::vector<Item*> ite
 	y = menu.margin * 2 + menu.get_y() + menu.get_height() - 8 * 5;
 	w = menu.get_width() - 50;
 	lines = 4;
-	max_lines = 10;
-	menu.info_area = TextArea(x, y, w, lines, max_lines);
+	menu.info_area = TextArea(x, y, w, lines);
 	menu.info_area.create();
 	menu.add_component(menu.info_area);
 

@@ -4,7 +4,7 @@
 #include "Resources.h"
 #include "Game.h"
 
-LogBox::LogBox(int lines) : TextArea(0, 0, 0, lines, 100) {}
+LogBox::LogBox(int lines) : TextArea(0, 0, 0, lines) {}
 
 void LogBox::create() {
 	Font font;
