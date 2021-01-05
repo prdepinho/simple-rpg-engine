@@ -105,7 +105,8 @@ function Magic:fireball_blast(caster, center, tiles, targets)
   local base_damage = rules.roll_dice("6d6")
 
   for index, position in ipairs(tiles) do
-    sfml_start_fireworks("fireball_blast", position.x, position.y)
+    sfml_start_mute_fireworks("fireball_blast", position.x, position.y)
+    sfml_play_sound("fire.wav")  -- don't play the sound effect 21 times at once
   end
   
   for index, character_name in ipairs(targets) do

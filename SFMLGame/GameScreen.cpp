@@ -853,13 +853,13 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				break;
 			case Control::A:
 				// do
-				{
-					auto position = character_position(*player_character);
-					interact_character(*player_character, position.x, position.y);
-					player_busy = true;
-				}
-				break;
-			case Control::B: 
+			{
+				auto position = character_position(*player_character);
+				interact_character(*player_character, position.x, position.y);
+				player_busy = true;
+			}
+			break;
+			case Control::B:
 				select_tile_to_shoot();
 				break;
 			case Control::START:
@@ -1997,7 +1997,7 @@ void GameScreen::hide_log() {
 }
 
 
-void GameScreen::start_firework(std::string type, int tile_x, int tile_y) {
+void GameScreen::start_firework(std::string type, int tile_x, int tile_y, bool mute) {
 	sf::Vector2f tile_pix_coords = map.get_tile_pix_coords(tile_x, tile_y);
 
 	Fireworks *fireworks = new Fireworks();
@@ -2008,7 +2008,7 @@ void GameScreen::start_firework(std::string type, int tile_x, int tile_y) {
 	float duration = fireworks->get_duration();
 
 	std::string sound = fireworks->get_sound();
-	if (sound != "")
+	if (sound != "" && !mute)
 		Resources::play_sound(sound);
 
 	EntityEffect *effect = new EntityEffect(duration, fireworks);

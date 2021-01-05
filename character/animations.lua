@@ -109,7 +109,7 @@ local basic_animation = {
   },
   attack = {
     fps = 2 * turns_per_second,
-    frames = { 3, 4 },
+    frames = { 3, 4, 4, 4 },
     activation_frame = 1,
   },
   use = {
