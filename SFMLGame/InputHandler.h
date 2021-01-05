@@ -6,10 +6,14 @@
 
 
 enum class Control {
-	UP,
+	UP,			// d-pad or left stick
 	DOWN,
 	LEFT,
 	RIGHT,
+	RS_UP,		// right stick
+	RS_DOWN,
+	RS_LEFT,
+	RS_RIGHT,
 	A,
 	B,
 	X,
@@ -18,6 +22,8 @@ enum class Control {
 	RB,
 	LT,
 	RT,
+	LS,
+	RS,
 	SELECT,
 	START,
 	OTHER

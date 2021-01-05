@@ -99,6 +99,10 @@ Control InputHandler::_get_joystick_input(sf::Event &event) {
 			return Control::SELECT;
 		case 7:
 			return Control::START;
+		case 8:
+			return Control::LS;
+		case 9:
+			return Control::RS;
 		default:
 			return Control::OTHER;
 		}
@@ -195,6 +199,8 @@ bool InputHandler::_is_joystick_pressed(Control control) {
 	float axispovy = sf::Joystick::getAxisPosition(0, sf::Joystick::PovY);
 	float axisx = sf::Joystick::getAxisPosition(0, sf::Joystick::X);
 	float axisy = sf::Joystick::getAxisPosition(0, sf::Joystick::Y);
+	float axisu = sf::Joystick::getAxisPosition(0, sf::Joystick::U);
+	float axisv = sf::Joystick::getAxisPosition(0, sf::Joystick::V);
 	switch (control) {
 	case Control::UP:
 		if (axispovy > 50)
@@ -220,6 +226,22 @@ bool InputHandler::_is_joystick_pressed(Control control) {
 		else if (axisx > 50)
 			return true;
 		break;
+	case Control::RS_UP:
+		if (axisv <= -50)
+			return true;
+		break;
+	case Control::RS_DOWN:
+		if (axisv > 50)
+			return true;
+		break;
+	case Control::RS_LEFT:
+		if (axisu <= -50)
+			return true;
+		break;
+	case Control::RS_RIGHT:
+		if (axisu > 50)
+			return true;
+		break;
 	case Control::A:
 		return sf::Joystick::isButtonPressed(0, 0);
 	case Control::B:
@@ -236,6 +258,10 @@ bool InputHandler::_is_joystick_pressed(Control control) {
 		return sf::Joystick::isButtonPressed(0, 6);
 	case Control::START:
 		return sf::Joystick::isButtonPressed(0, 7);
+	case Control::LS:
+		return sf::Joystick::isButtonPressed(0, 8);
+	case Control::RS:
+		return sf::Joystick::isButtonPressed(0, 9);
 	default:
 		return false;
 	}

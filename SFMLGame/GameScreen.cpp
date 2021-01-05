@@ -622,6 +622,19 @@ void GameScreen::poll_events(float elapsed_time) {
 			else if (InputHandler::is_input(Control::RIGHT)) {
 				control_move_right();
 			}
+				
+			if (InputHandler::is_input(Control::RS_UP)) {
+				control_pan_up();
+			}
+			else if (InputHandler::is_input(Control::RS_DOWN)) {
+				control_pan_down();
+			}
+			else if (InputHandler::is_input(Control::RS_LEFT)) {
+				control_pan_left();
+			}
+			else if (InputHandler::is_input(Control::RS_RIGHT)) {
+				control_pan_right();
+			}
 		}
 
 #if false
@@ -893,6 +906,10 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				log_box_scrolling_up = true;
 				log_box.scroll_up(1);
 				scrolling_count = 0.f;
+				break;
+			case Control::RS:
+				camera_follow = !camera_follow;
+				Log("Camera follow: %s", (camera_follow ? "true" : "false"));
 				break;
 			}
 

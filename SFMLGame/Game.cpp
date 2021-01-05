@@ -1232,6 +1232,12 @@ public:
 		return 1;
 	}
 
+	static int sfml_update_fog_of_war(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		screen->get_map().get_fog_of_war().update_fog(screen->get_player_character()->get_field_of_vision());
+		return 1;
+	}
+
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -1308,6 +1314,7 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_push_character_to_top", LuaFunction::sfml_push_character_to_top);
 	lua_register(lua.get_state(), "sfml_is_fog_of_war", LuaFunction::sfml_is_fog_of_war);
 	lua_register(lua.get_state(), "sfml_set_fog_of_war", LuaFunction::sfml_set_fog_of_war);
+	lua_register(lua.get_state(), "sfml_update_fog_of_war", LuaFunction::sfml_update_fog_of_war);
 
 
 }

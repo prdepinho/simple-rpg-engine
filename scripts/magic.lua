@@ -593,6 +593,8 @@ function Magic:true_seeing_end(character)
       end
     end
 
+    sfml_update_fog_of_war()
+
   end
 end
 
