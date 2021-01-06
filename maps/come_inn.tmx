@@ -161,7 +161,7 @@
 </data>
  </layer>
  <objectgroup id="8" name="objects">
-  <object id="1" name="front_door" x="163.903" y="273.784" width="9" height="10.6364">
+  <object id="1" name="front_door" x="163.488" y="275.238" width="9" height="10.6364">
    <properties>
     <property name="destiny" value="polis:come_inn_door"/>
     <property name="key" value=""/>
@@ -171,7 +171,7 @@
     <property name="type" value="door"/>
    </properties>
   </object>
-  <object id="2" name="chest" x="209.667" y="159.347" width="12.5" height="13.375">
+  <object id="2" name="chest" x="209.459" y="161.216" width="12.5" height="13.375">
    <properties>
     <property name="item1" value="se_house_key:item:key"/>
     <property name="key" value=""/>

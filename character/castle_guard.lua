@@ -35,7 +35,7 @@ function CastleGuard:create()
   stats.inventory[1] = {code = self.name .. "_halberd", name = "halberd", type = "weapon"}
   stats.inventory[2] = {code = self.name .. "_armor", name = "cuirass", type = "armor"}
   stats.weapon = stats.inventory[1]
-  stats.armor = stats.inventory[3]
+  stats.armor = stats.inventory[2]
 end
 
 function CastleGuard:on_interact(interactor_name)

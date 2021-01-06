@@ -88,7 +88,7 @@ function Map:set_objects()
                   end
 
                   if object.properties.destiny then
-                    local code = object.properties.destiny .. '_unlocked'
+                    local code = string.gsub(object.properties.destiny, ':', '__') .. '_unlocked'
                     self.control.data[code] = true
                     print('code: ' .. code .. ': ' .. tostring(self.control.data[code]))
                   end
@@ -291,7 +291,7 @@ function Map:enter()
     if object.properties.type == 'door' then
 
       if object.properties.locked then
-        local code = self.name .. ':' .. object_name .. '_unlocked'
+        local code = self.name .. '__' .. object_name .. '_unlocked'
         print('code: ' .. code .. ': ' .. tostring(self.control.data[code]))
         if self.control.data[code] then
           object.properties.locked = false

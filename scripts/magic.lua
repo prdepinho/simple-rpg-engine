@@ -767,7 +767,7 @@ function Magic:lockpick(caster, center, tiles, targets)
         end
 
         if object.properties.destiny then
-          local code = object.properties.destiny .. '_unlocked'
+          local code = string.gsub(object.properties.destiny, ':', '__') .. '_unlocked'
           self.control.data[code] = true
           print('code: ' .. code .. ': ' .. tostring(self.control.data[code]))
         end
