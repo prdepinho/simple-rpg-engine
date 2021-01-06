@@ -87,9 +87,11 @@ function Map:set_objects()
                     sfml_set_obstacle(false, coords.x, coords.y)
                   end
 
-                  local code = object.properties.destiny .. '_unlocked'
-                  self.control.data[code] = true
-                  print('code: ' .. code .. ': ' .. tostring(self.control.data[code]))
+                  if object.properties.destiny then
+                    local code = object.properties.destiny .. '_unlocked'
+                    self.control.data[code] = true
+                    print('code: ' .. code .. ': ' .. tostring(self.control.data[code]))
+                  end
 
                 else
                   sfml_play_sound("boop.wav")
