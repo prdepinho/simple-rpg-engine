@@ -544,7 +544,7 @@ void Inventory::create() {
 	{
 		y = buttons[k - 1].get_y() + button_size;
 		buttons[k] = ItemButton("Exit", x, y, w, h, [&](Component*) {
-			ChoicePanel::show("Are you sure you want to exit?", *get_screen(), 
+			ChoicePanel::show("Are you sure you want to quit the game?", *get_screen(), 
 				[&]() {
 					Log("Yes.");
 					_game.get_lua()->reset_data();
@@ -633,7 +633,6 @@ void Inventory::move_cursor(Direction direction) {
 		break;
 	case Direction::LEFT:
 		if(CharacterMenu::get().is_loot_mode() && state == State::NORMAL && cursor < inventory_size && cursor % inventory_width == 0) {
-			Log("Cursor: %d -> %d", cursor, cursor + (inventory_width - 1));;
 			CharacterMenu::get().get_loot().set_cursor(cursor + (inventory_width - 1));
 		}
 		else {
@@ -645,7 +644,6 @@ void Inventory::move_cursor(Direction direction) {
 		break;
 	case Direction::RIGHT:
 		if (CharacterMenu::get().is_loot_mode() && cursor < inventory_size && state == State::NORMAL && cursor % inventory_width == inventory_width - 1) {
-			Log("Cursor: %d -> %d", cursor, cursor - (inventory_width - 1));;
 			CharacterMenu::get().get_loot().set_cursor(cursor - (inventory_width - 1));
 		}
 		else {
@@ -738,8 +736,6 @@ void CharacterMenu::create() {
 }
 
 Component *CharacterMenu::on_key_pressed(sf::Event &event) {
-	Log("CharacterMenu on key pressed");
-
 	Component *interacted = nullptr;
 	if (loot.is_selected()) {
 		interacted = loot.on_key_pressed(event);
@@ -1109,7 +1105,7 @@ void Loot::update_items() {
 
 Overlay::Overlay() {
 	set_position(0, 0);
-	set_dimensions(111, 32 + 2);
+	set_dimensions(60, 32 + 2);
 }
 
 Overlay::~Overlay() {
@@ -1178,7 +1174,7 @@ void Overlay::refresh(Screen &screen, Character *character) {
 					int x = overlay.get_x() + overlay.get_width() - 18;
 					int y = overlay.get_y() + margin;
 					if (quantity > 0)
-						overlay.selected_item_quantity.draw_line(x, y + 16, std::to_string(quantity), sf::Color::Black);
+						overlay.selected_item_quantity.draw_line(x, y + 8, std::to_string(quantity), sf::Color::White);
 					else
 						overlay.selected_item_quantity.draw_line(x, y + 16, "", sf::Color::Black);
 				}

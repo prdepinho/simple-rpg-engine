@@ -28,7 +28,6 @@ function TownElf:on_interact(interactor_name)
         go_to = "end",
         callback = function()
           self.data.interacted = true 
-          self.control:level_up('player')
         end
       },
       on_end = function()

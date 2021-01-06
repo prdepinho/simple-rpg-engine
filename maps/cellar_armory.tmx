@@ -84,7 +84,7 @@
 2,2,2,2,2,2,2,2,2
 </data>
  </layer>
- <layer id="7" name="invisible" width="9" height="9" visible="0">
+ <layer id="7" name="invisible" width="9" height="9">
   <data encoding="csv">
 4,4,4,4,4,4,4,4,4,
 4,0,0,0,0,0,0,0,4,

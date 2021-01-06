@@ -710,7 +710,11 @@ function Magic:cloak(caster, center, tiles, targets)
 
       local observed = false
       for index, name in ipairs(in_sight) do
-        observed = observerd or self.control.characters[name].data.enemy
+        local data = self.control.characters[name].data
+        if data.enemy and not data.stats.status.dead then
+          observed = observed or self.control:can_see(name, caster)
+          -- observed = observerd or self.control.characters[name].data.enemy
+        end
       end
 
       if observed then
@@ -753,6 +757,7 @@ function Magic:lockpick(caster, center, tiles, targets)
         sfml_play_sound("plim.wav")
         sfml_text_box("(Dex ".. object.properties.lockpick_skill ..") You used a " .. rules.item.lockpick.name .. '.')
         sfml_start_animation(caster, 'use')
+
         object.properties.locked = false
 
         if object.properties.type == 'door' then
@@ -760,6 +765,11 @@ function Magic:lockpick(caster, center, tiles, targets)
             sfml_set_obstacle(false, coords.x, coords.y)
           end
         end
+
+        local code = object.properties.destiny .. '_unlocked'
+        self.control.data[code] = true
+        print('code: ' .. code .. ': ' .. tostring(self.control.data[code]))
+
 
       else
         sfml_text_box("You do not have sufficient skill to unlock this (Dex ".. object.properties.lockpick_skill ..")") 

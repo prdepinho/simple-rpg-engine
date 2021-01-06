@@ -9,7 +9,7 @@ local Character = require "character"
 local Map = require "map"
 
 
-local start_game_map = 'silva'
+local start_game_map = 'temple'
 -- local start_game_map = 'thieves_guild'
 
 local Control = {
@@ -1223,6 +1223,7 @@ function Control:change_map(new_map)
 
   self.map = self.map_module:new(nil, self)
   self.map.data = self.loaded_map_data[self.current_map]
+  self.map.name = self.current_map
   print('Load module: ' .. self.current_map)
 end
 

@@ -43,7 +43,7 @@
 165,0,0,0,0,0,0,165,165,165,
 165,0,0,0,0,0,0,181,181,165,
 165,0,0,0,0,0,0,0,181,165,
-165,229,0,0,0,0,254,0,229,165,
+165,229,0,0,0,0,0,0,229,165,
 165,165,165,165,0,0,165,165,165,165,
 181,181,181,181,0,0,181,181,181,181
 </data>
@@ -105,18 +105,6 @@
 </data>
  </layer>
  <objectgroup id="8" name="objects">
-  <object id="1" name="player" x="103.773" y="106.195">
-   <properties>
-    <property name="type" value="player"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="2" name="priestess" x="56.0782" y="104.145">
-   <properties>
-    <property name="type" value="priestess"/>
-   </properties>
-   <point/>
-  </object>
   <object id="3" name="entrance" x="66.2256" y="145.408" width="27.0271" height="11">
    <properties>
     <property name="destiny" value="overworld:silva"/>
@@ -125,15 +113,7 @@
     <property name="type" value="door"/>
    </properties>
   </object>
-  <object id="4" name="olive" x="65.7662" y="50.1164" width="12.2962" height="12.4825"/>
   <object id="6" name="imp_wrap" x="113.568" y="49.6136" width="11.75" height="11.75"/>
   <object id="7" name="elf_wrap" x="129.318" y="50.3636" width="12" height="11"/>
-  <object id="8" name="note" x="98.5" y="113.75" width="10.75" height="11.5">
-   <properties>
-    <property name="description" value="You find a note on the floor."/>
-    <property name="text" value="A witch came to the village looking for a gas that comes out of a well under the temple, that the folk use to contect with the gods. She used the gas to power her spells and tested her new powers on the strawberry farms. Some strawberries became monsters and killed a couple of farmers. The village pressed the witch, who was becoming even more unhinged in virtue of the exposion to the gas, and mobbed against her. She transformed the whole farm into monsters and the village was destroyed. The gods that the village praised became angry and turned the dead into ghosts."/>
-    <property name="type" value="note"/>
-   </properties>
-  </object>
  </objectgroup>
 </map>

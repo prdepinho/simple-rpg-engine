@@ -5,6 +5,7 @@ local rules = require "rules"
 local Map = {
   control = {},
   data = {},
+  name = '',
 }
 
 function Map:new(o, control)
@@ -85,6 +86,10 @@ function Map:set_objects()
                   for index, coords in ipairs(object.coords) do
                     sfml_set_obstacle(false, coords.x, coords.y)
                   end
+
+                  local code = object.properties.destiny .. '_unlocked'
+                  self.control.data[code] = true
+                  print('code: ' .. code .. ': ' .. tostring(self.control.data[code]))
 
                 else
                   sfml_play_sound("boop.wav")
@@ -217,6 +222,52 @@ function Map:set_objects()
             }
             sfml_dialogue(dialogue)
           end
+
+        elseif object.properties.type == 'idol' then
+          if event == 'interact' and character_name == 'player' then
+            local log_visible = sfml_is_log_visible()
+            if log_visible then
+              sfml_show_log(false)
+            end
+            local dialogue = {
+              start = {
+                text = object.properties.description or "An idol of Bastet stands before you. You may give an offering.",
+                options = {
+                  { text = "Leave it.", go_to = 'end' },
+                }
+              },
+              on_end = function()
+                if log_visible then
+                  sfml_show_log(true)
+                end
+              end
+            }
+            local index = self.control:find_in_inventory_by_name('player', object.properties.offering)
+            if index then
+              table.insert(dialogue.start.options, { text = "Give your offering.", go_to = 'offering' })
+              dialogue.offering = {
+                text = object.properties.response or "Your offering is pleasing to Bastet. She grants you her boon.",
+                go_to = 'end',
+                callback = function()
+                  self.control:inventory_stack_pop(index, 'player', 1)
+                  self.control:add_item_to_inventory('player', self.control:next_item_code('boon'), object.properties.boon, 'spell', 3)
+                  if not self.control.data[object.properties.code] then
+                    self.control.data[object.properties.code] = true
+                    self.control.data.idols_visited = self.control.data.idols_visited or 0
+                    self.control.data.idols_visited = self.control.data.idols_visited + 1
+                  end
+                end
+              }
+            else
+              dialogue.start.options = nil
+              dialogue.start.go_to = 'next'
+              dialogue.next = {
+                text = "You don't have the proper offering.",
+                go_to = 'end'
+              }
+            end
+            sfml_illustrated_dialogue(dialogue)
+          end
         end
       end
 
@@ -236,6 +287,18 @@ function Map:enter()
   for object_name, object in pairs(self.data.objects) do
 
     if object.properties.type == 'door' then
+
+      if object.properties.locked then
+        local code = self.name .. ':' .. object_name .. '_unlocked'
+        print('code: ' .. code .. ': ' .. tostring(self.control.data[code]))
+        if self.control.data[code] then
+          object.properties.locked = false
+          for index, coords in ipairs(object.coords) do
+            sfml_set_obstacle(false, coords.x, coords.y)
+          end
+        end
+      end
+
       for index, coords in ipairs(object.coords) do
         sfml_set_obstacle(object.properties.locked, coords.x, coords.y)
         sfml_set_invisible(not object.properties.open and object.properties.invisible, coords.x, coords.y)

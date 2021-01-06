@@ -54,6 +54,33 @@ function HouseB:trigger(event, x, y, character_name, object_name)
   end
 end
 
+function HouseB:hidden_oils(event, x, y, character_name, object_name)
+  print('hidden oils')
+  if character_name == 'player' then
+    if event == 'interact' then
+      if self.control.characters.player.data.stats.ability.wis >= 13 then
+        if not self.control.data.took_oil_from_dolls then
+          local dialogue = {
+            start = {
+              text = "(Wis 13) You sense a pleasant smell coming from the dolls.",
+              go_to = 'found',
+            },
+            found = {
+              text = "You found some urns of aromatic oil hidden among the dolls. Most are dry, but you manage to gather enough to fill one.",
+              go_to = 'end',
+              callback = function()
+                self.control.data.took_oil_from_dolls = true
+                self.control:add_item_to_inventory('player', self.control:next_item_code(), 'aromatic_oil', 'item', 1)
+              end
+            }
+          }
+          sfml_dialogue(dialogue)
+        end
+      end
+    end
+  end
+end
+
 return HouseB
 
 

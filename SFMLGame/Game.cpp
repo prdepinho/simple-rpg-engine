@@ -1001,6 +1001,23 @@ public:
 		return 1;
 	}
 
+	static int sfml_show_log(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		bool show = lua_toboolean(state, -1);
+		if (show)
+			screen->show_log();
+		else
+			screen->hide_log();
+		return 1;
+	}
+
+	static int sfml_is_log_visible(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		bool visible = screen->get_log_box().is_visible();
+		lua_pushboolean(state, visible);
+		return 1;
+	}
+
 	static int sfml_get_characters_on_tile(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		int tile_x = (int)lua_tointeger(state, -2);
@@ -1290,6 +1307,8 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_cast_magic", LuaFunction::sfml_cast_magic);
 	lua_register(lua.get_state(), "sfml_show_floating_message", LuaFunction::sfml_show_floating_message);
 	lua_register(lua.get_state(), "sfml_push_log", LuaFunction::sfml_push_log);
+	lua_register(lua.get_state(), "sfml_show_log", LuaFunction::sfml_show_log);
+	lua_register(lua.get_state(), "sfml_is_log_visible", LuaFunction::sfml_is_log_visible);
 	lua_register(lua.get_state(), "sfml_get_characters_on_tile", LuaFunction::sfml_get_characters_on_tile);
 	lua_register(lua.get_state(), "sfml_get_live_character_on_tile", LuaFunction::sfml_get_live_character_on_tile);
 	lua_register(lua.get_state(), "sfml_cast_magic_missile", LuaFunction::sfml_cast_magic_missile);

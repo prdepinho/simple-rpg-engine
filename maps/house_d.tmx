@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="17">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="18">
  <properties>
   <property name="for_of_war" type="bool" value="true"/>
   <property name="music" value="sakura.wav"/>
@@ -50,9 +50,9 @@
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,204,205,0,247,248,215,216,0,0,0,204,205,0,0,
-0,245,220,221,0,115,115,231,232,0,0,0,220,221,99,0,
-0,0,0,0,0,115,233,0,0,0,0,0,0,0,0,0,
+0,0,204,205,0,126,127,215,216,0,0,0,247,248,0,0,
+0,245,220,221,0,142,143,231,232,115,115,0,99,99,100,0,
+0,0,0,0,0,115,233,0,0,0,0,0,99,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,145,0,201,201,0,
 0,0,0,188,0,0,0,0,0,0,188,0,0,217,217,0,
 0,0,145,0,0,0,0,145,0,0,0,0,0,0,0,0,
@@ -249,7 +249,7 @@
    </properties>
    <point/>
   </object>
-  <object id="15" name="dead_villager" x="230.75" y="75">
+  <object id="15" name="dead_villager" x="230.25" y="217.75">
    <properties>
     <property name="type" value="dead_villager"/>
    </properties>
@@ -260,6 +260,16 @@
     <property name="description" value="You find a Shipment Notice."/>
     <property name="text" value="Mr. Takamine, There has been a delay so I will send you the strawberry shipment next week. I was moving the boxes when I see Mss. Minora in the storehouse. She was looking very suspicious, opening the boxes with a crowbar. When I asked her what she was doing she screamed like a wild beast and lashed onto me. I thought she was going to smite me with thunder, but she ran away. I voiced my concern with the elder, and he asured me he was going to speak to Mss. Minora. Now I have to clean the mess she's done. That woman scares me. If this keeps happening I'm taking my family from the village."/>
     <property name="type" value="note"/>
+   </properties>
+  </object>
+  <object id="17" name="box" x="224.75" y="48.3125" width="12.5" height="13.375">
+   <properties>
+    <property name="item1" value="hidden_oil:item:aromatic_oil:1"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="open_delta_x" type="int" value="1"/>
+    <property name="open_delta_y" type="int" value="0"/>
+    <property name="type" value="chest"/>
    </properties>
   </object>
  </objectgroup>

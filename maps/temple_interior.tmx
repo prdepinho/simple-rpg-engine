@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="2">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="3">
  <properties>
   <property name="for_of_war" type="bool" value="false"/>
   <property name="music" value=""/>
@@ -65,10 +65,10 @@
 0,0,0,0,0,0,0,0,25,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,113,0,0,0,0,0,0,0,0,113,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,73,74,75,76,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,113,0,0,89,90,91,92,0,0,113,0,0,0,0,0,
 0,0,0,0,0,0,0,0,105,106,107,108,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,121,122,123,124,0,0,0,0,0,0,0,0,
 0,0,0,0,0,113,0,0,0,0,0,0,0,0,113,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -89,7 +89,7 @@
 0,0,0,0,0,97,0,0,25,26,27,28,0,0,97,0,0,0,0,0,
 0,0,0,0,0,81,0,0,41,42,43,44,0,0,81,0,0,0,0,0,
 0,0,0,0,0,97,0,0,57,58,59,60,0,0,97,0,0,0,0,0,
-0,0,0,0,0,97,0,0,0,0,0,0,0,0,97,0,0,0,0,0,
+0,0,0,0,0,97,0,0,73,74,75,76,0,0,97,0,0,0,0,0,
 0,0,0,0,0,81,0,0,0,0,0,0,0,0,81,0,0,0,0,0,
 0,0,0,0,0,97,0,0,0,0,0,0,0,0,97,0,0,0,0,0,
 0,0,0,0,0,97,0,0,0,0,0,0,0,0,97,0,0,0,0,0,
@@ -137,9 +137,9 @@
 0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,
 0,0,2,0,0,2,0,0,0,0,0,0,0,0,2,0,0,2,0,0,
 0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,
-0,0,2,0,0,0,0,0,2,2,2,2,0,0,0,0,0,2,0,0,
-0,0,2,0,0,2,0,0,2,2,2,2,0,0,2,0,0,2,0,0,
-0,0,2,0,0,0,0,0,2,2,2,2,0,0,0,0,0,2,0,0,
+0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,
+0,0,2,0,0,2,0,0,0,2,2,0,0,0,2,0,0,2,0,0,
+0,0,2,0,0,0,0,0,0,2,2,0,0,0,0,0,0,2,0,0,
 0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,
 0,0,2,0,0,2,0,0,0,0,0,0,0,0,2,0,0,2,0,0,
 0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,
@@ -181,6 +181,16 @@
     <property name="key" value=""/>
     <property name="locked" type="bool" value="false"/>
     <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="2" name="idol" x="145.5" y="161.5" width="29" height="26.5">
+   <properties>
+    <property name="boon" value="true_seeing"/>
+    <property name="code" value="bastet_eye_of_ra"/>
+    <property name="description" value="The great idol of Bastet, Eye of Ra. You may offer a looking glass to the altar."/>
+    <property name="offering" value="looking_glass"/>
+    <property name="response" value="Your offering is pleasing to Bastet. She grants you the boon of clear sight."/>
+    <property name="type" value="idol"/>
    </properties>
   </object>
  </objectgroup>

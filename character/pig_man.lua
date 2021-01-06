@@ -5,34 +5,36 @@ local rules = require "rules"
 local animations = require "animations"
 local Character = require "character"
 
-local StrawberryMonster = Character:new()
+local PigMan = Character:new()
 
-function StrawberryMonster:new(o, control)
+function PigMan:new(o, control)
   o = o or Character:new(o, control)
   setmetatable(o, self)
   self.__index = self
   return o
 end
 
-function StrawberryMonster:create()
+function PigMan:create()
   Character.create(self)
-  self:set_skin("strawberry_monster")
-  self.data.enemy = true
+  self:set_skin("pig_man")
+  self.data.enemy = false
   local stats = self.data.stats
-  stats.name = "Strawberry"
+  stats.name = "Pig Man"
   stats.hit_die = "d10"
   rules.set_ability_scores_map(stats, {
-    str = 15,
-    dex = 13,
-    con = 15,
-    int = 6,
-    wis = 10,
-    cha = 6
+    str = 17,
+    dex = 10,
+    con = 16,
+    int = 8,
+    wis = 8,
+    cha = 8
   })
   rules.level_up(self.data.stats)
+  rules.level_up(self.data.stats)
 
-  stats.weapon = { code = self.name .. "_tooth", name = 'strawberry_tooth', type = 'weapon' }
+  stats.inventory[1] = { code = self.name .. "maul", name = "maul", type = "weapon" }
+  stats.weapon = stats.inventory[1]
 end
 
 
-return StrawberryMonster
+return PigMan

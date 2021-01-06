@@ -23,17 +23,6 @@ function Silva:exit()
   Map.exit(self)
 end
 
-function Silva:olive(event, x, y, character_name, object_name)
-  if not self.control.data.created_character then
-    if character_name == 'player' then
-      if event == 'interact' then
-        sfml_show_character_edit(true)
-        self.control.data.created_character = true
-      end
-    end
-  end
-end
-
 function Silva:imp_wrap(event, x, y, character_name, object_name)
   if event == 'interact' and character_name == 'player' then
     self.control.data.imp_ally = true
