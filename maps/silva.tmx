@@ -1,61 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="9">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="10">
  <properties>
-  <property name="for_of_war" type="bool" value="false"/>
-  <property name="music" value="crystal.wav"/>
+  <property name="for_of_war" type="bool" value="true"/>
+  <property name="music" value=""/>
   <property name="vision_radius" type="int" value="5"/>
  </properties>
  <tileset firstgid="1" source="tiled_tileset.tsx"/>
  <layer id="1" name="floor" width="10" height="10">
   <data encoding="csv">
-19,19,19,19,17,19,18,19,17,17,
-19,19,19,19,19,19,19,19,18,18,
-17,19,19,49,49,49,19,19,19,19,
-17,19,19,49,17,49,19,19,19,17,
-18,19,19,49,17,49,19,19,19,17,
-19,17,19,19,19,19,17,19,17,18,
-17,17,18,19,17,19,18,17,17,17,
-18,19,17,17,18,18,17,18,18,18,
-19,19,17,19,17,17,18,17,19,19,
-18,17,17,17,17,18,17,18,18,17
+7,7,7,7,7,7,7,7,7,7,
+7,23,23,23,23,23,23,23,23,7,
+7,39,39,39,39,39,39,39,39,7,
+7,53,53,56,56,56,56,53,53,7,
+7,53,53,53,56,56,53,53,53,23,
+7,53,53,56,56,56,56,53,53,39,
+7,7,7,7,56,56,56,56,56,56,
+7,23,23,7,7,7,7,7,7,7,
+23,39,39,23,23,23,23,23,23,23,
+39,39,39,39,39,39,39,39,39,39
 </data>
  </layer>
  <layer id="2" name="overfloor" width="10" height="10">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,
+0,162,0,0,0,0,0,0,161,0,
+0,178,0,0,0,0,0,0,177,0,
+0,178,0,0,0,0,0,0,177,0,
+0,178,0,0,0,0,0,0,177,0,
+0,178,0,0,0,0,0,0,193,0,
 0,0,0,0,0,0,0,0,0,0,
-0,0,0,242,242,242,0,0,0,0,
-0,0,0,178,0,177,0,0,0,0,
-0,0,0,225,0,225,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0
+0,162,161,0,0,0,0,0,0,0,
+0,178,177,0,0,0,0,0,0,0,
+0,178,177,0,0,0,0,0,0,0
 </data>
  </layer>
  <layer id="3" name="furniture" width="10" height="10">
   <data encoding="csv">
-165,165,165,165,165,165,165,165,165,165,
-165,165,165,181,181,181,165,165,165,165,
-165,165,165,178,0,177,165,181,181,165,
-165,181,181,0,197,0,181,202,200,165,
-165,0,0,0,0,0,0,165,165,165,
-165,0,0,0,0,0,0,181,181,165,
-165,0,0,0,0,0,0,0,181,165,
-165,229,0,0,0,0,0,0,229,165,
-165,165,165,165,0,0,165,165,165,165,
-181,181,181,181,0,0,181,181,181,181
+0,0,0,0,0,0,0,0,0,0,
+0,188,189,0,0,0,0,188,189,0,
+0,204,205,176,25,26,176,204,205,0,
+0,220,221,192,41,42,192,220,221,0,
+0,204,220,208,0,0,208,221,205,0,
+0,220,221,0,0,0,0,220,221,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+188,189,0,0,0,188,189,0,0,0,
+204,205,0,0,0,204,205,0,0,0
 </data>
  </layer>
  <layer id="4" name="ceiling" width="10" height="10">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,165,0,
+0,188,189,0,9,10,0,188,189,0,
+0,204,188,189,25,26,188,189,205,0,
+0,188,204,205,41,42,204,205,221,0,
+0,204,220,221,0,0,220,221,0,0,
+0,220,221,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
@@ -67,9 +67,9 @@
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
+0,188,189,0,0,0,0,188,189,0,
+0,204,205,0,0,0,0,204,205,0,
+0,220,221,0,0,0,0,220,221,0,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
@@ -82,12 +82,12 @@
 2,2,2,2,2,2,2,2,2,2,
 2,2,2,2,2,2,2,2,2,2,
 2,2,2,2,2,2,2,2,2,2,
-2,0,0,2,0,2,0,2,2,2,
-2,0,0,0,0,0,0,2,2,2,
-2,0,0,0,0,0,0,0,2,2,
-2,2,0,0,0,0,0,0,2,2,
 2,2,2,2,0,0,2,2,2,2,
-2,2,2,2,0,0,2,2,2,2
+2,2,2,0,0,0,0,2,2,2,
+2,2,2,2,0,0,0,0,0,0,
+2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2
 </data>
  </layer>
  <layer id="7" name="invisible" width="10" height="10">
@@ -105,15 +105,25 @@
 </data>
  </layer>
  <objectgroup id="8" name="objects">
-  <object id="3" name="entrance" x="66.2256" y="145.408" width="27.0271" height="11">
+  <object id="3" name="entrance" x="145.91" y="97.7349" width="10.505" height="11">
    <properties>
-    <property name="destiny" value="overworld:silva"/>
+    <property name="destiny" value="mountain_pass:shrine"/>
     <property name="key" value=""/>
     <property name="locked" type="bool" value="false"/>
     <property name="type" value="door"/>
    </properties>
   </object>
-  <object id="6" name="imp_wrap" x="113.568" y="49.6136" width="11.75" height="11.75"/>
-  <object id="7" name="elf_wrap" x="129.318" y="50.3636" width="12" height="11"/>
+  <object id="6" name="imp_wrap" x="130.434" y="2.45678" width="11.75" height="11.75"/>
+  <object id="7" name="elf_wrap" x="146.184" y="3.20678" width="12" height="11"/>
+  <object id="9" name="idol" x="65.0126" y="34.5952" width="29" height="26.5">
+   <properties>
+    <property name="boon" value="strength"/>
+    <property name="code" value="bastet_the_lioness"/>
+    <property name="description" value="A shrine in honor of Bastet, the Lioness, or Bastet, the house cat, protector of the household against vermin. You may offer a rat tail to her altar."/>
+    <property name="offering" value="rat_tail"/>
+    <property name="response" value="Your offering is pleasing to Bastet. She gants you the boon of strength."/>
+    <property name="type" value="idol"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

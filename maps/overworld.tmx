@@ -6,6 +6,7 @@
   <property name="vision_radius" type="int" value="3"/>
  </properties>
  <tileset firstgid="1" source="overworld_tileset.tsx"/>
+ <tileset firstgid="257" source="tiled_tileset.tsx"/>
  <layer id="1" name="floor" width="30" height="30">
   <data encoding="csv">
 18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,
@@ -234,7 +235,7 @@
 0,0,0,0,0,0,4,4,4,4,4,4,0,0,0,0,0,4,4,4,4,4,4,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,4,4,4,4,4,4,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,4,0,4,4,4,0,0,0,0,0,4,4,4,4,4,4,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,4,4,0,4,4,4,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,4,4,260,4,4,4,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,4,4,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -270,9 +271,9 @@
     <property name="type" value="door"/>
    </properties>
   </object>
-  <object id="7" name="silva" x="146.164" y="290.488" width="11.75" height="11">
+  <object id="7" name="hideout" x="146.164" y="290.488" width="11.75" height="11">
    <properties>
-    <property name="destiny" value="silva:entrance"/>
+    <property name="destiny" value="hideout:entrance"/>
     <property name="key" value=""/>
     <property name="locked" type="bool" value="false"/>
     <property name="type" value="door"/>

@@ -70,7 +70,7 @@ function HouseB:hidden_oils(event, x, y, character_name, object_name)
               go_to = 'end',
               callback = function()
                 self.control.data.took_oil_from_dolls = true
-                self.control:add_item_to_inventory('player', self.control:next_item_code(), 'aromatic_oil', 'item', 1)
+                self.control:add_item_to_inventory('player', self.control:next_item_code(), 'aromatic_oil', 'item')
               end
             }
           }

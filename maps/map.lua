@@ -251,7 +251,8 @@ function Map:set_objects()
                 text = object.properties.response or "Your offering is pleasing to Bastet. She grants you her boon.",
                 go_to = 'end',
                 callback = function()
-                  self.control:inventory_stack_pop(index, 'player', 1)
+                  -- self.control:inventory_stack_pop(index, 'player', 1)
+                  self.control:remove_item_from_inventory(index, 'player')
                   self.control:add_item_to_inventory('player', self.control:next_item_code('boon'), object.properties.boon, 'spell', 3)
                   if not self.control.data[object.properties.code] then
                     self.control.data[object.properties.code] = true

@@ -235,7 +235,7 @@
    </properties>
    <point/>
   </object>
-  <object id="10" name="inn_counter" x="145.125" y="191.722" width="77.625" height="11.625"/>
+  <object id="10" name="inn_counter" x="144.917" y="193.384" width="77.625" height="11.625"/>
   <object id="11" name="player" x="183.901" y="247.904">
    <properties>
     <property name="type" value="player"/>

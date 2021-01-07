@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="8">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="12">
  <properties>
   <property name="for_of_war" type="bool" value="false"/>
   <property name="music" value=""/>
@@ -205,5 +205,8 @@
    <point/>
   </object>
   <object id="7" name="olive" x="82.3003" y="243.992" width="12.2962" height="12.4825"/>
+  <object id="8" name="character_creation_limit" x="131.666" y="307.129" width="7.9881" height="9.91626"/>
+  <object id="9" name="character_creation_limit" x="178.217" y="306.853" width="10.7426" height="9.64081"/>
+  <object id="11" name="character_creation_limit" x="131.528" y="291.152" width="58.1203" height="9.91626"/>
  </objectgroup>
 </map>
