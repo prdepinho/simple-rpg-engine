@@ -45,7 +45,12 @@ function ComeInnKeeper:on_interact(interactor_name)
       options = {
         { text = "I should be going.", go_to = 'end' },
         { text = "I would like a room.", go_to = 'room' },
+        { text = "I need a mirror.", go_to = 'mirror' },
       }
+    },
+    mirror = {
+      text = "Talk to Tubal, the blacksmith. He has the sort of these.",
+      go_to = 'end'
     },
     room = {
       text = "It is a copper, sweetheart.",

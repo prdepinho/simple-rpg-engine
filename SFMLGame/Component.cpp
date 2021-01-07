@@ -83,7 +83,6 @@ void Component::clear_components() {
 
 Component* Component::on_pressed(int x, int y) {
 	if (!activated) {
-		Log("Not activated interaction");
 		return parent_component;
 	}
 	for (auto it = components.rbegin(); it != components.rend(); ++it) {
@@ -96,7 +95,6 @@ Component* Component::on_pressed(int x, int y) {
 
 Component* Component::on_released(int x, int y) {
 	if (!activated) {
-		Log("Not activated interaction");
 		return parent_component;
 	}
 	for (auto it = components.rbegin(); it != components.rend(); ++it) {

@@ -88,6 +88,9 @@ public:
 
 	static bool visible() { return get().shown; }
 
+	void scroll_up();
+	void scroll_down();
+
 protected:
 	virtual void update_view();
 	void next();

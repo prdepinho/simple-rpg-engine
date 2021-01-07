@@ -31,6 +31,9 @@ function Character:set_skin(skin)
   self.data.animation = skin
   self.data.skin = skin
   sfml_set_character_skin(self.name, self.data.animation)
+  if self.name == 'player' then
+    self.control.data.current_skin = skin
+  end
 end
 
 function Character:set_mini_skin(skin)

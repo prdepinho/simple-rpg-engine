@@ -158,9 +158,9 @@ rules.item = {
   silver_key      = { name = "Silver Key",      icon = {x = 16*2, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Moon shaped silver key." },
   copper_key      = { name = "Copper Key",      icon = {x = 16*3, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Copper key with the symbol of Jupiter." },
 
-  rat_tail        = { name = "Rat Tail",        icon = {x = 16*8, y = 16*11},  stack_capacity = 10,    range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Tail of a rat. An effective offering to Bastet." },
-  looking_glass   = { name = "Looking Glass",   icon = {x = 16*9, y = 16*11},  stack_capacity = 10,    range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A looking glass. An effective offering to Bastet." },
-  aromatic_oil    = { name = "Aromatic Oil",    icon = {x = 16*10, y = 16*11}, stack_capacity = 10,    range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Aromatic oil. An effective offering to Bastet." },
+  rat_tail        = { name = "Rat Tail",        icon = {x = 16*8, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Tail of a rat. An effective offering to Bastet." },
+  looking_glass   = { name = "Looking Glass",   icon = {x = 16*9, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A looking glass. An effective offering to Bastet." },
+  aromatic_oil    = { name = "Aromatic Oil",    icon = {x = 16*10, y = 16*11}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Aromatic oil. An effective offering to Bastet." },
 }
 
 rules.spell = {
@@ -280,7 +280,6 @@ function rules.set_ability_scores_map(stats, map)
 end
 
 function rules.level_up(stats)
-  print('LEVEL UP: ' .. stats.name)
   if stats.hit_die == "d12" then
     rules.set_max_hit_points(stats, stats.total_hp + 7 + rules.ability_modifier[stats.ability.con])
   elseif stats.hit_die == "d10" then
@@ -385,7 +384,7 @@ rules.ability_score_description = {
 -- rules
 
 function rules.can_see(observer, observed)
-  return (not observed.status.invisible) or observer.status.true_seeing ~= nil
+  return (not observed.status.invisible) or (not observer.status.dead and observer.status.true_seeing ~= nil)
 end
 
 function rules.base_armor_class(defender)

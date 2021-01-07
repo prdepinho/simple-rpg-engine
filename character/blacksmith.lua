@@ -35,11 +35,12 @@ end
 
 function Blacksmith:on_interact(interactor_name)
   local shop = {
-    sword  = { price = 3, name = 'falcion', type = 'weapon' },
-    mace   = { price = 3, name = 'mace', type = 'weapon' },
-    spear  = { price = 3, name = 'spear', type = 'weapon' },
-    shield = { price = 2, name = 'shield', type = 'shield' },
-    armor  = { price = 10, name = 'brigandine', type = 'armor' },
+    sword   = { price = 3, name = 'falcion', type = 'weapon' },
+    mace    = { price = 3, name = 'mace', type = 'weapon' },
+    spear   = { price = 3, name = 'spear', type = 'weapon' },
+    shield  = { price = 2, name = 'shield', type = 'shield' },
+    armor   = { price = 10, name = 'brigandine', type = 'armor' },
+    mirror  = { price = 4, name = 'looking_glass', type = 'item' },
   }
   local dialogue = self.control:shop_dialogue(shop, self.name, "Please, feel free to look around.")
 

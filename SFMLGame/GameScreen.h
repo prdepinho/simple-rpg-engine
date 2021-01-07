@@ -278,6 +278,8 @@ private:
 	float scrolling_count = 0.f;
 
 	std::queue<QueueableDialogue> dialogue_queue;
+	bool show_character_creation = false;
+	bool give_character_creation_points = false;
 
 	std::map<std::string, Component*> mapped_components;
 

@@ -143,6 +143,7 @@ Component *TextBox::on_key_pressed(sf::Event &event) {
 	case Control::B:
 		break;
 	case Control::UP:
+	case Control::RT:
 		if (completely_written) {
 			if (start_line > 0) {
 				end_line = start_line;
@@ -158,6 +159,7 @@ Component *TextBox::on_key_pressed(sf::Event &event) {
 		return this;
 		break;
 	case Control::DOWN:
+	case Control::LT:
 		if (completely_written) {
 			if (end_line < text_lines.size()) {
 				start_line = end_line;
@@ -223,9 +225,25 @@ void TextBox::push_text(std::string text, bool completely_write) {
 }
 
 Component *TextBox::on_pressed(int x, int y) {
-	// get_screen()->remove_component(*this);
-	// get_screen()->select_container();
-	// call_functions(this);
+	if (completely_written) {
+		if (end_line == text_lines.size()) {
+			get_screen()->remove_component(*this);
+			get_screen()->select_container();
+			call_functions(this);
+		}
+		else {
+			start_line = end_line;
+			end_line = std::min(start_line + page_lines, text_lines.size());
+			completely_written = false;
+		}
+	}
+	else {
+		for (size_t i = start_line; i < end_line; i++) {
+			visible_lines[i] = text_lines[i];
+		}
+		completely_written = true;
+		update_view();
+	}
 	return this;
 }
 
@@ -268,16 +286,18 @@ void TextBox::update_view() {
 
 
 void OptionsPanel::add_option(std::string text, Callback callback) {
-	int n = (int)buttons.size() + 1;
-	buttons.push_back(OptionButton(std::to_string(n) + ". " + text));
+	// int n = (int)buttons.size() + 1;
+	// buttons.push_back(OptionButton(std::to_string(n) + ". " + text));
+	buttons.push_back(OptionButton(text));
 	buttons.back().set_function(callback);
 	buttons.back().set_dimensions(get_width(), buttons.back().get_height());
 }
 
 
 void OptionsPanel::add_option(std::string text, std::string dst, Callback callback) {
-	int n = (int)buttons.size() + 1;
-	buttons.push_back(OptionButton(std::to_string(n) + ". " + text, dst));
+	// int n = (int)buttons.size() + 1;
+	// buttons.push_back(OptionButton(std::to_string(n) + ". " + text, dst));
+	buttons.push_back(OptionButton(text, dst));
 	buttons.back().set_function(callback);
 	// buttons.back().set_function([&](Component*) {
 	// 	callback(dst);
@@ -299,6 +319,7 @@ void OptionsPanel::create() {
 		button.create();
 		add_component(button);
 		int x = get_x();
+		x = _game.get_resolution_width() / 2 - button.get_width() / 2;
 		int y = get_y() + (button.get_height() * i);
 		button.set_position(x, y);
 		button.set_dimensions(button.get_width(), button.get_height() - 1);
@@ -340,6 +361,14 @@ Component *OptionsPanel::on_key_pressed(sf::Event &event) {
 		else {
 			get_screen()->select(buttons[++selected_index -1]);
 		}
+		return this;
+		break;
+	case Control::RT:
+		DialogueBox::get().scroll_up();
+		return this;
+		break;
+	case Control::LT:
+		DialogueBox::get().scroll_down();
 		return this;
 		break;
 	}
@@ -458,41 +487,82 @@ Component *DialogueBox::on_key_pressed(sf::Event &event) {
 		return this;
 		break;
 	case Control::UP:
-		if (completely_written) {
-			if (start_line > 0) {
-				pages_retroceded++;
-				end_line = start_line;
-				long diff = (long)start_line - (long)page_lines;
-				start_line = diff > 0 ? diff : 0;
-				end_line = std::max<size_t>(start_line + page_lines, end_line);
-				for (size_t i = start_line; i < end_line; i++) {
-					visible_lines[i] = text_lines[i];
-				}
-				update_view();
-			}
-		}
+	case Control::RT:
+		scroll_up();
 		return this;
 		break;
 	case Control::DOWN:
-		if (completely_written && pages_retroceded > 0) {
-			if (end_line < text_lines.size()) {
-				pages_retroceded--;
-				start_line = end_line;
-				end_line = std::min(start_line + page_lines, text_lines.size());
-				for (size_t i = start_line; i < end_line; i++) {
-					visible_lines[i] = text_lines[i];
-				}
-				update_view();
-			}
-		}
+	case Control::LT:
+		scroll_down();
 		return this;
 		break;
 	}
 	return nullptr;
 }
 
+void DialogueBox::scroll_up() {
+	if (completely_written) {
+		if (start_line > 0) {
+			pages_retroceded++;
+			end_line = start_line;
+			long diff = (long)start_line - (long)page_lines;
+			start_line = diff > 0 ? diff : 0;
+			end_line = std::max<size_t>(start_line + page_lines, end_line);
+			for (size_t i = start_line; i < end_line; i++) {
+				visible_lines[i] = text_lines[i];
+			}
+			update_view();
+		}
+	}
+}
+
+void DialogueBox::scroll_down() {
+	if (completely_written && pages_retroceded > 0) {
+		if (end_line < text_lines.size()) {
+			pages_retroceded--;
+			start_line = end_line;
+			end_line = std::min(start_line + page_lines, text_lines.size());
+			for (size_t i = start_line; i < end_line; i++) {
+				visible_lines[i] = text_lines[i];
+			}
+			update_view();
+		}
+	}
+}
+
 Component *DialogueBox::on_pressed(int x, int y) {
-	TextBox::on_pressed(x, y);
+	if (completely_written) {
+		if (end_line == text_lines.size()) {
+			if (go_to != "end") {
+				next();
+			}
+			else {
+				on_end();
+				get_screen()->remove_component(*this);
+				get_screen()->select_container();
+				call_functions(this);
+			}
+		}
+		else {
+			start_line = end_line;
+			end_line = std::min(start_line + page_lines, text_lines.size());
+			completely_written = false;
+		}
+	}
+	else {
+		for (size_t i = start_line; i < end_line; i++) {
+			visible_lines[i] = text_lines[i];
+		}
+		completely_written = true;
+		if (end_line == text_lines.size()) {
+			if (show_options) {
+				get_screen()->add_component(options_panel);
+				options_panel.create();
+				options_panel.set_visible(true);
+			}
+		}
+		update_view();
+	}
 	return this;
 }
 
@@ -628,3 +698,4 @@ void DialogueBox::on_end() {
 	}
 	shown = false;
 }
+

@@ -33,7 +33,7 @@ function Rat:create()
     cha = 8,
   })
   stats.weapon = { code = self.name .. "_tooth", name = "rat_tooth", type = "weapon" }
-  stats.inventory[7] = { name = 'rat_tail', code = self.name .. '_rat', type = 'item', quantity = 1 }
+  stats.inventory[7] = { name = 'rat_tail', code = self.name .. '_rat', type = 'item' }
 end
 
 function Rat:on_death()

@@ -93,38 +93,77 @@ Component *SelectTileMode::handle_event(sf::Event &event, float elapsed_time) {
 		return nullptr;
 	}
 
-	switch (InputHandler::get_input(event)) {
-	case Control::UP:
-		move_cursor(Direction::UP);
-		break;
-	case Control::DOWN:
-		move_cursor(Direction::DOWN);
-		break;
-	case Control::LEFT:
-		move_cursor(Direction::LEFT);
-		break;
-	case Control::RIGHT:
-		move_cursor(Direction::RIGHT);
-		break;
-	case Control::A:
+	// mouse input
+	{
+		static bool mouse_pressed = false;
+		auto mouse_position = game_screen->get_mouse_game_position();
+		auto new_cursor = game_screen->get_map().get_tile_coord((int)mouse_position.x, (int)mouse_position.y);
+		switch (event.type) {
+		case sf::Event::MouseButtonPressed:
+			if (event.mouseButton.button == sf::Mouse::Button::Left) {
+				mouse_pressed = true;
+			}
+			break;
+		case sf::Event::MouseButtonReleased:
+			switch (event.mouseButton.button) {
+			case sf::Mouse::Button::Left:
+				if (new_cursor == cursor && on_select(cursor, effect_tiles)) {
+					Resources::play_sound("crrreee.wav");
+					exit();
+				}
+				else
+					Resources::play_sound("boop.wav");
+				mouse_pressed = false;
+				break;
+			case sf::Mouse::Button::Right:
+				exit();
+				break;
+			}
+			break;
+		case sf::Event::MouseMoved:
+			if (in_bounds(new_cursor)) {
+				cursor = new_cursor;
+				create_effect_shapes();
+			}
+			break;
+		}
+	}
+
+	// controller input
+	{
+		switch (InputHandler::get_input(event)) {
+		case Control::UP:
+			move_cursor(Direction::UP);
+			break;
+		case Control::DOWN:
+			move_cursor(Direction::DOWN);
+			break;
+		case Control::LEFT:
+			move_cursor(Direction::LEFT);
+			break;
+		case Control::RIGHT:
+			move_cursor(Direction::RIGHT);
+			break;
+		case Control::A:
 		{
 			if (on_select(cursor, effect_tiles)) {
 				Resources::play_sound("crrreee.wav");
 				exit();
 			}
-			else 
+			else
 				Resources::play_sound("boop.wav");
 		}
 		break;
-	case Control::B:
-		exit();
-		break;
-	case Control::START:
-		exit();
-		break;
-	case Control::SELECT:
-		exit();
-		break;
+		case Control::B:
+			exit();
+			break;
+		case Control::START:
+			exit();
+			break;
+		case Control::SELECT:
+			exit();
+			break;
+		}
 	}
 
 	return interacted_component;
@@ -151,12 +190,7 @@ void SelectTileMode::move_cursor(Direction direction) {
 		break;
 	}
 
-	bool in_bounds = false;
-	for (auto &range_tile : range_tiles) {
-		in_bounds |= (range_tile == new_cursor);
-	}
-
-	if (in_bounds) {
+	if (in_bounds(new_cursor)) {
 		cursor = new_cursor;
 		game_screen->center_map_on_tile(cursor);
 		create_effect_shapes();
@@ -165,6 +199,14 @@ void SelectTileMode::move_cursor(Direction direction) {
 	else {
 		Resources::play_sound("boop.wav");
 	}
+}
+
+bool SelectTileMode::in_bounds(sf::Vector2i new_cursor) {
+	bool in_bounds = false;
+	for (auto &range_tile : range_tiles) {
+		in_bounds |= (range_tile == new_cursor);
+	}
+	return in_bounds;
 }
 
 void SelectTileMode::exit() {

@@ -243,6 +243,19 @@ bool GameScreen::update(float elapsed_time) {
 			log_box.scroll_down(1);
 	}
 
+	// character creation
+	{
+		if (show_character_creation && dialogue_queue.size() == 0 && !DialogueBox::visible()) {
+			block_input = true;
+			CharacterEditPanel::show(player_character, give_character_creation_points, *this, [&](Component*) {
+				Overlay::refresh(*this, player_character);
+				block_input = false;
+				return true;
+			});
+			show_character_creation = false;
+		}
+	}
+
 	// dialogue queue
 	{
 		if (dialogue_queue.size() > 0 && !DialogueBox::visible()) {
@@ -504,8 +517,9 @@ void GameScreen::control_mouse_move() {
 		int tile_y = tile_coord.y;
 
 		player_character->clear_schedule();
-		schedule_character_movement(*player_character, tile_x, tile_y, true);
-		// schedule_character_interaction(*player_character, tile_x, tile_y);
+		schedule_character_movement(*player_character, tile_x, tile_y, false);
+		if (get_map().get_tile(tile_x, tile_y).obstacle)
+			schedule_character_interaction(*player_character, tile_x, tile_y);
 	}
 }
 
@@ -916,7 +930,6 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		}
 	}
 
-#if true
 	switch (event.type) {
 	// case sf::Event::JoystickButtonPressed:
 	// 	std::cout << "button: " << event.joystickButton.button << ", " << event.joystickButton.joystickId << std::endl;
@@ -941,6 +954,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			}
 		}
 		break;
+#if false
 	case sf::Event::MouseWheelScrolled:
 		if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel) {
 			control_mouse_wheel_zoom(event.mouseWheelScroll.delta, event.mouseWheelScroll.x, event.mouseWheelScroll.y);
@@ -1083,8 +1097,8 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			break;
 		}
 		break;
-	}
 #endif
+	}
 	return interacted_component;
 }
 
@@ -1360,7 +1374,7 @@ void GameScreen::schedule_character_movement(Character &character, int tile_x, i
 }
 
 void GameScreen::schedule_character_interaction(Character &character, int tile_x, int tile_y) {
-#if false
+#if true
 	auto *action = new InteractionAction(&character, tile_x, tile_y);
 	character.schedule_action(action);
 #else
@@ -2361,10 +2375,6 @@ void GameScreen::set_player_control(bool in_control) {
 }
 
 void GameScreen::show_character_edit_panel(bool give_points) {
-	block_input = true;
-	CharacterEditPanel::show(player_character, give_points, *this, [&](Component*) {
-		Overlay::refresh(*this, player_character);
-		block_input = false;
-		return true;
-	});
+	give_character_creation_points = give_points;
+	show_character_creation = true;
 }

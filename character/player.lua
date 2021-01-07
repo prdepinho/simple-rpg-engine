@@ -26,14 +26,14 @@ function Player:create()
   self.data.stats.portrait = {x = 0, y = 224}
   self.data.stats.name = "Mumu"
   -- self.data.stats.inventory[2] = {code = "mumus_fireball", name = "fireball", type = "spell", quantity = 15 }
-  self.data.stats.inventory[2] = {code = "mumus_poison", name = "poison", type = "spell", quantity = 15 }
+  -- self.data.stats.inventory[2] = {code = "mumus_poison", name = "poison", type = "spell", quantity = 15 }
   -- self.data.stats.inventory[3] = {code = "mumus_cheese", name = "cheese", type = "item", quantity = 3 }
   -- self.data.stats.inventory[4] = {code = "mumus_lockpick", name = "lockpick", type = "item", quantity = 5 }
   -- self.data.stats.inventory[1] = {code = "mumus_raise dead", name = "raise_dead", type = "spell", quantity = 10 }
   -- self.data.stats.inventory[1] = {code = "mumus_fear", name = "fear", type = "spell", quantity = 10 }
-  -- self.data.stats.inventory[1] = {code = "mumus_glass", name = "looking_glass", type = "item", quantity = 2 }
-  -- self.data.stats.inventory[2] = {code = "mumus_aromatic oil", name = "aromatic_oil", type = "item", quantity = 2 }
-  self.data.stats.inventory[8] = {code = "mumus_money", name = "money", type = "item", quantity = 3 }
+  -- self.data.stats.inventory[1] = {code = "mumus_glass", name = "looking_glass", type = "item" }
+  -- self.data.stats.inventory[2] = {code = "mumus_aromatic oil", name = "aromatic_oil", type = "item" }
+  self.data.stats.inventory[8] = {code = "mumus_money", name = "money", type = "item", quantity = 2 }
 end
 
 

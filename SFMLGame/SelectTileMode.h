@@ -22,6 +22,8 @@ public:
 	void create_effect_shapes();
 	void move_cursor(Direction direction);
 	std::vector<sf::Vector2i> remove_obstacles(std::vector<sf::Vector2i> &tiles);
+
+	bool in_bounds(sf::Vector2i cursor);
 private:
 	GameScreen *game_screen;
 	std::vector<sf::RectangleShape> range_shapes;

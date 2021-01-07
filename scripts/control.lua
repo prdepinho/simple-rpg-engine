@@ -701,6 +701,10 @@ function Control:add_item_to_inventory(character_name, code, name, type, quantit
   sfml_play_sound("plim.wav")
 end
 
+function Control:remove_item_from_inventory(index, character_name)
+  self.characters[character_name].data.stats.inventory[index] = {code = "", name = "no_item", type = "item"}
+end
+
 -- Drops an item from character's inventory. Returns false if item was not in the inventory.
 function Control:drop_item(item_code, character_name, x, y)
   for index, item_data in ipairs(self.characters[character_name].data.stats.inventory) do
