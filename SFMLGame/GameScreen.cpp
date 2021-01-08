@@ -233,7 +233,6 @@ bool GameScreen::update(float elapsed_time) {
 	if (next_map != "")
 		load_map();
 
-
 	// log scrolling
 	if ((scrolling_count += elapsed_time) > 0.1f) {
 		scrolling_count = 0.f;
@@ -899,8 +898,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				});
 				break;
 			case Control::SELECT:
-				// schedule_character_wait(*player_character, 1);
-				// player_busy = true;
+				toggle_log();
 				break;
 			case Control::LB:
 				scroll_left_select_item();

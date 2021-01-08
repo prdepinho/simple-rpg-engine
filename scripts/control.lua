@@ -963,6 +963,8 @@ function Control:save_game(filename, title)
     self.characters[name].data.position = sfml_get_character_position(name)
   end
 
+  data.log_visible = sfml_is_log_visible()
+
   data.character_data = self.loaded_character_data
   data.companions = self.companions
 
@@ -989,6 +991,8 @@ function Control:load_game(filename)
   self.player_position = module.data.player_position.coords
   self.player_map = module.data.player_position.map
 
+  self.log_visibility = module.data.log_visible
+  self.show_log = true
 end
 
 function Control:delete_save_game(filename)
@@ -1289,6 +1293,12 @@ function Control:map_enter()
   sfml_push_character_to_top('player')
 
   self.map:enter()
+
+  if self.show_log then
+    print('show log: ' .. tostring(self.log_visibility))
+    sfml_show_log(self.log_visibility)
+    self.show_log = false
+  end
 end
 
 function Control:map_exit()
