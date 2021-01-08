@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="12">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="13">
  <properties>
   <property name="for_of_war" type="bool" value="false"/>
   <property name="music" value=""/>
@@ -200,7 +200,7 @@
   </object>
   <object id="6" name="priestess" x="70.8344" y="282.02">
    <properties>
-    <property name="type" value="priestess"/>
+    <property name="type" value="head_priestess"/>
    </properties>
    <point/>
   </object>
@@ -208,5 +208,13 @@
   <object id="8" name="character_creation_limit" x="131.666" y="307.129" width="7.9881" height="9.91626"/>
   <object id="9" name="character_creation_limit" x="178.217" y="306.853" width="10.7426" height="9.64081"/>
   <object id="11" name="character_creation_limit" x="131.528" y="291.152" width="58.1203" height="9.91626"/>
+  <object id="12" name="training_grounds" x="2.95268" y="273.666" width="10.6224" height="12.25">
+   <properties>
+    <property name="destiny" value="training_grounds:entrance"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

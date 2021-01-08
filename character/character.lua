@@ -148,11 +148,11 @@ function Character:on_attacked(attacker_name)
   if self.control:is_ally(attacker_name) then
     if not self.data.ally and not self.data.enemy then
       self.data.enemy = true
-    end
-    local in_sight = sfml_get_characters_in_sight(attacker_name, 6)
-    for index, name in ipairs(in_sight) do
-      if not self.control.characters[name].data.ally and not self.control.characters[name].data.enemy then
-        self.control.characters[name].data.enemy = true
+      local in_sight = sfml_get_characters_in_sight(attacker_name, 6)
+      for index, name in ipairs(in_sight) do
+        if not self.control.characters[name].data.ally and not self.control.characters[name].data.enemy then
+          self.control.characters[name].data.enemy = true
+        end
       end
     end
   end

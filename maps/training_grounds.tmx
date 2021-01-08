@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="26">
+ <properties>
+  <property name="for_of_war" type="bool" value="false"/>
+  <property name="music" value=""/>
+  <property name="vision_radius" type="int" value="5"/>
+ </properties>
+ <tileset firstgid="1" source="temple_tileset.tsx"/>
+ <layer id="1" name="floor" width="16" height="16">
+  <data encoding="csv">
+229,229,229,229,229,229,229,229,229,229,229,229,229,229,229,229,
+229,229,229,229,229,229,229,229,229,229,229,229,229,229,229,229,
+229,229,229,229,229,229,229,229,229,229,229,229,229,229,229,229,
+213,228,228,228,228,228,228,228,228,228,228,228,228,228,213,213,
+213,213,213,211,211,211,211,212,211,211,211,228,212,212,213,213,
+213,211,212,212,228,228,228,228,211,211,211,228,212,212,211,213,
+213,212,211,211,228,228,228,228,211,211,212,228,211,211,212,213,
+212,211,212,211,228,212,211,212,211,211,212,228,211,212,211,213,
+212,211,211,211,228,228,228,228,212,212,211,228,212,212,212,213,
+212,212,212,212,212,212,212,212,211,212,212,228,212,211,212,213,
+212,212,228,228,228,228,228,228,228,228,228,228,211,212,212,213,
+213,213,212,212,212,211,212,211,212,212,212,212,211,211,211,213,
+229,229,229,229,229,229,229,229,229,229,229,211,243,243,243,243,
+229,229,229,229,229,229,229,229,229,229,229,243,243,243,243,243,
+229,229,229,229,229,229,229,229,229,229,229,243,243,243,243,243,
+229,229,229,229,229,229,229,229,229,229,229,243,243,243,243,243
+</data>
+ </layer>
+ <layer id="2" name="overfloor" width="16" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,174,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,174,0,0,0,0,174,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,242,242,242,242,
+0,0,0,0,0,0,0,0,0,0,0,242,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="3" name="furniture" width="16" height="16">
+  <data encoding="csv">
+190,174,174,174,174,174,174,174,174,174,174,174,174,174,174,191,
+192,0,0,0,0,0,0,0,0,0,0,0,0,0,0,192,
+206,174,174,174,174,174,174,174,174,174,174,174,174,223,174,207,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,248,0,
+0,0,0,0,190,174,174,191,0,0,0,0,0,0,249,0,
+0,0,0,197,192,232,0,192,197,0,0,0,0,0,0,0,
+0,0,0,0,192,0,0,192,0,0,0,0,176,0,0,0,
+0,0,0,0,192,228,228,208,0,0,0,0,206,174,174,174,
+0,249,0,197,206,175,0,0,228,228,228,228,228,228,228,228,
+0,248,0,0,0,0,0,0,0,0,0,0,190,174,174,174,
+0,248,0,0,0,0,0,0,0,0,0,0,208,0,0,0,
+190,174,223,174,174,174,174,223,174,174,191,0,0,0,0,0,
+192,0,0,0,0,192,0,0,0,0,192,197,194,0,0,0,
+192,0,0,0,0,173,0,0,0,0,192,178,0,0,0,0,
+192,0,0,0,0,192,0,0,0,0,192,178,0,0,0,0,
+206,174,174,174,174,174,174,174,174,174,207,178,0,0,0,0
+</data>
+ </layer>
+ <layer id="4" name="ceiling" width="16" height="16">
+  <data encoding="csv">
+0,0,176,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,192,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,208,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,176,0,176,0,0,176,0,0,0,0,0,0,0,
+0,0,0,192,0,0,0,0,192,0,0,0,0,0,0,0,
+0,0,0,208,0,192,175,0,208,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,208,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="5" name="overceiling" width="16" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="6" name="obstacle" width="16" height="16">
+  <data encoding="csv">
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,0,2,0,0,0,0,0,0,0,0,0,0,0,0,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,
+0,0,0,0,2,2,2,2,0,0,0,0,0,0,0,0,
+0,0,0,2,2,0,0,2,2,0,0,0,0,0,0,0,
+0,0,0,0,2,0,0,2,0,0,0,0,2,0,0,0,
+0,0,0,0,2,0,0,2,0,0,0,0,2,2,2,2,
+0,0,0,2,2,2,0,0,0,0,0,0,0,0,0,0,
+0,2,0,0,0,0,0,0,0,0,0,0,2,2,2,2,
+0,2,0,0,0,0,0,0,0,0,0,0,2,0,0,0,
+2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,
+2,0,0,2,0,2,0,0,2,0,2,2,2,2,2,2,
+2,0,0,2,0,2,2,0,2,0,2,2,2,2,2,2,
+2,0,0,0,0,2,0,0,0,0,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+</data>
+ </layer>
+ <layer id="7" name="invisible" width="16" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="8" name="objects">
+  <object id="1" name="temple_rat3" x="73.0321" y="202.701">
+   <properties>
+    <property name="type" value="rat"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="2" name="temple_rat2" x="152.026" y="202.701">
+   <properties>
+    <property name="type" value="rat"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="3" name="temple_rat1" x="102.841" y="235.491">
+   <properties>
+    <property name="type" value="rat"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="4" name="door2" x="35.7422" y="180.181" width="9" height="9.27042">
+   <properties>
+    <property name="invisible" type="bool" value="false"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="open_delta_x" type="int" value="1"/>
+    <property name="open_delta_y" type="int" value="0"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="5" name="door1" x="115.929" y="181.373" width="9" height="9.27042">
+   <properties>
+    <property name="invisible" type="bool" value="false"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="open_delta_x" type="int" value="1"/>
+    <property name="open_delta_y" type="int" value="0"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="7" name="rat_warden" x="9.83698" y="169.017">
+   <properties>
+    <property name="type" value="rat_warden"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="8" name="entrance" x="241.359" y="129.804" width="10.6224" height="12.25">
+   <properties>
+    <property name="destiny" value="temple:training_grounds"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="9" name="door3" x="211.914" y="37.0974" width="9" height="9.27042">
+   <properties>
+    <property name="invisible" type="bool" value="false"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="open_delta_x" type="int" value="1"/>
+    <property name="open_delta_y" type="int" value="0"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="10" name="temple_rat4" x="20.2701" y="25.6358">
+   <properties>
+    <property name="type" value="rat"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="12" name="archer_instructor" x="251.29" y="58.1276">
+   <properties>
+    <property name="type" value="archer_instructor"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="13" name="quartermaster" x="105.226" y="89.4271">
+   <properties>
+    <property name="type" value="quartermaster"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="14" name="healer" x="134.737" y="107.909">
+   <properties>
+    <property name="type" value="healer"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="15" name="bow_and_arrows" x="225.193" y="48.9943" width="12.25" height="12.75">
+   <properties>
+    <property name="item1" value="temple_bow:weapon:short_bow"/>
+    <property name="item2" value="temple_arrows:ammo:arrow:20"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="17" name="armor" x="18.3184" y="144.161" width="12.25" height="12.75">
+   <properties>
+    <property name="item1" value="temple_gambeson:armor:gambeson"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="18" name="weapon" x="18.0203" y="161.45" width="12.25" height="12.75">
+   <properties>
+    <property name="item1" value="temple_mace:weapon:mace"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="19" name="rat_cage_entrance1" x="25.6358" y="181.239" width="31.2995" height="9.53889"/>
+  <object id="20" name="rat_cage_entrance2" x="105.673" y="181.835" width="31.2995" height="9.53889"/>
+  <object id="21" name="rat_cage_entrance3" x="200.466" y="36.367" width="31.2995" height="9.53889"/>
+  <object id="22" name="lost_glasses" x="50.6754" y="130.265" width="11.3274" height="11.9236"/>
+  <object id="23" name="rogue_nun" x="5.96181" y="56.9353">
+   <properties>
+    <property name="type" value="rogue_nun"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="24" name="chest" x="81.3886" y="81.5472" width="12.5" height="13.375">
+   <properties>
+    <property name="item1" value="chest_money:item:money:2"/>
+    <property name="key" value="temple_chest_key"/>
+    <property name="locked" type="bool" value="true"/>
+    <property name="open_delta_x" type="int" value="1"/>
+    <property name="open_delta_y" type="int" value="0"/>
+    <property name="type" value="chest"/>
+   </properties>
+  </object>
+  <object id="25" name="chest_floor" x="81.3886" y="81.5472" width="12.5" height="13.375"/>
+ </objectgroup>
+</map>

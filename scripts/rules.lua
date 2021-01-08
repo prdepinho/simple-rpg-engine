@@ -141,26 +141,29 @@ rules.ammo = {
 }
 
 rules.item = {
-  no_item         = { name = "No item",         icon = {x = 16*0, y = 16*3},   stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "" },
-  money           = { name = "Money",           icon = {x = 16*2, y = 16*9},   stack_capacity = 100,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Copper coins." },
-  rat_poison      = { name = "Rat Poison",      icon = {x = 16*1, y = 16*10},  stack_capacity = 3,     range_radius = 1, effect_radius = 0, usable = true,  use = "rat_poison", desc = "Rat poison that can be used to poison someone without raising suspicion." },
-  cheese          = { name = "Gouda Cheese",    icon = {x = 16*0, y = 16*10},  stack_capacity = 3,     range_radius = 1, effect_radius = 0, usable = true,  use = "cheese",     desc = "Young matured Gouda Cheese with a lovely fruity tang. Restores 1d4 hit points and cures poison." },
-  poisoned_cheese = { name = "Poisoned Cheese", icon = {x = 16*0, y = 16*11},  stack_capacity = 3,     range_radius = 1, effect_radius = 0, usable = true,  use = "rat_poison", desc = "Poisoned cheese. Don't eat it." },
-  cloak           = { name = "Thief Cloak",     icon = {x = 16*3, y = 16*10},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = true,  use = "cloak",      desc = "A cloak made to blend with the background and avoid detection." },
-  key             = { name = "Key",             icon = {x = 16*0, y = 16*9},   stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A brass key." },
-  armory_key      = { name = "Old rusty key",   icon = {x = 16*4,y = 16*11},   stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A rusty iron key that opens the armory under Come Inn." },
-  lockpick        = { name = "Lockpick",        icon = {x = 16*5, y = 16*11},  stack_capacity = 10,    range_radius = 1, effect_radius = 0, usable = true,  use = "lockpick",   desc = "A lockpick that can be used to unlock doors and chests." },
-  cook_key        = { name = "Cook Key",        icon = {x = 16*6, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "The key to the cook's room in Normindia Castle." },
-  tower_key       = { name = "Tower Key",       icon = {x = 16*7, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "The key to the north-west tower of Normindia Castle." },
-  silver_cutlery  = { name = "Silver Cutlery",  icon = {x = 16*4, y = 16*10},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Silver forks and knives that you stole from Normindia Castle." },
-  steel_cutlery   = { name = "Steel Cutlery",   icon = {x = 16*5, y = 16*10},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Steel forks and knives that the cook stole from Normindia Castle to arm imps in exchange for elf-dust." },
-  gold_key        = { name = "Gold Key",        icon = {x = 16*1, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Sun shaped gold key." },
-  silver_key      = { name = "Silver Key",      icon = {x = 16*2, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Moon shaped silver key." },
-  copper_key      = { name = "Copper Key",      icon = {x = 16*3, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Copper key with the symbol of Jupiter." },
+  no_item           = { name = "No item",         icon = {x = 16*0, y = 16*3},   stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "" },
+  money             = { name = "Money",           icon = {x = 16*2, y = 16*9},   stack_capacity = 100,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Copper coins." },
+  rat_poison        = { name = "Rat Poison",      icon = {x = 16*1, y = 16*10},  stack_capacity = 3,     range_radius = 1, effect_radius = 0, usable = true,  use = "rat_poison", desc = "Rat poison that can be used to poison someone without raising suspicion." },
+  cheese            = { name = "Gouda Cheese",    icon = {x = 16*0, y = 16*10},  stack_capacity = 3,     range_radius = 1, effect_radius = 0, usable = true,  use = "cheese",     desc = "Young matured Gouda Cheese with a lovely fruity tang. Restores 1d4 hit points and cures poison." },
+  poisoned_cheese   = { name = "Poisoned Cheese", icon = {x = 16*0, y = 16*11},  stack_capacity = 3,     range_radius = 1, effect_radius = 0, usable = true,  use = "rat_poison", desc = "Poisoned cheese. Don't eat it." },
+  cloak             = { name = "Thief Cloak",     icon = {x = 16*3, y = 16*10},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = true,  use = "cloak",      desc = "A cloak made to blend with the background and avoid detection." },
+  key               = { name = "Key",             icon = {x = 16*0, y = 16*9},   stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A brass key." },
+  armory_key        = { name = "Old rusty key",   icon = {x = 16*4,y = 16*11},   stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A rusty iron key that opens the armory under Come Inn." },
+  lockpick          = { name = "Lockpick",        icon = {x = 16*5, y = 16*11},  stack_capacity = 10,    range_radius = 1, effect_radius = 0, usable = true,  use = "lockpick",   desc = "A lockpick that can be used to unlock doors and chests." },
+  cook_key          = { name = "Cook Key",        icon = {x = 16*6, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "The key to the cook's room in Normindia Castle." },
+  tower_key         = { name = "Tower Key",       icon = {x = 16*7, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "The key to the north-west tower of Normindia Castle." },
+  silver_cutlery    = { name = "Silver Cutlery",  icon = {x = 16*4, y = 16*10},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Silver forks and knives that you stole from Normindia Castle." },
+  steel_cutlery     = { name = "Steel Cutlery",   icon = {x = 16*5, y = 16*10},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Steel forks and knives that the cook stole from Normindia Castle to arm imps in exchange for elf-dust." },
+  gold_key          = { name = "Gold Key",        icon = {x = 16*1, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Sun shaped gold key." },
+  silver_key        = { name = "Silver Key",      icon = {x = 16*2, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Moon shaped silver key." },
+  copper_key        = { name = "Copper Key",      icon = {x = 16*3, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Copper key with the symbol of Jupiter." },
 
-  rat_tail        = { name = "Rat Tail",        icon = {x = 16*8, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Tail of a rat. An effective offering to Bastet." },
-  looking_glass   = { name = "Looking Glass",   icon = {x = 16*9, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A looking glass. An effective offering to Bastet." },
-  aromatic_oil    = { name = "Aromatic Oil",    icon = {x = 16*10, y = 16*11}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Aromatic oil. An effective offering to Bastet." },
+  rat_tail          = { name = "Rat Tail",        icon = {x = 16*8, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Tail of a rat. An effective offering to Bastet." },
+  looking_glass     = { name = "Looking Glass",   icon = {x = 16*9, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A looking glass. An effective offering to Bastet." },
+  aromatic_oil      = { name = "Aromatic Oil",    icon = {x = 16*10, y = 16*11}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Aromatic oil. An effective offering to Bastet." },
+
+  eye_glasses       = { name = "Eye Glasses",     icon = {x = 16*11, y = 16*11}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A pair of eye glasses." },
+  temple_chest_key  = { name = "Chest Key",       icon = {x = 16*0, y = 16*9},   stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A simple key for the chest in the Temple's training grounds." },
 }
 
 rules.spell = {

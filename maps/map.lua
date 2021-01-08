@@ -133,6 +133,9 @@ function Map:set_objects()
         elseif object.properties.type == 'chest' then
           if event == 'interact' and character_name == 'player' then
             if object.properties.closed then
+
+              local open_chest = false
+
               if object.properties.locked then
                 local index = nil
                 if object.properties.key and object.properties.key ~= "" then
@@ -141,11 +144,14 @@ function Map:set_objects()
                 if index then
                   sfml_play_sound("plim.wav")
                   
-                  local item = rules.item[self.control.characters[character_name].data.stats.inventory[index]]
-                  sfml_text_box("You used " .. item.name .. " to unlock the chest.")
+                  local item = rules.item[self.control.characters[character_name].data.stats.inventory[index].name]
+                  sfml_text_box("You used " .. item.name .. " to unlock the door.")
 
                   sfml_start_animation(character_name, 'use')
                   object.properties.locked = false
+
+                  open_chest = true
+
                 else
                   sfml_play_sound("boop.wav")
                   sfml_text_box(object.properties.locked_message or "The chest is locked.")
@@ -155,12 +161,13 @@ function Map:set_objects()
                 sfml_play_sound("plim.wav")
                 sfml_start_animation(character_name, 'use')
 
+                open_chest = true
+              end
+
+              if open_chest then
                 for index, coords in ipairs(object.coords) do
                   sfml_set_obstacle(false, coords.x, coords.y)
                 end
-
-
-
                 for index, coords in ipairs(object.coords) do
                   self:open_tile(coords.x, coords.y, object)
                 end

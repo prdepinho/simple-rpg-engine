@@ -699,10 +699,12 @@ function Control:add_item_to_inventory(character_name, code, name, type, quantit
   sfml_add_item(code, name, type, quantity or 0, position.x, position.y)
   self:loot_item(code, character_name)
   sfml_play_sound("plim.wav")
+  sfml_refresh_overlay()
 end
 
 function Control:remove_item_from_inventory(index, character_name)
   self.characters[character_name].data.stats.inventory[index] = {code = "", name = "no_item", type = "item"}
+  sfml_refresh_overlay()
 end
 
 -- Drops an item from character's inventory. Returns false if item was not in the inventory.
