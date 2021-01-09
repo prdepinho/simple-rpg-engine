@@ -164,7 +164,7 @@ function HeadPriestess:on_interact(interactor_name)
       }
 
       dialogue.elves = {
-        text = "Elves are small, winged supernatural beings from Elfheim. Their wings produce dust than men use as a narcotic. They are very fond of archery.",
+        text = "Elves are small, winged supernatural beings from Elfheim. Their wings produce dust than men enjoy in their tea. They are very fond of archery.",
         go_to = 'monsters'
       }
 

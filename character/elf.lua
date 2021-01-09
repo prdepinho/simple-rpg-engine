@@ -41,6 +41,7 @@ function Elf:create()
   else
     stats.inventory[3] = {code = self.name .. "_dagger", name = "dagger", type = "weapon"}
   end
+  stats.inventory[8] = {code = self.name .. "_dust", name = "elf_dust", type = "item", quantity = 1}
   stats.weapon = stats.inventory[1]
   stats.ammo = stats.inventory[2]
 end

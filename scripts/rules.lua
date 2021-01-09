@@ -158,6 +158,8 @@ rules.item = {
   silver_key        = { name = "Silver Key",      icon = {x = 16*2, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Moon shaped silver key." },
   copper_key        = { name = "Copper Key",      icon = {x = 16*3, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Copper key with the symbol of Jupiter." },
 
+  elf_dust          = { name = "Elf Dust",        icon = {x = 16*6, y = 16*10},  stack_capacity = 3,     range_radius = 1, effect_radius = 0, usable = true,  use = "elf_dust",   desc = "Elf dust. It may be consumed, but would you?" },
+
   rat_tail          = { name = "Rat Tail",        icon = {x = 16*8, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Tail of a rat. An effective offering to Bastet." },
   looking_glass     = { name = "Looking Glass",   icon = {x = 16*9, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A looking glass. An effective offering to Bastet." },
   aromatic_oil      = { name = "Aromatic Oil",    icon = {x = 16*10, y = 16*11}, stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Aromatic oil. An effective offering to Bastet." },

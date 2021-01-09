@@ -352,7 +352,9 @@ end
 
 
 
-function Magic:fear(caster, center, tiles, targets)
+function Magic:fear(caster, center, tiles, targets, self_inflict)
+  self_inflict = self_inflict or false
+
   sfml_start_animation(caster, "cast")
 
   local caster_name = self.control.characters[caster].data.stats.name 
@@ -363,8 +365,15 @@ function Magic:fear(caster, center, tiles, targets)
   local caster_pos = sfml_get_character_position(caster)
   sfml_start_fireworks("fear_visage", caster_pos.x, caster_pos.y)
   for index, character_name in ipairs(targets) do
-    if character_name ~= caster then
+    local do_it = false
 
+    if character_name == caster then
+      do_it = self_inflict
+    else
+      do_it = true
+    end
+
+    if do_it then
       local position = sfml_get_character_position(character_name)
       sfml_start_fireworks("fear_sweat", position.x, position.y)
       sfml_start_animation(character_name, "hurt")
@@ -611,7 +620,6 @@ end
 
 
 
-
 function Magic:cheese(caster, center, tiles, targets)
   sfml_start_animation(caster, "use")
 
@@ -647,6 +655,41 @@ function Magic:cheese(caster, center, tiles, targets)
 
     end
   end
+end
+
+
+function Magic:elf_dust(caster, center, tiles, targets)
+  sfml_start_animation(caster, "use")
+
+  local caster_name = self.control.characters[caster].data.stats.name 
+  sfml_push_log(caster_name .. ' - uses ' .. rules.item.elf_dust.name)
+
+  local switch = {
+    "magic_missile",
+    "fireball",
+    "poison",
+    "invisibility",
+    "fear",
+    "armor",
+    "strength",
+    "cure_wounds",
+    "true_seeing",
+    "",
+  }
+  local roll = rules.roll_dice('d' .. tostring(#switch))
+
+  local effect = switch[roll]
+  print(effect)
+  if effect ~= '' then
+    if effect == 'fear' then
+      Magic[effect](self, caster, center, tiles, targets, true)
+    else
+      Magic[effect](self, caster, center, tiles, targets)
+    end
+  else
+    sfml_push_log(caster_name .. " - Nothing happens")
+  end
+
 end
 
 function Magic:rat_poison(caster, center, tiles, targets)
