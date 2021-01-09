@@ -1,5 +1,4 @@
 #include "CharacterEditPanel.h"
-#include "InputHandler.h"
 #include "Game.h"
 #include "CharacterMenu.h"
 
@@ -360,7 +359,7 @@ Component *CharacterEditPanel::on_key_pressed(sf::Event &event) {
 	if (interacted)
 		return interacted;
 
-	switch (InputHandler::get_input(event)) {
+	switch (input_handler._get_input(event)) {
 	case Control::UP:
 		move_cursor(Direction::UP);
 		return this;

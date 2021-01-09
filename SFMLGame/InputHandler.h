@@ -2,7 +2,7 @@
 
 #include <map>
 #include <vector>
-#include "GameScreen.h"
+#include <SFML/Graphics.hpp>
 
 
 enum class Control {
@@ -36,10 +36,17 @@ public:
 	virtual void poll_events(float elapsed_time) {}
 	virtual void handle_events(sf::Event &event, float elapsed_time) {}
 
+
+	Control _get_input(sf::Event &event);
+	Control _get_input_released(sf::Event &event);
+	bool _is_input(Control control);
+
 	static Control get_input(sf::Event &event);
 	static Control get_input_released(sf::Event &event);
 	static bool is_input(Control control);
 
+
+protected:
 	Control _get_joystick_input(sf::Event &event);
 	Control _get_joystick_input_released(sf::Event &event);
 	bool _is_joystick_pressed(Control control);
@@ -67,4 +74,7 @@ protected:
 private:
 	bool zaxis_pressed = false;
 	bool zaxis_released = true;
+
+	bool xaxis_pressed = false;
+	bool yaxis_pressed = false;
 };

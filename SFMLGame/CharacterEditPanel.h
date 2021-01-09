@@ -8,6 +8,7 @@
 #include "Callback.h"
 #include <vector>
 #include "TextArea.h"
+#include "InputHandler.h"
 
 class AbilityButton : public Button {
 public:
@@ -49,4 +50,5 @@ private:
 	Label ac_label;
 	int cursor = 0;
 	bool editable = true;
+	InputHandler input_handler;
 };

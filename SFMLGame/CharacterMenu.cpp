@@ -188,7 +188,7 @@ Component *ItemContextMenu::on_key_pressed(sf::Event &event) {
 		return interacted;
 	}
 
-	switch (InputHandler::get_input(event)) {
+	switch (input_handler._get_input(event)) {
 	case Control::UP:
 		if (cursor > 0)
 			cursor--;
@@ -570,7 +570,7 @@ Component *Inventory::on_key_pressed(sf::Event &event) {
 	}
 
 	int rval = 0;
-	switch (InputHandler::get_input(event)) {
+	switch (input_handler._get_input(event)) {
 	case Control::UP:
 		move_cursor(Direction::UP);
 		return this;
@@ -750,7 +750,7 @@ Component *CharacterMenu::on_key_pressed(sf::Event &event) {
 	}
 
 	int rval = 0;
-	switch (InputHandler::get_input(event)) {
+	switch (input_handler._get_input(event)) {
 	case Control::UP:
 		break;
 	case Control::DOWN:
@@ -995,7 +995,7 @@ Component *Loot::on_key_pressed(sf::Event &event) {
 	if (interacted) {
 		return interacted;
 	}
-	switch (InputHandler::get_input(event)) {
+	switch (input_handler._get_input(event)) {
 	case Control::UP:
 		move_cursor(Direction::UP);
 		return this;

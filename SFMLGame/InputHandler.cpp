@@ -1,5 +1,6 @@
 
 #include "InputHandler.h"
+#include "GameScreen.h"
 
 InputHandler::InputHandler() {
 	// std::map<int, Control> control_map {
@@ -125,6 +126,36 @@ Control InputHandler::_get_joystick_input(sf::Event &event) {
 				return Control::DOWN;
 			}
 			break;
+		case sf::Joystick::X:
+			if (!xaxis_pressed) {
+				if (event.joystickMove.position > 50.f) {
+					xaxis_pressed = true;
+					return Control::RIGHT;
+				}
+				else if (event.joystickMove.position <= -50.f) {
+					xaxis_pressed = true;
+					return Control::LEFT;
+				}
+			}
+			else if (event.joystickMove.position <= 50.f && event.joystickMove.position > -50.f) {
+				xaxis_pressed = false;
+			}
+			break;
+		case sf::Joystick::Y:
+			if (!yaxis_pressed) {
+				if (event.joystickMove.position > 50.f) {
+					yaxis_pressed = true;
+					return Control::DOWN;
+				}
+				else if (event.joystickMove.position <= -50.f) {
+					yaxis_pressed = true;
+					return Control::UP;
+				}
+			}
+			else if (event.joystickMove.position <= 50.f && event.joystickMove.position > -50.f) {
+				yaxis_pressed = false;
+			}
+			break;
 		case sf::Joystick::Z:
 			if (!zaxis_pressed) {
 				if (event.joystickMove.position > 50.f) {
@@ -175,18 +206,26 @@ Control InputHandler::_get_joystick_input_released(sf::Event &event) {
 	case sf::Event::JoystickMoved:
 		switch (event.joystickMove.axis) {
 		case sf::Joystick::Z:
-			if (!zaxis_released) {
-				if (event.joystickMove.position <= 50.f) {
-					zaxis_released = true;
-					return Control::LT;
-				}
-				else if (event.joystickMove.position > -50.f) {
-					zaxis_released = true;
+			if (zaxis_released) {
+				if (event.joystickMove.position < -50) {
+					zaxis_released = false;
 					return Control::RT;
 				}
+				if (event.joystickMove.position >= 50) {
+					zaxis_released = false;
+					return Control::LT;
+				}
 			}
-			else if (event.joystickMove.position > 50.f && event.joystickMove.position <= -50.f) {
-				zaxis_released = false;
+			else {
+				if (event.joystickMove.position >= -50 && event.joystickMove.position < 50) {
+					zaxis_released = true;
+					if (event.joystickMove.position < 0) {
+						return Control::RT;
+					}
+					if (event.joystickMove.position > 0) {
+						return Control::LT;
+					}
+				}
 			}
 			break;
 		}
@@ -305,23 +344,41 @@ bool InputHandler::_is_pressed(Control control) {
 	return rval;
 }
 
-Control InputHandler::get_input(sf::Event &event) {
-	Control rval = get()._get_control_input(event);
-	if (rval == Control::OTHER)
-		rval = get()._get_joystick_input(event);
+
+
+
+Control InputHandler::_get_input(sf::Event &event) {
+	Control rval = _get_control_input(event);
+	if (rval == Control::OTHER) {
+		rval = _get_joystick_input(event);
+	}
 	return rval;
+}
+
+Control InputHandler::_get_input_released(sf::Event &event) {
+	Control rval = _get_control_input_released(event);
+	if (rval == Control::OTHER)
+		rval = _get_joystick_input_released(event);
+	return rval;
+}
+
+bool InputHandler::_is_input(Control control) {
+	bool rval = _is_pressed(control);
+	if (!rval)
+		rval = _is_joystick_pressed(control);
+	return rval;
+}
+
+
+
+Control InputHandler::get_input(sf::Event &event) {
+	return get()._get_input(event);
 }
 
 Control InputHandler::get_input_released(sf::Event &event) {
-	Control rval = get()._get_control_input_released(event);
-	if (rval == Control::OTHER)
-		rval = get()._get_joystick_input_released(event);
-	return rval;
+	return get()._get_input_released(event);
 }
 
 bool InputHandler::is_input(Control control) {
-	bool rval = get()._is_pressed(control);
-	if (!rval)
-		rval = get()._is_joystick_pressed(control);
-	return rval;
+	return get()._is_input(control);
 }

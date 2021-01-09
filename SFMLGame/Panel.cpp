@@ -142,7 +142,7 @@ Component *ChoicePanel::on_key_pressed(sf::Event &event) {
 		return interacted;
 	}
 
-	switch (InputHandler::get_input(event)) {
+	switch (input_handler._get_input(event)) {
 	case Control::UP:
 		if (!no_button.is_selected())
 			get_screen()->select(no_button);

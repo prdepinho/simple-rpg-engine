@@ -76,7 +76,6 @@ bool LoadGameScreen::update(float fElapsedTime) {
 
 Component *LoadGameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	Component *interacted_component = Screen::handle_event(event, elapsed_time);
-
 	if (interacted_component)
 		return nullptr;
 

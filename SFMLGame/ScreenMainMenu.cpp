@@ -1,7 +1,6 @@
 #include "ScreenMainMenu.h"
 #include "Json.h"
 #include "Game.h"
-#include "InputHandler.h"
 #include "SavePanel.h"
 
 ScreenMainMenu::ScreenMainMenu()
@@ -141,7 +140,7 @@ Component *ScreenMainMenu::handle_event(sf::Event &event, float elapsed_time) {
 	// if (interacted_component)
 	// 	return interacted_component;
 
-	switch (InputHandler::get_input(event)) {
+	switch (input_handler._get_input(event)) {
 	case Control::UP:
 		if (button_index > 0)
 			button_index--;

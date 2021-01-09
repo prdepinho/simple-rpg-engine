@@ -5,6 +5,7 @@
 #include "Panel.h"
 #include "Resources.h"
 #include "Callback.h"
+#include "InputHandler.h"
 
 class LoadButton : public Button {
 public:
@@ -33,6 +34,7 @@ private:
 	Resources::SaveFile save_file;
 	bool allow_save = false;
 	bool allow_delete = false;
+	InputHandler input_handler;
 };
 
 
@@ -52,4 +54,5 @@ private:
 	int button_length = 150;
 	std::vector<LoadButton> buttons;
 	size_t button_index = 0;
+	InputHandler input_handler;
 };

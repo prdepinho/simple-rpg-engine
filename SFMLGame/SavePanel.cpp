@@ -1,7 +1,6 @@
 #include "SavePanel.h"
 #include "Game.h"
 #include "Resources.h"
-#include "InputHandler.h"
 #include "Time.h"
 
 
@@ -172,7 +171,7 @@ Component *SaveOptionMenu::on_key_pressed(sf::Event &event) {
 	if (interacted)
 		return interacted;
 
-	switch (InputHandler::get_input(event)) {
+	switch (input_handler._get_input(event)) {
 	case Control::UP:
 		if (button_index > 0)
 			button_index--;
@@ -321,7 +320,7 @@ Component *SavePanel::on_key_pressed(sf::Event &event) {
 	if (interacted)
 		return interacted;
 
-	switch (InputHandler::get_input(event)) {
+	switch (input_handler._get_input(event)) {
 	case Control::UP:
 		if (button_index > 0)
 			button_index--;

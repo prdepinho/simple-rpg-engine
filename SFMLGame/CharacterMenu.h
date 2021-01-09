@@ -8,6 +8,7 @@
 #include "consts.h"
 #include "Item.h"
 #include "TextArea.h"
+#include "InputHandler.h"
 
 class Inventory;
 class CharacterMenu;
@@ -30,6 +31,7 @@ private:
 	int button_length = 50;
 	int button_height = 20;
 	int cursor = 0;
+	InputHandler input_handler;
 };
 
 
@@ -99,6 +101,7 @@ private:
 	int inventory_height = 4;
 	int button_size = 20;
 	int cursor;
+	InputHandler input_handler;
 };
 
 class Loot : public Panel {
@@ -117,6 +120,7 @@ private:
 	int loot_height = 4;
 	int button_size = 20;
 	int cursor;
+	InputHandler input_handler;
 };
 
 class CharacterMenu : public Panel, public CallbackCaller {
@@ -151,6 +155,7 @@ protected:
 	TextArea info_area;
 	int margin = 5;
 	bool loot_mode = false;
+	InputHandler input_handler;
 };
 
 

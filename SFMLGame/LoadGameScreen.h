@@ -4,6 +4,7 @@
 #include "Button.h"
 #include "Resources.h"
 #include "SavePanel.h"
+#include "InputHandler.h"
 
 
 class LoadGameScreen : public Screen
@@ -21,5 +22,6 @@ public:
 private:
 	std::vector<LoadButton> buttons;
 	size_t button_index = 0;
+	InputHandler input_handler;
 };
 

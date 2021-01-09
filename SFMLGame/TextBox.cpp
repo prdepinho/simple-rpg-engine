@@ -3,7 +3,6 @@
 #include "consts.h"
 #include "Json.h"
 #include "Game.h"
-#include "InputHandler.h"
 
 
 
@@ -117,7 +116,7 @@ Component *TextBox::on_key_pressed(sf::Event &event) {
 	if (interacted)
 		return interacted;
 
-	switch (InputHandler::get_input(event)) {
+	switch (input_handler._get_input(event)) {
 	case Control::A:
 		if (completely_written) {
 			if (end_line == text_lines.size()) {
@@ -340,7 +339,7 @@ Component *OptionsPanel::on_key_pressed(sf::Event &event) {
 	if (interacted)
 		return interacted;
 
-	switch (InputHandler::get_input(event)) {
+	switch (input_handler._get_input(event)) {
 	case Control::A:
 		break;
 	case Control::UP:
@@ -450,7 +449,7 @@ Component *DialogueBox::on_key_pressed(sf::Event &event) {
 	if (interacted)
 		return interacted;
 
-	switch (InputHandler::get_input(event)) {
+	switch (input_handler._get_input(event)) {
 	case Control::A:
 		if (completely_written) {
 			if (end_line == text_lines.size()) {

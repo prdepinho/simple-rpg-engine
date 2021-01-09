@@ -3,6 +3,7 @@
 #include "Component.h"
 #include "Screen.h"
 #include "consts.h"
+#include "InputHandler.h"
 
 
 class GameScreen;
@@ -37,4 +38,5 @@ private:
 	std::function<bool(sf::Vector2i, std::vector<sf::Vector2i>&)> on_select;
 	std::vector<sf::Vector2i> range_tiles;
 	std::vector<sf::Vector2i> effect_tiles;
+	InputHandler input_handler;
 };

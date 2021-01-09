@@ -3,6 +3,7 @@
 #include "Button.h"
 #include "Callback.h"
 #include "Lua.h"
+#include "InputHandler.h"
 
 class OptionButton : public Button {
 public:
@@ -24,6 +25,7 @@ public:
 private:
 	std::vector<OptionButton> buttons;
 	size_t selected_index = 0;
+	InputHandler input_handler;
 };
 
 
@@ -67,6 +69,7 @@ protected:
 	std::vector<std::string> text_lines;
 	std::vector<std::string> visible_lines;
 	std::vector<Font> font_lines;
+	InputHandler input_handler;
 private:
 };
 

@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "Button.h"
 #include "Callback.h"
+#include "InputHandler.h"
 
 class Panel : public Component
 {
@@ -54,4 +55,5 @@ private:
 	Button no_button;
 	Font font;
 	std::string message;
+	InputHandler input_handler;
 };

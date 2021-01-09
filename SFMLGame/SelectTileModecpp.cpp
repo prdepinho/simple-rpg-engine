@@ -1,6 +1,5 @@
 #include "SelectTileMode.h"
 #include "FieldOfVision.h"
-#include "InputHandler.h"
 #include "Game.h"
 #include "GameScreen.h"
 #include "Resources.h"
@@ -131,7 +130,7 @@ Component *SelectTileMode::handle_event(sf::Event &event, float elapsed_time) {
 
 	// controller input
 	{
-		switch (InputHandler::get_input(event)) {
+		switch (input_handler._get_input(event)) {
 		case Control::UP:
 			move_cursor(Direction::UP);
 			break;

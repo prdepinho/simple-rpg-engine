@@ -5,6 +5,7 @@
 #include "font.h"
 #include "Label.h"
 #include "Button.h"
+#include "InputHandler.h"
 
 
 class ScreenMainMenu : public Screen
@@ -23,5 +24,6 @@ private:
 	sf::Texture texture;
 	sf::Sprite sprite;
 	size_t button_index = 0;
+	InputHandler input_handler;
 };
 
