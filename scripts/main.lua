@@ -28,6 +28,9 @@ function is_enemy(character_name)
   return control:is_enemy(character_name)
 end
 
+function characters_exchange_position(interactor_name, target_name)
+  control:characters_exchange_position(interactor_name, target_name)
+end
 
 function cast_magic(magic_name, caster, center, tiles, targets)
   control:cast_magic(magic_name, caster, center, tiles, targets)

@@ -142,14 +142,14 @@ rules.ammo = {
 
 rules.item = {
   no_item           = { name = "No item",         icon = {x = 16*0, y = 16*3},   stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "" },
-  money             = { name = "Money",           icon = {x = 16*2, y = 16*9},   stack_capacity = 100,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Copper coins." },
+  money             = { name = "Money",           icon = {x = 16*2, y = 16*9},   stack_capacity = 20,    range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Copper coins." },
   rat_poison        = { name = "Rat Poison",      icon = {x = 16*1, y = 16*10},  stack_capacity = 3,     range_radius = 1, effect_radius = 0, usable = true,  use = "rat_poison", desc = "Rat poison that can be used to poison someone without raising suspicion." },
   cheese            = { name = "Gouda Cheese",    icon = {x = 16*0, y = 16*10},  stack_capacity = 3,     range_radius = 1, effect_radius = 0, usable = true,  use = "cheese",     desc = "Young matured Gouda Cheese with a lovely fruity tang. Restores 1d4 hit points and cures poison." },
   poisoned_cheese   = { name = "Poisoned Cheese", icon = {x = 16*0, y = 16*11},  stack_capacity = 3,     range_radius = 1, effect_radius = 0, usable = true,  use = "rat_poison", desc = "Poisoned cheese. Don't eat it." },
   cloak             = { name = "Thief Cloak",     icon = {x = 16*3, y = 16*10},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = true,  use = "cloak",      desc = "A cloak made to blend with the background and avoid detection." },
   key               = { name = "Key",             icon = {x = 16*0, y = 16*9},   stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A brass key." },
   armory_key        = { name = "Old rusty key",   icon = {x = 16*4,y = 16*11},   stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A rusty iron key that opens the armory under Come Inn." },
-  lockpick          = { name = "Lockpick",        icon = {x = 16*5, y = 16*11},  stack_capacity = 10,    range_radius = 1, effect_radius = 0, usable = true,  use = "lockpick",   desc = "A lockpick that can be used to unlock doors and chests." },
+  lockpick          = { name = "Lockpick",        icon = {x = 16*5, y = 16*11},  stack_capacity = 3,     range_radius = 1, effect_radius = 0, usable = true,  use = "lockpick",   desc = "A lockpick that can be used to unlock doors and chests." },
   cook_key          = { name = "Cook Key",        icon = {x = 16*6, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "The key to the cook's room in Normindia Castle." },
   tower_key         = { name = "Tower Key",       icon = {x = 16*7, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "The key to the north-west tower of Normindia Castle." },
   silver_cutlery    = { name = "Silver Cutlery",  icon = {x = 16*4, y = 16*10},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Silver forks and knives that you stole from Normindia Castle." },
@@ -167,16 +167,16 @@ rules.item = {
 }
 
 rules.spell = {
-  magic_missile = { name = "Magic Missile", category = "arcane", stack_capacity = 10, icon = {x = 16*0,  y = 16*6},  range_radius = 6, effect_radius = 0, usable = true, use = "magic_missile", desc = "Cast an energy missile that causes 1d4+1 damage to a target. No Save." },
-  fireball      = { name = "Fireball",      category = "arcane", stack_capacity = 10, icon = {x = 16*9,  y = 16*6},  range_radius = 6, effect_radius = 3, usable = true, use = "fireball",      desc = "Cast a projectile that explodes causing 6d6 damage to an area. Dex save to halve." },
-  poison        = { name = "Poison",        category = "arcane", stack_capacity = 10, icon = {x = 16*14, y = 16*6},  range_radius = 6, effect_radius = 2, usable = true, use = "poison"     ,   desc = "Cast a poisonous gas to an area. Does 1 damage each turn. Con save to negate." },
-  invisibility  = { name = "Invisibility",  category = "arcane", stack_capacity = 10, icon = {x = 16*6,  y = 16*6},  range_radius = 1, effect_radius = 0, usable = true, use = "invisibility",  desc = "Turn a creature invisible. It gains +2 ac and attack bonus." },
-  fear          = { name = "Fear",          category = "arcane", stack_capacity = 10, icon = {x = 16*4,  y = 16*6},  range_radius = 6, effect_radius = 3, usable = true, use = "fear",          desc = "Inflicts fear in the heart of creatures in an area. Wis save to negate." },
-  armor         = { name = "Armor",         category = "arcane", stack_capacity = 10, icon = {x = 16*1,  y = 16*6},  range_radius = 1, effect_radius = 0, usable = true, use = "armor",         desc = "Creates a magic armor that grants ac 20 to a creature."},
-  strength      = { name = "Strength",      category = "divine", stack_capacity = 10, icon = {x = 16*4,  y = 16*8},  range_radius = 1, effect_radius = 0, usable = true, use = "strength",      desc = "Grants a creature the inhuman strength of 19."},
-  cure_wounds   = { name = "Cure Wounds",   category = "divine", stack_capacity = 10, icon = {x = 16*0,  y = 16*8},  range_radius = 1, effect_radius = 0, usable = true, use = "cure_wounds",   desc = "Recover hit points to the amount of 2d4 + Wisdom Modifier." },
-  raise_dead    = { name = "Raise Dead",    category = "divine", stack_capacity = 10, icon = {x = 16*8,  y = 16*8},  range_radius = 0, effect_radius = 3, usable = true, use = "raise_dead",    desc = "Raise the dead in a radius around the caster." },
-  true_seeing   = { name = "True Seeing",   category = "divine", stack_capacity = 10, icon = {x = 16*12,  y = 16*8}, range_radius = 0, effect_radius = 0, usable = true, use = "true_seeing",   desc = "You can see invisible creatures and places for the duration of the spell." },
+  magic_missile = { name = "Magic Missile", category = "arcane", stack_capacity = 3, icon = {x = 16*0,  y = 16*6},  range_radius = 6, effect_radius = 0, usable = true, use = "magic_missile", desc = "Cast an energy missile that causes 1d4+1 damage to a target. No Save." },
+  fireball      = { name = "Fireball",      category = "arcane", stack_capacity = 3, icon = {x = 16*9,  y = 16*6},  range_radius = 6, effect_radius = 3, usable = true, use = "fireball",      desc = "Cast a projectile that explodes causing 6d6 damage to an area. Dex save to halve." },
+  poison        = { name = "Poison",        category = "arcane", stack_capacity = 3, icon = {x = 16*14, y = 16*6},  range_radius = 6, effect_radius = 2, usable = true, use = "poison"     ,   desc = "Cast a poisonous gas to an area. Does 1 damage each turn. Con save to negate." },
+  invisibility  = { name = "Invisibility",  category = "arcane", stack_capacity = 3, icon = {x = 16*6,  y = 16*6},  range_radius = 1, effect_radius = 0, usable = true, use = "invisibility",  desc = "Turn a creature invisible. It gains +2 ac and attack bonus." },
+  fear          = { name = "Fear",          category = "arcane", stack_capacity = 3, icon = {x = 16*4,  y = 16*6},  range_radius = 6, effect_radius = 3, usable = true, use = "fear",          desc = "Inflicts fear in the heart of creatures in an area. Wis save to negate." },
+  armor         = { name = "Armor",         category = "arcane", stack_capacity = 3, icon = {x = 16*1,  y = 16*6},  range_radius = 1, effect_radius = 0, usable = true, use = "armor",         desc = "Creates a magic armor that grants ac 20 to a creature."},
+  strength      = { name = "Strength",      category = "divine", stack_capacity = 3, icon = {x = 16*4,  y = 16*8},  range_radius = 1, effect_radius = 0, usable = true, use = "strength",      desc = "Grants a creature the inhuman strength of 19."},
+  cure_wounds   = { name = "Cure Wounds",   category = "divine", stack_capacity = 3, icon = {x = 16*0,  y = 16*8},  range_radius = 1, effect_radius = 0, usable = true, use = "cure_wounds",   desc = "Recover hit points to the amount of 2d4 + Wisdom Modifier." },
+  raise_dead    = { name = "Raise Dead",    category = "divine", stack_capacity = 3, icon = {x = 16*8,  y = 16*8},  range_radius = 0, effect_radius = 3, usable = true, use = "raise_dead",    desc = "Raise the dead in a radius around the caster." },
+  true_seeing   = { name = "True Seeing",   category = "divine", stack_capacity = 3, icon = {x = 16*12,  y = 16*8}, range_radius = 0, effect_radius = 0, usable = true, use = "true_seeing",   desc = "You can see invisible creatures and places for the duration of the spell." },
 }
 
 

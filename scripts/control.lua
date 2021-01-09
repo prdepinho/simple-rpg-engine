@@ -1128,13 +1128,7 @@ function Control:character_on_interact(target_name, interactor_name)
       if character.ally then
         self:characters_exchange_position(interactor_name, target_name)
       else
-        if self.characters[target_name].talked then
-          self:characters_exchange_position(interactor_name, target_name)
-          self.characters[target_name].talked = false
-        else
-          self.characters[target_name]:on_interact(interactor_name)
-          self.characters[target_name].talked = true
-        end
+        self.characters[target_name]:on_interact(interactor_name)
       end
     end
   else

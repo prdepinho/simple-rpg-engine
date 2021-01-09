@@ -277,6 +277,9 @@ private:
 	bool log_box_scrolling_down = false;
 	float scrolling_count = 0.f;
 
+	float a_button_delta = 0.f;
+	bool a_button_pressed = false;
+
 	std::queue<QueueableDialogue> dialogue_queue;
 	bool show_character_creation = false;
 	bool give_character_creation_points = false;

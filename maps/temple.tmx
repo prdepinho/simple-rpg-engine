@@ -192,13 +192,13 @@
     <property name="type" value="door"/>
    </properties>
   </object>
-  <object id="5" name="player" x="105.195" y="283.181">
+  <object id="5" name="player" x="120.195" y="283.681">
    <properties>
     <property name="type" value="player"/>
    </properties>
    <point/>
   </object>
-  <object id="6" name="priestess" x="70.8344" y="282.02">
+  <object id="6" name="priestess" x="120.834" y="265.27">
    <properties>
     <property name="type" value="head_priestess"/>
    </properties>

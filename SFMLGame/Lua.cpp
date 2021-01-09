@@ -846,6 +846,19 @@ void Lua::set_ability_scores(std::string name, int str, int dex, int con, int in
 	lua_pop(state, 1);
 }
 
+void Lua::characters_exchange_position(std::string interactor_name, std::string target_name) {
+	lua_getglobal(state, "characters_exchange_position");
+	lua_pushstring(state, interactor_name.c_str());
+	lua_pushstring(state, target_name.c_str());
+	int result = lua_pcall(state, 2, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	lua_pop(state, 1);
+}
+
 LuaObject Lua::item_stats(std::string name, std::string type) {
 	lua_getglobal(state, "item_stats");
 	lua_pushstring(state, name.c_str());

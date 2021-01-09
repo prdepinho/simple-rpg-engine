@@ -167,6 +167,9 @@ bool GameScreen::update(float elapsed_time) {
 	{
 		std::string status = player_busy ? "busy" : "free";
 		status = !is_player_in_control() ? "wait" : status;
+		if (a_button_pressed) {
+			status += ", A";
+		}
 		busy.draw_line(_game.get_resolution_width() - 40, 0, status, sf::Color::White);
 	}
 
@@ -371,7 +374,13 @@ void GameScreen::control_move_up() {
 				auto *action = new InteractionAction(player_character, dst_x, dst_y);
 				player_character->schedule_action(action);
 #else
-				interact_character(*player_character, dst_x, dst_y);
+				Character *target = get_live_character_on_tile(dst_x, dst_y);
+				if (a_button_pressed && target) {
+					_game.get_lua()->characters_exchange_position("player", target->get_name());
+				}
+				else {
+					interact_character(*player_character, dst_x, dst_y);
+				}
 #endif
 			}
 		}
@@ -399,7 +408,13 @@ void GameScreen::control_move_down() {
 				auto *action = new InteractionAction(player_character, dst_x, dst_y);
 				player_character->schedule_action(action);
 #else
-				interact_character(*player_character, dst_x, dst_y);
+				Character *target = get_live_character_on_tile(dst_x, dst_y);
+				if (a_button_pressed && target) {
+					_game.get_lua()->characters_exchange_position("player", target->get_name());
+				}
+				else {
+					interact_character(*player_character, dst_x, dst_y);
+				}
 #endif
 			}
 		}
@@ -427,7 +442,13 @@ void GameScreen::control_move_left() {
 				auto *action = new InteractionAction(player_character, dst_x, dst_y);
 				player_character->schedule_action(action);
 #else
-				interact_character(*player_character, dst_x, dst_y);
+				Character *target = get_live_character_on_tile(dst_x, dst_y);
+				if (a_button_pressed && target) {
+					_game.get_lua()->characters_exchange_position("player", target->get_name());
+				}
+				else {
+					interact_character(*player_character, dst_x, dst_y);
+				}
 #endif
 			}
 		}
@@ -455,7 +476,13 @@ void GameScreen::control_move_right() {
 				auto *action = new InteractionAction(player_character, dst_x, dst_y);
 				player_character->schedule_action(action);
 #else
-				interact_character(*player_character, dst_x, dst_y);
+				Character *target = get_live_character_on_tile(dst_x, dst_y);
+				if (a_button_pressed && target) {
+					_game.get_lua()->characters_exchange_position("player", target->get_name());
+				}
+				else {
+					interact_character(*player_character, dst_x, dst_y);
+				}
 #endif
 			}
 		}
@@ -850,6 +877,34 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		return nullptr;
 	}
 
+	if (a_button_pressed)
+		a_button_delta += elapsed_time;
+
+
+	if (in_control) {
+		switch (InputHandler::get_input(event)) {
+		case Control::A:
+			a_button_pressed = true;
+			a_button_delta = 0.f;
+			break;
+		}
+		switch (InputHandler::get_input_released(event)) {
+		case Control::A:
+			if (a_button_pressed) {
+				a_button_pressed = false;
+				if (a_button_delta < 0.25f) {
+					// do
+					if (!player_busy) {
+						auto position = character_position(*player_character);
+						interact_character(*player_character, position.x, position.y);
+						player_busy = true;
+					}
+				}
+			}
+			break;
+		}
+	}
+
 	if (!player_busy) {
 		switch (InputHandler::get_input_released(event)) {
 		case Control::Y:
@@ -877,14 +932,6 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 					waiting = true;
 				}
 				break;
-			case Control::A:
-				// do
-			{
-				auto position = character_position(*player_character);
-				interact_character(*player_character, position.x, position.y);
-				player_busy = true;
-			}
-			break;
 			case Control::B:
 				select_tile_to_shoot();
 				break;

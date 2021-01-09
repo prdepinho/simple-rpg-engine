@@ -75,6 +75,7 @@ public:
 	int character_base_damage_bonus(std::string name);
 	void level_up(std::string name);
 	void set_ability_scores(std::string name, int str, int dex, int con, int intl, int wis, int cha);
+	void characters_exchange_position(std::string interactor_name, std::string target_name);
 
 	LuaObject item_stats(std::string name, std::string type);
 	void load_initial_item(std::string code, std::string name, std::string type, int x, int y);
