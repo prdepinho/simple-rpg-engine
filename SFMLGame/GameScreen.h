@@ -144,6 +144,7 @@ public:
 	void add_entity(Entity *entity);
 	void remove_entity(Entity *entity);
 
+	void screen_shake(int strength, int times);
 	void pan_game_view(sf::Vector2f v);
 	void center_game_view(sf::Vector2f v);
 	void center_map_on_tile(sf::Vector2i v);
@@ -285,6 +286,8 @@ private:
 	bool give_character_creation_points = false;
 
 	std::map<std::string, Component*> mapped_components;
+
+	std::queue<sf::Vector2f> shake;
 
 	enum {
 		CHARACTER_CONTROL,

@@ -45,6 +45,7 @@ function Magic:magic_missile_blast(caster, center, tiles, targets)
 
       self.control:damage_character(character_name, damage)
       self.control:character_on_attacked(caster, character_name)
+      sfml_shake_screen(1, 2)
     end
   end
 end
@@ -133,6 +134,7 @@ function Magic:fireball_blast(caster, center, tiles, targets)
 
     self.control:damage_character(character_name, damage)
     self.control:character_on_attacked(caster, character_name)
+    sfml_shake_screen(15, 5)
   end
 end
 

@@ -28,6 +28,8 @@ sound_volume = 15
 
 log_box_history_size = 50
 
+screen_shake = true
+
 
 text_box_speed = 50  -- letters per seconds
 text_box_lines = 3   -- lines per text box

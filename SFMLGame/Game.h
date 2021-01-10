@@ -71,6 +71,7 @@ private:
 	bool limit_framerate;
 	int framerate;
 	float turn_duration;
+	bool screen_shake;
 
 public:
 	int get_resolution_width() const { return resolution_width; }
@@ -82,6 +83,7 @@ public:
 	bool is_limit_framerate() const { return limit_framerate; }
 	int get_framerate() const { return framerate; }
 	float get_turn_duration() const { return turn_duration; }
+	bool allow_screen_shake() const { return screen_shake; }
 
 	void change_resolution(int w, int h, float modifier);
 	void revert_resolution();

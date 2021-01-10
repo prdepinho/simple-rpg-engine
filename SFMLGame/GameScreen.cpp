@@ -230,6 +230,15 @@ bool GameScreen::update(float elapsed_time) {
 		clear_target();
 	}
 
+	// shake
+
+	{
+		if (shake.size() > 0) {
+			sf::Vector2f delta = shake.front();
+			pan_game_view(delta);
+			shake.pop();
+		}
+	}
 
 
 	// change map here
@@ -1949,6 +1958,25 @@ void GameScreen::hide_foreground() {
 		log_box.show();
 }
 
+
+void GameScreen::screen_shake(int strength, int times) {
+	if (_game.allow_screen_shake()) {
+		shake = std::queue<sf::Vector2f>();
+		float str = (float)strength;
+		float xsum = 0;
+		float ysum = 0;
+		for (int i = 0; i < times; i++) {
+			float delta = (float)(std::rand() % (int)str);
+			str -= delta;
+			float x = (float)str * (std::rand() % 2 == 1 ? 1 : -1);
+			float y = (float)str * (std::rand() % 2 == 1 ? 1 : -1);
+			xsum += x;
+			ysum += y;
+			shake.push({ x, y });
+		}
+		shake.push({ xsum * -1, ysum * -1 });
+	}
+}
 
 void GameScreen::pan_game_view(sf::Vector2f v) {
 	game_view.move(v);

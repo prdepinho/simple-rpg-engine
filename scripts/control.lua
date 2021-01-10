@@ -459,6 +459,7 @@ function Control:attack(attacker_name, defender_name)
     sfml_push_log(hit_msg)
     sfml_push_log(dmg_msg)
     sfml_show_floating_message(fmsg, position.x, position.y)
+    sfml_shake_screen(9, 3)
 
   elseif hit_result.critical_miss then
     fmsg = "Critical miss!"
@@ -492,6 +493,8 @@ function Control:attack(attacker_name, defender_name)
     sfml_push_log(hit_msg)
     sfml_push_log(dmg_msg)
     sfml_show_floating_message(fmsg, position.x, position.y)
+
+    sfml_shake_screen(1, 1)
 
   elseif hit_result.parried then
     fmsg = "Parried!"

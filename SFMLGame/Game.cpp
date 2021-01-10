@@ -134,6 +134,7 @@ void Game::configure_game()
 	limit_framerate =   lua.get_boolean("limit_framerate", Default::LIMIT_FRAMERATE);
 	framerate =         lua.get_int("set_framerate", Default::FRAMERATE);
 	turn_duration =		1.f / lua.get_float("turns_per_second", 1.f);
+	screen_shake =		lua.get_boolean("screen_shake", true);
 
 	std::cout << "Music volume: " << lua.get_float("music_volume") << std::endl;
 	std::cout << "Sound volume: " << lua.get_float("sound_volume") << std::endl;
@@ -1199,6 +1200,14 @@ public:
 		return 1;
 	}
 
+	static int sfml_shake_screen(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		int strength = lua_tonumber(state, -1);
+		int times = lua_tonumber(state, -2);
+		screen->screen_shake(strength, times);
+		return 1;
+	}
+
 	static int sfml_center_camera(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		std::string name = lua_tostring(state, -1);
@@ -1327,6 +1336,7 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_set_character_skin", LuaFunction::sfml_set_character_skin);
 	lua_register(lua.get_state(), "sfml_set_turns_per_second", LuaFunction::sfml_set_turns_per_second);
 	lua_register(lua.get_state(), "sfml_show_character_edit", LuaFunction::sfml_show_character_edit);
+	lua_register(lua.get_state(), "sfml_shake_screen", LuaFunction::sfml_shake_screen);
 	lua_register(lua.get_state(), "sfml_center_camera", LuaFunction::sfml_center_camera);
 	lua_register(lua.get_state(), "sfml_is_moving", LuaFunction::sfml_is_moving);
 	lua_register(lua.get_state(), "sfml_push_character_to_bottom", LuaFunction::sfml_push_character_to_bottom);
