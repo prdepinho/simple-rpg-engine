@@ -27,12 +27,21 @@ function Temple:olive(event, x, y, character_name, object_name)
   if character_name == 'player' then
     if not self.control.data.revised_character then
       if event == 'interact' then
-        if not self.control.data.created_character then
-          sfml_show_character_edit(true)
-          self.control.data.created_character = true
-        else
-          sfml_show_character_edit(false)
-        end
+        local dialogue = {
+          start = {
+            text = "You reach for the tree.",
+            go_to = 'end',
+            callback = function()
+              if not self.control.data.created_character then
+                sfml_show_character_edit(true)
+                self.control.data.created_character = true
+              else
+                sfml_show_character_edit(false)
+              end
+            end
+          }
+        }
+        sfml_dialogue(dialogue)
       end
     end
   end
