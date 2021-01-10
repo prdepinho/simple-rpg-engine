@@ -46,6 +46,12 @@ struct FireworksResources {
 class Resources
 {
 public:
+	struct LetterMapData{
+		int x;
+		int y;
+		int width;
+		int forward;
+	};
 
 	static sf::Texture* get_texture(std::string filename) {
 		return &get().texture_map[filename];
@@ -90,12 +96,15 @@ public:
 	static float get_music_volume() { return get().music_volume; }
 	static float get_sound_volume() { return get().sound_volume; }
 
+	static Resources::LetterMapData get_font_char(sf::Color color, char c);
+
 	static void load_rules();
 	static void load_textures();
 	static void load_sounds();
 	static void load_music();
 	static void load_fireworks();
 	static void load_animations();
+	static void load_fonts();
 
 	struct SaveFile {
 		std::string filename;
@@ -123,6 +132,9 @@ private:
 	std::map<std::string, FireworksResources> fireworks_map;
 	std::map<std::string, AnimationResources> animation_map;
 	std::vector<sf::SoundBuffer*> sound_buffers;
+
+	std::map<char, LetterMapData> blank_letters;
+	std::map<char, LetterMapData> white_letters;
 
 	float music_volume = 100.f;
 	float sound_volume = 100.f;

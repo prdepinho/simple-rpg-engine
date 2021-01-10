@@ -181,7 +181,7 @@ function HeadPriestess:on_interact(interactor_name)
       }
 
       dialogue.skeletons = {
-        text = "Skeletons are undead that came back from death by the use of magic and would obey their masters to their last breath, if they ever breathed, that is. They will work themselves to the bone though. Pardon the pun.",
+        text = "Skeletons are undead that came back from death by the use of magic and would obey their masters to their last breath, if they ever breathed, that is. They will work themselves to the bone though. Pardon the pun. Needless to say, you will have a hard time hurting it with anything other than a budgeon.",
         go_to = 'monsters'
       }
 

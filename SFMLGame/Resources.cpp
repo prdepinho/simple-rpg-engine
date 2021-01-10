@@ -154,6 +154,53 @@ void Resources::load_animations() {
 	}
 }
 
+void Resources::load_fonts() {
+	Lua lua(Path::SCRIPTS + "font.lua");
+	{
+		LuaObject blank = lua.get_object("blank_letters");
+		get().blank_letters = std::map<char, Resources::LetterMapData>();
+		int origin_x = blank.get_int("origin.x");
+		int origin_y = blank.get_int("origin.y");
+
+		LuaObject *letters = blank.get_object("letters");
+		for (auto it = letters->begin(); it != letters->end(); ++it) {
+			LuaObject obj = it->second;
+			char key = obj.get_string("letter")[0];
+			int x = obj.get_int("x") + origin_x;
+			int y = obj.get_int("y") + origin_y;
+			int w = obj.get_int("w");
+			int f = obj.get_int("f");
+
+			get().blank_letters[key] = Resources::LetterMapData{ x, y, w, f };
+		}
+	}{
+		LuaObject white = lua.get_object("white_letters");
+		get().white_letters = std::map<char, Resources::LetterMapData>();
+		int origin_x = white.get_int("origin.x");
+		int origin_y = white.get_int("origin.y");
+
+		LuaObject *letters = white.get_object("letters");
+		for (auto it = letters->begin(); it != letters->end(); ++it) {
+			LuaObject obj = it->second;
+			char key = obj.get_string("letter")[0];
+			int x = obj.get_int("x") + origin_x;
+			int y = obj.get_int("y") + origin_y;
+			int w = obj.get_int("w");
+			int f = obj.get_int("f");
+
+			get().white_letters[key] = Resources::LetterMapData{ x, y, w, f };
+		}
+	}
+	
+}
+
+Resources::LetterMapData Resources::get_font_char(sf::Color color, char c) {
+	if (color == sf::Color::White) {
+		return get().white_letters[c];
+	}
+	return get().blank_letters[c];
+}
+
 void Resources::play_sound(std::string filename) {
 	sf::Sound *loaded_sound = Resources::get_sound(filename);
 	sf::Sound *sound = new sf::Sound(*loaded_sound);

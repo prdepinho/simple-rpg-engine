@@ -29,7 +29,19 @@ function RatWarden:on_interact(interactor_name)
   if self.control.data.temple_rat3_dead then
     dialogue.start = {
       text = "You did well, sister. Now proceed to the second chamber when you are ready.",
-      go_to = 'end'
+      options = {
+        { text = "Yes, maam.", go_to = 'end' },
+        { text = "I would prefer a sword.", go_to = 'prefer' },
+        { text = "I feel bad bludgeoning theses animals to death.", go_to = 'pity' },
+      },
+      prefer = {
+        text = "Well, it's tradition that clerics use a good mace. You can get another weapon in the city if you want.",
+        go_to = 'end'
+      },
+      pity = {
+        text = "You shouldn't. Rats are our millenial enemies and pity is a ticket to hell when facing the enemy.",
+        go_to = 'end'
+      }
     }
   end
 

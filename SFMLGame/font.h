@@ -5,6 +5,7 @@
 #include <vector>
 #include "Entity.h"
 #include "Component.h"
+#include "Resources.h"
 
 
 	class Font : public Component
@@ -36,17 +37,10 @@
 
 	private:
 
-		struct LetterMapData{
-			int x;
-			int y;
-			int width;
-			int forward;
-		};
-
-		LetterMapData char_data(char c);
-		LetterMapData lig_data(char c); 
-		LetterMapData alt_data(char c); 
-		LetterMapData eszett_data(); 
+		Resources::LetterMapData char_data(char c);
+		Resources::LetterMapData lig_data(char c); 
+		Resources::LetterMapData alt_data(char c); 
+		Resources::LetterMapData eszett_data(); 
 
 
 		void build_line(sf::VertexArray *varray, int x, int y, std::string str, sf::Color color);
@@ -55,6 +49,6 @@
 	private:
 		sf::Texture char_sheet;
 		bool compressed_text = false;
-		std::map<char, LetterMapData> char_map;
+
 	};
 

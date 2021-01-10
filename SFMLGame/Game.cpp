@@ -28,6 +28,9 @@ void Game::init()
 	Log("Loading rules...");
 	Resources::load_rules();
 
+	Log("Loading fonts...");
+	Resources::load_fonts();
+
 	Log("Loading textures...");
 	Resources::load_textures();
 
@@ -1202,8 +1205,8 @@ public:
 
 	static int sfml_shake_screen(lua_State *state) {
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
-		int strength = lua_tonumber(state, -1);
-		int times = lua_tonumber(state, -2);
+		int strength = (int)lua_tonumber(state, -1);
+		int times = (int)lua_tonumber(state, -2);
 		screen->screen_shake(strength, times);
 		return 1;
 	}
