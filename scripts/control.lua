@@ -182,7 +182,7 @@ function Control:game_over()
   print('game over')
 end
 
-function Control:shop_dialogue(items, shop_keeper_name, greetings)
+function Control:shop_dialogue(items, shop_keeper_name, greetings, question)
   local dialogue = {
     start = {
       text = greetings,
@@ -192,7 +192,7 @@ function Control:shop_dialogue(items, shop_keeper_name, greetings)
       }
     },
     buy = {
-      text = "What have you in mind?",
+      text = question or "What have you in mind?",
       options = {
         { text = "Never mind.", go_to = 'end' },
       }
@@ -204,7 +204,7 @@ function Control:shop_dialogue(items, shop_keeper_name, greetings)
     dialogue[name] = {
       text = function()
         if self:spend_money('player', item.price, shop_keeper_name) then
-          self:add_item_to_inventory('player', self:next_item_code(), item.name, item.type)
+          self:add_item_to_inventory('player', self:next_item_code(), item.name, item.type, item.quantity)
           return "Thank you."
         else
           return "You don't have enough money."

@@ -14,10 +14,12 @@ inline void Font::DrawLetter(sf::Vertex *quad, int32_t x, int32_t y, int32_t ox,
 	quad[2].texCoords = sf::Vector2f((float) w+ox, (float) h+oy);
 	quad[3].texCoords = sf::Vector2f((float) 0+ox, (float) h+oy);
 
-	quad[0].color = color;
-	quad[1].color = color;
-	quad[2].color = color;
-	quad[3].color = color;
+	if (color != sf::Color::Magenta) {
+		quad[0].color = color;
+		quad[1].color = color;
+		quad[2].color = color;
+		quad[3].color = color;
+	}
 }
 
 void Font::draw_line(int x, int y, std::string str, sf::Color color) {
@@ -31,10 +33,10 @@ inline void Font::build_line(sf::VertexArray *varray, int x, int y, std::string 
 	int forward = 0;
 	for (unsigned int i = 0; i < str.size(); i++) {
 		char c = str[i];
-		// Font::LetterMapData data = char_data(c);
+		// Resources::LetterMapData data = char_data(c);
 		Resources::LetterMapData data = Resources::get_font_char(color, c);
 		sf::Vertex *quad = &(*varray)[i * 4];
-		DrawLetter(quad, x + forward, y, data.x, data.y, data.width, 9, color);
+		DrawLetter(quad, x + forward, y, data.x, data.y, data.width, 10, color);
 		forward += data.forward + 1;
 	}
 }
@@ -52,7 +54,7 @@ void Font::draw_text(int x, int y, int width, int height, std::string text, sf::
 	for (unsigned int i = 0; i < text.size(); i++) {
 		char c = text[i];
 		word += c;
-		// Font::LetterMapData data = char_data(c);
+		// Resources::LetterMapData data = char_data(c);
 		Resources::LetterMapData data = Resources::get_font_char(color, c);
 		word_end += data.forward + 1;
 
@@ -122,7 +124,7 @@ int Font::line_width(std::string str) {
 	int forward = 0;
 	for (unsigned int i = 0; i < str.size(); i++) {
 		char c = str[i];
-		// Font::LetterMapData data = char_data(c);
+		// Resources::LetterMapData data = char_data(c);
 		Resources::LetterMapData data = Resources::get_font_char(sf::Color::Yellow, c);
 		forward += data.forward + 1;
 	}

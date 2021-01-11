@@ -170,7 +170,7 @@ bool GameScreen::update(float elapsed_time) {
 		if (a_button_pressed) {
 			status += ", A";
 		}
-		busy.draw_line(_game.get_resolution_width() - 40, 0, status, sf::Color::White);
+		busy.draw_line(_game.get_resolution_width() - 40, 0, status, sf::Color::Magenta); // white with shadow
 	}
 
 	if (current_mode)
@@ -231,7 +231,6 @@ bool GameScreen::update(float elapsed_time) {
 	}
 
 	// shake
-
 	{
 		if (shake.size() > 0) {
 			sf::Vector2f delta = shake.front();
@@ -2004,7 +2003,7 @@ void GameScreen::add_floating_message(std::string message, int tile_x, int tile_
 	sf::Vector2f coords = get_gui_position_over_game(map.get_x() + tile_pix_coords.x, map.get_y() + tile_pix_coords.y);
 	int x = (int)coords.x;
 	int y = (int)coords.y;
-	sf::Color color = sf::Color::White;
+	sf::Color color = sf::Color::Magenta; // white with shadow
 	float speed = 0.05f;
 
 	FloatingMessage *floating_message = new FloatingMessage(message, x, y, speed, color, duration);

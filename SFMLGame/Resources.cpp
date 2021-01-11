@@ -194,8 +194,9 @@ void Resources::load_fonts() {
 	
 }
 
+// magenta shows the letters with shadow.
 Resources::LetterMapData Resources::get_font_char(sf::Color color, char c) {
-	if (color == sf::Color::White) {
+	if (color == sf::Color::Magenta) {
 		return get().white_letters[c];
 	}
 	return get().blank_letters[c];

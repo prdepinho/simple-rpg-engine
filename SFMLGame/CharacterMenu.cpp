@@ -230,10 +230,10 @@ void ItemButton::set_item(Item item) {
 	if (item.get_quantity() > 0) {
 		int x = get_x() + 1;
 		int y = get_y() + get_height() - quantity.line_height() - 1;
-		quantity.draw_line(x, y, std::to_string(item.get_quantity()), sf::Color::White);
+		quantity.draw_line(x, y, std::to_string(item.get_quantity()), sf::Color::Magenta);
 	}
 	else {
-		quantity.draw_line(0, 0, "", sf::Color::White);
+		quantity.draw_line(0, 0, "", sf::Color::Magenta);
 	}
 }
 
@@ -1174,15 +1174,15 @@ void Overlay::refresh(Screen &screen, Character *character) {
 					int x = overlay.get_x() + overlay.get_width() - 18;
 					int y = overlay.get_y() + margin;
 					if (quantity > 0)
-						overlay.selected_item_quantity.draw_line(x, y + 8, std::to_string(quantity), sf::Color::White);
+						overlay.selected_item_quantity.draw_line(x, y + 8, std::to_string(quantity), sf::Color::Magenta);
 					else
-						overlay.selected_item_quantity.draw_line(x, y + 16, "", sf::Color::Black);
+						overlay.selected_item_quantity.draw_line(x, y + 16, "", sf::Color::Magenta);
 				}
 				else {
 					overlay.selected_item_icon.set_picture(16, 16, 0, 3 * 16);
 					int x = overlay.get_x() + overlay.get_width() - 18;
 					int y = overlay.get_y() + margin;
-					overlay.selected_item_quantity.draw_line(x, y + 16, "", sf::Color::Black);
+					overlay.selected_item_quantity.draw_line(x, y + 16, "", sf::Color::Magenta);
 				}
 			}
 		}

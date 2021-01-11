@@ -34,14 +34,14 @@ function RatWarden:on_interact(interactor_name)
         { text = "I would prefer a sword.", go_to = 'prefer' },
         { text = "I feel bad bludgeoning theses animals to death.", go_to = 'pity' },
       },
-      prefer = {
-        text = "Well, it's tradition that clerics use a good mace. You can get another weapon in the city if you want.",
-        go_to = 'end'
-      },
-      pity = {
-        text = "You shouldn't. Rats are our millenial enemies and pity is a ticket to hell when facing the enemy.",
-        go_to = 'end'
-      }
+    }
+    dialogue.prefer = {
+      text = "Well, it's tradition that clerics use a good mace. You can get another weapon in the city if you want.",
+      go_to = 'end'
+    }
+    dialogue.pity = {
+      text = "You shouldn't. Rats are our millenial enemies and pity is a ticket to hell when facing the enemy.",
+      go_to = 'end'
     }
   end
 

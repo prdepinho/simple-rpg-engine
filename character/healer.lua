@@ -32,9 +32,25 @@ function Healer:on_interact(interactor_name)
       go_to = 'end',
       callback = function()
         self.control:add_item_to_inventory('player', self.control:next_item_code(), 'cure_wounds', 'spell', 3)
+        self.control.data.healer_gave_healing = true
       end
     }
   }
+
+  if self.control.data.healer_gave_healing then
+    local shop = {
+      cure_wounds = { price = 3, name = 'cure_wounds', type = 'spell', quantity = 3 },
+    }
+    dialogue = self.control:shop_dialogue(shop, self.name, "", "You need to pay a simbolic contribution for further healing, to keep the business going.")
+    dialogue.start = {
+      text = "How can I help you, sister?",
+      options = {
+        { text = "I'm just passing by.", go_to = 'end' },
+        { text = "I need more healing.", go_to = 'buy' },
+      }
+    }
+  end
+
   sfml_dialogue(dialogue)
 end
 
