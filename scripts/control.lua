@@ -178,7 +178,7 @@ end
 
 
 function Control:game_over()
-  sfml_play_music("give_thanks_to_the_lord_for_he_is_good.wav")
+  sfml_play_music("death.wav")
   print('game over')
 end
 
@@ -1154,8 +1154,8 @@ function Control:turn_begin()
     end
   end
   if in_sight then
-    if sfml_get_current_music() ~= "you_are_the_carpenters_son.wav" then
-      sfml_loop_music("you_are_the_carpenters_son.wav")
+    if sfml_get_current_music() ~= "marching.wav" then
+      sfml_loop_music("marching.wav")
     end
   end
 end
@@ -1175,7 +1175,7 @@ function Control:turn_end()
     end
   end
   if not in_sight then
-    if sfml_get_current_music() == "you_are_the_carpenters_son.wav" then
+    if sfml_get_current_music() == "marching.wav" then
       sfml_stop_music()
       if self.map.data.properties.music and self.map.data.properties.music ~= '' then
         sfml_loop_music(self.map.data.properties.music)
