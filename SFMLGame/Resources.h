@@ -135,6 +135,7 @@ private:
 
 	std::map<char, LetterMapData> blank_letters;
 	std::map<char, LetterMapData> white_letters;
+	std::map<char, LetterMapData> shadow_letters;
 
 	float music_volume = 100.f;
 	float sound_volume = 100.f;

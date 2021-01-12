@@ -190,6 +190,23 @@ void Resources::load_fonts() {
 
 			get().white_letters[key] = Resources::LetterMapData{ x, y, w, f };
 		}
+	}{
+		LuaObject shadow = lua.get_object("shadow_letters");
+		get().shadow_letters = std::map<char, Resources::LetterMapData>();
+		int origin_x = shadow.get_int("origin.x");
+		int origin_y = shadow.get_int("origin.y");
+
+		LuaObject *letters = shadow.get_object("letters");
+		for (auto it = letters->begin(); it != letters->end(); ++it) {
+			LuaObject obj = it->second;
+			char key = obj.get_string("letter")[0];
+			int x = obj.get_int("x") + origin_x;
+			int y = obj.get_int("y") + origin_y;
+			int w = obj.get_int("w");
+			int f = obj.get_int("f");
+
+			get().shadow_letters[key] = Resources::LetterMapData{ x, y, w, f };
+		}
 	}
 	
 }
@@ -197,7 +214,7 @@ void Resources::load_fonts() {
 // magenta shows the letters with shadow.
 Resources::LetterMapData Resources::get_font_char(sf::Color color, char c) {
 	if (color == sf::Color::Magenta) {
-		return get().white_letters[c];
+		return get().shadow_letters[c];
 	}
 	return get().blank_letters[c];
 }
