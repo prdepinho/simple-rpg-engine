@@ -39,10 +39,13 @@ function CastleGuard:create()
 end
 
 function CastleGuard:on_interact(interactor_name)
-end
-
-function CastleGuard:on_idle()
-  -- stay put
+  local dialogue = {
+    start = {
+      text = "Move along.",
+      go_to = 'end'
+    }
+  }
+  sfml_dialogue(dialogue)
 end
 
 return CastleGuard

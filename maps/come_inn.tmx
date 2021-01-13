@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="15" height="18" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="18">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="15" height="18" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="19">
  <properties>
   <property name="for_of_war" type="bool" value="true"/>
   <property name="music" value="c_major_piece.wav"/>
@@ -201,11 +201,11 @@
     <property name="type" value="door"/>
    </properties>
   </object>
-  <object id="5" name="door3" x="194.833" y="85.3209" width="9" height="23.8864">
+  <object id="5" name="door3" x="195.248" y="85.5286" width="9" height="23.8864">
    <properties>
     <property name="invisible" type="bool" value="true"/>
-    <property name="key" value=""/>
-    <property name="locked" type="bool" value="false"/>
+    <property name="key" value="knight_key"/>
+    <property name="locked" type="bool" value="true"/>
     <property name="open_delta_x" type="int" value="1"/>
     <property name="open_delta_y" type="int" value="0"/>
     <property name="type" value="door"/>
@@ -213,8 +213,7 @@
   </object>
   <object id="6" name="hoard" x="208.75" y="48.1391" width="12.25" height="12.75">
    <properties>
-    <property name="item1" value="inn_magic1:spell:cure_wounds:6"/>
-    <property name="item2" value="inn_weapon1:weapon:arming_sword"/>
+    <property name="item1" value="inn_weapon1:weapon:arming_sword"/>
     <property name="type" value="hoard"/>
    </properties>
   </object>
@@ -260,6 +259,12 @@
   <object id="17" name="guard3" x="119.5" y="236.806">
    <properties>
     <property name="type" value="city_guard"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="18" name="inn_knight" x="24.5098" y="233.882">
+   <properties>
+    <property name="type" value="inn_knight"/>
    </properties>
    <point/>
   </object>

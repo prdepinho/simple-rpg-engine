@@ -38,7 +38,7 @@ end
 function Queen:on_interact(interactor_name)
   local dialogue = {
     start = {
-      text = "I am Queen Alexia of Normindia.",
+      text = "Woe to me! Woe to the queen of Normindia!",
       go_to = 'end'
     },
   }
@@ -46,9 +46,6 @@ function Queen:on_interact(interactor_name)
   sfml_dialogue(dialogue)
 end
 
-function Queen:on_idle()
-  -- stay put
-end
 
 
 return Queen

@@ -16,7 +16,7 @@ end
 
 function HeadPriestess:create()
   Priestess.create(self)
-  self:set_skin("cleric_female")
+  self:set_skin("cleric_black")
 
   local stats = self.data.stats
   stats.name = "Head Priestess"

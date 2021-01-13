@@ -13,4 +13,5 @@ music = {
   "later_folia.wav",
   "sakura.wav",
   "early_folia.wav",
+  "handel.wav",
 }

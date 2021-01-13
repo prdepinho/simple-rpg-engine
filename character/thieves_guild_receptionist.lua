@@ -15,7 +15,7 @@ end
 
 function ThievedGuildReceptionist:create()
   Thief.create(self)
-  self:set_skin("ranger")
+  self:set_skin("thief")
 
   local stats = self.data.stats
   stats.name = "Garrett"

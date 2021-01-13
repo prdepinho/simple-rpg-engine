@@ -16,6 +16,12 @@ end
 
 function ArcherInstructor:create()
   Priestess.create(self)
+
+  local stats = self.data.stats
+  stats.inventory[1] = {code = self.name .. "_bow", name = "short_bow", type = 'weapon'}
+  stats.inventory[2] = {code = self.name .. "_arrows", name = "arrow", type = "ammo", quantity = 20}
+  stats.weapon = stats.inventory[1]
+  stats.ammo = stats.inventory[2]
 end
 
 function ArcherInstructor:on_interact(interactor_name)

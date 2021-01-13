@@ -16,6 +16,7 @@ end
 
 function RogueNun:create()
   Priestess.create(self)
+  self:set_skin("cleric_cyan")
 end
 
 function RogueNun:on_interact(interactor_name)

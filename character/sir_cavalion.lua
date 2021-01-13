@@ -22,7 +22,7 @@ function SirCavalion:create()
   self.data.enemy = false
 
   local stats = self.data.stats
-  stats.name = "Sir Cavalion"
+  stats.name = "Sir Chilvarion"
   stats.hit_die = "d6",
 
   rules.set_ability_scores_map(stats, {
@@ -45,12 +45,12 @@ end
 
 
 function SirCavalion:on_interact(interactor_name)
-  if sfml_get_current_music() ~= "theme.wav" then
-    sfml_loop_music("theme.wav")
+  if sfml_get_current_music() ~= "handel.wav" then
+    sfml_loop_music("handel.wav")
   end
   local dialogue = {
     start = {
-      text = "I am sir Cavalion du Mont Serrat, a knight with the noble quest to slay the serpent that lurks these mountains.",
+      text = "I am sir Chilvarion, a knight with the noble quest to slay the serpent that lurks these mountains.",
       options = {
         { text = "I must be going.", go_to = 'end' },
         { text = "I am Mumu, an adventurer.", go_to = 'fork' },

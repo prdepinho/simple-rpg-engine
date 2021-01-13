@@ -19,4 +19,5 @@ sounds = {
   "pew_blast.wav",
   "poison.wav",
   "hiding.wav",
+  "laughter.wav",
 }

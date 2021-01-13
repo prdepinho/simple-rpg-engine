@@ -16,6 +16,7 @@ end
 
 function Healer:create()
   Priestess.create(self)
+  self:set_skin("cleric_green")
 end
 
 function Healer:on_interact(interactor_name)

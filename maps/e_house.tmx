@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="13">
+ <properties>
+  <property name="for_of_war" type="bool" value="true"/>
+  <property name="music" value=""/>
+  <property name="vision_radius" type="int" value="5"/>
+ </properties>
+ <tileset firstgid="1" source="tiled_tileset.tsx"/>
+ <tileset firstgid="257" source="castle_tileset.tsx"/>
+ <layer id="1" name="floor" width="16" height="16">
+  <data encoding="csv">
+84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,
+84,68,68,68,68,84,68,84,84,68,68,68,68,84,68,84,
+84,72,72,72,72,84,85,84,84,72,72,72,72,84,85,84,
+84,72,72,72,72,84,72,84,84,72,72,72,72,84,72,84,
+84,72,72,72,72,84,72,84,84,72,72,72,72,84,72,84,
+84,72,72,72,72,84,85,84,84,72,72,72,72,84,85,84,
+84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,
+68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,
+84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,
+84,68,68,68,68,84,68,84,84,68,68,68,68,84,68,84,
+84,85,85,85,85,84,85,84,84,72,72,72,72,84,85,84,
+84,85,85,85,85,84,85,84,84,72,72,72,72,84,72,84,
+84,85,85,85,85,84,85,84,84,72,72,72,72,84,72,84,
+84,85,85,85,85,84,85,84,84,72,72,72,72,84,72,84,
+84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,
+68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68
+</data>
+ </layer>
+ <layer id="2" name="overfloor" width="16" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,418,0,0,417,0,465,0,0,418,0,0,417,0,465,0,
+0,434,0,0,433,0,481,0,0,434,0,0,433,0,481,0,
+0,434,0,0,433,0,481,0,0,434,0,0,433,0,481,0,
+0,434,0,0,433,0,481,0,0,434,0,0,433,0,481,0,
+0,434,0,0,433,0,481,0,0,434,0,0,433,0,481,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,418,0,0,417,0,465,0,0,418,0,0,417,0,465,0,
+0,434,0,0,433,0,481,0,0,434,0,0,433,0,481,0,
+0,434,0,0,433,0,481,0,0,434,0,0,433,0,481,0,
+0,434,0,0,433,0,481,0,0,434,0,0,433,0,481,0,
+0,434,0,0,433,0,481,0,0,434,0,0,433,0,481,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="3" name="furniture" width="16" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,203,0,133,0,0,0,0,0,0,0,132,0,
+0,103,0,0,219,0,149,0,0,103,218,116,117,0,148,0,
+0,119,0,0,0,145,0,0,0,119,0,117,0,145,0,0,
+0,218,0,0,0,0,0,0,0,117,0,0,0,0,0,0,
+0,0,0,0,0,0,132,0,0,116,117,0,0,0,133,0,
+0,0,0,0,0,0,148,0,0,0,0,0,0,0,149,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,132,0,0,0,0,0,0,0,133,0,
+0,117,0,0,0,0,148,0,0,103,218,0,0,0,149,0,
+0,102,102,0,0,145,0,0,0,119,0,0,0,145,0,0,
+0,117,118,0,0,0,0,0,0,117,0,0,0,0,0,0,
+0,0,0,0,117,0,0,0,0,115,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,145,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="4" name="ceiling" width="16" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,86,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,84,0,0,0,0,0,0,0,84,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,118,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,84,0,0,0,84,0,0,0,0,0,0,0,84,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="5" name="overceiling" width="16" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="6" name="obstacle" width="16" height="16" visible="0">
+  <data encoding="csv">
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,0,2,2,2,2,2,2,2,0,2,
+2,2,0,0,2,2,0,2,2,2,2,2,0,2,0,2,
+2,2,0,0,0,2,0,2,2,2,0,0,0,2,0,2,
+2,2,0,0,0,2,0,2,2,0,0,0,0,2,0,2,
+2,0,0,0,0,2,0,2,2,2,0,0,0,2,0,2,
+2,2,2,2,2,2,0,2,2,2,2,2,2,2,0,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,0,2,2,2,2,2,2,2,0,2,
+2,0,0,0,0,2,0,2,2,2,2,0,0,2,0,2,
+2,2,2,0,0,2,0,2,2,2,0,0,0,2,0,2,
+2,0,0,0,0,2,0,2,2,0,0,0,0,2,0,2,
+2,0,0,0,0,2,0,2,2,2,0,0,0,2,0,2,
+2,2,0,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,0,2,2,2,2,2,2,2,2,2,2,2,2,2
+</data>
+ </layer>
+ <layer id="7" name="invisible" width="16" height="16" visible="0">
+  <data encoding="csv">
+4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+4,0,0,0,0,4,0,4,4,0,0,0,0,4,0,4,
+4,0,0,0,0,4,0,4,4,0,0,0,0,4,0,4,
+4,0,0,0,0,4,0,4,4,0,0,0,0,4,0,4,
+4,0,0,0,0,4,0,4,4,0,0,0,0,4,0,4,
+4,0,0,0,0,4,0,4,4,0,0,0,0,4,0,4,
+4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+4,0,0,0,0,4,0,4,4,0,0,0,0,4,0,4,
+4,0,0,0,0,4,0,4,4,0,0,0,0,4,0,4,
+4,0,0,0,0,4,0,4,4,0,0,0,0,4,0,4,
+4,0,0,0,0,4,0,4,4,0,0,0,0,4,0,4,
+4,0,0,0,0,4,0,4,4,0,0,0,0,4,0,4,
+4,0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,
+4,0,0,0,0,4,4,4,4,4,4,4,4,4,4,4
+</data>
+ </layer>
+ <objectgroup id="8" name="objects">
+  <object id="1" name="door4" x="211.833" y="181.223" width="9" height="8.55307">
+   <properties>
+    <property name="invisible" type="bool" value="true"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="open_delta_x" type="int" value="1"/>
+    <property name="open_delta_y" type="int" value="0"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="2" name="door3" x="211.167" y="53.0568" width="9" height="8.55307">
+   <properties>
+    <property name="invisible" type="bool" value="true"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="open_delta_x" type="int" value="1"/>
+    <property name="open_delta_y" type="int" value="0"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="3" name="door1" x="82.1667" y="180.39" width="9" height="8.55307">
+   <properties>
+    <property name="invisible" type="bool" value="true"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="open_delta_x" type="int" value="1"/>
+    <property name="open_delta_y" type="int" value="0"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="4" name="door2" x="82.5" y="52.0568" width="9" height="8.55307">
+   <properties>
+    <property name="invisible" type="bool" value="true"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="open_delta_x" type="int" value="1"/>
+    <property name="open_delta_y" type="int" value="0"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="5" name="stairs_1_2" x="99.1667" y="147.682" width="9" height="10.6364">
+   <properties>
+    <property name="destiny" value="e_house:stairs_2_1"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="6" name="stairs_2_1" x="100.5" y="20.6818" width="9" height="10.6364">
+   <properties>
+    <property name="destiny" value="e_house:stairs_1_2"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="7" name="stairs_2_3" x="99.5" y="98.3485" width="9" height="10.6364">
+   <properties>
+    <property name="destiny" value="e_house:stairs_3_2"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="8" name="stairs_3_2" x="228.5" y="99.0151" width="9" height="10.6364">
+   <properties>
+    <property name="destiny" value="e_house:stairs_2_3"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="9" name="stairs_3_4" x="227.167" y="18.6818" width="9" height="10.6364">
+   <properties>
+    <property name="destiny" value="e_house:stairs_4_3"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="10" name="stairs_4_3" x="228.167" y="146.015" width="9" height="10.6364">
+   <properties>
+    <property name="destiny" value="e_house:stairs_3_4"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="11" name="front_door" x="35.5" y="243.682" width="9" height="10.6364">
+   <properties>
+    <property name="destiny" value="polis:e_house_door"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="open_delta_x" type="int" value="1"/>
+    <property name="open_delta_y" type="int" value="0"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="12" name="diary" x="178.625" y="34.9167" width="10.75" height="11.5">
+   <properties>
+    <property name="description" value="You find a diary on the table."/>
+    <property name="text" value="I made it big! I managed to get into Come Inn's cellar and stole some cheese wheels that I sold in Nakamura for a preety profit. Now I fear other thieves are going to steal my hard earned money, so I hid the bulk of it in the forest, near a waterfall, under a rock. Soon I'm going back to get the next shipment of cheese for the village."/>
+    <property name="type" value="note"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

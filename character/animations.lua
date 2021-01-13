@@ -1,4 +1,3 @@
-
 package.path = package.path .. ";../config/?.lua"
 require "settings"
 
@@ -430,6 +429,46 @@ animations.types = {
     animations = crystal_animation
   },
 
+  cleric_blonde = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 16,
+      y = 16 * 5,
+    },
+    animations = basic_animation
+  },
+  cleric_cyan = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 16,
+      y = 16 * 6,
+    },
+    animations = basic_animation
+  },
+  cleric_green = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 16,
+      y = 16 * 7,
+    },
+    animations = basic_animation
+  },
+  cleric_black = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 16,
+      y = 16 * 8,
+    },
+    animations = basic_animation
+  },
+  thief = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 16,
+      y = 16 * 9
+    },
+    animations = basic_animation
+  },
 }
 
 return animations

@@ -16,6 +16,10 @@ end
 
 function RatWarden:create()
   Priestess.create(self)
+
+  local stats = self.data.stats
+  stats.inventory[1] = {code = self.name .. "_mace", name = "mace", type = 'weapon'}
+  stats.weapon = stats.inventory[1]
 end
 
 function RatWarden:on_interact(interactor_name)

@@ -16,7 +16,7 @@ end
 
 function Thief:create()
   Character.create(self)
-  self:set_skin("ranger")
+  self:set_skin("thief")
 
   local stats = self.data.stats
   stats.name = "Thief"
