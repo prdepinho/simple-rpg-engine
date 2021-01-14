@@ -118,6 +118,9 @@ void GameScreen::create() {
 
 	game_over = false;
 
+
+
+
 	// update fog of war
 	if (show_fog_of_war)
 		map.get_fog_of_war().update_fog(player_character->get_field_of_vision()); // doesn't have to be here. It only update once a turn.
@@ -147,6 +150,12 @@ void GameScreen::draw() {
 	}
 	for (Entity *entity : entities) {
 		window->draw(*entity);
+	}
+
+	{
+		for (auto &shape : obstacle_shapes) {
+			window->draw(shape);
+		}
 	}
 
 	window->draw(map.get_ceiling_layer());
@@ -237,6 +246,27 @@ bool GameScreen::update(float elapsed_time) {
 			pan_game_view(delta);
 			shake.pop();
 		}
+	}
+
+
+	// obstacle rectangles
+	{
+		for (int x = 0; x < map.get_tile_width(); x++) {
+			for (int y = 0; y < map.get_tile_height(); y++) {
+				auto &tile = map.get_tile(x, y);
+				sf::RectangleShape rect;
+				rect.setPosition(map.get_tile_pix_coords(x, y));
+				rect.setSize({ 10.f, 10.f });
+				rect.setFillColor(sf::Color::Transparent);
+				if (tile.obstacle) {
+					rect.setOutlineColor(sf::Color::Red);
+					rect.setOutlineThickness(2.f);
+				}
+
+				obstacle_shapes[x + y * 16] = rect;
+			}
+		}
+
 	}
 
 
@@ -1328,6 +1358,9 @@ void GameScreen::load_map() {
 	center_map_on_character(*player_character);
 
 	_game.get_lua()->execute_method("map_enter");
+
+	obstacle_shapes = std::vector<sf::RectangleShape>(map.get_tile_width() * map.get_tile_height());
+
 }
 
 void GameScreen::center_map_on_character(Character &character) {
@@ -1506,8 +1539,21 @@ void GameScreen::move_character(Character &character, Direction direction, bool 
 				MoveEffect *m = dynamic_cast<MoveEffect*>(e);
 				auto src = m->get_src();
 
-				if (!get_live_character_on_tile(src.x, src.y))
-					map.get_tile(src.x, src.y).obstacle = false;
+#if true
+				{
+					bool set_obstacle_back = false;
+					std::vector<Character*> characters_on_tile = get_characters_on_tile(src.x, src.y);
+					for (Character *character_on_tile : characters_on_tile) {
+						set_obstacle_back = set_obstacle_back || (!is_dead(character_on_tile) && character_on_tile != &character);
+					}
+					map.get_tile(src.x, src.y).obstacle = set_obstacle_back;
+				}
+#else
+				{
+					if (!get_live_character_on_tile(src.x, src.y))
+						map.get_tile(src.x, src.y).obstacle = false;
+				}
+#endif
 			}
 			sf::Vector2i position = character_position(*player_character);
 			TileData tile = map.get_tile(position.x, position.y);

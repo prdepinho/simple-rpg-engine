@@ -34,7 +34,7 @@ function ArcherInstructor:on_interact(interactor_name)
 
   if self.control.data.temple_rat4_dead then
     dialogue.start = {
-      text = "You should not walk with a cluttered inventory, sister. Carry only what you need and if you pick up something because of your encuberance, drop something down and come for it later.",
+      text = "You should not walk with a cluttered inventory, sister. Carry only what you need and if you cannot pick something up because of your encuberance, drop something down and come for it later.",
       go_to = 'end'
     }
   end

@@ -309,6 +309,11 @@ private:
 	} foreground;
 
 	Font busy;
+
+
+
+
+	std::vector<sf::RectangleShape> obstacle_shapes;
 };
 
 
