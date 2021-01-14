@@ -26,19 +26,15 @@ end
 
 function WitchHut:pre_trigger(event, x, y, character_name, object_name)
   if character_name == 'player' and event == 'step_on' then
-    print('pre trigger')
     if not self.hut_pre_trigger then
       self.hut_pre_trigger = true
-      print('true')
     end
   end
 end
 
 function WitchHut:trigger(event, x, y, character_name, object_name)
   if character_name == 'player' and event == 'step_on' then
-    print('trigger')
     if self.hut_pre_trigger and not self.hut_trigger and not self.control.data.witch_of_the_woods_dead then
-      print('true')
       self.hut_trigger = true
       sfml_play_sound('laughter.wav')
     end

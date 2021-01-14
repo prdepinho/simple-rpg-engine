@@ -19,8 +19,7 @@ set_framerate = 30
 
 
 -- game speed
--- turns_per_second = 5
-turns_per_second = 20
+turns_per_second = 5
 
 
 -- game volume: from 0 (silent) to 100 (full volume)

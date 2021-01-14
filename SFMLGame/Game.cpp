@@ -1267,6 +1267,20 @@ public:
 		return 1;
 	}
 
+	static int sfml_is_targeted(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		std::string name = lua_tostring(state, -1);
+		Character *character = screen->get_character_by_name(name);
+		lua_pushboolean(state, screen->is_targeted(character));
+		return 1;
+	}
+
+	static int sfml_clear_target(lua_State *state) {
+		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
+		screen->clear_target();
+		return 1;
+	}
+
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -1347,6 +1361,8 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_is_fog_of_war", LuaFunction::sfml_is_fog_of_war);
 	lua_register(lua.get_state(), "sfml_set_fog_of_war", LuaFunction::sfml_set_fog_of_war);
 	lua_register(lua.get_state(), "sfml_update_fog_of_war", LuaFunction::sfml_update_fog_of_war);
+	lua_register(lua.get_state(), "sfml_is_targeted", LuaFunction::sfml_is_targeted);
+	lua_register(lua.get_state(), "sfml_clear_target", LuaFunction::sfml_clear_target);
 
 
 }

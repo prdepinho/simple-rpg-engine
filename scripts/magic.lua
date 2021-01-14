@@ -331,6 +331,9 @@ function Magic:invisible_enter(character)
   else
     if not self.control.characters.player.data.stats.status.true_seeing then
       sfml_character_set_transparency(character, 0)
+      if sfml_is_targeted(character) then
+        sfml_clear_target()
+      end
     end
   end
 end

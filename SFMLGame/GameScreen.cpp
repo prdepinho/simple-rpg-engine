@@ -152,11 +152,13 @@ void GameScreen::draw() {
 		window->draw(*entity);
 	}
 
+#if false
 	{
 		for (auto &shape : obstacle_shapes) {
 			window->draw(shape);
 		}
 	}
+#endif
 
 	window->draw(map.get_ceiling_layer());
 	if (show_fog_of_war)
@@ -249,6 +251,7 @@ bool GameScreen::update(float elapsed_time) {
 	}
 
 
+#if false
 	// obstacle rectangles
 	{
 		for (int x = 0; x < map.get_tile_width(); x++) {
@@ -268,6 +271,7 @@ bool GameScreen::update(float elapsed_time) {
 		}
 
 	}
+#endif
 
 
 	// change map here
@@ -1359,7 +1363,9 @@ void GameScreen::load_map() {
 
 	_game.get_lua()->execute_method("map_enter");
 
+#if false
 	obstacle_shapes = std::vector<sf::RectangleShape>(map.get_tile_width() * map.get_tile_height());
+#endif
 
 }
 
@@ -2283,6 +2289,10 @@ void GameScreen::clear_target() {
 		target->hide_outline();
 		target = nullptr;
 	}
+}
+
+bool GameScreen::is_targeted(Character *character) {
+	return target == character;
 }
 
 bool GameScreen::is_in_range(Character &attacker, Character &defender) {

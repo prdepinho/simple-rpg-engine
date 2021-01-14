@@ -173,6 +173,7 @@ public:
 	int equipped_weapon_range(Character &character);
 	void target_character(Character &character);
 	void clear_target();
+	bool is_targeted(Character *character);
 	bool is_in_range(Character &attacker, Character &defender);
 	bool has_ammo(Character &character);
 	bool is_dead(Character *character);
