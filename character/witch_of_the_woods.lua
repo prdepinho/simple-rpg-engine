@@ -268,6 +268,7 @@ function WitchOfTheWoods:on_interact(interactor_name)
           text = "Very well, my little disciple. Now, here is your first spell. If you want more, you have to buy it. And don't blast yourself with it.",
           go_to = 'end',
           callback = function()
+            self.control:inventory_stack_pop(index, 'player', 1)
             self.control:add_item_to_inventory('player', self.control:next_item_code(), 'magic_missile', 'spell', 5)
             self.control.data.witch_elf_dust_quest = false
             self.control.data.witch_elf_dust_quest_completed = true

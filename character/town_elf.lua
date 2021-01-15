@@ -63,6 +63,52 @@ function TownElf:on_interact(interactor_name)
       }
     }
 
+    if self.control.data.witch_elf_dust_quest and not self.control.data.got_dust_from_town_elf then
+      table.insert(dialogue.start.options, { text = "Can I have some dust from your wings?", go_to = 'ask_for_dust' })
+      dialogue.ask_for_dust = {
+        text = "What? Why?",
+        options = {
+          { text = "Never mind.", go_to = 'end' },
+          { text = "I need it for a concoction.", go_to = 'need' },
+        }
+      }
+      dialogue.need = {
+        text = "Well, no! I know what you use dust for. I will not agree to that!",
+        options = {
+          { text = "I see.", go_to = 'end' },
+        }
+      }
+      if self.control.characters.player.data.stats.ability.cha >= 13 then
+        local index = self.control:find_in_inventory_by_name('player', 'money')
+        if index then
+          if self.control.characters.player.data.stats.inventory[index].quantity >= 5 then
+            table.insert(dialogue.ask_for_dust.options, { text = "(Cha 13) How about some 5 coppers?", go_to = 'coppers' })
+            table.insert(dialogue.need.options, { text = "(Cha 13) How about some 5 coppers?", go_to = 'coppers' })
+          end
+        end
+      end
+      if self.control.characters.player.data.stats.ability.cha >= 15 then
+        table.insert(dialogue.need.options, { text = "(Cha 15) Men do that. Cat girls use it for healing.", go_to = 'healing' })
+      end
+      dialogue.coppers = {
+        text = "Er... In that case it's ok.",
+        go_to = 'end',
+        callback = function() 
+          self.control.data.got_dust_from_town_elf = true
+          self.control:add_item_to_inventory('player', self.control:next_item_code(), 'elf_dust', 'item', 1)
+          self.control:spend_money('player', 5, self.name)
+        end
+      }
+      dialogue.healing = {
+        text = "Really? Well, sorry for the misunderstanding. Here, then, I'll give you some.",
+        go_to = 'end',
+        callback = function()
+          self.control.data.got_dust_from_town_elf = true
+          self.control:add_item_to_inventory('player', self.control:next_item_code(), 'elf_dust', 'item', 1)
+        end
+      }
+    end
+
     if self.control.data.know_of_fighting_elves then
       dialogue.come_with_us = {
         text = "Are you ready to come with us?",

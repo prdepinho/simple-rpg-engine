@@ -404,9 +404,10 @@ M.data = {
         },
         inventory = {
           {
+            name = "elf_dust",
             type = "item",
-            name = "no_item",
-            code = "",
+            code = "mumus_dust",
+            quantity = 5
           },
           {
             type = "spell",
