@@ -175,11 +175,5 @@
   </object>
   <object id="4" name="pre_trigger" x="146.5" y="225" width="44.25" height="11.5"/>
   <object id="5" name="trigger" x="146" y="210.5" width="44" height="11.5"/>
-  <object id="7" name="loot" x="177.523" y="193.085" width="12.5" height="13.375">
-   <properties>
-    <property name="item1" value="elf_dust:item:elf_dust:2"/>
-    <property name="type" value="hoard"/>
-   </properties>
-  </object>
  </objectgroup>
 </map>

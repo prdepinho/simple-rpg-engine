@@ -39,14 +39,16 @@ private:
 
 class ItemButton : public Button {
 public:
-	ItemButton(std::string label="", int x = 0, int y = 0, int w = 0, int h = 0, Callback function = Callback()) : Button(label, x, y, w, h, function) {}
+	ItemButton(std::string label="", int index = 0, int x = 0, int y = 0, int w = 0, int h = 0, Callback function = Callback()) : Button(label, x, y, w, h, function), index(index) {}
 	void set_item(Item item);
 	Item get_item() const { return item; }
 	void virtual create() override;
 	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+	int get_index() const { return index; }
 private:
 	Item item;
 	Font quantity;
+	int index;
 };
 
 

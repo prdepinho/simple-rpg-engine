@@ -798,20 +798,21 @@ void GameScreen::poll_events(float elapsed_time) {
 		}
 #endif
 
-#if false
+#if true
 		if (selected_component == &container) {
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
-				auto mouse_position = get_mouse_game_position();
-				int x = (int) mouse_position.x;
-				int y = (int) mouse_position.y;
+			// if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+			// 	auto mouse_position = get_mouse_game_position();
+			// 	int x = (int) mouse_position.x;
+			// 	int y = (int) mouse_position.y;
 
-				if (map.in_bounds(x, y)) {
-					auto tile_coord = map.get_tile_coord(x, y);
-					int tile_x = tile_coord.x;
-					int tile_y = tile_coord.y;
-				}
-			}
-			else if (holding_screen && sf::Mouse::isButtonPressed(sf::Mouse::Button::Middle)) {
+			// 	if (map.in_bounds(x, y)) {
+			// 		auto tile_coord = map.get_tile_coord(x, y);
+			// 		int tile_x = tile_coord.x;
+			// 		int tile_y = tile_coord.y;
+			// 	}
+			// }
+			// else 
+			if (holding_screen && sf::Mouse::isButtonPressed(sf::Mouse::Button::Middle)) {
 				control_mouse_pan_move();
 			}
 		}
@@ -921,6 +922,8 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 
 	if (a_button_pressed)
 		a_button_delta += elapsed_time;
+	if (holding_screen)
+		middle_button_delta += elapsed_time;
 
 
 	if (in_control) {
@@ -1023,14 +1026,12 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	// 	break;
 	case sf::Event::MouseButtonPressed:
 		if (selected_component == &container) {
-			if (event.mouseButton.button == sf::Mouse::Left) {
-				control_mouse_move();
-			}
-			else if (event.mouseButton.button == sf::Mouse::Button::Middle) {
+			if (event.mouseButton.button == sf::Mouse::Button::Middle) {
 				control_mouse_pan_hold();
+				middle_button_delta = 0.f;
 			}
-			else if (event.mouseButton.button == sf::Mouse::Button::Right) {
-				control_mouse_info();
+			else if (event.mouseButton.button == sf::Mouse::Left) {
+				control_mouse_move();
 			}
 		}
 		break;
@@ -1038,16 +1039,47 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		if (selected_component == &container) {
 			if (event.mouseButton.button == sf::Mouse::Button::Middle) {
 				control_mouse_pan_release();
+				if (middle_button_delta < 0.25) {
+					use_selected_item();
+				}
+			}
+			else if (event.mouseButton.button == sf::Mouse::Button::Right) {
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) {
+					control_mouse_info();
+				}
+				else {
+					select_tile_to_shoot();
+				}
 			}
 		}
 		break;
-#if false
 	case sf::Event::MouseWheelScrolled:
 		if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel) {
-			control_mouse_wheel_zoom(event.mouseWheelScroll.delta, event.mouseWheelScroll.x, event.mouseWheelScroll.y);
+			if (log_box.is_selected()) {
+				if (event.mouseWheelScroll.delta < 0) {
+					log_box.scroll_down(1);
+					scrolling_count = 0.f;
+				}
+				else {
+					log_box.scroll_up(1);
+					scrolling_count = 0.f;
+				}
+			}
+			else {
+				if (event.mouseWheelScroll.delta < 0) {
+					scroll_left_select_item();
+				}
+				else {
+					scroll_right_select_item();
+				}
+			}
 		}
+		// if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel) {
+		// 	control_mouse_wheel_zoom(event.mouseWheelScroll.delta, event.mouseWheelScroll.x, event.mouseWheelScroll.y);
+		// }
 		break;
 
+#if false
 	case sf::Event::KeyPressed:
 		if (selected_component == &container) {
 			switch (event.key.code) {

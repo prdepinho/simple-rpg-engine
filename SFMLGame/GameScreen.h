@@ -281,6 +281,7 @@ private:
 
 	float a_button_delta = 0.f;
 	bool a_button_pressed = false;
+	float middle_button_delta = 0.f;
 
 	std::queue<QueueableDialogue> dialogue_queue;
 	bool show_character_creation = false;

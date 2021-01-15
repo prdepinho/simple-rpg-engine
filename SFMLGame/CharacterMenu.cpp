@@ -471,8 +471,9 @@ void Inventory::create() {
 			int y = get_y() + i * button_size;
 			int w = button_size - 1;
 			int h = button_size - 1;
-			buttons[k] = ItemButton("", x, y, w, h, [&](Component* c) {
+			buttons[k] = ItemButton("", k, x, y, w, h, [&](Component* c) {
 				ItemButton *b = dynamic_cast<ItemButton*>(c);
+				set_cursor(b->get_index());
 				std::string name = b->get_item().get_name();
 				std::string code = b->get_item().get_code();
 
@@ -516,7 +517,7 @@ void Inventory::create() {
 		h = button_size - 1;
 		x = get_x();
 		y = buttons[k - 1].get_y() + button_size;
-		buttons[k] = ItemButton("Log", x, y, w, h, [&](Component*) {
+		buttons[k] = ItemButton("Log", k, x, y, w, h, [&](Component*) {
 			GameScreen *screen = dynamic_cast<GameScreen*>(get_screen());
 			screen->toggle_log();
 			return true;
@@ -530,7 +531,7 @@ void Inventory::create() {
 		h = button_size - 1;
 		x = get_x();
 		y = buttons[k - 1].get_y() + button_size;
-		buttons[k] = ItemButton("Data", x, y, w, h, [&](Component*) {
+		buttons[k] = ItemButton("Data", k, x, y, w, h, [&](Component*) {
 			SavePanel::show(*get_screen(), [&](Component *) {
 				set_cursor(cursor);
 				return true;
@@ -543,7 +544,7 @@ void Inventory::create() {
 	}
 	{
 		y = buttons[k - 1].get_y() + button_size;
-		buttons[k] = ItemButton("Exit", x, y, w, h, [&](Component*) {
+		buttons[k] = ItemButton("Exit", k, x, y, w, h, [&](Component*) {
 			ChoicePanel::show("Are you sure you want to quit the game?", *get_screen(), 
 				[&]() {
 					Log("Yes.");
@@ -949,10 +950,11 @@ void Loot::create() {
 			int y = get_y() + i * button_size;
 			int w = button_size - 1;
 			int h = button_size - 1;
-			buttons[k] = ItemButton("", x, y, w, h, [&](Component* c) 
+			buttons[k] = ItemButton("", k, x, y, w, h, [&](Component* c) 
 			{
 				bool rval = false;
 				ItemButton *b = dynamic_cast<ItemButton*>(c);
+				set_cursor(b->get_index());
 				std::string item_code = b->get_item().get_code();
 				if (item_code != "") {
 					CharacterMenu *menu = dynamic_cast<CharacterMenu*>(get_parent());
@@ -979,7 +981,7 @@ void Loot::create() {
 		int h = button_size - 1;
 		int x = get_x();
 		int y = buttons[k - 1].get_y() + button_size;
-		buttons[k] = ItemButton("Leave", x, y, w, h, [&](Component*) {
+		buttons[k] = ItemButton("Leave", k, x, y, w, h, [&](Component*) {
 			CharacterMenu *menu = dynamic_cast<CharacterMenu*>(get_parent());
 			menu->close();
 			return true;
