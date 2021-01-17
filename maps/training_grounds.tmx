@@ -267,7 +267,7 @@
     <property name="type" value="chest"/>
    </properties>
   </object>
-  <object id="25" name="chest_floor" x="81.3886" y="81.5472" width="12.5" height="13.375"/>
+  <object id="25" name="chest_floor" x="83.3886" y="83.6722" width="8.875" height="9.125"/>
   <object id="26" name="obstacle_person" x="215.877" y="139.948">
    <properties>
     <property name="type" value="obstacle_person"/>

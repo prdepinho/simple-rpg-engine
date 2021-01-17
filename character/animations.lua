@@ -469,6 +469,22 @@ animations.types = {
     },
     animations = basic_animation
   },
+  rabbit = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 16,
+      y = 16 * 10
+    },
+    animations = basic_animation
+  },
+  wolf = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 16,
+      y = 16 * 11
+    },
+    animations = basic_animation
+  },
 }
 
 return animations

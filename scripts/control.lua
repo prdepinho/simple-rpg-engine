@@ -115,6 +115,30 @@ function Control:can_see(observer, observed)
   return rules.can_see(observer_stats, observed_stats)
 end
 
+function Control:closest_character_on_sight(observer, radius)
+  radius = radius or 6
+  local closest_character = nil
+  local closest_distance = 10000
+
+  for name, character in pairs(self.characters) do
+    local stats = self.characters[name].data.stats
+    if observer ~= name and not stats.status.dead and self:can_see(observer, name) then
+      local src = sfml_get_character_position(observer)
+      local dst = sfml_get_character_position(name)
+      local delta_x = (src.x - dst.x) * (src.x - dst.x)
+      local delta_y = (src.y - dst.y) * (src.y - dst.y)
+      local distance = math.sqrt(delta_x + delta_y)
+      local is_in_sight = sfml_is_in_line_of_sight(src.x, src.y, dst.x, dst.y, radius)
+      if is_in_sight and closest_distance > distance then
+        closest_distance = distance
+        closest_character = name
+      end
+    end
+  end
+  -- print(observer .. ": " .. tostring(closest_character))
+  return closest_character
+end
+
 function Control:closest_ally_on_sight(observer, radius)
   radius = radius or 6
   local closest_ally = nil

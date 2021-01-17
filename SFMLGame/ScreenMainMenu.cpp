@@ -13,12 +13,13 @@ void ScreenMainMenu::create()
 	int button_length = 100;
 	int x = (game->get_resolution_width() / 2) - (button_length / 2);
 	int i = 0;
+	int padding = 150;
 
 	buttons = std::vector<Button>(3);
 
 	{
 		Button &button = buttons[i];
-		int y = (10 + i * (button.get_height() + 1));
+		int y = (padding + i * (button.get_height() + 1));
 		button = Button("New Game", x, y, button_length, button_height);
 		button.set_function([&](Component* c) {
 			std::string label = dynamic_cast<Button*>(c)->get_label();
@@ -35,7 +36,7 @@ void ScreenMainMenu::create()
 #if true
 	{
 		Button &button = buttons[i];
-		int y = (10 + i * (button.get_height() + 1));
+		int y = (padding + i * (button.get_height() + 1));
 		button = Button("Load Game", x, y, button_length, button_height);
 		button.set_function([&](Component* c) {
 			std::string label = dynamic_cast<Button*>(c)->get_label();
@@ -99,7 +100,7 @@ void ScreenMainMenu::create()
 
 	{
 		Button &button = buttons[i];
-		int y = (10 + i * (button.get_height() + 1));
+		int y = (padding + i * (button.get_height() + 1));
 		button = Button("Exit", x, y, button_length, button_height);
 		button.set_function([&](Component*) {
 			game->exit();
@@ -112,9 +113,17 @@ void ScreenMainMenu::create()
 	
 	select(*container.get_component(0));
 
-	texture.loadFromFile(Path::ASSETS + "main_screen_art.png");
+	// texture.loadFromFile(Path::ASSETS + "main_screen_art.png");
+	texture.loadFromFile(Path::ASSETS + "new_title_screen.png");
 	sprite = sf::Sprite(texture);
+	sprite.setPosition(0, 0);
 	button_index = 0;
+
+	static bool played_the_first_time = false;
+	if (!played_the_first_time) {
+		Resources::play_music("theme.wav");
+		played_the_first_time = true;
+	}
 
 	gui_view.setSize(sf::Vector2f((float) game->get_resolution_width(), (float) game->get_resolution_height()));
 	gui_view.setCenter((float) game->get_resolution_width() / 2.f, (float) game->get_resolution_height() / 2.f);

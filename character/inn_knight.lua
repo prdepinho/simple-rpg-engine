@@ -33,7 +33,7 @@ function InnKnight:create()
   rules.level_up(stats)
 
   stats.inventory[1] = {code = "knight_key", name = "knight_key", type = "item"}
-  stats.inventory[2] = {code = self.name .. "_armor", name = "cuirass", type = "armor"}
+  stats.inventory[2] = {code = self.name .. "_armor", name = "gambeson", type = "armor"}
   stats.armor = stats.inventory[2]
 end
 

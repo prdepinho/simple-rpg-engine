@@ -25,7 +25,7 @@ function Player:create()
   self.data.stats = rules.new_character()
   self.data.stats.portrait = {x = 0, y = 224}
   self.data.stats.name = "Mumu"
-  self.data.stats.inventory[2] = {code = "mumus_fireball", name = "fireball", type = "spell", quantity = 15 }
+  -- self.data.stats.inventory[2] = {code = "mumus_fireball", name = "fireball", type = "spell", quantity = 15 }
   -- self.data.stats.inventory[2] = {code = "mumus_poison", name = "poison", type = "spell", quantity = 15 }
   -- self.data.stats.inventory[3] = {code = "mumus_cheese", name = "cheese", type = "item", quantity = 3 }
   -- self.data.stats.inventory[4] = {code = "mumus_lockpick", name = "lockpick", type = "item", quantity = 5 }
