@@ -3,6 +3,7 @@
  <properties>
   <property name="for_of_war" type="bool" value="true"/>
   <property name="music" value="adagio.wav"/>
+  <property name="name" value="Folia Gatas"/>
   <property name="vision_radius" type="int" value="3"/>
  </properties>
  <tileset firstgid="1" source="overworld_tileset.tsx"/>

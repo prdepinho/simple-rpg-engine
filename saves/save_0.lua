@@ -2,590 +2,509 @@ M = {}
 M.data = {
   player_position = {
     coords = {
-      x = 10,
-      y = 12,
+      y = 16,
+      x = 9,
     },
-    map = "overworld",
-  },
-  active = true,
-  data = {
-    revised_character = true,
-    dead_rat_x_dead = true,
-    created_character = true,
-  },
-  log_visible = true,
-  title = "21:35 2021,1,16",
-  map_data = {
-    overworld = {
-      items = {
-      },
-      created = true,
-      properties = {
-        for_of_war = true,
-        music = "adagio.wav",
-        vision_radius = 3,
-      },
-      objects = {
-        woods = {
-          coords = {
-            {
-              x = 10,
-              y = 11,
-            },
-          },
-          properties = {
-            destiny = "forest:entrance",
-            locked = false,
-            key = "",
-            lockpick_skill = 13,
-            type = "door",
-            closed = true,
-          },
-        },
-        mons = {
-          coords = {
-            {
-              x = 18,
-              y = 15,
-            },
-          },
-          properties = {
-            destiny = "mountain_pass:entrance",
-            locked = false,
-            key = "",
-            lockpick_skill = 13,
-            type = "door",
-            closed = true,
-          },
-        },
-        ager = {
-          coords = {
-            {
-              x = 15,
-              y = 24,
-            },
-          },
-          properties = {
-            destiny = "ruined_farm:entrance",
-            locked = false,
-            key = "",
-            lockpick_skill = 13,
-            type = "door",
-            closed = true,
-          },
-        },
-        hideout = {
-          coords = {
-            {
-              x = 9,
-              y = 18,
-            },
-          },
-          properties = {
-            destiny = "hideout:entrance",
-            locked = false,
-            key = "",
-            lockpick_skill = 13,
-            type = "door",
-            closed = true,
-          },
-        },
-        castrum = {
-          coords = {
-            {
-              x = 15,
-              y = 14,
-            },
-          },
-          properties = {
-            destiny = "castle:entrance",
-            locked = false,
-            key = "",
-            lockpick_skill = 13,
-            type = "door",
-            closed = true,
-          },
-        },
-        templum = {
-          coords = {
-            {
-              x = 5,
-              y = 23,
-            },
-          },
-          properties = {
-            destiny = "temple:entrance",
-            locked = false,
-            key = "",
-            invisible = false,
-            lockpick_skill = 13,
-            type = "door",
-            closed = true,
-          },
-        },
-        polis = {
-          coords = {
-            {
-              x = 13,
-              y = 13,
-            },
-          },
-          properties = {
-            destiny = "polis:entrance",
-            locked = false,
-            key = "",
-            lockpick_skill = 13,
-            type = "door",
-            closed = true,
-          },
-        },
-        vicus = {
-          coords = {
-            {
-              x = 18,
-              y = 13,
-            },
-          },
-          properties = {
-            destiny = "mountain_village:entrance",
-            locked = false,
-            key = "",
-            lockpick_skill = 13,
-            type = "door",
-            closed = true,
-          },
-        },
-      },
-    },
-    temple = {
-      items = {
-      },
-      created = true,
-      properties = {
-        for_of_war = false,
-        music = "",
-        vision_radius = 5,
-      },
-      objects = {
-        temple_entrance = {
-          coords = {
-            {
-              x = 9,
-              y = 5,
-            },
-            {
-              x = 10,
-              y = 5,
-            },
-          },
-          properties = {
-            destiny = "temple_interior:entrance",
-            locked = false,
-            key = "",
-            lockpick_skill = 13,
-            type = "door",
-            closed = true,
-          },
-        },
-        olive = {
-          coords = {
-            {
-              x = 5,
-              y = 15,
-            },
-          },
-          properties = {
-          },
-        },
-        entrance = {
-          coords = {
-            {
-              x = 9,
-              y = 19,
-            },
-            {
-              x = 10,
-              y = 19,
-            },
-          },
-          properties = {
-            destiny = "overworld:templum",
-            locked = false,
-            key = "",
-            lockpick_skill = 13,
-            type = "door",
-            closed = false,
-          },
-        },
-        character_creation_limit = {
-          coords = {
-            {
-              x = 8,
-              y = 19,
-            },
-            {
-              x = 11,
-              y = 19,
-            },
-            {
-              x = 8,
-              y = 18,
-            },
-            {
-              x = 9,
-              y = 18,
-            },
-            {
-              x = 10,
-              y = 18,
-            },
-            {
-              x = 11,
-              y = 18,
-            },
-          },
-          properties = {
-          },
-        },
-        training_grounds = {
-          coords = {
-            {
-              x = 0,
-              y = 17,
-            },
-          },
-          properties = {
-            destiny = "training_grounds:entrance",
-            locked = false,
-            key = "",
-            lockpick_skill = 13,
-            type = "door",
-            closed = true,
-          },
-        },
-      },
-    },
+    map = "temple_interior",
   },
   character_data = {
     player = {
-      removed = false,
+      animation = "cat_girl",
       ally = true,
-      mini_skin = "cat_girl_mini",
-      animation = "cat_girl_mini",
-      position = {
-        x = 10,
-        y = 12,
-      },
-      created = true,
       npc = false,
+      removed = false,
+      skin = "cat_girl",
+      mini_skin = "cat_girl_mini",
+      position = {
+        y = 16,
+        x = 9,
+      },
+      enemy = false,
       stats = {
-        name = "Mumu",
         portrait = {
-          x = 0,
           y = 224,
+          x = 0,
         },
-        level = 1,
+        current_hp = 5,
+        inventory = {
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+          {
+            code = "",
+            type = "item",
+            name = "no_item",
+          },
+        },
         weakness = {
           silver_vulnerable = false,
         },
+        total_hp = 5,
         bonus = {
           to_hit = 0,
-          ac = 0,
           magic_ac = 0,
+          ac = 0,
         },
-        ammo = {
-          name = "no_ammo",
-          code = "",
-          quantity = 0,
-          type = "ammo",
-        },
-        total_hp = 7,
+        name = "Mumu",
         ability = {
-          str = 13,
-          cha = 11,
-          dex = 15,
-          int = 13,
-          wis = 11,
-          con = 13,
-        },
-        current_hp = 7,
-        weapon = {
-          name = "unarmed",
-          code = "",
-          type = "weapon",
+          wis = 8,
+          cha = 8,
+          int = 8,
+          dex = 8,
+          con = 8,
+          str = 8,
         },
         armor = {
-          name = "unarmored",
           code = "",
           type = "armor",
+          name = "unarmored",
         },
+        ammo = {
+          code = "",
+          type = "ammo",
+          quantity = 0,
+          name = "no_ammo",
+        },
+        weapon = {
+          code = "",
+          type = "weapon",
+          name = "unarmed",
+        },
+        level = 1,
         status = {
         },
+        hit_die = "d6",
         shield = {
-          name = "no_shield",
           code = "",
           type = "shield",
-        },
-        hit_die = "d6",
-        inventory = {
-          {
-            name = "no_item",
-            code = "",
-            type = "item",
-          },
-          {
-            name = "no_item",
-            code = "",
-            type = "item",
-          },
-          {
-            name = "no_item",
-            code = "",
-            type = "item",
-          },
-          {
-            name = "no_item",
-            code = "",
-            type = "item",
-          },
-          {
-            name = "no_item",
-            code = "",
-            type = "item",
-          },
-          {
-            name = "no_item",
-            code = "",
-            type = "item",
-          },
-          {
-            name = "no_item",
-            code = "",
-            type = "item",
-          },
-          {
-            name = "no_item",
-            code = "",
-            type = "item",
-          },
+          name = "no_shield",
         },
       },
-      enemy = false,
-      skin = "cat_girl",
+      created = true,
     },
     priestess = {
-      removed = false,
-      mini_skin = "human_mini",
       animation = "cleric_black",
-      position = {
-        x = 9,
-        y = 15,
-      },
-      created = true,
       npc = true,
+      removed = false,
+      skin = "cleric_black",
+      mini_skin = "human_mini",
+      position = {
+        y = 15,
+        x = 7,
+      },
+      enemy = false,
       stats = {
-        name = "Head Priestess",
         portrait = {
-          x = 0,
           y = 192,
-        },
-        level = 2,
-        weakness = {
-          silver_vulnerable = false,
-        },
-        bonus = {
-          to_hit = 0,
-          ac = 0,
-          magic_ac = 0,
-        },
-        ammo = {
-          name = "no_ammo",
-          code = "",
-          quantity = 0,
-          type = "ammo",
-        },
-        total_hp = 12,
-        ability = {
-          str = 13,
-          cha = 15,
-          dex = 13,
-          int = 13,
-          wis = 16,
-          con = 13,
+          x = 0,
         },
         current_hp = 12,
-        weapon = {
-          name = "unarmed",
-          code = "",
-          type = "weapon",
-        },
-        armor = {
-          name = "unarmored",
-          code = "",
-          type = "armor",
-        },
-        status = {
-        },
-        shield = {
-          name = "no_shield",
-          code = "",
-          type = "shield",
-        },
-        hit_die = "d6",
         inventory = {
           {
-            name = "no_item",
             code = "",
             type = "item",
+            name = "no_item",
           },
           {
-            name = "no_item",
             code = "",
             type = "item",
+            name = "no_item",
           },
           {
-            name = "no_item",
             code = "",
             type = "item",
+            name = "no_item",
           },
           {
-            name = "no_item",
             code = "",
             type = "item",
+            name = "no_item",
           },
           {
-            name = "no_item",
             code = "",
             type = "item",
+            name = "no_item",
           },
           {
-            name = "no_item",
             code = "",
             type = "item",
+            name = "no_item",
           },
           {
-            name = "no_item",
             code = "",
             type = "item",
+            name = "no_item",
           },
           {
-            name = "no_item",
             code = "",
             type = "item",
+            name = "no_item",
           },
         },
-      },
-      enemy = false,
-      skin = "cleric_black",
-    },
-    dead_rat_x = {
-      removed = false,
-      mini_skin = "human_mini",
-      animation = "rat",
-      position = {
-        x = 14,
-        y = 15,
-      },
-      created = true,
-      npc = true,
-      stats = {
-        name = "Rat",
-        portrait = {
-          x = 0,
-          y = 192,
-        },
-        level = 1,
         weakness = {
           silver_vulnerable = false,
         },
+        total_hp = 12,
         bonus = {
           to_hit = 0,
-          ac = 0,
           magic_ac = 0,
+          ac = 0,
         },
-        ammo = {
-          name = "no_ammo",
-          code = "",
-          quantity = 0,
-          type = "ammo",
-        },
-        total_hp = 6,
+        name = "Head Priestess",
         ability = {
-          str = 8,
-          cha = 8,
-          dex = 14,
-          int = 8,
-          wis = 13,
+          wis = 16,
+          cha = 15,
+          int = 13,
+          dex = 13,
           con = 13,
-        },
-        current_hp = 0,
-        weapon = {
-          name = "rat_tooth",
-          code = "dead_rat_x_tooth",
-          type = "weapon",
+          str = 13,
         },
         armor = {
-          name = "unarmored",
           code = "",
           type = "armor",
+          name = "unarmored",
         },
+        ammo = {
+          code = "",
+          type = "ammo",
+          quantity = 0,
+          name = "no_ammo",
+        },
+        weapon = {
+          code = "",
+          type = "weapon",
+          name = "unarmed",
+        },
+        level = 2,
         status = {
-          dead = {
-            duration = -1,
-            challenge_level = 0,
-          },
         },
+        hit_die = "d6",
         shield = {
-          name = "no_shield",
           code = "",
           type = "shield",
+          name = "no_shield",
         },
-        hit_die = "d4",
+      },
+      created = true,
+    },
+    dead_rat_x = {
+      animation = "rat",
+      npc = true,
+      removed = false,
+      skin = "rat",
+      mini_skin = "human_mini",
+      position = {
+        y = 15,
+        x = 14,
+      },
+      enemy = false,
+      stats = {
+        portrait = {
+          y = 192,
+          x = 0,
+        },
+        current_hp = 0,
         inventory = {
           {
-            name = "no_item",
             code = "",
             type = "item",
+            name = "no_item",
           },
           {
-            name = "no_item",
             code = "",
             type = "item",
+            name = "no_item",
           },
           {
-            name = "no_item",
             code = "",
             type = "item",
+            name = "no_item",
           },
           {
-            name = "no_item",
             code = "",
             type = "item",
+            name = "no_item",
           },
           {
-            name = "no_item",
             code = "",
             type = "item",
+            name = "no_item",
           },
           {
-            name = "no_item",
             code = "",
             type = "item",
+            name = "no_item",
           },
           {
-            name = "rat_tail",
             code = "dead_rat_x_rat",
             type = "item",
+            name = "rat_tail",
           },
           {
-            name = "no_item",
             code = "",
             type = "item",
+            name = "no_item",
+          },
+        },
+        weakness = {
+          silver_vulnerable = false,
+        },
+        total_hp = 6,
+        bonus = {
+          to_hit = 0,
+          magic_ac = 0,
+          ac = 0,
+        },
+        name = "Rat",
+        ability = {
+          wis = 13,
+          cha = 8,
+          int = 8,
+          dex = 14,
+          con = 13,
+          str = 8,
+        },
+        armor = {
+          code = "",
+          type = "armor",
+          name = "unarmored",
+        },
+        ammo = {
+          code = "",
+          type = "ammo",
+          quantity = 0,
+          name = "no_ammo",
+        },
+        weapon = {
+          code = "dead_rat_x_tooth",
+          type = "weapon",
+          name = "rat_tooth",
+        },
+        level = 1,
+        status = {
+          dead = {
+            challenge_level = 0,
+            duration = -1,
+          },
+        },
+        hit_die = "d4",
+        shield = {
+          code = "",
+          type = "shield",
+          name = "no_shield",
+        },
+      },
+      created = true,
+    },
+  },
+  log_visible = true,
+  active = true,
+  data = {
+    dead_rat_x_dead = true,
+  },
+  title = "Lv. 1: Bastet Temple Nave",
+  map_data = {
+    temple_interior = {
+      objects = {
+        idol = {
+          properties = {
+            boon = "true_seeing",
+            offering = "looking_glass",
+            description = "The great idol of Bastet, Eye of Ra. You may offer a looking glass to the altar.",
+            type = "idol",
+            response = "Your offering is pleasing to Bastet. She grants you the boon of clear sight.",
+            code = "bastet_eye_of_ra",
+          },
+          coords = {
+            {
+              y = 10,
+              x = 9,
+            },
+            {
+              y = 11,
+              x = 9,
+            },
+            {
+              y = 10,
+              x = 10,
+            },
+            {
+              y = 11,
+              x = 10,
+            },
+          },
+        },
+        entrance = {
+          properties = {
+            locked = false,
+            lockpick_skill = 13,
+            closed = true,
+            type = "door",
+            key = "",
+            destiny = "temple:temple_entrance",
+          },
+          coords = {
+            {
+              y = 19,
+              x = 9,
+            },
+            {
+              y = 19,
+              x = 10,
+            },
           },
         },
       },
-      enemy = false,
-      skin = "rat",
+      items = {
+      },
+      created = true,
+      properties = {
+        vision_radius = 7,
+        for_of_war = true,
+        music = "",
+        name = "Bastet Temple Nave",
+      },
+    },
+    temple = {
+      objects = {
+        character_creation_limit = {
+          properties = {
+          },
+          coords = {
+            {
+              y = 19,
+              x = 8,
+            },
+            {
+              y = 19,
+              x = 11,
+            },
+            {
+              y = 18,
+              x = 8,
+            },
+            {
+              y = 18,
+              x = 9,
+            },
+            {
+              y = 18,
+              x = 10,
+            },
+            {
+              y = 18,
+              x = 11,
+            },
+          },
+        },
+        training_grounds = {
+          properties = {
+            locked = false,
+            lockpick_skill = 13,
+            closed = true,
+            type = "door",
+            key = "",
+            destiny = "training_grounds:entrance",
+          },
+          coords = {
+            {
+              y = 17,
+              x = 0,
+            },
+          },
+        },
+        entrance = {
+          properties = {
+            locked = false,
+            lockpick_skill = 13,
+            closed = true,
+            type = "door",
+            key = "",
+            destiny = "overworld:templum",
+          },
+          coords = {
+            {
+              y = 19,
+              x = 9,
+            },
+            {
+              y = 19,
+              x = 10,
+            },
+          },
+        },
+        temple_entrance = {
+          properties = {
+            locked = false,
+            lockpick_skill = 13,
+            closed = false,
+            type = "door",
+            key = "",
+            destiny = "temple_interior:entrance",
+          },
+          coords = {
+            {
+              y = 5,
+              x = 9,
+            },
+            {
+              y = 5,
+              x = 10,
+            },
+          },
+        },
+        olive = {
+          properties = {
+          },
+          coords = {
+            {
+              y = 15,
+              x = 5,
+            },
+          },
+        },
+      },
+      items = {
+      },
+      created = true,
+      properties = {
+        vision_radius = 5,
+        for_of_war = false,
+        music = "",
+        name = "Bastet Temple",
+      },
     },
   },
   companions = {

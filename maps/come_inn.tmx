@@ -3,6 +3,7 @@
  <properties>
   <property name="for_of_war" type="bool" value="true"/>
   <property name="music" value="c_major_piece.wav"/>
+  <property name="name" value="Come Inn"/>
   <property name="vision_radius" type="int" value="6"/>
  </properties>
  <tileset firstgid="1" source="tiled_tileset.tsx"/>

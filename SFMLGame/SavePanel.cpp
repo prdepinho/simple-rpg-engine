@@ -38,7 +38,8 @@ void SaveOptionMenu::create() {
 					[&]() {
 						Log("Yes.");
 						std::string filename = Path::SAVES + save_file.filename + ".lua";
-						_game.get_lua()->save_game(filename, Time::current_time_string());
+						// _game.get_lua()->save_game(filename, Time::current_time_string());
+						_game.get_lua()->save_game(filename, "");
 						SavePanel::refresh_buttons();
 						call_functions(this);
 						get_screen()->remove_component(*this);
@@ -53,7 +54,8 @@ void SaveOptionMenu::create() {
 			}
 			else {
 				std::string filename = Path::SAVES + save_file.filename + ".lua";
-				_game.get_lua()->save_game(filename, Time::current_time_string());
+				// _game.get_lua()->save_game(filename, Time::current_time_string());
+				_game.get_lua()->save_game(filename, "");
 				SavePanel::refresh_buttons();
 				call_functions(this);
 				get_screen()->remove_component(*this);

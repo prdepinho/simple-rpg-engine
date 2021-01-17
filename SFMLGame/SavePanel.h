@@ -51,7 +51,7 @@ private:
 	Label label;
 	int border = 5;
 	int button_height = 20;
-	int button_length = 150;
+	int button_length = 180;
 	std::vector<LoadButton> buttons;
 	size_t button_index = 0;
 	InputHandler input_handler;

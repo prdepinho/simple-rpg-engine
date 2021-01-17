@@ -3,6 +3,7 @@
  <properties>
   <property name="for_of_war" type="bool" value="true"/>
   <property name="music" value=""/>
+  <property name="name" value="Bastet Temple Nave"/>
   <property name="vision_radius" type="int" value="7"/>
  </properties>
  <tileset firstgid="1" source="temple_tileset.tsx"/>

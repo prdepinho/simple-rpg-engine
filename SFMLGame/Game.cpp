@@ -318,16 +318,21 @@ public:
 		GameScreen *screen = dynamic_cast<GameScreen*>(_game.get_screen());
 		std::string name = lua_tostring(state, -1);
 		Character *character = screen->get_character_by_name(name);
-		sf::Vector2i position = screen->character_position(*character);
-		lua_newtable(state);
-		{
-			lua_pushliteral(state, "x");
-			lua_pushinteger(state, position.x);
-			lua_settable(state, -3);
+		if (character) {
+			sf::Vector2i position = screen->character_position(*character);
+			lua_newtable(state);
+			{
+				lua_pushliteral(state, "x");
+				lua_pushinteger(state, position.x);
+				lua_settable(state, -3);
 
-			lua_pushliteral(state, "y");
-			lua_pushinteger(state, position.y);
-			lua_settable(state, -3);
+				lua_pushliteral(state, "y");
+				lua_pushinteger(state, position.y);
+				lua_settable(state, -3);
+			}
+		}
+		else {
+			lua_pushnil(state);
 		}
 		return 1;
 	}

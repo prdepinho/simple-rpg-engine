@@ -10,7 +10,7 @@ LoadGameScreen::~LoadGameScreen() { }
 
 void LoadGameScreen::create() {
 	int button_height = 1;
-	int button_length = 100;
+	int button_length = 180;
 	int x = (game->get_resolution_width() / 2) - (button_length / 2);
 
 	std::vector<Resources::SaveFile> save_files = Resources::get_save_files();

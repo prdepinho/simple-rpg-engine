@@ -3,6 +3,7 @@
  <properties>
   <property name="for_of_war" type="bool" value="false"/>
   <property name="music" value="later_folia.wav"/>
+  <property name="name" value="Normindia Castle"/>
   <property name="vision_radius" type="int" value="5"/>
  </properties>
  <tileset firstgid="1" source="castle_tileset.tsx"/>

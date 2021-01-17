@@ -120,7 +120,7 @@ function Control:closest_character_on_sight(observer, radius)
   local closest_character = nil
   local closest_distance = 10000
 
-  for name, character in pairs(self.characters) do
+  for index, name in ipairs(sfml_get_characters_on_map()) do
     local stats = self.characters[name].data.stats
     if observer ~= name and not stats.status.dead and self:can_see(observer, name) then
       local src = sfml_get_character_position(observer)
@@ -979,6 +979,10 @@ function Control:new_game()
 end
 
 function Control:save_game(filename, title)
+  if title ~= 'autosave' then
+    title = "Lv. " .. tostring(self.characters.player.data.stats.level) .. ": " .. self.map.data.properties.name
+  end
+
   print('save game: ' .. filename .. ' (' .. title .. ')')
   local data = {}
   data.active = true
@@ -1320,9 +1324,14 @@ function Control:map_enter()
     sfml_show_log(self.log_visibility)
     self.show_log = false
   end
+
 end
 
 function Control:map_exit()
+  if self.current_map and self.current_map ~= '' then
+    self:save_game("save_3.lua", "autosave")
+  end
+
   self.map:exit()
   for index, name in ipairs(sfml_get_characters_on_map()) do
     self.characters[name].data.position = sfml_get_character_position(name)
