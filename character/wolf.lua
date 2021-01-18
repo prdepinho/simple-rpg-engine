@@ -26,11 +26,12 @@ function Wolf:create()
   rules.set_ability_scores_map(stats, {
     str = 15,
     dex = 15,
-    con = 14,
+    con = 15,
     int = 8,
     wis = 13,
     cha = 13,
   })
+  rules.level_up(stats)
   self.data.wolf = true
 end
 

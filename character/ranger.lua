@@ -70,6 +70,41 @@ function Ranger:on_interact(interactor_name)
       { text = "I would like to buy something.", go_to = 'buy' },
     }
   }
+
+  if self.control.data.witch_of_the_woods_dead and not self.control.data.informed_witch_died then
+    table.insert(dialogue.start.options, { text = "I killed the witch.", go_to = 'killed' })
+    dialogue.killed = {
+      text = "You have done good, miss. The woods will be a safer place.",
+      go_to = 'end',
+      callback = function()
+        self.control.data.informed_witch_died = true
+      end
+    }
+  end
+
+  if self.control.data.informed_witch_died then
+    dialogue.start = {
+      text = "Good seeing you.",
+      options = {
+        { text = "Bye.", go_to = 'end' },
+        { text = "I would like to buy something.", go_to = 'buy' },
+      }
+    }
+  end
+
+  if self.control.companions.wolf and not self.control.data.showed_dog_to_ranger then
+    dialogue.start = {
+      text = "I see you made a new friend.",
+      options = {
+        { text = "Bye.", go_to = 'end' },
+        { text = "I would like to buy something.", go_to = 'buy' },
+      },
+      callback = function()
+        self.control.data.showed_dog_to_ranger = true
+      end
+    }
+  end
+
   sfml_dialogue(dialogue)
 end
 
