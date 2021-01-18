@@ -17,6 +17,7 @@ end
 
 function Wolf:create()
   Character.create(self)
+  self:set_mini_skin('wolf_mini')
   self:set_skin("wolf")
   self.data.enemy = false
 
@@ -49,6 +50,79 @@ function Wolf:on_turn()
       sfml_move(self.name, dst.x, dst.y)
     end
   end
+end
+
+function Wolf:on_interact(interactor_name)
+  
+  local dog_hates_you = self.control.characters.player.data.stats.ability.cha <= 8
+
+  local dialogue = {
+    start = {
+      text = function() 
+        if dog_hates_you then
+          return "Snarl..."
+        else
+          return "Arf, arf..." 
+        end
+      end,
+      options = {
+        { text = "Leave dog.", go_to = 'end' },
+        { text = "Pet dog.", go_to = 'pet' },
+        { text = "Shoo dog.", go_to = 'shoo' },
+      }
+    },
+    pet = {
+      text = function()
+        if dog_hates_you then
+          return "Snarl... Bark!"
+        else
+          return "Bark! Bark! Arf, arf, arf..."
+        end
+      end,
+      go_to = 'end'
+    },
+    shoo = {
+      text = function()
+        if dog_hates_you then
+          self.data.enemy = true
+          return "Snarl... Bark! Bark! Bark!"
+        else
+          return "Whine... Whine..."
+        end
+      end,
+      go_to = 'end'
+    }
+  }
+
+  local index = self.control:find_in_inventory_by_name('player', 'rib_cage')
+  index = index or self.control:find_in_inventory_by_name('player', 'skull')
+
+  if index then
+    table.insert(dialogue.start.options, { text = "Give bone to dog.", go_to = 'bone' })
+    if dog_hates_you then
+      dialogue.bone = {
+        text = "Snarl..... Bark! Bark! Bark!",
+        go_to = 'end',
+        callback = function()
+          self.control:remove_item_from_inventory(index, 'player')
+          self.data.enemy = true
+        end
+      }
+    else
+      dialogue.bone = {
+        text = "Whine... Sniff, sniff.... Bark! Bark! Arf, arf, arf...",
+        go_to = 'end',
+        callback = function()
+          self.control:remove_item_from_inventory(index, 'player')
+          sfml_start_animation(self.name, 'use')
+          self.data.ally = true
+          self.control:set_companion(self.name)
+        end
+      }
+    end
+  end
+
+  sfml_dialogue(dialogue)
 end
 
 

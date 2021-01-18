@@ -485,6 +485,14 @@ animations.types = {
     },
     animations = basic_animation
   },
+  wolf_mini = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 16,
+      y = 16 * 3
+    },
+    animations = mini_animation
+  },
 }
 
 return animations

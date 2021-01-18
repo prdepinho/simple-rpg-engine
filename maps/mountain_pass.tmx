@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="9">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="12">
  <properties>
   <property name="for_of_war" type="bool" value="true"/>
   <property name="music" value=""/>
@@ -86,8 +86,8 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,223,224,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,239,240,0,0,0,0,0,0,0,
-0,0,0,0,0,188,189,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,228,0,0,244,0,0,0,0,0,0,
-0,0,0,0,0,204,205,188,189,0,0,0,0,0,0,0,0,0,0,0,0,244,0,0,0,0,188,189,0,0,0,0,
+0,0,0,0,0,188,189,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,204,205,188,189,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,188,189,0,0,0,0,
 0,0,0,0,0,220,221,204,205,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,204,205,141,0,0,0,
 0,0,0,0,0,0,0,220,221,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,141,220,221,0,0,0,0,
 0,0,0,0,0,0,0,0,0,141,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -304,6 +304,24 @@
     <property name="key" value=""/>
     <property name="locked" type="bool" value="false"/>
     <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="9" name="bones" x="337.333" y="83.75" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:rib_cage"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="10" name="bones2" x="353.583" y="65" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:skull"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="11" name="bones1" x="402.083" y="65" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:rib_cage"/>
+    <property name="type" value="hoard"/>
    </properties>
   </object>
  </objectgroup>

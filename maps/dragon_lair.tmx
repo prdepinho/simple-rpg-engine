@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="12" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="4">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="12" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="15">
  <properties>
   <property name="for_of_war" type="bool" value="true"/>
   <property name="music" value=""/>
@@ -45,14 +45,14 @@
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,228,0,244,0,0,0,0,0,
-0,0,0,0,0,0,0,0,244,0,0,0,
-0,0,0,0,0,0,0,0,228,0,0,0,
-0,244,228,0,0,0,0,0,0,0,0,0,
-0,244,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,244,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,228,0,0,244,244,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
@@ -133,6 +133,72 @@
     <property name="key" value=""/>
     <property name="locked" type="bool" value="false"/>
     <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="4" name="bones11" x="18.0315" y="98.459" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:rib_cage"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="5" name="bones10" x="17.5844" y="115.003" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:rib_cage"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="6" name="bones9" x="34.1284" y="98.0119" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:skull"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="7" name="bones8" x="66.7693" y="49.2741" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:skull"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="8" name="bones7" x="97.6217" y="49.9448" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:rib_cage"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="9" name="bones6" x="130.71" y="66.4888" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:rib_cage"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="10" name="bones5" x="130.263" y="82.1386" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:skull"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="11" name="bones4" x="161.786" y="130.876" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:rib_cage"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="12" name="bones3" x="129.592" y="161.505" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:rib_cage"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="13" name="bones2" x="113.942" y="162.176" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:rib_cage"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="14" name="bones1" x="66.0986" y="162.623" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:skull"/>
+    <property name="type" value="hoard"/>
    </properties>
   </object>
  </objectgroup>

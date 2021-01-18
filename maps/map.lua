@@ -444,6 +444,10 @@ function Map:take_out_hoard_item(x, y, str)
   if pos then
   end
 
+  if code == '_key' then
+    code = self.control:next_item_code()
+  end
+
   self.data.items[code] = {name = name, type = type, x = x, y = y, quantity = quantity}
 end
 

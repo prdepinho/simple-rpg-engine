@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="31">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="33">
  <properties>
   <property name="for_of_war" type="bool" value="true"/>
   <property name="music" value="sakura.wav"/>
@@ -109,8 +109,8 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,213,213,213,213,213,213,213,213,213,213,213,213,213,
 156,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,244,0,0,0,0,0,0,156,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,228,0,0,0,0,156,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,156,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,156,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,156,156,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,156,156
 </data>
@@ -374,6 +374,18 @@
     <property name="key" value=""/>
     <property name="locked" type="bool" value="false"/>
     <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="31" name="bones2" x="368.583" y="451.5" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:rib_cage"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="32" name="bones1" x="401.333" y="467" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:skull"/>
+    <property name="type" value="hoard"/>
    </properties>
   </object>
  </objectgroup>
