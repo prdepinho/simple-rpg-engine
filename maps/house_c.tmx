@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="15">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="16">
  <properties>
   <property name="for_of_war" type="bool" value="true"/>
   <property name="music" value="sakura.wav"/>
@@ -253,6 +253,12 @@
     <property name="description" value="You find Minora's Journal 2."/>
     <property name="text" value="The scent from the pit is sweet indeed. I sneak into the cave just to be with its mesmerizing embrace. Sometimes I see women wearing white in the cave. I wonder if they are the spirits of late Pthonists from the village. All together to enjoy sweet permufe everm from out the grave."/>
     <property name="type" value="note"/>
+   </properties>
+  </object>
+  <object id="15" name="cheese" x="50.3743" y="33.2517" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:cheese:1"/>
+    <property name="type" value="hoard"/>
    </properties>
   </object>
  </objectgroup>

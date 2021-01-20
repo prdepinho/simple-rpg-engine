@@ -1,2 +1,0 @@
-cd Release
-SFMLGame.exe

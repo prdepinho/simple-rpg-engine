@@ -288,11 +288,7 @@ end
 function Map:enter()
   self:set_objects()
 
-  if self.data.properties.music and self.data.properties.music ~= '' then
-    if sfml_get_current_music() ~= self.data.properties.music then
-      sfml_loop_music(self.data.properties.music)
-    end
-  end
+  self:play_map_music()
 
   for object_name, object in pairs(self.data.objects) do
 
@@ -451,5 +447,15 @@ function Map:take_out_hoard_item(x, y, str)
   self.data.items[code] = {name = name, type = type, x = x, y = y, quantity = quantity}
 end
 
+
+function Map:play_map_music()
+  if self.data.properties.music and self.data.properties.music ~= '' then
+    if sfml_get_current_music() ~= self.data.properties.music then
+      sfml_loop_music(self.data.properties.music)
+    elseif self.data.properties.music == 'none' then
+      sfml_stop_music()
+    end
+  end
+end
 
 return Map

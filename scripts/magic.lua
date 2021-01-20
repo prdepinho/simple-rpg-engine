@@ -640,7 +640,7 @@ function Magic:cheese(caster, center, tiles, targets)
     if not stats.status.dead then
 
       -- healing wounds
-      local roll = rules.roll_dice('1d4')
+      local roll = rules.roll_dice('2d4')
       local heal = roll
 
       local name = self.control.characters[character_name].data.stats.name 

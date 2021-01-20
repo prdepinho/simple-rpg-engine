@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="22">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="23">
  <properties>
   <property name="for_of_war" type="bool" value="true"/>
   <property name="music" value="sakura.wav"/>
@@ -401,5 +401,11 @@
   <object id="19" name="trigger" x="194.5" y="97.6667" width="41.6667" height="12"/>
   <object id="20" name="scary_doll" x="195" y="36.3333" width="10" height="22.3333"/>
   <object id="21" name="hidden_oils" x="133.333" y="34.3333" width="71" height="22"/>
+  <object id="22" name="cheese" x="195.152" y="403.659" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:cheese:1"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

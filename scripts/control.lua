@@ -1205,9 +1205,10 @@ function Control:turn_end()
   if not in_sight then
     if sfml_get_current_music() == "marching.wav" then
       sfml_stop_music()
-      if self.map.data.properties.music and self.map.data.properties.music ~= '' then
-        sfml_loop_music(self.map.data.properties.music)
-      end
+      self.map:play_map_music()
+      -- if self.map.data.properties.music and self.map.data.properties.music ~= '' then
+      --   sfml_loop_music(self.map.data.properties.music)
+      -- end
     end
   end
 end

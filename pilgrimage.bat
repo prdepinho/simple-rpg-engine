@@ -1,0 +1,2 @@
+cd Release
+Pilgrimage.exe
