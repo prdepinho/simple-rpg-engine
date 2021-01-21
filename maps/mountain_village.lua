@@ -17,6 +17,10 @@ end
 
 function MountainVillage:enter()
   Map.enter(self)
+  if self.control.data.sir_cavalion_left then
+    print('remove')
+    sfml_remove_character('sir_cavalion')
+  end
 end
 
 function MountainVillage:exit()

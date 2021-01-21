@@ -66,6 +66,10 @@ function Control:remove_companion(name)
   self.companions[name] = nil
 end
 
+function Control:is_companion(name)
+  return self.companions[name] ~= nil
+end
+
 
 function Control:get_allies()
   local allies = {}
@@ -1330,7 +1334,7 @@ end
 
 function Control:map_exit()
   if self.current_map and self.current_map ~= '' then
-    self:save_game("save_3.lua", "autosave")
+    self:save_game("../saves/save_3.lua", "autosave")
   end
 
   self.map:exit()

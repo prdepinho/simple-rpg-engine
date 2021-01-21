@@ -50,20 +50,134 @@ function SirCavalion:on_interact(interactor_name)
   end
   local dialogue = {
     start = {
-      text = "I am sir Chilvarion, a knight with the noble quest to slay the serpent that lurks these mountains.",
+      text = "(The man avoids looking at you. His eyes are benevolent, but melancholic. You find no way of approaching him.)",
+      go_to = 'end'
+    },
+    invite = {
+      text = "Mumu, let's join forces to fight evil and free this poor village of the beast that haunts it. ",
       options = {
+        { text = "I would be honored.", go_to = 'yes' },
+        { text = "I would rather not.", go_to = 'no' },
+      }
+    },
+    yes = {
+      text = "Than let's not make our prey wait long for its fate.",
+      go_to = 'end',
+      callback = function()
+        self.control.data.accepted_sir_cavalion_invitation = true
+        self.data.ally = true
+        self.control:set_companion(self.name)
+      end
+    },
+    no = {
+      text = "As you wish.",
+      go_to = 'end'
+    },
+    question = {
+      text = "(The knight examines you intetly without saying a word.)",
+      options = {
+        { text = "Where are you from?", go_to = 'story' },
+        { text = "I would help you kill your dragon", go_to = 'help' },
+        { text = "I'm going the same direction, let's cling together.", go_to = 'together' },
+        { text = "Good talking to you.", go_to = 'end' },
+      }
+    },
+    help = {
+      text = "Very well. I accept your offer. Let us make haste and put an end to this.",
+      go_to = 'end',
+      callback = function()
+        self.control.data.sir_cavalion_accepted_help = true
+        self.data.ally = true
+        self.control:set_companion(self.name)
+      end
+    },
+    together = {
+      text = "Very well. We travel together for now. Let's go.",
+      go_to = 'end',
+      callback = function()
+        self.control.data.sir_cavalion_cling_together = true
+        self.data.ally = true
+        self.control:set_companion(self.name)
+      end
+    },
+    story = {
+      text = "I am a proud Estosian. I gava my blood for my country fighting the barbarians that took over our land, restored the throne for king Acharistos and received my reward not in land, not in titles, not even in a humble thank you, as I would prefer, but in bitter exile. They accused that I am too dangerous to the kingdom. That I put the king on the throne, I could take him down.",
+      go_to = 'story_next'
+    },
+    story_next = {
+      text = "I though long on how to give my life to Iltormyr and when news of the dragon appeared, I knew what I had to do.",
+      go_to = 'invite',
+      callback = function()
+        self.control.data.sir_cavalion_told_his_story = true
+      end
+    }
+  }
+
+  if self.control.characters.player.data.stats.ability.cha >= 13 then
+    dialogue.start = {
+      text = "(Cha 13) Good day. I am sir Cavalion, a knight with the noble quest of slaying the serpent that lurks in these mountains.",
+      options = {
+        { text = "I am Mumu, an adventurer.", go_to = 'adventurer' },
+        { text = "I am Mumu, on a pilgrimage for Bastet.", go_to = 'cleric' },
         { text = "I must be going.", go_to = 'end' },
-        { text = "I am Mumu, an adventurer.", go_to = 'fork' },
       },
       callback = function()
         self.control.data.met_sir_cavalion = true
       end
-    },
-    fork = {
-      text = "I see. Good talking to you.",
-      go_to = 'end'    
-    },
-  }
+    }
+
+    if self.control.characters.player.data.stats.ability.cha >= 13 then
+      dialogue.adventurer = {
+        text = "(Cha 15) You look a capable, well traveled person.",
+        go_to = 'question'
+      }
+    else
+      dialogue.adventurer = {
+        text = "I see. Good talking to you.",
+        go_to = 'end'
+      }
+    end
+
+    if self.control.characters.player.data.stats.ability.wis >= 13 then
+      dialogue.cleric = {
+        text = "(Wis 13) Yes, I can see the faith in your eyes. Perhaps Iltormyr intents to humble me by sending a heathen helper?",
+        go_to = 'question'
+      }
+    else
+      dialogue.cleric = {
+        text = "A pilgrimage? Well, good luck to you, then.",
+        go_to = 'end'
+      }
+    end
+
+
+    if self.control.data.thieves_guild_member then
+      table.insert(dialogue.start.options, { text = "I am Mumu, of the Thieve's Guild.", go_to = 'thief' })
+      if self.control.characters.player.data.stats.ability.dex >= 13 then
+        dialogue.thief = {
+          text = "(Dex 13) I see... Yes, you have a sort of feline agility to yourself. In the enterprise of hunting down a dragon the skills of a burglar are very useful.",
+          go_to = 'question'
+        }
+      else
+        dialogue.thief = {
+          text = "A lowly thief! That befits your kin. At least an honest one at that.",
+          go_to = 'end'
+        }
+      end
+    end
+
+    if self.control.data.witch_apprentice then
+      table.insert(dialogue.start.options, { text = "I am Mumu, apprentice witch.", go_to = 'witch' })
+      dialogue.witch = {
+        text = "You have gall to confess me that. Go away and leave me be.",
+        go_to = 'end',
+        callback = function()
+          self.control.data.sir_cavalion_reproval = true
+        end
+      }
+    end
+
+  end -- cha >= 13
 
   if self.control.data.met_sir_cavalion then
     dialogue.start = {
@@ -72,38 +186,11 @@ function SirCavalion:on_interact(interactor_name)
     }
   end
 
-  if self.control.data.thieves_guild_member then
-    table.insert(dialogue.start.options, { text = "I am Mumu, of the Thieve's Guild.", go_to = 'guild' })
-    dialogue.guild = {
-      text = "A lowly thief! That befits your kin. At least an honest one at that.",
-      go_to = 'fork'
-    }
-  end
-
-  if self.control.characters.player.data.stats.ability.cha >= 13 then
-    dialogue.fork = {
-      text = "(Cha 13) Mumu, let's join forces to fight evil and free this poor village of the beast that haunts it.",
-      options = {
-        { text = "I would be honored.", go_to = 'yes' },
-        { text = "I would rather not.", go_to = 'no' },
-      }
-    }
-    dialogue.yes = {
-      text = "Than let's not make our prey wait long for its fate.",
-      go_to = 'end',
-      callback = function()
-        self.data.ally = true
-        self.control:set_companion(self.name)
-      end
-    }
-    dialogue.no = {
-      text = "As you wish, milady.",
-      go_to = 'end'
-    }
-  end
-
-
   sfml_dialogue(dialogue)
+end
+
+function SirCavalion:on_death()
+  self.control.data.sir_cavalion_dead = true
 end
 
 return SirCavalion

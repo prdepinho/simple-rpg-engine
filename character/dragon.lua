@@ -84,6 +84,17 @@ function Dragon:on_interact(interactor_name)
     }
   }
 
+  if self.control.data.sir_cavalion_went_ahead_alone then
+    table.insert(dialogue.start.options, { text = "I will avenge Sir Cavalion's death!", go_to = 'avenge' })
+    dialogue.avenge = {
+      text = "You all bore me with your righteousness.",
+      go_to = 'end',
+      callback = function()
+        self.control.characters.dragon.data.enemy = true
+      end
+    }
+  end
+
   if not self.control.data.received_dragon_reward then
     if self.control.data.send_rats_to_dragon then
       dialogue.start.text = "I await anxiously for your tribute."
@@ -115,6 +126,24 @@ function Dragon:on_interact(interactor_name)
         text = "Now please, be greatful that I am feeling benevolent and leave before I decide to have you for dessert.",
         go_to = 'end'
       }
+    }
+  end
+
+  if self.control:is_companion('sir_cavalion') then
+    dialogue.start = {
+      text = "(Sir Cavalion reaches for his weapons and speaks) Dragon! Let Iltormyr forsake my soul if I am to let you, foul snake, breathing fire on this land! Prepare yourself to return to the abyss!",
+      go_to = 'dragon_response'
+    }
+    dialogue.dragon_response = {
+      text = "(The dragon responds) You fool! You storm into my abode and cast your bravado upon me unprovoked! Iltormyr will not save your as he did not save me. We will both go to hell.",
+      go_to = 'sir_cavalion_response',
+    }
+    dialogue.sir_cavalion_response = {
+      text = "(Sir Cavalion responds) Then we shall fight forever.",
+      go_to = 'end',
+      callback = function()
+        self.control.characters.dragon.data.enemy = true
+      end
     }
   end
 

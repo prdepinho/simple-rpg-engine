@@ -17,6 +17,7 @@ end
 function Healer:create()
   Priestess.create(self)
   self:set_skin("cleric_green")
+  self.data.stats.inventory[1] = { code = self.name .. "_cure", name = "cure_wounds", type = "spell", quantity = "3" }
 end
 
 function Healer:on_interact(interactor_name)
@@ -29,7 +30,7 @@ function Healer:on_interact(interactor_name)
       }
     },
     healing = {
-      text = "Then get this gift of heling. Use it to recover from your wounds.",
+      text = "Then get this gift of healing. Use it to recover from your wounds.",
       go_to = 'end',
       callback = function()
         self.control:add_item_to_inventory('player', self.control:next_item_code(), 'cure_wounds', 'spell', 3)

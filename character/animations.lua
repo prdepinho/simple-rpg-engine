@@ -493,6 +493,14 @@ animations.types = {
     },
     animations = mini_animation
   },
+  priest = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 16,
+      y = 16 * 12
+    },
+    animations = basic_animation
+  },
 }
 
 return animations

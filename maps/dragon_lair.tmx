@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="12" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="15">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="12" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="17">
  <properties>
   <property name="for_of_war" type="bool" value="true"/>
   <property name="music" value=""/>
@@ -201,5 +201,7 @@
     <property name="type" value="hoard"/>
    </properties>
   </object>
+  <object id="15" name="sir_cavalions_body" x="97.4755" y="97.252" width="12.9669" height="12.2962"/>
+  <object id="16" name="cave_exit_steps" x="81.1551" y="161.639" width="28.8402" height="12.7434"/>
  </objectgroup>
 </map>

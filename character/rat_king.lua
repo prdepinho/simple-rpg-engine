@@ -78,8 +78,32 @@ function RatKing:on_interact(interactor_name)
     }
   }
 
+  dialogue.go_to_thieves_guild = {
+    text = "Are you sure about that? Alright, I'll talk to the others. Babies! We have a new home. Let's go.",
+    go_to = 'go_away',
+    callback = function()
+      self.control.data.rats_in_the_guild = true
+      self.control.data.rats_gone = true
+    end
+  }
+  dialogue.go_to_the_mountains = {
+    text = "Really? Well, I don't know about the mountains, but if you say it is safe, I trust you. Come my babies! We have a new home.",
+    go_to = 'go_away_and_die',
+    callback = function()
+      self.control.data.rats_went_to_dragon = true
+      self.control.data.rats_gone = true
+    end
+  }
+
   if self.control.data.decided_to_help_rats then
     dialogue.start.text = "Have you dealt with the poison yet?"
+
+    if self.control.data.thieves_guild_member and not self.control.data.thieves_guild_ruined then
+      table.insert(dialogue.start.options, { text = "You should go to the thieves' guild.", go_to = 'go_to_thieves_guild' })
+    end
+    if self.control.data.send_rats_to_dragon and not self.control.data.dragon_dead then
+      table.insert(dialogue.start.options, { text = "Go to the mountains. I know a place.", go_to = 'go_to_the_mountains' })
+    end
 
     if self.control.data.disposed_of_poison and self.control.data.come_inn_ruined then
       table.insert(dialogue.start.options, { text = "I have delt with the poison and the innkeeper.", go_to = 'disposed' })
@@ -129,28 +153,12 @@ function RatKing:on_interact(interactor_name)
     if self.control.data.thieves_guild_member and not self.control.data.thieves_guild_ruined then
       table.insert(dialogue.leave.options, { text = "Go to the thieves' guild.", go_to = 'go_to_thieves_guild' })
     end
-    if self.control.data.send_rats_to_dragon then
+    if self.control.data.send_rats_to_dragon and not self.control.data.dragon_dead then
       table.insert(dialogue.leave.options, { text = "Go to the mountains. I know a place.", go_to = 'go_to_the_mountains' })
     end
     dialogue.dont_know = {
       text = "This is the only place we have.",
       go_to = 'end'
-    }
-    dialogue.go_to_thieves_guild = {
-      text = "Are you sure about that? Alright, I'll talk to the others. Babies! We have a new home. Let's go.",
-      go_to = 'go_away',
-      callback = function()
-        self.control.data.rats_in_the_guild = true
-        self.control.data.rats_gone = true
-      end
-    }
-    dialogue.go_to_the_mountains = {
-      text = "Really? Well, I don't know about the mountains, but if you say it is safe, I trust you. Come my babies! We have a new home.",
-      go_to = 'go_away_and_die',
-      callback = function()
-        self.control.data.rats_went_to_dragon = true
-        self.control.data.rats_gone = true
-      end
     }
     dialogue.go_away = {
       text = "The rats move from their lair.",

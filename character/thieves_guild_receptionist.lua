@@ -47,9 +47,21 @@ function ThievedGuildReceptionist:on_interact(interactor_name)
       },
       who = {
         text = "My name is " .. self.data.stats.name .. ". You must have heard of me, I am pretty famous. This is the thieve's guild. It has seen better days. Right now it's just you and me.",
-        go_to = 'end'
+        options = {
+          { text = "Nice meeting you.", go_to = 'end' },
+        }
       }
     }
+    if self.control.data.decided_to_help_rats then
+      table.insert(dialogue.who.options, { text = "I know some rats that need shelter and a job.", go_to = 'rats' })
+      dialogue.rats = {
+        text = "Really? Bring them in and I'll introduce them to the noble craft of thieving.",
+        go_to = 'end',
+        callback = function()
+          self.control.data.thieves_guild_member = true
+        end
+      }
+    end
     sfml_dialogue(dialogue)
 
   elseif self.data.rats_in_the_guild and not self.data.boasted then
@@ -69,9 +81,18 @@ function ThievedGuildReceptionist:on_interact(interactor_name)
       local dialogue = {
         start = {
           text = "Welcome back, sister.",
-          go_to = 'end',
+          options = {
+            { text = "Thank you, brother.", go_to = 'end' }
+          }
         }
       }
+      if self.control.data.decided_to_help_rats then
+        table.insert(dialogue.start.options, { text = "I know some rats that need shelter and a job.", go_to = 'rats' })
+        dialogue.rats = {
+          text = "Really? Bring them in and I'll introduce them to the noble craft of thieving.",
+          go_to = 'end'
+        }
+      end
       sfml_dialogue(dialogue)
       self.data.explained_dagger = false
     else
