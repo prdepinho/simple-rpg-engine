@@ -480,6 +480,21 @@ void Inventory::create() {
 				GameScreen *game_screen = dynamic_cast<GameScreen*>(get_screen());
 				auto position = game_screen->character_position(*character);
 
+				CharacterMenu &menu = CharacterMenu::get();
+				if (menu.is_loot_mode()) {
+					if (b->get_item().get_code() != "") {
+						_game.get_lua()->drop_item(b->get_item().get_code(), character->get_name(), position.x, position.y);
+						menu.display_info(Item());
+						CharacterMenu::refresh_stats();
+						if (menu.is_loot_mode()) {
+							menu.get_loot().set_items(menu.get_loot_tile_x(), menu.get_loot_tile_y());
+							menu.update_loot_buttons();
+						}
+						return true;
+					}
+					return false;
+				}
+
 				Log("Item index: %d", cursor);
 
 				switch (state) {

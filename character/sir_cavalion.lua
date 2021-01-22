@@ -126,9 +126,75 @@ function SirCavalion:on_interact(interactor_name)
       end
     }
 
-    if self.control.characters.player.data.stats.ability.cha >= 13 then
+    if self.control.data.dragon_dead then
+      local index = self.control:find_in_inventory_by_name('player', 'dragon_scale')
+      table.insert(dialogue.start.options, { text = "The dragon is dead.", go_to = 'dead_dragon' })
+      dialogue.dead_dragon = {
+        text = "What? But how?",
+        options = {
+          { text = "I killed it.", go_to = 'i_did_it' },
+          { text = "It killed itself.", go_to = 'dragon_did_it' },
+        },
+        callback = function()
+          sfml_stop_music()
+        end
+      }
+      dialogue.i_did_it = {
+        text = function()
+          if index then
+            return "You killed it? And you even have its scales!"
+          else
+            return "You killed it? I don't believe it! I have to see it for myself."
+          end
+        end,
+        go_to = function()
+          if index then
+            return 'showed_scales'
+          else
+            return 'dialogue_end'
+          end
+        end
+      }
+      dialogue.showed_scales = {
+        text = "This is fascinating that such a small cat girl would be able to accomplish this.",
+        go_to = 'dialogue_end'
+      }
+      dialogue.dragon_did_it = {
+        text = "The dragon killed itself? Is it even possible?",
+        options = {
+          { text = "It is apparently.", go_to = 'diaogue_end' },
+          { text = "It breathed a fireball right onto itself.", go_to = 'suicide_by_fire' },
+        }
+      }
+      dialogue.suicide_by_fire = {
+        text = "It did? It must have been a young stupid dragon to do that.",
+        go_to = 'dialogue_end'
+      }
+      dialogue.dialogue_end = {
+        text = "So... That means that I have no place here anymore.",
+        options = {
+          { text = "Good luck to you.", go_to = 'bye' },
+          { text = "What are you going to do now?", go_to = 'what' },
+        }
+      }
+      dialogue.bye = {
+        text = "Good bye.",
+        go_to = 'end'
+      }
+      dialogue.what = {
+        text = "I don't know. I will wander and keep searching. Good bye.",
+        go_to = 'end'
+      }
+      dialogue.on_end = function()
+        self.control:remove_companion('sir_cavalion')
+        sfml_remove_character('sir_cavalion')
+        self.control.data.sir_cavalion_left = true
+      end
+    end
+
+    if self.control.characters.player.data.stats.ability.str >= 13 then
       dialogue.adventurer = {
-        text = "(Cha 15) You look a capable, well traveled person.",
+        text = "(Str 13) Hmmm... You look a capable person, experienced with a weapon.",
         go_to = 'question'
       }
     else

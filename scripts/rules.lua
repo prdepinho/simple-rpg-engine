@@ -158,6 +158,7 @@ rules.item = {
   silver_key        = { name = "Silver Key",      icon = {x = 16*2, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Moon shaped silver key." },
   copper_key        = { name = "Copper Key",      icon = {x = 16*3, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Copper key with the symbol of Jupiter." },
   knight_key        = { name = "Knight Key",      icon = {x = 16*0, y = 16*9},   stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Keys took from the knight in Come Inn to access the room he is in." },
+  dragon_scales     = { name = "Dragon Scales",   icon = {x = 16*9, y = 16*12},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "The scales from a dragon." },
 
   elf_dust          = { name = "Elf Dust",        icon = {x = 16*6, y = 16*10},  stack_capacity = 5,     range_radius = 1, effect_radius = 0, usable = true,  use = "elf_dust",   desc = "Elf dust. It may be consumed, but would you?" },
   skull             = { name = "Bones",           icon = {x = 16*12, y = 16*10},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Bones from an unknown creature." },

@@ -34,6 +34,9 @@ end
 function DragonLair:cave_exit_steps(event, x, y, character_name, object_name)
   if character_name == 'player' and event == 'step_on' then
     if self.control.data.dragon_dead and self.control:is_companion('sir_cavalion') then
+      if sfml_get_current_music() ~= "handel.wav" then
+        sfml_loop_music("handel.wav")
+      end
       local dialogue = {
         start = {
           text = "It is done. Thank you, Mumu.",
@@ -47,7 +50,7 @@ function DragonLair:cave_exit_steps(event, x, y, character_name, object_name)
           go_to = 'end',
         },
         what = {
-          text = "I will go back to the continent. Travel and keep searching. Good bye.",
+          text = "I will go back to the continent. I have no country anymore, so I will travel. I will look for ways to serve Iltormyr as long as I live. Good bye.",
           go_to = 'end',
         },
         on_end = function()

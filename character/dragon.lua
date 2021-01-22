@@ -34,8 +34,13 @@ function Dragon:create()
   })
   rules.level_up(stats)
   rules.level_up(stats)
+  rules.level_up(stats)
 
   stats.armor = { code = self.name .. "_armor", name = "dragon_scales", type = "armor" }
+  stats.inventory[1] = { code = "dragon_hoard_1", name = "money", type = "item", quantity = 20}
+  stats.inventory[2] = { code = "dragon_hoard_2", name = "money", type = "item", quantity = 20}
+  stats.inventory[3] = { code = "dragon_hoard_3", name = "money", type = "item", quantity = 7}
+  stats.inventory[4] = { code = "dragon_scales", name = "dragon_scales", type = "item"}
 end
 
 function Dragon:on_enter()
@@ -53,6 +58,10 @@ function Dragon:enemy_procedure()
     else
       self:attack(target)
     end
+  end
+
+  if not self.breath_attack then
+    self.breath_attack = rules.roll_dice('d6') == 1
   end
 end
 
