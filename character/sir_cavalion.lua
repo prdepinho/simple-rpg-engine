@@ -129,6 +129,18 @@ function SirCavalion:on_interact(interactor_name)
     if self.control.data.dragon_dead then
       local index = self.control:find_in_inventory_by_name('player', 'dragon_scale')
       table.insert(dialogue.start.options, { text = "The dragon is dead.", go_to = 'dead_dragon' })
+
+      dialogue.invite.options = {
+        { text = "The dragon is dead.", go_to = 'dead_dragon' },
+        { text = "I would rather not.", go_to = 'no' },
+      }
+      dialogue.question.options = {
+        { text = "Where are you from?", go_to = 'story' },
+        { text = "The dragon is dead.", go_to = 'dead_dragon' },
+        { text = "Good talking to you.", go_to = 'end' },
+      }
+
+
       dialogue.dead_dragon = {
         text = "What? But how?",
         options = {
@@ -179,17 +191,21 @@ function SirCavalion:on_interact(interactor_name)
       }
       dialogue.bye = {
         text = "Good bye.",
-        go_to = 'end'
+        go_to = 'leaves'
       }
       dialogue.what = {
         text = "I don't know. I will wander and keep searching. Good bye.",
-        go_to = 'end'
+        go_to = 'leaves'
       }
-      dialogue.on_end = function()
-        self.control:remove_companion('sir_cavalion')
-        sfml_remove_character('sir_cavalion')
-        self.control.data.sir_cavalion_left = true
-      end
+      dialogue.leaves = {
+        text = "(Sir Cavalion leaves.)",
+        go_to = 'end',
+        callback = function()
+          self.control:remove_companion('sir_cavalion')
+          sfml_remove_character('sir_cavalion')
+          self.control.data.sir_cavalion_left = true
+        end
+      }
     end
 
     if self.control.characters.player.data.stats.ability.str >= 13 then
@@ -250,6 +266,13 @@ function SirCavalion:on_interact(interactor_name)
       text = "Good talking to you.",
       go_to = 'end'
     }
+
+    if self.control.data.dragon_dead then
+      dialogue.start.options = {
+        { text = "Bye.", go_to = 'end' },
+        { text = "The dragon is dead.", go_to = 'dead_dragon' }
+      }
+    end
   end
 
   sfml_dialogue(dialogue)

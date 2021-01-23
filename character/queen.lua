@@ -46,6 +46,10 @@ function Queen:on_interact(interactor_name)
   sfml_dialogue(dialogue)
 end
 
+function Queen:on_death()
+  Character.on_death(self)
+  self.control.data.queen_dead = true
+end
 
 
 return Queen

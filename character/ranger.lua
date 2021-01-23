@@ -67,9 +67,17 @@ function Ranger:on_interact(interactor_name)
     text = "Beware, traveller, there is a witch in these woods.",
     options = {
       { text = "I'll keep that in mind.", go_to = 'end' },
-      { text = "I would like to buy something.", go_to = 'buy' },
+      { text = "I would like to buy something.", go_to = 'buy' }
     }
   }
+
+  if not self.control.data.witch_of_the_woods_dead then
+    table.insert(dialogue.start.options, { text = "What can you tell me about that witch?", go_to = 'witch' })
+    dialogue.witch = {
+      text = "She has been in these woods for decades. People from the city come here to consult her, but I always warn them to stay away.",
+      go_to = 'end'
+    }
+  end
 
   if self.control.data.witch_of_the_woods_dead and not self.control.data.informed_witch_died then
     table.insert(dialogue.start.options, { text = "I killed the witch.", go_to = 'killed' })

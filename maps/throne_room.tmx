@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="6">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="8">
  <properties>
   <property name="for_of_war" type="bool" value="false"/>
   <property name="music" value=""/>
@@ -79,20 +79,6 @@
  </layer>
  <layer id="6" name="obstacle" width="10" height="10">
   <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0
-</data>
- </layer>
- <layer id="7" name="invisible" width="10" height="10">
-  <data encoding="csv">
 2,2,2,2,2,2,2,2,2,2,
 2,2,2,2,2,2,2,2,2,2,
 2,2,2,2,2,2,2,2,2,2,
@@ -103,6 +89,20 @@
 2,2,2,2,0,0,2,2,2,2,
 2,2,2,2,2,2,2,2,2,2,
 2,2,2,2,2,2,2,2,2,2
+</data>
+ </layer>
+ <layer id="7" name="invisible" width="10" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <objectgroup id="8" name="objects">
@@ -123,15 +123,15 @@
    </properties>
    <point/>
   </object>
-  <object id="4" name="castle_guard1" x="39.3333" y="71.3333">
+  <object id="5" name="castle_guard2" x="120.667" y="71.3333">
    <properties>
     <property name="type" value="castle_guard"/>
    </properties>
    <point/>
   </object>
-  <object id="5" name="castle_guard2" x="120.667" y="71.3333">
+  <object id="7" name="female_knight" x="39" y="77">
    <properties>
-    <property name="type" value="castle_guard"/>
+    <property name="type" value="female_knight"/>
    </properties>
    <point/>
   </object>

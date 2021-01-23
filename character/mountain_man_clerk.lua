@@ -90,7 +90,7 @@ function MountainManClerk:on_interact(interactor_name)
   end
 
 
-  if not self.control.data.presented_sir_cavalion then
+  if not self.control.data.presented_sir_cavalion and not self.control.data.dragon_dead then
     table.insert(dialogue.start.options, { text = "Who is that old knight?", go_to = 'who' })
     dialogue.who = {
       text = "That is Sir Cavalion. He came from overseas and kept asking around question about the dragon. We told him he was crazy but he insisted. I have seen people with that look in his face. \"I am going to kill the dragon!\" He says. If he is earnest, then he lost the will to live a long time ago.",
