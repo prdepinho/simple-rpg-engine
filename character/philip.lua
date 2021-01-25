@@ -42,7 +42,7 @@ end
 function Philip:on_interact(interactor_name)
   local dialogue = {
     start = {
-      text = "Hello, I'm Philip. I take care of the animals.",
+      text = "Hello, I'm Philip. I am feeding the animals right now.",
       options = {
         { text = "Good talking to you.", go_to = 'end' },
       }
@@ -77,56 +77,76 @@ function Philip:on_interact(interactor_name)
           { text = "I understand.", go_to = 'end' },
         }
       }
-      if self.control.characters.player.data.stats.ability.int >= 13 then
-        table.insert(dialogue.visit.options, { text = "(Int 13) How to you know if they didn't even think of it?", go_to = 'confront' })
-        dialogue.confront = {
-          text = "What!? No! You don't understand! Leave me alone!",
-          go_to = 'end',
-          callback = function() 
-            self.data.enemy = true
-          end
-        }
-      end
 
-      if self.control.characters.player.data.stats.ability.cha >= 15 then
-        table.insert(dialogue.visit.options, { text = "(Cha 15) Please, you must help me find them.", go_to = 'help' })
-        dialogue.help = {
-          text = "Alright, alright! I'll tell you everything. Princess Medea wanted to see the witch. She convinced prince Jason to go there and I took them there. They went into the hut and something happened. I don't know what, but prince Jason came changed. Spoke little and seemed worried. I tried talking to him, but every time I approached him princess Medea stood between us and looked at me like a snake would a prey.",
-          options = {
-            { text = "I see. Thank you.", go_to = 'end' },
-            { text = "We have to do and confront the witch.", go_to = 'confront_witch' },
-            { text = "You are dead for betraying your master!", go_to = 'dead' },
-          }
+      if self.control.data.witch_of_the_woods_dead then
+        table.insert(dialogue.visit.options, { text = "The witch is dead.", go_to = 'witch_dead' })
+        dialogue.witch_dead = {
+          text = "Really? Now all is lost! Alas poor prince Jason! It is all my fault!",
+          go_to = 'philip_leave'
         }
-        dialogue.confront_witch = {
-          text = "Yes, we should! Wait. What do you mean by we?",
-          options = {
-            { text = "You are coming with me!", go_to = 'with_me' },
-            { text = "Stay then, with your tail between your legs.", go_to = 'stay' },
-          }
-        }
-        dialogue.with_me = {
-          text = "Ok. I'll go. The witch's hut is north west of the city.",
+        dialogue.philip_leave = {
+          text = "(Philip leaves)",
           go_to = 'end',
           callback = function()
-            self.data.ally = true
-            self.control:set_companion(self.name)
+            self.control.data.philip_ran_away = true
+            sfml_remove_character(self.name)
           end
         }
-        dialogue.stay = {
-          text = "The witch's hut is north west of the city. Good luck!",
-          go_to = 'end'
-        }
-        dialogue.dead = {
-          text = "No! Please, have mercy!",
-          go_to = 'end',
-          callback = function() 
-            self.control:set_status(self.name, "fear", 20, rules.roll_dice('3d6'))
-            self.data.feared_character = 'player'
-            self.control.data.philip_fearful = true
-          end
-        }
-      end
+
+      else -- witch_of_the_woods_dead 
+        if self.control.characters.player.data.stats.ability.int >= 13 then
+          table.insert(dialogue.visit.options, { text = "(Int 13) How to you know if they didn't even think of it?", go_to = 'confront' })
+          dialogue.confront = {
+            text = "What!? No! You don't understand! Leave me alone!",
+            go_to = 'end',
+            callback = function() 
+              self.data.enemy = true
+            end
+          }
+        end
+
+        if self.control.characters.player.data.stats.ability.cha >= 15 then
+          table.insert(dialogue.visit.options, { text = "(Cha 15) Please, you must help me find them.", go_to = 'help' })
+          dialogue.help = {
+            text = "Alright, alright! I'll tell you everything. Princess Medea wanted to see the witch. She convinced prince Jason to go there and I took them there. They went into the hut and something happened. I don't know what, but prince Jason came changed. Spoke little and seemed worried. I tried talking to him, but every time I approached him princess Medea stood between us and looked at me like a snake would a prey.",
+            options = {
+              { text = "I see. Thank you.", go_to = 'end' },
+              { text = "We have to do and confront the witch.", go_to = 'confront_witch' },
+              { text = "You are dead for betraying your master!", go_to = 'dead' },
+            }
+          }
+
+          dialogue.confront_witch = {
+            text = "Yes, we should! Wait. What do you mean by we?",
+            options = {
+              { text = "You are coming with me!", go_to = 'with_me' },
+              { text = "Stay then, with your tail between your legs.", go_to = 'stay' },
+            }
+          }
+          dialogue.with_me = {
+            text = "Ok. I'll go. The witch's hut is north west of the city.",
+            go_to = 'end',
+            callback = function()
+              self.data.ally = true
+              self.control:set_companion(self.name)
+            end
+          }
+          dialogue.stay = {
+            text = "The witch's hut is north west of the city. Good luck!",
+            go_to = 'end'
+          }
+          dialogue.dead = {
+            text = "No! Please, have mercy!",
+            go_to = 'end',
+            callback = function() 
+              self.control:set_status(self.name, "fear", 20, rules.roll_dice('3d6'))
+              self.data.feared_character = 'player'
+              self.control.data.philip_fearful = true
+            end
+          }
+        end
+      end -- witch_of_the_woods_dead (else)
+
 
     end
   end

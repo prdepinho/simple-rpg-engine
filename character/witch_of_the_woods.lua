@@ -74,23 +74,25 @@ end
 function WitchOfTheWoods:on_interact(interactor_name)
   local shop = {}
 
+  local quantity = math.max(rules.arcane_spell_bonus(self.control.characters.player.data.stats) + 1, 1)
+
   if self.control.data.learned_magic_missile then
-    shop.magic_missile = { price = 5, name = 'magic_missile', type = 'spell', quantity = 3 }
+    shop.magic_missile = { price = 5, name = 'magic_missile', type = 'spell', quantity = quantity }
   end
   if self.control.data.learned_fireball then
-    shop.fireball = { price = 5, name = 'fireball', type = 'spell', quantity = 3 }
+    shop.fireball = { price = 5, name = 'fireball', type = 'spell', quantity = quantity }
   end
   if self.control.data.learned_poison then
-    shop.poison = { price = 5, name = 'poison', type = 'spell', quantity = 3 }
+    shop.poison = { price = 5, name = 'poison', type = 'spell', quantity = quantity }
   end
   if self.control.data.learned_invisibility then
-    shop.invisibility = { price = 5, name = 'invisibility', type = 'spell', quantity = 3 }
+    shop.invisibility = { price = 5, name = 'invisibility', type = 'spell', quantity = quantity }
   end
   if self.control.data.learned_fear then
-    shop.fear = { price = 5, name = 'fear', type = 'spell', quantity = 3 }
+    shop.fear = { price = 5, name = 'fear', type = 'spell', quantity = quantity }
   end
   if self.control.data.learned_armor then
-    shop.armor = { price = 5, name = 'armor', type = 'spell', quantity = 3 }
+    shop.armor = { price = 5, name = 'armor', type = 'spell', quantity = quantity }
   end
 
 
@@ -106,7 +108,7 @@ function WitchOfTheWoods:on_interact(interactor_name)
   end
 
   dialogue.intro = {
-    text = "Well, slave, what do you have in mind?",
+    text = "Speak, slave. What do you have in mind?",
     options = {
       { text = "Nothing, ma'am.", go_to = 'end' },
       { text = "I would like to buy spells.", go_to = 'buy' },
@@ -121,6 +123,9 @@ function WitchOfTheWoods:on_interact(interactor_name)
       self.data.enemy = true
     end
   }
+
+
+  -- interactions when first met
 
   dialogue.start = {
     text = "Yes, my child. How can I help you?",
@@ -225,6 +230,8 @@ function WitchOfTheWoods:on_interact(interactor_name)
   }
 
 
+  -- interactions when relations went south
+
   if self.control.data.witch_refused_tutelage then
     dialogue.start = {
       text = "Go away! You'll bring fleas to my house!",
@@ -243,6 +250,10 @@ function WitchOfTheWoods:on_interact(interactor_name)
         self.data.enemy = true
       end
     }
+
+
+  -- interactions when apprentice
+
   elseif self.control.data.witch_apprentice then
     if self.control.data.witch_elf_dust_quest then
       dialogue.start = {
@@ -288,6 +299,12 @@ function WitchOfTheWoods:on_interact(interactor_name)
       dialogue.start = dialogue.intro
     end
   end
+
+
+
+  -- interactions when acompanied by other characters
+
+
 
 
   sfml_dialogue(dialogue)

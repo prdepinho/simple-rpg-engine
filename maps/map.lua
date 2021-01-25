@@ -260,7 +260,8 @@ function Map:set_objects()
                 callback = function()
                   -- self.control:inventory_stack_pop(index, 'player', 1)
                   self.control:remove_item_from_inventory(index, 'player')
-                  self.control:add_item_to_inventory('player', self.control:next_item_code('boon'), object.properties.boon, 'spell', 3)
+                  local quantity = math.max(rules.divine_spell_bonus(self.control.characters.player.data.stats) + 1, 1)
+                  self.control:add_item_to_inventory('player', self.control:next_item_code('boon'), object.properties.boon, 'spell', quantity)
                   if not self.control.data[object.properties.code] then
                     self.control.data[object.properties.code] = true
                     self.control.data.idols_visited = self.control.data.idols_visited or 0

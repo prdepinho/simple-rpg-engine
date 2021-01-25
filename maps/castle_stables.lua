@@ -17,6 +17,10 @@ end
 
 function CastleStables:enter()
   Map.enter(self)
+
+  if self.control.data.philip_ran_away then
+    sfml_remove_character("philip")
+  end
 end
 
 function CastleStables:exit()

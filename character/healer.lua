@@ -33,17 +33,20 @@ function Healer:on_interact(interactor_name)
       text = "Then get this gift of healing. Use it to recover from your wounds.",
       go_to = 'end',
       callback = function()
-        self.control:add_item_to_inventory('player', self.control:next_item_code(), 'cure_wounds', 'spell', 3)
+        
+        local quantity = math.max(rules.divine_spell_bonus(self.control.characters.player.data.stats) + 1, 3)
+        self.control:add_item_to_inventory('player', self.control:next_item_code(), 'cure_wounds', 'spell', quantity)
         self.control.data.healer_gave_healing = true
       end
     }
   }
 
   if self.control.data.healer_gave_healing then
+    local quantity = math.max(rules.divine_spell_bonus(self.control.characters.player.data.stats) + 1, 1)
     local shop = {
-      cure_wounds = { price = 3, name = 'cure_wounds', type = 'spell', quantity = 3 },
+      cure_wounds = { price = 3, name = 'cure_wounds', type = 'spell', quantity = quantity },
     }
-    dialogue = self.control:shop_dialogue(shop, self.name, "", "You need to pay a simbolic contribution for further healing, to keep the business going.")
+    dialogue = self.control:shop_dialogue(shop, self.name, "", "You need to pay a symbolic contribution for further healing, to keep the business going.")
     dialogue.start = {
       text = "How can I help you, sister?",
       options = {

@@ -113,6 +113,7 @@ function Ranger:on_interact(interactor_name)
     }
   end
 
+
   sfml_dialogue(dialogue)
 end
 

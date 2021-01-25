@@ -111,7 +111,7 @@ function FemaleKnight:on_interact(interactor_name)
       end
     }
     if self.control.data.know_of_elopement then
-      table.insert(dialogue.start.options, { text = "(Int 13) Did something strange happen before?", go_to = 'investigate' })
+      table.insert(dialogue.start.options, { text = "(Int 13) Did something happen before the princes disappear?", go_to = 'investigate' })
     end
   end
 
