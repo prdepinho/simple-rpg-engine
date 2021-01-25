@@ -315,7 +315,7 @@
     <property name="type" value="door"/>
    </properties>
   </object>
-  <object id="10" name="stables_door" x="353.848" y="305.528" width="12" height="12.7614">
+  <object id="10" name="stables_door" x="354.723" y="305.153" width="12" height="12.7614">
    <properties>
     <property name="destiny" value="castle_stables:entrance"/>
     <property name="key" value=""/>

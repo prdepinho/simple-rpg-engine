@@ -318,6 +318,14 @@ animations.types = {
     },
     animations = basic_animation
   },
+  pig_man_mini = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 14,
+      y = 16 * 19
+    },
+    animations = mini_animation
+  },
   santa = {
     basic = defaults,
     coordinates = {
@@ -389,6 +397,14 @@ animations.types = {
       y = 16 * 27
     },
     animations = basic_animation
+  },
+  knight_female_mini = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 14,
+      y = 16 * 27
+    },
+    animations = mini_animation
   },
   ghost_girl = {
     basic = defaults,
@@ -500,6 +516,38 @@ animations.types = {
       y = 16 * 12
     },
     animations = basic_animation
+  },
+  page = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 16,
+      y = 16 * 13
+    },
+    animations = basic_animation
+  },
+  page_mini = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 30,
+      y = 16 * 13
+    },
+    animations = mini_animation
+  },
+  medea = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 16,
+      y = 16 * 14
+    },
+    animations = basic_animation
+  },
+  medea_mini = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 30,
+      y = 16 * 14
+    },
+    animations = mini_animation
   },
 }
 

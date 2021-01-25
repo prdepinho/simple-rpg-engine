@@ -13,6 +13,7 @@ local start_game_map = 'temple'
 -- local start_game_map = 'thieves_guild'
 
 local Control = {
+  spawning_map = {},
 
   player_map = start_game_map,
   player_position = nil,
@@ -57,6 +58,29 @@ function Control:next_item_code(str)
   end
 end
 
+-- this function changes the map in which the character will spawn to the current map (it will not appear in its original map anymore)
+function Control:character_change_spawning_map(character_name)
+  self.spawning_map[self.current_map] = self.spawning_map[self.current_map] or {}
+  self.spawning_map[self.current_map][character_name] = true
+
+  local coords = sfml_get_character_position(character_name)
+  local character = self.characters[character_name]
+  
+  character.data.spawning_map = {
+    map = self.current_map,
+    name = character.name,
+    type = character.type,
+    x = coords.x,
+    y = coords.y
+  }
+end
+
+-- character will spawn in its original map
+function Control:character_remove_spawning_map(character_name)
+  self.spawning_map[self.current_map][character_name] = nil
+  self.loaded_character_data[character_name].spawning_map = nil
+end
+
 
 function Control:set_companion(name)
   self.companions[name] = self.characters[name]
@@ -67,9 +91,9 @@ function Control:remove_companion(name)
 end
 
 function Control:is_companion(name)
+  -- return self.companions[name] ~= nil and not self.companions[name].data.stats.status.dead
   return self.companions[name] ~= nil
 end
-
 
 function Control:get_allies()
   local allies = {}
@@ -935,6 +959,7 @@ function Control:find_in_inventory_by_name(character_name, name)
 end
 
 function Control:reset_data()
+  spawning_map = {}
   self.player_map = start_game_map
   self.player_position = nil
   self.characters = {}
@@ -1005,6 +1030,8 @@ function Control:save_game(filename, title)
 
   data.data = self.data
 
+  data.spawning_map = self.spawning_map
+
   data.player_position = {
     map = self.current_map,
     coords = sfml_get_player_position()
@@ -1025,6 +1052,8 @@ function Control:load_game(filename)
 
   self.player_position = module.data.player_position.coords
   self.player_map = module.data.player_position.map
+
+  self.spawning_map = module.data.spawning_map
 
   self.log_visibility = module.data.log_visible
   self.show_log = true
@@ -1303,6 +1332,7 @@ function Control:map_enter()
     sfml_add_item(code, item.name, item.type, item.quantity or 0, item.x, item.y)
   end
 
+  -- put characters on the same place where they were when you left the map
   for index, name in ipairs(sfml_get_characters_on_map()) do
     print('character on map: ' .. name)
     if name ~= 'player' then
@@ -1315,6 +1345,29 @@ function Control:map_enter()
     end
   end
 
+
+  -- check if some character should not spawn here
+  for index, name in ipairs(sfml_get_characters_on_map()) do
+    local character = self.characters[name]
+    if character.data.spawning_map then
+      print('--------- spawning map remove: ' .. name)
+      sfml_remove_character(name)
+    end
+  end
+
+  -- check if some aditional character should spawn here
+  if self.spawning_map[self.current_map] then
+    for name, should in pairs(self.spawning_map[self.current_map]) do
+      if should then
+        print('---------- spawning map add: ' .. name)
+        local sdata = self.loaded_character_data[name].spawning_map
+        self:insert_character(sdata.name, sdata.type, sdata.x, sdata.y)
+      end
+    end
+  end
+
+
+  -- insert companion characters
   for name, character in pairs(self.companions) do
     local pos = sfml_get_character_position('player')
     sfml_remove_character(character.name)

@@ -159,6 +159,10 @@ function Character:on_attacked(attacker_name)
 end
 
 function Character:on_death()
+  if self.control:is_companion(self.name) then
+    self.control:remove_companion(self.name)
+    self.control:character_change_spawning_map(self.name)
+  end
 end
 
 -- walk here and there.

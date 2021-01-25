@@ -17,6 +17,7 @@ end
 
 function FemaleKnight:create()
   Character.create(self)
+  self:set_mini_skin('knight_female_mini')
   self:set_skin("knight_female")
 
   local stats = self.data.stats
@@ -78,12 +79,64 @@ function FemaleKnight:on_interact(interactor_name)
       go_to = 'end'
     }
   }
+
+  if self.control.characters.player.data.stats.ability.int >= 13 then
+    table.insert(dialogue.found.options, { text = "(Int 13) Did something strange happen before?", go_to = 'investigate' })
+    dialogue.investigate = {
+      text = "Nothing that I can think of. Well, now that you mentioned, I do remember that the day before the disappeareance the princess went out riding with the princes and their retinue.",
+      options = {
+        { text = "Thank you.", go_to = 'end' },
+        { text = "Is anyone left in the castle?", go_to = 'left' },
+        { text = "Where did they go?", go_to = 'where' },
+      }
+    }
+    dialogue.left = {
+      text = "Yes. Philip stayed in the castle, prince Jason's squire. He is usually in the stables.",
+      options = {
+        { text = "Thank you.", go_to = 'end' },
+        { text = "Where did they go?", go_to = 'where' },
+      },
+      callback = function()
+        self.control.data.lead_to_philip = true
+      end
+    }
+    dialogue.where = {
+      text = "I think they went to the woods close to town. Maybe something happened there?",
+      options = {
+        { text = "Thank you.", go_to = 'end' },
+        { text = "Is anyone left in the castle?", go_to = 'left' },
+      },
+      callback = function()
+        self.control.data.lead_to_forest = true
+      end
+    }
+    if self.control.data.know_of_elopement then
+      table.insert(dialogue.start.options, { text = "(Int 13) Did something strange happen before?", go_to = 'investigate' })
+    end
+  end
+
   if self.control.data.disrespected_nestoria then
     dialogue.start = {
       text = "You should get back to business.",
       go_to = 'end'
     }
   end
+
+  if self.control:is_companion("philip") then
+    dialogue.start = {
+      text = "(Philip approaches lady Nestoria and says) Lady Nestoria, we are going to the witch of the woods. I know she is involved in the disappearance of the princes and I am partially to blame for that. Please, come with us and let's put an end to this.",
+      go_to = 'nestoria_response'
+    }
+    dialogue.nestoria_response = {
+      text = "(Lady Nestoria responds) If what you are saying is true you will face consequence for your actions, Philip. But not now. First let's go and talk to this witch.",
+      go_to = 'end',
+      callback = function()
+        self.data.ally = true
+        self.control:set_companion(self.name)
+      end
+    }
+  end
+
   sfml_dialogue(dialogue)
 end
 

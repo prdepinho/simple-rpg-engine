@@ -16,6 +16,7 @@ end
 
 function PigMan:create()
   Character.create(self)
+  self:set_mini_skin('pig_man_mini')
   self:set_skin("pig_man")
   self.data.enemy = false
   local stats = self.data.stats

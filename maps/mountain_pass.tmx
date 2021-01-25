@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="15">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="16">
  <properties>
   <property name="for_of_war" type="bool" value="true"/>
   <property name="music" value=""/>
@@ -326,5 +326,15 @@
   </object>
   <object id="12" name="cave_entrance_steps" x="369.818" y="65.4545" width="28.9091" height="12.9091"/>
   <object id="13" name="shrine_entrance_steps" x="17.1818" y="258" width="12.6364" height="10.9091"/>
+  <object id="15" name="hut" x="49.9877" y="145.789" width="11.5246" height="12.9224">
+   <properties>
+    <property name="destiny" value="mountain_hut:door"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="open_delta_x" type="int" value="2"/>
+    <property name="open_delta_y" type="int" value="0"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>
