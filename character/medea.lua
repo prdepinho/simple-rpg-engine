@@ -21,6 +21,10 @@ function Medea:create()
   self:set_skin("medea")
   self.data.enemy = false
   self.data.stats.name = "Medea"
+
+  self.data.stats.inventory[1] = { code = self.name .. "_sword", name = "falcion", type = "weapon" }
+  stats.weapon = stats.inventory[1]
+
   self.magic_missiles = 5
 end
 
@@ -29,19 +33,22 @@ function Medea:on_enter()
   if self.magic_missiles < 5 then
     self.magic_missiles = self.magic_missiles + 1
   end
+  if self.control.data.witch_head_quest then
+    self.data.stats.inventory[8] = { code = "medeas_head", name = "medeas_head", type = "item" }
+  end
 end
 
 function Medea:on_interact(interactor_name)
   local dialogue = {
     start = {
-      text = "",
+      text = "You should not be here.",
       go_to = 'end'
     }
   }
   sfml_dialogue(dialogue)
 end
 
-function Witch:ally_procedure()
+function Medea:ally_procedure()
   local target = self.control:closest_enemy_on_sight(self.name)
   if target then
     if not self.has_cast_armor then
@@ -58,5 +65,9 @@ function Witch:ally_procedure()
   end
 end
 
+function Medea:on_death()
+  Witch.on_death(self)
+  self.control.data.medea_dead = true
+end
 
 return Medea

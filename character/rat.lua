@@ -26,7 +26,7 @@ function Rat:create()
 
   rules.set_ability_scores_map(stats, {
     str = 8,
-    dex = 14,
+    dex = 15,
     con = 13,
     int = 8,
     wis = 13,

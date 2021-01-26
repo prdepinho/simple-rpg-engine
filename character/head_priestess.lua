@@ -210,9 +210,49 @@ function HeadPriestess:on_interact(interactor_name)
         go_to = 'monsters'
       }
 
+
+      if self.control.sacrifice_quest and not self.control.data.head_priestess_permission then
+        table.insert(dialogue.start.options, { text = "Let me take one of my sisters with me.", go_to = 'ask' })
+        dialogue.ask = {
+          text = "Your quest is to be achieved by yourself, Mumu.",
+          options = {
+            { text = "Yes, reverend mother.", go_to = 'end' },
+          }
+        }
+        if self.control.characters.player.data.stats.ability.cha >= 15 then
+          table.insert(dialogue.ask.options, { text = "I need assistance to help people.", go_to = 'help_people' })
+          dialogue.help_people = {
+            text = "You have suach a good heart, Mumu. Of cource I'll let you take a sister with you to help other people.",
+            go_to = 'end',
+            callback = function()
+              self.control.data.head_priestess_permission = true
+            end
+          }
+        end
+
+        if self.control.characters.player.data.stats.ability.cha >= 18 then
+          table.insert(dialogue.ask.options, { text = "It's an important business that requires you, revenrend mother.", go_to = 'important' })
+          dialogue.important = {
+            text = "If it is as important as you say it, then I will go with you.",
+            go_to = 'end',
+            callback = function()
+              self.data.ally = true
+              self.control:set_companion(self.name)
+              self.control.data.sister_companion = self.name
+              self.control.data.reverend_mother_companion = true
+            end
+          }
+        end
+      end
+
       sfml_dialogue(dialogue)
     end
   end
+end
+
+function HeadPriestess:on_death()
+  Priestess.on_death(self)
+  self.control.data.head_priestess_dead = true
 end
 
 return HeadPriestess

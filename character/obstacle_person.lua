@@ -58,6 +58,7 @@ function ObstaclePerson:on_interact(interactor_name)
     }
   end
 
+  self:add_invitation_procedure(dialogue)
 
   sfml_dialogue(dialogue)
 end
