@@ -16,6 +16,7 @@ end
 
 function Quartermaster:create()
   Priestess.create(self)
+  self:set_mini_skin('cleric_blonde_mini')
   self:set_skin("cleric_blonde")
 
   self.data.stats.inventory[1] = {code = 'temple_chest_key', name = "temple_chest_key", type = 'item'}

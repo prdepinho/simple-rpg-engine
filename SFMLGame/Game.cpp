@@ -362,7 +362,8 @@ public:
 		int x = (int) lua_tointeger(state, -2);
 		int y = (int) lua_tointeger(state, -1);
 		Character *character = screen->get_character_by_name(name);
-		screen->schedule_character_movement(*character, x, y);
+		bool rval = screen->schedule_character_movement(*character, x, y);
+		lua_pushboolean(state, rval);
 		return 0;
 	}
 
@@ -372,7 +373,8 @@ public:
 		int x = (int) lua_tointeger(state, -2);
 		int y = (int) lua_tointeger(state, -1);
 		Character *character = screen->get_character_by_name(name);
-		screen->schedule_character_movement(*character, x, y, true);
+		bool rval = screen->schedule_character_movement(*character, x, y, true);
+		lua_pushboolean(state, rval);
 		return 0;
 	}
 

@@ -17,6 +17,10 @@ end
 
 function Temple:enter()
   Map.enter(self)
+  local has_sister = self.control.data.sister_companion == 'priestess'
+  if has_sister then
+    sfml_remove_character(self.control.data.sister_companion)
+  end
 end
 
 function Temple:exit()

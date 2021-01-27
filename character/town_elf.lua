@@ -37,7 +37,7 @@ function TownElf:on_interact(interactor_name)
   else
     local dialogue = {
       start = {
-        text = "What?",
+        text = "What is it that you want?",
         options = {
           {
             text = "Nothing.",
@@ -66,7 +66,7 @@ function TownElf:on_interact(interactor_name)
     if self.control.data.witch_elf_dust_quest and not self.control.data.got_dust_from_town_elf then
       table.insert(dialogue.start.options, { text = "Can I have some dust from your wings?", go_to = 'ask_for_dust' })
       dialogue.ask_for_dust = {
-        text = "What? Why?",
+        text = "You want what? But why?",
         options = {
           { text = "Never mind.", go_to = 'end' },
           { text = "I need it for a concoction.", go_to = 'need' },

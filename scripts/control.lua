@@ -84,9 +84,20 @@ end
 
 function Control:set_companion(name)
   self.companions[name] = self.characters[name]
+
+  local stats = self.companions[name].data.stats
+  local cha = self.characters.player.data.stats.ability.cha
+  rules.add_charisma_hit_points(stats, cha)
+
+  self.companions[name].data.ally = true
 end
 
 function Control:remove_companion(name)
+  self.companions[name].data.ally = false
+  local stats = self.companions[name].data.stats
+  local cha = self.characters.player.data.stats.ability.cha
+  rules.remove_charisma_hit_points(stats, cha)
+
   self.companions[name] = nil
 end
 
@@ -1023,6 +1034,8 @@ function Control:save_game(filename, title)
     self.characters[name].data.position = sfml_get_character_position(name)
   end
 
+  data.item_code = self.item_code
+
   data.log_visible = sfml_is_log_visible()
 
   data.character_data = self.loaded_character_data
@@ -1054,6 +1067,8 @@ function Control:load_game(filename)
   self.player_map = module.data.player_position.map
 
   self.spawning_map = module.data.spawning_map
+
+  self.item_code = module.data.item_code
 
   self.log_visibility = module.data.log_visible
   self.show_log = true

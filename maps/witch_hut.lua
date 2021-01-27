@@ -38,6 +38,64 @@ function WitchHut:trigger(event, x, y, character_name, object_name)
       self.hut_trigger = true
       sfml_play_sound('laughter.wav')
     end
+
+    if self.control:is_companion('medea') and self.control.data.witch_of_the_woods_dead and not self.control.medea_had_vengeance then
+      self.control.medea_had_vengeance = true
+      local dialogue = {
+        start = {
+          text = "Thank you, Mumu. We got rid a dangerous evil in Folia Gatas.",
+          go_to = 'end'
+        }
+      }
+      if self.control.data.witch_apprentice then
+        dialogue.start.go_to = 'next'
+        dialogue.next = {
+          text = "Please, Mumu. Promise me that you will not use these powers or teach them to others.",
+          options = {
+            { text = "I promise.", go_to = 'promise' },
+            { text = "No.", go_to = 'no' },
+          }
+        }
+        dialogue.promise = {
+          text = "Thank you, Mumu.",
+          go_to = 'end',
+          callback = function()
+            self.control.data.promised_to_medea = true
+          end
+        }
+        dialogue.no = {
+          text = function()
+            if self.control.characters.player.data.stats.ability.cha >= 13 then
+              return "(Cha 13) Mumu, I hope you know what you are doing."
+            else
+              return "But you must!"
+            end
+          end,
+          go_to = function()
+            if self.control.characters.player.data.stats.ability.cha >= 13 then
+              return 'end'
+            else
+              return 'but_you_must'
+            end
+          end
+        }
+        dialogue.but_you_must = {
+          text = "Please, Mumu.",
+          options = {
+            { text = "I promise.", go_to = 'promise' },
+            { text = "No.", go_to = 'insist' },
+          }
+        }
+        dialogue.insist = {
+          text = "I see.",
+          go_to = 'end',
+          callback = function()
+            self.control.data.refused_to_promise_to_medea = true
+          end
+        }
+      end
+      sfml_dialogue(dialogue)
+    end
   end
 end
 

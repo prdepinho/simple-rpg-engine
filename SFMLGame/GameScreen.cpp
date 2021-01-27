@@ -1483,7 +1483,7 @@ void GameScreen::schedule_character_wait(Character &character, int turns) {
 	}
 }
 
-void GameScreen::schedule_character_movement(Character &character, int tile_x, int tile_y, bool ignore_obstacle) {
+bool GameScreen::schedule_character_movement(Character &character, int tile_x, int tile_y, bool ignore_obstacle) {
 	sf::Vector2i start(character_position(character));
 	sf::Vector2i end(tile_x, tile_y);
 
@@ -1494,7 +1494,9 @@ void GameScreen::schedule_character_movement(Character &character, int tile_x, i
 		auto *action = new MoveAction(&character, direction, ignore_obstacle);
 		character.schedule_action(action);
 		path.pop();
+		return true;
 	}
+	return false;
 }
 
 void GameScreen::schedule_character_interaction(Character &character, int tile_x, int tile_y) {

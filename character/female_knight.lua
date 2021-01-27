@@ -128,13 +128,17 @@ function FemaleKnight:on_interact(interactor_name)
       go_to = 'nestoria_response'
     }
     dialogue.nestoria_response = {
-      text = "(Lady Nestoria responds) If what you are saying is true you will face consequence for your actions, Philip. But not now. First let's go and talk to this witch.",
-      go_to = 'end',
-      callback = function()
-        self.data.ally = true
-        self.control:set_companion(self.name)
-      end
+      text = "(Lady Nestoria responds) If what you are saying is true you will face consequence for your actions, Philip. But not now. First go and talk to this witch.",
+      go_to = 'end'
     }
+    -- dialogue.nestoria_response = {
+    --   text = "(Lady Nestoria responds) If what you are saying is true you will face consequence for your actions, Philip. But not now. First let's go and talk to this witch.",
+    --   go_to = 'end',
+    --   callback = function()
+    --     self.data.ally = true
+    --     self.control:set_companion(self.name)
+    --   end
+    -- }
   end
 
   sfml_dialogue(dialogue)

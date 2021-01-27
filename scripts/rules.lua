@@ -160,6 +160,7 @@ rules.item = {
   knight_key        = { name = "Knight Key",      icon = {x = 16*0, y = 16*9},   stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Keys took from the knight in Come Inn to access the room he is in." },
   dragon_scales     = { name = "Dragon Scales",   icon = {x = 16*9, y = 16*12},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "The scales from a dragon." },
   medeas_head       = { name = "Medea's Head",    icon = {x = 16*8, y = 16*12},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "The head of the witch Medea." },
+  sisters_body      = { name = "Sister's Body",   icon = {x = 16*7, y = 16*12},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Uncouncious body of sister Calisto." },
 
   elf_dust          = { name = "Elf Dust",        icon = {x = 16*6, y = 16*10},  stack_capacity = 10,     range_radius = 1, effect_radius = 0, usable = true,  use = "elf_dust",   desc = "Elf dust. It may be consumed, but would you?" },
   skull             = { name = "Bones",           icon = {x = 16*12, y = 16*10},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Bones from an unknown creature." },
@@ -320,6 +321,27 @@ function rules.set_max_hit_points(stats, total_hp)
 end
 
 
+-- bonus hitpoints to companions
+function rules.add_charisma_hit_points(stats, cha)
+  local hp_bonus = stats.level * rules.ability_modifier[cha]
+  stats.total_hp = stats.total_hp + hp_bonus
+  if stats.total_hp <= 0 then
+    stats.total_hp = 1
+    stats.current_hp = 1
+  else
+    stats.current_hp = stats.current_hp + hp_bonus
+  end
+end
+
+function rules.remove_charisma_hit_points(stats, cha)
+  local hp_bonus = stats.level * rules.ability_modifier[cha]
+  stats.total_hp = stats.total_hp - hp_bonus
+  if stats.current_hp > stats.total_hp then
+    stats.current_hp = stats.total_hp
+  end
+end
+
+
 -- ability modifiers
 rules.ability_modifier = {
   --  1,   2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
@@ -385,8 +407,8 @@ rules.ability_score_description = {
   end,
   cha = function(score)
     local desc = "Charisma is your personality and ability to interact with people. It influences many dialogue options and which companions you can have."
-    -- desc = desc .. "Wisdom " .. tostring(score) .. " gives you "
-    -- desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus to save vs charm."
+    desc = desc .. "Charisma " .. tostring(score) .. " gives your companions "
+    desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus hit points."
     return desc
   end,
 }

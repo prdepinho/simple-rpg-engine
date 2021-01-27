@@ -17,6 +17,14 @@ end
 
 function TrainingGrounds:enter()
   Map.enter(self)
+  local has_sister = self.control.data.sister_companion == 'quartermaster'
+    or self.control.data.sister_companion == 'rat_warden'
+    or self.control.data.sister_companion == 'archer_instructor'
+    or self.control.data.sister_companion == 'obstacle_person'
+    or self.control.data.sister_companion == 'rogue_nun'
+  if has_sister then
+    sfml_remove_character(self.control.data.sister_companion)
+  end
 end
 
 function TrainingGrounds:exit()

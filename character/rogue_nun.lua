@@ -16,6 +16,7 @@ end
 
 function RogueNun:create()
   Priestess.create(self)
+  self:set_mini_skin('cleric_cyan_mini')
   self:set_skin("cleric_cyan")
 end
 

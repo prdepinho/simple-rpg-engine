@@ -87,7 +87,7 @@ public:
 	void center_map_on_character(Character &character);
 
 	void schedule_character_wait(Character &character, int turns);
-	void schedule_character_movement(Character &character, int tile_x, int tile_y, bool ignore_obstacle=false);
+	bool schedule_character_movement(Character &character, int tile_x, int tile_y, bool ignore_obstacle=false);
 	void schedule_character_interaction(Character &character, int tile_x, int tile_y);
 	void schedule_character_attack(Character &attacker, Character &defender);
 	void schedule_character_cast_magic(std::string magic_name, Character &caster, sf::Vector2i center, std::vector<sf::Vector2i> tiles, std::vector<std::string> targets, int inventory_index);

@@ -16,6 +16,7 @@ end
 
 function Healer:create()
   Priestess.create(self)
+  self:set_mini_skin('cleric_green_mini')
   self:set_skin("cleric_green")
   self.data.stats.inventory[1] = { code = self.name .. "_cure", name = "cure_wounds", type = "spell", quantity = "3" }
 end
@@ -55,6 +56,8 @@ function Healer:on_interact(interactor_name)
       }
     }
   end
+
+  self:add_invitation_procedure(dialogue)
 
   sfml_dialogue(dialogue)
 end

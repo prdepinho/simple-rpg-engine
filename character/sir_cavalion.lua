@@ -22,7 +22,7 @@ function SirCavalion:create()
   self.data.enemy = false
 
   local stats = self.data.stats
-  stats.name = "Sir Chilvarion"
+  stats.name = "Sir Cavalion"
   stats.hit_die = "d6",
 
   rules.set_ability_scores_map(stats, {

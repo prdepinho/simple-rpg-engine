@@ -16,6 +16,7 @@ end
 
 function Priestess:create()
   Character.create(self)
+  self:set_mini_skin('cleric_female_mini')
   self:set_skin("cleric_female")
 
   local stats = self.data.stats
@@ -32,7 +33,7 @@ function Priestess:create()
 end
 
 function Priestess:add_invitation_procedure(dialogue)
-  if self.control.sacrifice_quest and not self.control.data.sister_companion then
+  if self.control.data.sacrifice_quest and not self.control.data.sacrifice_quest_complete and not self.control.data.sister_companion then
     if dialogue.start.options == nil then
       dialogue.start.go_to = nil
       dialogue.start.options = {

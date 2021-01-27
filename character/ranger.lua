@@ -21,7 +21,7 @@ function Ranger:create()
   self.data.enemy = false
 
   local stats = self.data.stats
-  stats.name = "Ranger"
+  stats.name = "Bartholomy"
   stats.hit_die = "d8"
 
   rules.set_ability_scores_map(stats, {
@@ -74,9 +74,42 @@ function Ranger:on_interact(interactor_name)
   if not self.control.data.witch_of_the_woods_dead then
     table.insert(dialogue.start.options, { text = "What can you tell me about that witch?", go_to = 'witch' })
     dialogue.witch = {
-      text = "She has been in these woods for decades. People from the city come here to consult her, but I always warn them to stay away.",
+      text = "She has been in these woods for decades. People from the city come here to consult her, but I always warn them to stay away. She even accepts apprentices and teaches them magic.",
       go_to = 'end'
     }
+
+    if self.control.data.lead_to_forest then
+      table.insert(dialogue.start.options, { text = "The princes came to these woods.", go_to = 'came' })
+      dialogue.came = {
+        text = "They did, and I met them. They went to the witch that lives crossing the river.",
+        go_to = 'visit',
+        callback = function()
+          self.control.data.lead_to_witch = true
+        end
+      }
+    end
+
+    dialogue.visit = {
+      text = "The witch of the woods receives many who come to her to have their luck predicted. The princess wanted to talk to her and went there. You can find her hut just across the river, north-westward.",
+      go_to = 'end'
+    }
+
+    if self.control.data.lead_to_witch then
+      table.insert(dialogue.start.options, { text = "The princes visited a witch.", go_to = 'visit' })
+    end
+
+    if self.control:is_companion('philip') then
+      table.insert(dialogue.start.options, { text = "We came to see the witch.", go_to = 'came_to_see' })
+      dialogue.came_to_see = {
+        text = "(Philip says) Bartholomy, remember that we came here before, when I brought prince Jason and princess Medea to see the witch. They disappeared and I must see the witch to bring them back.",
+        go_to = 'ranger_response'
+      }
+      dialogue.ranger_response = {
+        text = "(The ranger responds) Then I fear it is too late. No one the witch puts her claws on come back. But if you want to see her, she lives in a hut past the river, north-west of here. Good luck.",
+        go_to = 'end'
+      }
+    end
+
   end
 
   if self.control.data.witch_of_the_woods_dead and not self.control.data.informed_witch_died then
@@ -112,7 +145,6 @@ function Ranger:on_interact(interactor_name)
       end
     }
   end
-
 
   sfml_dialogue(dialogue)
 end

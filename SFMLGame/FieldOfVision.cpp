@@ -68,13 +68,8 @@ std::vector<sf::Vector2i> generate_field_of_vision(Tilemap &map, sf::Vector2i ce
 		}
 	}
 
-#if false
-	auto it = std::unique(field.begin(), field.end(), vector_compare);
-	field.resize(std::distance(field.begin(), it));
-#else
 	std::set<sf::Vector2i, Vector2iCompare> s(field.begin(), field.end());
 	field.assign(s.begin(), s.end());
-#endif
 	return field;
 }
 

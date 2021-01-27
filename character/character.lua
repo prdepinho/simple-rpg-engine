@@ -85,14 +85,29 @@ function Character:ally_procedure()
   local target = self.control:closest_enemy_on_sight(self.name)
   if target then
     self:attack(target)
-
   else
-    local dst = sfml_get_character_position('player')
-    local src = sfml_get_character_position(self.name)
-    local distance = math.sqrt((dst.x - src.x) * (dst.x - src.x) + (dst.y - src.y) * (dst.y - src.y))
-    if distance > 1 then
-      sfml_clear_schedule(self.name)
-      sfml_move(self.name, dst.x, dst.y)
+    self:follow_player()
+  end
+end
+
+
+function Character:follow_player()
+  local dst = sfml_get_character_position('player')
+  local src = sfml_get_character_position(self.name)
+  local distance = math.sqrt((dst.x - src.x) * (dst.x - src.x) + (dst.y - src.y) * (dst.y - src.y))
+  if distance > 1 then
+    sfml_clear_schedule(self.name)
+    local rval = sfml_move(self.name, dst.x, dst.y)
+    if not rval then
+      for index, ally in ipairs(self.control:get_allies()) do
+        if ally ~= self.name and ally ~= 'player' then
+          dst = sfml_get_character_position(ally)
+          rval = sfml_move(self.name, dst.x, dst.y)
+          if rval then
+            break
+          end
+        end
+      end
     end
   end
 end

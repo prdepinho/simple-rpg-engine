@@ -310,6 +310,14 @@ animations.types = {
     },
     animations = basic_animation
   },
+  cleric_female_mini = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 14,
+      y = 16 * 18
+    },
+    animations = mini_animation
+  },
   pig_man = {
     basic = defaults,
     coordinates = {
@@ -453,6 +461,14 @@ animations.types = {
     },
     animations = basic_animation
   },
+  cleric_blonde_mini = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 30,
+      y = 16 * 5
+    },
+    animations = mini_animation
+  },
   cleric_cyan = {
     basic = defaults,
     coordinates = {
@@ -460,6 +476,14 @@ animations.types = {
       y = 16 * 6,
     },
     animations = basic_animation
+  },
+  cleric_cyan_mini = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 30,
+      y = 16 * 6
+    },
+    animations = mini_animation
   },
   cleric_green = {
     basic = defaults,
@@ -469,6 +493,14 @@ animations.types = {
     },
     animations = basic_animation
   },
+  cleric_green_mini = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 30,
+      y = 16 * 7
+    },
+    animations = mini_animation
+  },
   cleric_black = {
     basic = defaults,
     coordinates = {
@@ -476,6 +508,14 @@ animations.types = {
       y = 16 * 8,
     },
     animations = basic_animation
+  },
+  cleric_black_mini = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 30,
+      y = 16 * 8
+    },
+    animations = mini_animation
   },
   thief = {
     basic = defaults,
