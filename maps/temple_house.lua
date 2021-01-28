@@ -32,5 +32,3 @@ function TempleHouse:exit()
 end
 
 return TempleHouse
-
-
