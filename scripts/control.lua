@@ -24,7 +24,9 @@ local Control = {
   character_modules = {},
   loaded_character_data = {},
 
-  data = {},
+  data = {
+    player_character = 'player'
+  },
 
   map = {},
   map_module = {},
@@ -56,6 +58,12 @@ function Control:next_item_code(str)
   else
     return 'item_' .. tostring(code)
   end
+end
+
+function Control:change_player_character(new_player_character)
+  self.characters[self.data.player_character].data.ally = true
+  self.characters[new_player_character].data.ally = false
+  self.data.player_character = new_player_character
 end
 
 -- this function changes the map in which the character will spawn to the current map (it will not appear in its original map anymore)

@@ -859,6 +859,42 @@ void Lua::characters_exchange_position(std::string interactor_name, std::string 
 	lua_pop(state, 1);
 }
 
+LuaObject Lua::get_companions() {
+	lua_getglobal(state, "get_companions");
+	int result = lua_pcall(state, 0, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	LuaObject obj = read_top_table();
+	lua_pop(state, 1);
+	return obj;
+}
+
+std::string Lua::get_player_character() {
+	lua_getglobal(state, "get_player_character");
+	int result = lua_pcall(state, 0, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+	std::string name = lua_tostring(state, 1);
+	return name;
+}
+
+void Lua::change_player_character(std::string new_player_character) {
+	lua_getglobal(state, "change_player_character");
+	lua_pushstring(state, new_player_character.c_str());
+	int result = lua_pcall(state, 1, 1, 0);
+	if (result != LUA_OK) {
+		std::stringstream ss;
+		ss << get_error(state);
+		throw LuaException(ss.str().c_str());
+	}
+}
+
 LuaObject Lua::item_stats(std::string name, std::string type) {
 	lua_getglobal(state, "item_stats");
 	lua_pushstring(state, name.c_str());

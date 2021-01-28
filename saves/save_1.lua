@@ -1066,6 +1066,7 @@ M.data = {
   spawning_map = {
   },
   data = {
+    player_character = 'player',
     witch_head_quest = true,
     witch_apprentice = true,
     learned_spells = 3,

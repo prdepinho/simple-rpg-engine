@@ -77,6 +77,10 @@ public:
 	void set_ability_scores(std::string name, int str, int dex, int con, int intl, int wis, int cha);
 	void characters_exchange_position(std::string interactor_name, std::string target_name);
 
+	LuaObject get_companions();
+	std::string get_player_character();
+	void change_player_character(std::string new_player_character);
+
 	LuaObject item_stats(std::string name, std::string type);
 	void load_initial_item(std::string code, std::string name, std::string type, int x, int y);
 	bool loot_item(std::string item_code, std::string character_name);

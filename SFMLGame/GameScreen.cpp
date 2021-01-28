@@ -990,7 +990,29 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				});
 				break;
 			case Control::SELECT:
-				toggle_log();
+#if true
+				{
+					toggle_log();
+				}
+#else
+				// Changing player character procedure. (incomplete)
+				{
+					LuaObject companions = _game.get_lua()->get_companions();
+					for (int i = 0; i < companions.size(); i++) {
+						std::string name = companions[i].get_string();
+						if (name == player_character->get_name()) {
+							std::string next_name = companions[(i + 1) % companions.size()].get_string();
+							Log("changing to: %s", next_name.c_str());
+							player_character = get_character_by_name(next_name);
+							Overlay::refresh(*this, player_character);
+							center_map_on_character(*player_character);
+							_game.get_lua()->change_player_character(next_name);
+							break;
+						}
+					}
+
+				}
+#endif
 				break;
 			case Control::LB:
 				scroll_left_select_item();
@@ -1390,6 +1412,14 @@ void GameScreen::load_map() {
 	else {
 		put_character_on_tile(*player_character, new_position_object_name);
 	}
+
+	// change player character
+	// {
+	// 	std::string name = _game.get_lua()->get_player_character();
+	// 	if (name != player_character->get_name()) {
+	// 		player_character = get_character_by_name(name);
+	// 	}
+	// }
 
 	center_map_on_character(*player_character);
 

@@ -23,6 +23,21 @@ function get_player_position()
   return control.player_position
 end
 
+function change_player_character(new_player_character)
+  control:change_player_character(new_player_character)
+end
+
+function get_player_character()
+  return control.data.player_character
+end
+
+function get_companions()
+  local companions = { 'player' }
+  for name, companion in pairs(control.companions) do
+    table.insert(companions, name)
+  end
+  return companions
+end
 
 function is_enemy(character_name)
   return control:is_enemy(character_name)
