@@ -739,5 +739,4 @@ function WitchOfTheWoods:on_death()
   self.control.data.sacrifice_quest = nil
 end
 
-
 return WitchOfTheWoods
