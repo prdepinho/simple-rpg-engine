@@ -585,7 +585,7 @@ void GameScreen::control_mouse_move() {
 		int tile_y = tile_coord.y;
 
 		player_character->clear_schedule();
-		schedule_character_movement(*player_character, tile_x, tile_y, false);
+		schedule_character_movement(*player_character, tile_x, tile_y, 200, false);
 		if (get_map().get_tile(tile_x, tile_y).obstacle)
 			schedule_character_interaction(*player_character, tile_x, tile_y);
 	}
@@ -1513,20 +1513,20 @@ void GameScreen::schedule_character_wait(Character &character, int turns) {
 	}
 }
 
-bool GameScreen::schedule_character_movement(Character &character, int tile_x, int tile_y, bool ignore_obstacle) {
+bool GameScreen::schedule_character_movement(Character &character, int tile_x, int tile_y, int limit, bool ignore_obstacle) {
 	sf::Vector2i start(character_position(character));
 	sf::Vector2i end(tile_x, tile_y);
 
 	std::stack<Direction> path = AStar::search(map, start, end, 200, ignore_obstacle);
+	int size = (int)path.size();
 
 	while (!path.empty()) {
 		Direction direction = path.top();
 		auto *action = new MoveAction(&character, direction, ignore_obstacle);
 		character.schedule_action(action);
 		path.pop();
-		return true;
 	}
-	return false;
+	return size < limit;
 }
 
 void GameScreen::schedule_character_interaction(Character &character, int tile_x, int tile_y) {

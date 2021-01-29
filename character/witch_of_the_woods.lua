@@ -714,6 +714,7 @@ function WitchOfTheWoods:on_interact(interactor_name)
         go_to = 'end',
         callback = function()
           self.control:remove_companion('medea')
+          self.control.characters.medea.data.ally = false
           self.control.characters.medea.data.enemy = true
         end
       }

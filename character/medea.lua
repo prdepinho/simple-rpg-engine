@@ -42,9 +42,11 @@ end
 function Medea:ally_procedure()
   local target = self.control:closest_enemy_on_sight(self.name)
   if target then
+    local my_pos = sfml_get_character_position(self.name)
+    local your_pos = sfml_get_character_position(target)
     if not self.has_cast_armor then
       local pos = sfml_get_character_position(self.name)
-      self:cast_magic('armor', pos.x, pos.y, 3, 3)
+      self:cast_magic('armor', my_pos.x, my_pos.y, rules.spell.armor.range_radius, rules.spell.armor.effect_radius)
       self.has_cast_armor = true
     elseif self.magic_missiles > 0 then
       local pos = sfml_get_character_position(target)
@@ -53,6 +55,8 @@ function Medea:ally_procedure()
     else
       self:attack(target)
     end
+  else
+    self:follow_player()
   end
 end
 

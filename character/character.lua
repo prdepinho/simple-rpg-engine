@@ -97,12 +97,13 @@ function Character:follow_player()
   local distance = math.sqrt((dst.x - src.x) * (dst.x - src.x) + (dst.y - src.y) * (dst.y - src.y))
   if distance > 1 then
     sfml_clear_schedule(self.name)
-    local rval = sfml_move(self.name, dst.x, dst.y)
+    local rval = sfml_move_limit(self.name, dst.x, dst.y, 15)
     if not rval then
       for index, ally in ipairs(self.control:get_allies()) do
         if ally ~= self.name and ally ~= 'player' then
+          sfml_clear_schedule(self.name)
           dst = sfml_get_character_position(ally)
-          rval = sfml_move(self.name, dst.x, dst.y)
+          rval = sfml_move_limit(self.name, dst.x, dst.y, 15)
           if rval then
             break
           end
