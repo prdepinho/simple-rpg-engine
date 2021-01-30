@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="13">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="17">
  <properties>
   <property name="for_of_war" type="bool" value="true"/>
   <property name="music" value="c_major_piece.wav"/>
-  <property name="name" value="Apartment Building"/>
+  <property name="name" value="Adventurer's Guild"/>
   <property name="vision_radius" type="int" value="5"/>
  </properties>
  <tileset firstgid="1" source="tiled_tileset.tsx"/>
@@ -252,6 +252,30 @@
     <property name="text" value="I made it big! I managed to get into Come Inn's cellar and stole some cheese wheels that I sold in Nakamura for a preety profit. Now I fear other thieves are going to steal my hard earned money, so I hid the bulk of it in the forest, near a waterfall, under a rock. Soon I'm going back to get the next shipment of cheese for the village."/>
     <property name="type" value="note"/>
    </properties>
+  </object>
+  <object id="13" name="barbarian" x="170.667" y="201.667">
+   <properties>
+    <property name="type" value="barbarian"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="14" name="soldier" x="49.3333" y="76.6667">
+   <properties>
+    <property name="type" value="soldier"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="15" name="bounty_hunter" x="71.6667" y="218.667">
+   <properties>
+    <property name="type" value="bounty_hunter"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="16" name="guild_master" x="24.6667" y="168.333">
+   <properties>
+    <property name="type" value="guild_master"/>
+   </properties>
+   <point/>
   </object>
  </objectgroup>
 </map>

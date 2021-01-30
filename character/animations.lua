@@ -589,6 +589,62 @@ animations.types = {
     },
     animations = mini_animation
   },
+  barbarian = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 16,
+      y = 16 * 15
+    },
+    animations = basic_animation
+  },
+  barbarian_mini = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 30,
+      y = 16 * 15
+    },
+    animations = mini_animation
+  },
+  bounty_hunter = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 16,
+      y = 16 * 16
+    },
+    animations = basic_animation
+  },
+  bounty_hunter_mini = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 30,
+      y = 16 * 16
+    },
+    animations = mini_animation
+  },
+  soldier = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 16,
+      y = 16 * 17
+    },
+    animations = basic_animation
+  },
+  soldier_mini = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 30,
+      y = 16 * 17
+    },
+    animations = mini_animation
+  },
+  guild_master = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 16,
+      y = 16 * 18
+    },
+    animations = basic_animation
+  },
 }
 
 return animations
