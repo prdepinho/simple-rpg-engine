@@ -45,6 +45,7 @@ def create_map(name, width, height):
 <properties>
 <property name="for_of_war" type="bool" value="false"/>
 <property name="vision_radius" type="int" value="5"/>
+<property name="name" type="string" value=""/>
 <property name="music" type="string" value=""/>
 </properties>"""
     id = 0

@@ -33,7 +33,7 @@ function Player:create()
   -- self.data.stats.inventory[2] = {code = "mumus_fear", name = "fear", type = "spell", quantity = 10 }
   -- self.data.stats.inventory[1] = {code = "mumus_glass", name = "looking_glass", type = "item" }
   -- self.data.stats.inventory[2] = {code = "mumus_aromatic oil", name = "aromatic_oil", type = "item" }
-  -- self.data.stats.inventory[8] = {code = "mumus_money", name = "money", type = "item", quantity = 2 }
+  self.data.stats.inventory[8] = {code = "mumus_money", name = "money", type = "item", quantity = 26 }
   -- self.data.stats.inventory[1] = {code = "mumus_dust", name = "elf_dust", type = "item", quantity = 15 }
 end
 

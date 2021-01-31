@@ -50,18 +50,20 @@ rules.armor = {
   gambeson          = { name = "Gambeson",        ac = 14, type = "padded", icon = {x = 16*1, y = 16*4}, desc = "Textile armor made of many layers of linen." },
   leather_armor     = { name = "Leather Armor",   ac = 14, type = "padded", icon = {x = 16*2, y = 16*4}, desc = "Boiled hardened leather plates." },
 
-  chain_mail        = { name = "Hauberk",         ac = 16, type = "chain", icon = {x = 16*3, y = 16*4}, desc = "Riveted chain armor worn over padding." },
-  scale_mail        = { name = "Scale Armor",     ac = 16, type = "chain", icon = {x = 16*4, y = 16*4}, desc = "Armor made of bronze scales." },
+  chain_mail        = { name = "Hauberk",         ac = 16, type = "chain", icon = {x = 16*3,  y = 16*4}, desc = "Riveted chain armor worn over padding." },
+  scale_mail        = { name = "Scale Armor",     ac = 16, type = "chain", icon = {x = 16*4,  y = 16*4}, desc = "Armor made of bronze scales." },
 
-  brigandine        = { name = "Brigandine",      ac = 18, type = "plate", icon = {x = 16*5, y = 16*4}, desc = "Steel plates attached to a textile cover." },
-  lamellar_armor    = { name = "Lamellar Armor",  ac = 18, type = "plate", icon = {x = 16*6, y = 16*4}, desc = "Armor made of square steel parts sown together." },
-  cuirass           = { name = "Cuirass",         ac = 18, type = "plate", icon = {x = 16*7, y = 16*4}, desc = "Steel armor for the breast and the back." },
-  full_plate_mail   = { name = "Full Plate Mail", ac = 20, type = "plate", icon = {x = 16*8, y = 16*4}, desc = "Complete steel knightly armor." },
+  brigandine        = { name = "Brigandine",      ac = 18, type = "plate", icon = {x = 16*5,  y = 16*4}, desc = "Steel plates attached to a textile cover." },
+  lamellar_armor    = { name = "Lamellar Armor",  ac = 18, type = "plate", icon = {x = 16*6,  y = 16*4}, desc = "Armor made of square steel parts sown together." },
+  cuirass           = { name = "Cuirass",         ac = 18, type = "plate", icon = {x = 16*7,  y = 16*4}, desc = "Steel armor for the breast and the back." },
+  full_plate_mail   = { name = "Full Plate Mail", ac = 20, type = "plate", icon = {x = 16*8,  y = 16*4}, desc = "Complete steel knightly armor." },
 
-  skeleton_bones    = { name = "Skeleton Bones",  ac = 12, type = "plate", icon = {x = 16*0, y = 16*0}, desc = "Skeletons have a special protection due to the constitution of their fleshless bones." },
-  dragon_scales     = { name = "Dragon Scales",   ac = 16, type = "chain", icon = {x = 16*0, y = 16*0}, desc = "Dragon scales give it a formidable protection from weapons." },
-  imp_scales        = { name = "Imp Scales",      ac = 12, type = "chain", icon = {x = 16*0, y = 16*0}, desc = "Imp scales give it an improved protection from weapons." },
-  crystal_shell     = { name = "Crystal Shell",   ac = 20, type = "plate", icon = {x = 16*0, y = 16*0}, desc = "Crystal shell of the neather crystal." },
+  dragon_scale_mail = { name = "Dragon Mail",     ac = 20, type = "chain", icon = {x = 16*10, y = 16*4}, desc = "Armor made from the scales of a dragon." },
+
+  skeleton_bones    = { name = "Skeleton Bones",  ac = 12, type = "plate", icon = {x = 16*0,  y = 16*0}, desc = "Skeletons have a special protection due to the constitution of their fleshless bones." },
+  dragon_scales     = { name = "Dragon Scales",   ac = 16, type = "chain", icon = {x = 16*0,  y = 16*0}, desc = "Dragon scales give it a formidable protection from weapons." },
+  imp_scales        = { name = "Imp Scales",      ac = 12, type = "chain", icon = {x = 16*0,  y = 16*0}, desc = "Imp scales give it an improved protection from weapons." },
+  crystal_shell     = { name = "Crystal Shell",   ac = 20, type = "plate", icon = {x = 16*0,  y = 16*0}, desc = "Crystal shell of the neather crystal." },
 }
 
 rules.shield = {
@@ -80,7 +82,7 @@ rules.shield = {
 --    1 light weight, easy to handle and has center of gravity closer to the hands.
 --    2 medium weight, slower to handle, center of gravity closer to the tip.
 --    3 heavy weight and slow to handle, center of gravity closer to the tip.
--- bulk: 
+-- bulk:  -- not implemented
 --    0 not bulky at all. Does not take inventory space.
 --    1 small and very easy to carry. May be kept hidden.
 --    2 may carry sheathed or hanging in the belt.
@@ -125,6 +127,8 @@ rules.weapon = {
   muramasa_c        = { name = "Muramasa +4",         damage = "1d10+4", to_hit_bonus = 4, armor_adjustment = { unarmored = 0, padded = 4, chain = 0, plate = 0 }, hands = 2, ac_bonus = 1, size = 3, weight = 1, bulk = 2, ranged = false, range = 1, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*8, y = 16*0}, effect = "muramasa",      desc = "A magic sword that drinks the blood of its enemies. It has become fat with blood." },
   muramasa_d        = { name = "Muramasa +5",         damage = "1d10+5", to_hit_bonus = 5, armor_adjustment = { unarmored = 0, padded = 4, chain = 0, plate = 0 }, hands = 2, ac_bonus = 1, size = 3, weight = 1, bulk = 2, ranged = false, range = 1, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*8, y = 16*0}, effect = "muramasa",      desc = "A magic sword that drinks the blood of its enemies. It has achieved its maximum power." },
 
+  bastard_sword     = { name = "Bastard Sword",       damage = "1d10",   to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 2, plate = 2 }, hands = 1, ac_bonus = 1, size = 3, weight = 1, bulk = 2, ranged = false, range = 1, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*10, y = 16*0},effect = "",              desc = "A long sword that can be used with one hand." },
+
   rat_tooth         = { name = "Rat Tooth",           damage = "1d1",    to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 0, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, bulk = 0, ranged = false, range = 1, gun = false, cutthroat = false, ammo_category = "",              icon = {x = 16*0, y = 16*0}, effect = "rat_desease",   desc = "The tooth and claws of a plague rat has a chance to poison its victim." },
   steel_cutlery     = { name = "Steel Cutelry",       damage = "1d4",    to_hit_bonus = 0, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, bulk = 1, ranged = false, range = 1, gun = false, cutthroat = true , ammo_category = "",              icon = {x = 16*5, y = 16*10},effect = "",              desc = "Steel cutlery, fork and knife." },
   silver_cutlery    = { name = "Silver Cutelry",      damage = "1d4",    to_hit_bonus = 1, armor_adjustment = { unarmored = 0, padded = 2, chain = 0, plate = 0 }, hands = 1, ac_bonus = 0, size = 1, weight = 1, bulk = 1, ranged = false, range = 1, gun = false, cutthroat = true , ammo_category = "",              icon = {x = 16*4, y = 16*10},effect = "silver_attack", desc = "Silver cutlery, fork and knife. Silver weapons deal an additional 1d6 damage and may cause poiton to neather creatures." },
@@ -142,14 +146,14 @@ rules.ammo = {
 
 rules.item = {
   no_item           = { name = "No item",         icon = {x = 16*0, y = 16*3},   stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "" },
-  money             = { name = "Money",           icon = {x = 16*2, y = 16*9},   stack_capacity = 20,    range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Copper coins." },
-  rat_poison        = { name = "Rat Poison",      icon = {x = 16*1, y = 16*10},  stack_capacity = 10,     range_radius = 1, effect_radius = 0, usable = true,  use = "rat_poison", desc = "Rat poison that can be used to poison someone without raising suspicion." },
-  cheese            = { name = "Gouda Cheese",    icon = {x = 16*0, y = 16*10},  stack_capacity = 10,     range_radius = 1, effect_radius = 0, usable = true,  use = "cheese",     desc = "Young matured Gouda Cheese with a lovely fruity tang. Restores 2d4 hit points and cures poison." },
-  poisoned_cheese   = { name = "Poisoned Cheese", icon = {x = 16*0, y = 16*11},  stack_capacity = 10,     range_radius = 1, effect_radius = 0, usable = true,  use = "rat_poison", desc = "Poisoned cheese. Don't eat it." },
+  money             = { name = "Money",           icon = {x = 16*2, y = 16*9},   stack_capacity = 124,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Copper coins." },
+  rat_poison        = { name = "Rat Poison",      icon = {x = 16*1, y = 16*10},  stack_capacity = 10,    range_radius = 1, effect_radius = 0, usable = true,  use = "rat_poison", desc = "Rat poison that can be used to poison someone without raising suspicion." },
+  cheese            = { name = "Gouda Cheese",    icon = {x = 16*0, y = 16*10},  stack_capacity = 10,    range_radius = 1, effect_radius = 0, usable = true,  use = "cheese",     desc = "Young matured Gouda Cheese with a lovely fruity tang. Restores 2d4 hit points and cures poison." },
+  poisoned_cheese   = { name = "Poisoned Cheese", icon = {x = 16*0, y = 16*11},  stack_capacity = 10,    range_radius = 1, effect_radius = 0, usable = true,  use = "rat_poison", desc = "Poisoned cheese. Don't eat it." },
   cloak             = { name = "Thief Cloak",     icon = {x = 16*3, y = 16*10},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = true,  use = "cloak",      desc = "A cloak made to blend with the background and avoid detection." },
   key               = { name = "Key",             icon = {x = 16*0, y = 16*9},   stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A brass key." },
   armory_key        = { name = "Old rusty key",   icon = {x = 16*4,y = 16*11},   stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "A rusty iron key that opens the armory under Come Inn." },
-  lockpick          = { name = "Lockpick",        icon = {x = 16*5, y = 16*11},  stack_capacity = 10,     range_radius = 1, effect_radius = 0, usable = true,  use = "lockpick",   desc = "A lockpick that can be used to unlock doors and chests." },
+  lockpick          = { name = "Lockpick",        icon = {x = 16*5, y = 16*11},  stack_capacity = 10,    range_radius = 1, effect_radius = 0, usable = true,  use = "lockpick",   desc = "A lockpick that can be used to unlock doors and chests." },
   cook_key          = { name = "Cook Key",        icon = {x = 16*6, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "The key to the cook's room in Normindia Castle." },
   tower_key         = { name = "Tower Key",       icon = {x = 16*7, y = 16*11},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "The key to the north-west tower of Normindia Castle." },
   silver_cutlery    = { name = "Silver Cutlery",  icon = {x = 16*4, y = 16*10},  stack_capacity = nil,   range_radius = 0, effect_radius = 0, usable = false, use = "",           desc = "Silver forks and knives that you stole from Normindia Castle." },

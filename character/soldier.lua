@@ -34,7 +34,7 @@ function Soldier:create()
   rules.level_up(stats)
   rules.level_up(stats)
 
-  stats.inventory[1] = { code = self.name .. '_weapon', name = 'long_sword', type = 'weapon' }
+  stats.inventory[1] = { code = self.name .. '_weapon', name = 'bastard_sword', type = 'weapon' }
   stats.inventory[3] = { code = self.name .. '_armor', name = 'leather_armor', type = 'armor' }
 
   stats.weapon = stats.inventory[1]
