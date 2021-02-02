@@ -645,6 +645,14 @@ animations.types = {
     },
     animations = basic_animation
   },
+  zombie = {
+    basic = defaults,
+    coordinates = {
+      x = 16 * 16,
+      y = 16 * 19
+    },
+    animations = basic_animation
+  },
 }
 
 return animations

@@ -99,25 +99,27 @@ function MountainPass:jump_over_boulder()
 end
 
 function MountainPass:pig_men_leave()
-  local dialogue = {
-    start = {
-      text = "There you go, catling. Have fun.",
-      go_to = 'end',
-    },
-    on_end = function()
-      self.control.data.pigmen_helped_moving_boulder = true
-      if self.control:is_companion('pigman1') then
-        self.control:remove_companion('pigman1')
+  if not self.control.data.pigmen_help_kill_dragon then
+    local dialogue = {
+      start = {
+        text = "There you go, catling. Have fun.",
+        go_to = 'end',
+      },
+      on_end = function()
+        self.control.data.pigmen_helped_moving_boulder = true
+        if self.control:is_companion('pigman1') then
+          self.control:remove_companion('pigman1')
+        end
+        if self.control:is_companion('pigman2') then
+          self.control:remove_companion('pigman2')
+        end
+        if self.control:is_companion('pigman3') then
+          self.control:remove_companion('pigman3')
+        end
       end
-      if self.control:is_companion('pigman2') then
-        self.control:remove_companion('pigman2')
-      end
-      if self.control:is_companion('pigman3') then
-        self.control:remove_companion('pigman3')
-      end
-    end
-  }
-  sfml_dialogue(dialogue)
+    }
+    sfml_dialogue(dialogue)
+  end
 end
 
 function MountainPass:landing_east(event, x, y, character_name, object_name)

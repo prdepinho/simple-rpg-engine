@@ -39,6 +39,7 @@ function PoisonSeller:front_of_door(event, x, y, character_name, object_name)
             text = "Picard goes to the guards and report on the innkeeper. The guards take Marshal in and the customers look with confusion and horror once were told of the charge. As the guards leave the people disperse.",
             go_to = 'end',
             callback = function()
+              self.control.data.come_inn_keeper_arrested = true
               self.control.data.come_inn_ruined = true
             end
           },

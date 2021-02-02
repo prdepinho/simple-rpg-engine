@@ -105,12 +105,16 @@ function ComeInnCellar:front_of_wardrobe(event, x, y, character_name, object_nam
             text = "(Cha 15) The customers love you and they confess that they would prefer that you ran the inn instead of Marshal. You find yourself with a purse full of tips.",
             go_to = 'worry',
             callback = function()
-              self.control:gain_money('player', 3)
+              self.control.data.customers_love_you = true
+              self.control:gain_money('player', 5)
             end
           },
           customers_hate = {
             text = "(Cha < 10) The customers hated your rash attitude and lack of attention to their needs.",
             go_to = 'worry',
+            callback = function()
+              self.control.data.customers_hate_you = true
+            end
           },
           worry = {
             text = "As the night approaches you start getting worried that the innkeeper didn't come back.",

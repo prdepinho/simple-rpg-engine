@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="11">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="12">
  <properties>
   <property name="for_of_war" type="bool" value="true"/>
   <property name="music" value="dread.wav"/>
@@ -57,7 +57,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,234,0,168,169,0,0,
-0,0,0,0,115,188,0,218,0,0,250,0,184,185,0,0,
+0,0,0,0,115,163,0,218,0,0,250,0,184,185,0,0,
 0,0,0,0,139,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,155,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,145,0,0,0,0,0,0,141,0,0,
@@ -161,8 +161,8 @@
   <object id="2" name="door1" x="98.9374" y="181.434" width="9" height="8.55307">
    <properties>
     <property name="invisible" type="bool" value="true"/>
-    <property name="key" value=""/>
-    <property name="locked" type="bool" value="false"/>
+    <property name="key" value="witch_key"/>
+    <property name="locked" type="bool" value="true"/>
     <property name="open_delta_x" type="int" value="1"/>
     <property name="open_delta_y" type="int" value="0"/>
     <property name="type" value="door"/>
@@ -176,16 +176,20 @@
   </object>
   <object id="4" name="pre_trigger" x="146.5" y="225" width="44.25" height="11.5"/>
   <object id="5" name="trigger" x="146" y="210.5" width="44" height="11.5"/>
-  <object id="8" name="bones" x="145.583" y="179" width="11.3333" height="11">
-   <properties>
-    <property name="item1" value="_key:item:rib_cage"/>
-    <property name="type" value="hoard"/>
-   </properties>
-  </object>
   <object id="10" name="loot" x="65.8333" y="193.5" width="11.3333" height="11">
    <properties>
     <property name="item1" value="_key:item:rat_poison:1"/>
     <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="11" name="dungeon" x="83" y="130.932" width="9" height="10.6364">
+   <properties>
+    <property name="destiny" value="witch_dungeon:entrance"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="open_delta_x" type="int" value="1"/>
+    <property name="open_delta_y" type="int" value="0"/>
+    <property name="type" value="door"/>
    </properties>
   </object>
  </objectgroup>

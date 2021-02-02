@@ -37,9 +37,9 @@ function Dragon:create()
   rules.level_up(stats)
 
   stats.armor = { code = self.name .. "_armor", name = "dragon_scales", type = "armor" }
-  stats.inventory[1] = { code = "dragon_hoard_1", name = "money", type = "item", quantity = 20}
-  stats.inventory[2] = { code = "dragon_hoard_2", name = "money", type = "item", quantity = 20}
-  stats.inventory[3] = { code = "dragon_hoard_3", name = "money", type = "item", quantity = 7}
+  stats.inventory[1] = { code = "dragon_hoard_1", name = "money", type = "item", quantity = 124}
+  stats.inventory[2] = { code = "dragon_hoard_2", name = "money", type = "item", quantity = 124}
+  stats.inventory[3] = { code = "dragon_hoard_3", name = "money", type = "item", quantity = 50}
   stats.inventory[4] = { code = "dragon_scales", name = "dragon_scales", type = "item"}
 end
 
@@ -141,19 +141,30 @@ function Dragon:on_interact(interactor_name)
   if self.control:is_companion('sir_cavalion') then
     dialogue.start = {
       text = "(Sir Cavalion reaches for his weapons and speaks) Dragon! Let Iltormyr forsake my soul if I am to let you, foul snake, breathing fire on this land! Prepare yourself to return to the abyss!",
-      go_to = 'dragon_response'
+      go_to = 'dragon_response',
+      callback = function()
+        sfml_center_camera('sir_cavalion')
+        sfml_start_animation('sir_cavalion', 'cast')
+      end
     }
     dialogue.dragon_response = {
       text = "(The dragon responds) You fool! You storm into my abode and cast your bravado upon me unprovoked! Iltormyr will not save your as he did not save me. We will both go to hell.",
       go_to = 'sir_cavalion_response',
+      callback = function()
+        sfml_center_camera(self.name)
+      end
     }
     dialogue.sir_cavalion_response = {
       text = "(Sir Cavalion responds) Then we shall fight forever.",
       go_to = 'end',
       callback = function()
         self.control.characters.dragon.data.enemy = true
+        sfml_center_camera('sir_cavalion')
       end
     }
+    dialogue.on_end = function()
+      sfml_center_camera('player')
+    end
   end
 
   sfml_dialogue(dialogue)

@@ -192,7 +192,7 @@ function ComeInnKeeper:on_interact(interactor_name)
     }
     dialogue.pay = {
       text = function()
-        local rval = self.control:spend_money('player', 1, self.name)
+        local rval = self.control:spend_money('player', 2, self.name)
         if rval then
           local code = self.control:next_item_code()
           self.control:add_item_to_inventory('player', code, 'cheese', 'item', 1)

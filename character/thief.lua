@@ -29,9 +29,12 @@ function Thief:create()
     cha = 8,
   })
 
+  local money = rules.roll_dice('2d6')
+
   stats.inventory[1] = { code = self.name .. "_dagger", name = "dagger", type = "weapon" }
   stats.inventory[2] = { code = self.name .. "_armor", name = "leather_armor", type = "armor" }
   stats.inventory[3] = { code = self.name .. "_tools", name = "lockpick", type = "item", quantity = 1 }
+  stats.inventory[4] = { code = self.name .. "_money", name = "money", type = "item", quantity = money }
   stats.weapon = stats.inventory[1]
   stats.armor = stats.inventory[2]
 end

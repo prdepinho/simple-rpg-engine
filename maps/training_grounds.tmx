@@ -260,7 +260,7 @@
   </object>
   <object id="24" name="chest" x="81.3886" y="81.5472" width="12.5" height="13.375">
    <properties>
-    <property name="item1" value="chest_money:item:money:2"/>
+    <property name="item1" value="chest_money:item:money:5"/>
     <property name="key" value="temple_chest_key"/>
     <property name="locked" type="bool" value="true"/>
     <property name="open_delta_x" type="int" value="1"/>

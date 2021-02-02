@@ -45,7 +45,7 @@ function Healer:on_interact(interactor_name)
   if self.control.data.healer_gave_healing then
     local quantity = math.max(rules.divine_spell_bonus(self.control.characters.player.data.stats) + 1, 1)
     local shop = {
-      cure_wounds = { price = 3, name = 'cure_wounds', type = 'spell', quantity = quantity },
+      cure_wounds = { price = 5, name = 'cure_wounds', type = 'spell', quantity = quantity },
     }
     dialogue = self.control:shop_dialogue(shop, self.name, "", "You need to pay a symbolic contribution for further healing, to keep the business going.")
     dialogue.start = {

@@ -161,6 +161,7 @@
     <property name="invisible" type="bool" value="true"/>
     <property name="key" value="tower_key"/>
     <property name="locked" type="bool" value="true"/>
+    <property name="lockpick_skill" type="int" value="15"/>
     <property name="open_delta_x" type="int" value="1"/>
     <property name="open_delta_y" type="int" value="0"/>
     <property name="type" value="door"/>
@@ -174,7 +175,7 @@
   <object id="5" name="chest" x="81.5682" y="129.494" width="12.5" height="13.375">
    <properties>
     <property name="item1" value="tower_spear:weapon:bill"/>
-    <property name="item2" value="tower_armor:armor:cuirass"/>
+    <property name="item2" value="tower_armor:armor:brigandine"/>
     <property name="key" value=""/>
     <property name="locked" type="bool" value="false"/>
     <property name="open_delta_x" type="int" value="1"/>

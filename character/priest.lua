@@ -34,10 +34,9 @@ function Priest:create()
 end
 
 function Priest:on_interact(interactor_name)
+  local quantity = math.max(rules.divine_spell_bonus(self.control.characters.player.data.stats) + 1, 1)
   local shop = {
-    cure_wounds_1 = { price = 1, name = 'cure_wounds', type = 'spell', quantity = 1 },
-    cure_wounds_2 = { price = 2, name = 'cure_wounds', type = 'spell', quantity = 2 },
-    cure_wounds_3 = { price = 3, name = 'cure_wounds', type = 'spell', quantity = 3 },
+    cure_wounds = { price = 7, name = 'cure_wounds', type = 'spell', quantity = quantity },
   }
   local dialogue = self.control:shop_dialogue(shop, self.name, "", "Leave a small donation and I shall grant you healing.")
   dialogue.start = {

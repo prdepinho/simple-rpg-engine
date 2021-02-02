@@ -38,6 +38,36 @@ function CastleGuard:create()
   stats.armor = stats.inventory[2]
 end
 
+function CastleGuard:on_enter()
+  Character.on_enter(self)
+  if self.control.data.queen_dead then
+    self.data.enemy = true
+  end
+end
+
+function CastleGuard:enemy_procedure()
+  local target = self.control:closest_ally_on_sight(self.name)
+  if target then
+    self:attack(target)
+    if target == 'player' then
+      if self.control.data.queen_dead and not self.control.data.city_declared_revenge then
+        self.control.data.city_declared_revenge = true
+        sfml_center_camera(self.name)
+        local dialogue = {
+          start = {
+            text = "Regicide!",
+            go_to = 'end',
+          },
+          on_end = function()
+            sfml_center_camera('player')
+          end
+        }
+        sfml_dialogue(dialogue)
+      end
+    end
+  end
+end
+
 function CastleGuard:on_interact(interactor_name)
   local dialogue = {
     start = {

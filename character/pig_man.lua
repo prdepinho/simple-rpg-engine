@@ -166,7 +166,39 @@ function PigMan:on_interact(interactor_name)
 
 
 
+  if self.control.data.dragon_dead then
+    dialogue.start.text = "Hail the mighty kitty who killed the serpent! What can this humble pig do for you?"
+    dialogue.help = {
+      text = "Of course! Every thing for the brave kitty. Let's go.",
+      go_to = 'end',
+      callback = function()
+        self.control:set_companion(self.name)
+        self.control.data.pig_men_helping_moving_boulder = true
+      end
+    }
+  end
 
+
+  if self.control:is_companion('sir_cavalion') then
+    table.insert(dialogue.start.options, { text = "Help us kill the dragon.", go_to = 'help_kill' })
+    if self.control.characters.player.data.stats.ability.str >= 15 then
+      dialogue.help_kill = {
+        text = "(Str 15) Come boys! We have a snake to tread on!",
+        go_to = 'end',
+        callback = function()
+          self.control.data.pigmen_help_kill_dragon = true
+          self.control:set_companion('pigman1')
+          self.control:set_companion('pigman2')
+          self.control:set_companion('pigman3')
+        end
+      }
+    else
+      dialogue.help_kill = {
+        text = "I'm sorry, but I wont put my hand in that mess. Good luck to you.",
+        go_to = 'end',
+      }
+    end
+  end
 
 
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="8">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="10">
  <properties>
   <property name="for_of_war" type="bool" value="true"/>
   <property name="music" value=""/>
@@ -205,6 +205,18 @@
     <property name="revert_msg" value="Change back to your clothes?"/>
     <property name="skin" value="french_maid"/>
     <property name="type" value="wardrobe"/>
+   </properties>
+  </object>
+  <object id="8" name="money" x="178.583" y="145.75" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:money:5"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="9" name="dust" x="65.8333" y="144.5" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:elf_dust:1"/>
+    <property name="type" value="hoard"/>
    </properties>
   </object>
  </objectgroup>

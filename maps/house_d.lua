@@ -23,12 +23,38 @@ function HouseD:enter()
       if self.control.data.got_rats_reward then
         self.control.loaded_character_data[name].enemy = false
         self.control.loaded_character_data[name].ally = true
-        sfml_text_box("A rat speaks: Brothers! Karni has not forsaken us for the savior of our race has arrived! Let us fight, friend, and destroy these abominations.")
       else
         self.control.loaded_character_data[name].enemy = true
         self.control.loaded_character_data[name].ally = false
       end
     end
+  end
+
+  if self.control.data.got_rats_reward then
+    sfml_center_camera('village_rat2')
+    local dialogue = {
+      start = {
+        text = "A rat speaks: Brothers! Karni has not forsaken us for the savior of our race has arrived! Let us fight, friend, and destroy these abominations.",
+        go_to = 'end',
+      },
+      on_end = function()
+        sfml_center_camera('player')
+      end
+    }
+    sfml_dialogue(dialogue)
+  elseif self.control.data.rat_king_dead then
+    self.control.data.rats_declared_revenge = true
+    sfml_center_camera('village_rat2')
+    local dialogue = {
+      start = {
+        text = "The killer of our queen arrives! Damn you and the rest of your kin!",
+        go_to = 'end',
+      },
+      on_end = function()
+        sfml_center_camera('player')
+      end
+    }
+    sfml_dialogue(dialogue)
   end
 end
 

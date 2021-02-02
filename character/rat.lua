@@ -36,9 +36,40 @@ function Rat:create()
   stats.inventory[7] = { name = 'rat_tail', code = self.name .. '_rat', type = 'item' }
 end
 
+function Rat:on_enter()
+  Character.on_enter(self)
+  if self.control.data.rat_king_dead then
+    self.data.enemy = true
+  end
+end
+
 function Rat:on_death()
   Character.on_death(self)
   self.control.data[self.name .. '_dead'] = true
+end
+
+
+function Rat:enemy_procedure()
+  local target = self.control:closest_ally_on_sight(self.name)
+  if target then
+    self:attack(target)
+    if target == 'player' then
+      if self.control.data.rat_king_dead and not self.control.data.rats_declared_revenge then
+        self.control.data.rats_declared_revenge = true
+        sfml_center_camera(self.name)
+        local dialogue = {
+          start = {
+            text = "We know you killed our queen. Her blood will be avenged!",
+            go_to = 'end',
+          },
+          on_end = function()
+            sfml_center_camera('player')
+          end
+        }
+        sfml_dialogue(dialogue)
+      end
+    end
+  end
 end
 
 

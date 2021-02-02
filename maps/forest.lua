@@ -24,6 +24,7 @@ function Forest:exit()
 end
 
 function Forest:stash(event, x, y, character_name, object_name)
+  local money = 50
   if character_name == 'player' and event == 'interact' then
     if not self.control.data.took_stash then
       if self.control.data.read_stash_diary then
@@ -32,7 +33,7 @@ function Forest:stash(event, x, y, character_name, object_name)
             text = "You find the stash as described in the thief's diary.",
             go_to = 'end',
             callback = function()
-              self.control:add_item_to_inventory('player', self.control:next_item_code(), 'money', 'item', 6)
+              self.control:add_item_to_inventory('player', self.control:next_item_code(), 'money', 'item', money)
               self.control.data.took_stash = true
             end
           }
@@ -44,7 +45,7 @@ function Forest:stash(event, x, y, character_name, object_name)
             text = "(Wis 15) You find a stash of coins hidden under the rock.",
             go_to = 'end',
             callback = function()
-              self.control:add_item_to_inventory('player', self.control:next_item_code(), 'money', 'item', 10)
+              self.control:add_item_to_inventory('player', self.control:next_item_code(), 'money', 'item', money)
               self.control.data.took_stash = true
             end
           }

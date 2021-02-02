@@ -13,6 +13,7 @@ end
 
 function Hideout:create()
   Map.create(self)
+  self.data.mirrors = 5
 end
 
 function Hideout:enter()
@@ -89,16 +90,27 @@ end
 
 function Hideout:cart(event, x, y, character_name, object_name)
   if character_name == 'player' and event == 'interact' then
-    local dialogue = {
-      start = {
-        text = "You find the looking glass shipment in the cart and take one for yourself.",
-        go_to = 'end',
-        callback = function()
-          self.control:add_item_to_inventory('player', self.control:next_item_code(), 'looking_glass', 'item')
-        end
+    if self.data.mirrors > 0 then
+      local dialogue = {
+        start = {
+          text = "You find the looking glass shipment in the cart and take one for yourself.",
+          go_to = 'end',
+          callback = function()
+            self.control:add_item_to_inventory('player', self.control:next_item_code(), 'looking_glass', 'item')
+            self.data.mirrors = self.data.mirrors - 1
+          end
+        }
       }
-    }
-    sfml_dialogue(dialogue)
+      sfml_dialogue(dialogue)
+    else
+      local dialogue = {
+        start = {
+          text = "There are no more mirrors left.",
+          go_to = 'end',
+        }
+      }
+      sfml_dialogue(dialogue)
+    end
   end
 end
 

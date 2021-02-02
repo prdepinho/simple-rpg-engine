@@ -40,20 +40,50 @@ function CityGuard:create()
   stats.armor = stats.inventory[3]
 end
 
+function CityGuard:on_enter()
+  Character.on_enter(self)
+  if self.control.data.queen_dead then
+    self.data.enemy = true
+  end
+end
+
+function CityGuard:enemy_procedure()
+  local target = self.control:closest_ally_on_sight(self.name)
+  if target then
+    self:attack(target)
+    if target == 'player' then
+      if self.control.data.queen_dead and not self.control.data.city_declared_revenge then
+        self.control.data.city_declared_revenge = true
+        sfml_center_camera(self.name)
+        local dialogue = {
+          start = {
+            text = "Regicide!",
+            go_to = 'end',
+          },
+          on_end = function()
+            sfml_center_camera('player')
+          end
+        }
+        sfml_dialogue(dialogue)
+      end
+    end
+  end
+end
+
+
 function CityGuard:on_interact(interactor_name)
 
   local texts = {
     "Press Start to look at you pockets, equip weapons and use items.",
     "Use your equipped weapon to wack an unsuspecting person.",
-    "Press B to shoot with your equipped bow.",
+    "Press B to attack someone.",
     "Bludgeoning weapons are more effective against armor, but edged weapons do more damage.",
     "Intelligent casters cast spells that last longer.",
-    "Dexterous people use items like the cloak, poison and the lockpick more effectively",
-    "Healing spells are more effective cast by wise casters.",
+    "Dexterous people use items like the cloak, poison and the lockpick more effectively.",
+    "Healing spells are more effective cast by casters who have greater wisdom.",
     "I don't want to see you causing any trouble.",
-    "If it is advantageous, press Select to wait for your enemy to come to you before wacking him in the head.",
-    "If someone is in your way, keep pressing through.",
-    "If you want to chill for a while, hold Y, and release it when you fell like working again.",
+    "If someone is in your way, hold A and pass through them.",
+    "If you want to chill for a while, hold Y and the world will go on without you.",
   }
   local roll = rules.roll_dice('d' .. tostring(#texts))
 

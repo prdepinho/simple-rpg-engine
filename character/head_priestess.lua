@@ -32,7 +32,29 @@ function HeadPriestess:create()
   rules.level_up(stats)
 end
 
+function HeadPriestess:normal_ending()
+  self.control.data.game_ended = true
+  local dialogue = {
+    start = {
+      foreground = {
+        image = "normal_ending.png",
+        origin = {
+          x = 0,
+          y = 0,
+        }
+      },
+      text = "Normal ending.",
+      go_to = 'end'
+    }
+  }
+  sfml_illustrated_dialogue(dialogue)
+end
+
 function HeadPriestess:on_interact(interactor_name)
+  if not self.control.data.idols_visited then
+    self.control.data.idols_visited = 0
+  end
+
   if not self.control.data.created_character then
     local dialogue = {
       start = {
@@ -245,6 +267,19 @@ function HeadPriestess:on_interact(interactor_name)
           }
         end
       end
+
+
+      if self.control.data.idols_visited == 3 and not self.control.data.game_ended then
+        table.insert(dialogue.start.options, { text = "I have achieved my goal.", go_to = 'achieved' })
+        dialogue.achieved = {
+          text = "Very well. Come, Mumu. Let's start the preparations.",
+          go_to = 'end',
+          callback = function()
+            self:normal_ending()
+          end
+        }
+      end
+
 
       sfml_dialogue(dialogue)
     end

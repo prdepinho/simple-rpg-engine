@@ -117,6 +117,28 @@ function RatKing:on_interact(interactor_name)
         end
       }
     end
+
+    if self.control.data.checked_poison then
+      table.insert(dialogue.start.options, { text = "The cheese in the cellar is poisoned.", go_to = 'poisoned_cheese' })
+      dialogue.poisoned_cheese = {
+        text = "Oh my! We have to dispose of everything! I can't believe he would do such a thing!",
+        options = {
+          { text = "I will dispose of everything.", go_to = 'end' },
+          { text = "Have you not seen poison anywhere?", go_to = 'seen_poison' },
+        }
+      }
+      dialogue.seen_poison = {
+        text = "I have not. Neither have my children. We are very careful not eat poison. Unless... It cannot be! The cheese is poisoned? No, the innkeeper would not do such a thing!",
+        go_to = 'end'
+      }
+      if self.control.data.disposed_of_poison then
+        table.insert(dialogue.poisoned_cheese.options, { text = "I disposed of the cheese in the cellars.", go_to = 'disposed_of_poison' })
+        dialogue.disposed_of_poison = {
+          text = "The innkeeper is surely buying the poison from somewhere. This will not stop until you make it stop. Do it, my friend, and my treasure shall make all your troubles worth it.",
+          go_to = 'end'
+        }
+      end
+    end
   end
 
   if self.control.data.got_rats_reward then
@@ -262,6 +284,8 @@ end
 
 function RatKing:on_death()
   Rat.on_death(self)
+  print('rat king dead')
+  self.control.data.rat_king_dead = true
 end
 
 

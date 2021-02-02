@@ -128,7 +128,7 @@ function ThiefWatcher:on_interact(interactor_name)
     if self.control.characters.player.data.stats.ability.cha >= 10 then
       table.insert(dialogue.lost.options, { text = "(Cha 10) Why don't you sell me a mirror?", go_to = 'sell' })
       dialogue.sell = {
-        text = "Sell you a mirror? You know what, that's not a bad idea. For five coppers you can have your mirror.",
+        text = "Sell you a mirror? You know what, that's not a bad idea. For fifteen coppers you can have your mirror.",
         options = {
           { text = "No way.", go_to = 'reject' },
           { text = "Here you go.", go_to = 'accept_price' },
@@ -143,7 +143,7 @@ function ThiefWatcher:on_interact(interactor_name)
       }
       dialogue.accept_price = {
         text = function()
-          if self.control:spend_money('player', 5, 'thief5') then
+          if self.control:spend_money('player', 15, 'thief5') then
             self.control:add_item_to_inventory('player', self.control:next_item_code(), 'looking_glass', 'item')
             self.control.data.thief_pissed = true
             return "Good making business with you. Now, get lost."
@@ -156,10 +156,10 @@ function ThiefWatcher:on_interact(interactor_name)
       }
 
       if self.control.characters.player.data.stats.ability.cha >= 13 then
-        table.insert(dialogue.sell.options, { text = "(Cha 13) Make it 2 coppers.", go_to = 'bargain' })
+        table.insert(dialogue.sell.options, { text = "(Cha 13) Make it 5 coppers.", go_to = 'bargain' })
         dialogue.bargain = {
           text = function()
-            if self.control:spend_money('player', 2, 'thief5') then
+            if self.control:spend_money('player', 5, 'thief5') then
               self.control:add_item_to_inventory('player', self.control:next_item_code(), 'looking_glass', 'item')
               self.control.data.thief_pissed = true
               return "Alright, alright. Just get the hell out before I lose my temper."

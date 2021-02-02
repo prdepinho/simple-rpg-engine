@@ -107,7 +107,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="6" name="obstacle" width="16" height="16" visible="0">
+ <layer id="6" name="obstacle" width="16" height="16">
   <data encoding="csv">
 2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,
 2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,
@@ -251,7 +251,7 @@
   <object id="14" name="journal_2" x="194.625" y="161.583" width="10.75" height="11.5">
    <properties>
     <property name="description" value="You find Minora's Journal 2."/>
-    <property name="text" value="The scent from the pit is sweet indeed. I sneak into the cave just to be with its mesmerizing embrace. Sometimes I see women wearing white in the cave. I wonder if they are the spirits of late Pthonists from the village. All together to enjoy sweet permufe everm from out the grave."/>
+    <property name="text" value="The scent from the pit is sweet indeed. I sneak into the cave just to be with its mesmerizing embrace. Sometimes I see women wearing white in the cave. I wonder if they are the spirits of late Pthonists from the village. All together to enjoy sweet permufe even from out the grave."/>
     <property name="type" value="note"/>
    </properties>
   </object>

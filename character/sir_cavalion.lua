@@ -204,6 +204,7 @@ function SirCavalion:on_interact(interactor_name)
           self.control:remove_companion('sir_cavalion')
           sfml_remove_character('sir_cavalion')
           self.control.data.sir_cavalion_left = true
+          self.control.data.sir_cavalion_didnt_fight_dragon = true
         end
       }
     end

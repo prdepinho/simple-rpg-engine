@@ -52,7 +52,7 @@ function ThievedGuildReceptionist:on_interact(interactor_name)
         }
       }
     }
-    if self.control.data.decided_to_help_rats then
+    if self.control.data.decided_to_help_rats and not self.control.data.rats_quest_complete then
       table.insert(dialogue.who.options, { text = "I know some rats that need shelter and a job.", go_to = 'rats' })
       dialogue.rats = {
         text = "Really? Bring them in and I'll introduce them to the noble craft of thieving.",

@@ -39,6 +39,7 @@ function WitchOfTheWoods:create()
   stats.inventory[5] = { code = self.name .. "_fireball", name = "fireball", type = "spell", quantity = 3 }
   stats.inventory[6] = { code = self.name .. "_invisibility", name = "invisibility", type = "spell", quantity = 3 }
   stats.inventory[7] = { code = self.name .. "_fear", name = "fear", type = "spell", quantity = 3 }
+  stats.inventory[8] = { code = "witch_key", name = "witch_key", type = "key" }
   stats.weapon = stats.inventory[1]
 
 end
@@ -209,7 +210,7 @@ function WitchOfTheWoods:on_interact(interactor_name)
     text = "Right, then. Go lick your fur like other house cats.",
     go_to = 'end',
     callback = function()
-      self.control.data.refused_to_be_witch_apprentice = true
+      self.control.data.witch_refused_tutelage = true
     end
   }
   dialogue.reproach = {
@@ -250,7 +251,7 @@ function WitchOfTheWoods:on_interact(interactor_name)
       text = "Go away! You'll bring fleas to my house!",
       go_to = 'end'
     }
-  elseif self.control.data.refused_to_be_witch_apprentice then
+  elseif self.control.data.witch_refused_tutelage then
     dialogue.start = {
       text = "I gave you your chance, pussycat. Now piss off.",
       go_to = 'end'
@@ -509,10 +510,13 @@ function WitchOfTheWoods:on_interact(interactor_name)
         dialogue.reaction = {
           text = function()
             if self.control.data.reverend_mother_companion then
+              self.control.data.gave_head_priestess_to_witch = true
               return "(The reverend mother looks alarmed at you and says) Mumu, what business this? (The witch takes her arm and firmly guides her to the other room. She returns shortly afterward.)"
             elseif self.control.data.uncouncious_sister then
+              self.control.data.gave_sister_to_witch = true
               return "(Your sister looks confused at you as the witch takes her away to the other room. The witch returns shortly afterwards.)"
             else
+              self.control.data.gave_sister_to_witch = true
               return "(Your sister looks confused to you and to the witch, who takes her gently by the hand and leads her to the other room. She returns shortly afterward.)"
             end
           end,
@@ -696,9 +700,6 @@ function WitchOfTheWoods:on_interact(interactor_name)
     end
 
     if self.control:is_companion('philip') then
-    end
-
-    if self.control:is_companion('female_knight') then
     end
 
     if self.control:is_companion('medea') then

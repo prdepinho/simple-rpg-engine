@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="16">
+ <properties>
+  <property name="for_of_war" type="bool" value="true"/>
+  <property name="music" value="dread.wav"/>
+  <property name="name" value="Witch's Dungeon"/>
+  <property name="vision_radius" type="int" value="5"/>
+ </properties>
+ <tileset firstgid="1" source="tiled_tileset.tsx"/>
+ <layer id="1" name="floor" width="16" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,69,69,69,0,0,0,0,0,
+0,0,8,69,69,69,69,69,70,24,69,69,69,8,0,0,
+0,69,69,24,70,69,70,70,71,40,70,70,70,69,69,0,
+0,69,71,40,40,69,71,71,85,85,71,71,71,71,69,0,
+0,69,71,85,85,69,85,85,85,85,85,85,85,71,69,69,
+69,69,85,85,85,69,85,85,85,85,85,85,85,71,24,69,
+69,71,85,85,85,69,85,85,85,85,85,85,85,85,71,69,
+69,69,69,69,69,69,85,85,85,69,69,69,69,69,8,69,
+69,70,70,70,70,69,85,85,85,69,70,70,70,70,69,69,
+69,71,71,71,71,69,85,85,85,69,71,71,71,71,69,69,
+69,85,85,85,85,69,85,85,85,69,85,85,85,85,69,24,
+69,69,85,85,85,69,85,85,85,69,85,85,85,69,69,71,
+71,70,69,85,85,69,85,85,85,69,85,85,85,8,70,0,
+40,40,24,69,69,69,69,69,69,69,69,69,69,69,40,0,
+0,40,40,71,24,70,70,70,70,70,24,24,24,24,0,0,
+0,0,40,71,71,71,71,71,71,71,71,40,71,71,0,0
+</data>
+ </layer>
+ <layer id="2" name="overfloor" width="16" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,162,161,0,0,0,0,0,0,
+0,0,0,162,161,0,162,0,178,177,0,0,161,0,0,0,
+0,0,162,178,177,0,178,0,194,193,0,0,177,161,0,0,
+0,0,178,194,177,0,178,0,0,0,0,0,177,177,0,0,
+0,0,178,0,177,0,178,0,0,0,0,0,193,177,0,0,
+0,162,178,0,177,0,178,0,0,0,0,0,0,177,0,0,
+0,0,0,0,0,0,178,0,0,0,0,0,0,0,0,0,
+0,162,0,0,161,0,178,0,0,0,162,0,0,161,0,0,
+0,178,0,0,177,0,178,0,177,0,178,0,0,177,0,0,
+0,178,0,0,177,0,178,0,177,0,178,0,0,177,0,0,
+0,0,0,0,177,0,178,0,177,0,178,0,0,0,0,0,
+0,0,0,0,177,0,178,0,177,0,178,0,177,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="3" name="furniture" width="16" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,196,0,0,0,237,236,0,0,0,0,0,0,
+0,0,196,0,0,0,0,0,172,0,0,115,115,0,0,0,
+0,0,0,0,0,153,0,0,0,0,0,255,115,0,0,0,
+0,0,212,0,0,0,0,0,0,0,0,115,115,115,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,196,196,0,0,0,0,0,0,0,0,196,196,0,0,
+0,0,0,0,212,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,153,0,0,0,153,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,212,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,163,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="4" name="ceiling" width="16" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,69,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="5" name="overceiling" width="16" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="6" name="obstacle" width="16" height="16">
+  <data encoding="csv">
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,0,0,2,0,0,2,0,0,2,2,2,2,2,
+2,2,0,0,0,2,0,0,0,0,0,0,2,2,2,2,
+2,2,0,0,0,2,0,0,0,0,0,2,2,2,2,2,
+2,2,2,2,2,2,0,0,0,2,2,2,2,2,2,2,
+2,2,2,2,2,2,0,0,0,2,2,2,2,2,2,2,
+2,2,2,2,2,2,0,0,0,2,2,2,2,2,2,2,
+2,0,0,0,0,2,0,0,0,2,0,0,0,0,2,2,
+2,2,0,0,0,2,0,0,0,2,0,0,0,2,2,2,
+2,2,2,0,0,2,0,0,0,2,0,0,0,2,2,2,
+2,2,2,2,2,2,2,0,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+</data>
+ </layer>
+ <layer id="7" name="invisible" width="16" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,4,4,4,4,0,0,0,0,0,
+0,0,4,4,4,4,4,4,0,0,4,4,4,4,0,0,
+0,4,4,0,0,4,0,0,0,0,0,0,0,4,4,0,
+0,4,0,0,0,4,0,0,0,0,0,0,0,0,4,0,
+0,4,0,0,0,4,0,0,0,0,0,0,0,0,4,4,
+4,4,0,0,0,4,0,0,0,0,0,0,0,0,0,4,
+4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,4,
+4,4,4,4,4,4,0,0,0,4,4,4,4,4,4,4,
+4,0,0,0,0,4,0,0,0,4,0,0,0,0,4,0,
+4,0,0,0,0,4,0,0,0,4,0,0,0,0,4,0,
+4,0,0,0,0,4,0,0,0,4,0,0,0,0,4,0,
+4,4,0,0,0,4,0,0,0,4,0,0,0,4,4,0,
+0,4,4,0,0,4,0,0,0,4,0,0,0,4,0,0,
+0,0,4,4,4,4,0,0,0,4,4,4,4,4,0,0,
+0,0,0,0,0,4,4,4,4,4,0,0,0,0,0,0,
+0,0,0,0,0,4,4,4,4,4,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="8" name="objects">
+  <object id="1" name="bones3" x="18.1806" y="162.623" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:rib_cage"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="2" name="bones2" x="209.853" y="161.431" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:rib_cage"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="3" name="bones1" x="34.8736" y="83.9271" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:rib_cage"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="4" name="hit_die" x="177.157" y="81.2397" width="13.9091" height="13.6364">
+   <properties>
+    <property name="type" value="hit_die"/>
+   </properties>
+  </object>
+  <object id="5" name="door3" x="83.5" y="180.223" width="9" height="8.55307">
+   <properties>
+    <property name="invisible" type="bool" value="false"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="open_delta_x" type="int" value="1"/>
+    <property name="open_delta_y" type="int" value="0"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="6" name="door2" x="147" y="181.223" width="9" height="8.55307">
+   <properties>
+    <property name="invisible" type="bool" value="false"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="open_delta_x" type="int" value="1"/>
+    <property name="open_delta_y" type="int" value="0"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="7" name="door1" x="83" y="84.7235" width="9" height="8.55307">
+   <properties>
+    <property name="invisible" type="bool" value="false"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="open_delta_x" type="int" value="1"/>
+    <property name="open_delta_y" type="int" value="0"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="8" name="entrance" x="115.417" y="226.598" width="9" height="10.6364">
+   <properties>
+    <property name="destiny" value="witch_hut:dungeon"/>
+    <property name="key" value=""/>
+    <property name="locked" type="bool" value="false"/>
+    <property name="open_delta_x" type="int" value="1"/>
+    <property name="open_delta_y" type="int" value="0"/>
+    <property name="type" value="door"/>
+   </properties>
+  </object>
+  <object id="9" name="zombie7" x="58" y="186">
+   <properties>
+    <property name="type" value="zombie"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="10" name="zombie6" x="184" y="182.667">
+   <properties>
+    <property name="type" value="zombie"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="11" name="zombie5" x="58" y="91.3333">
+   <properties>
+    <property name="type" value="zombie"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="12" name="zombie4" x="172" y="204">
+   <properties>
+    <property name="type" value="zombie"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="13" name="zombie3" x="69" y="206">
+   <properties>
+    <property name="type" value="zombie"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="14" name="zombie2" x="168.667" y="108.667">
+   <properties>
+    <property name="type" value="zombie"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="15" name="zombie1" x="170" y="88.3333">
+   <properties>
+    <property name="type" value="zombie"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+</map>

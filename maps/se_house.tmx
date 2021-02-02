@@ -21,8 +21,8 @@
  </layer>
  <layer id="2" name="overfloor" width="8" height="8">
   <data encoding="csv">
+0,0,0,0,0,0,0,0,
 0,162,0,0,0,0,161,0,
-0,178,0,0,0,0,177,0,
 0,178,67,67,67,67,177,0,
 0,178,67,67,67,67,177,0,
 0,178,67,67,67,67,177,0,
@@ -35,7 +35,7 @@
   <data encoding="csv">
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,100,0,
+0,0,0,0,0,0,0,0,
 0,0,116,117,0,0,0,0,
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
@@ -102,7 +102,7 @@
     <property name="type" value="door"/>
    </properties>
   </object>
-  <object id="2" name="chest" x="97.25" y="33.3125" width="12.5" height="13.375">
+  <object id="2" name="chest" x="114.5" y="1.5625" width="12.5" height="13.375">
    <properties>
     <property name="item1" value="se_house_magic1:spell:magic_missile:5"/>
     <property name="key" value=""/>

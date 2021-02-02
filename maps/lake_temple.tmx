@@ -107,7 +107,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="6" name="obstacle" width="16" height="16" visible="0">
+ <layer id="6" name="obstacle" width="16" height="16">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,
@@ -223,9 +223,9 @@
    </properties>
    <point/>
   </object>
-  <object id="11" name="witch" x="121" y="156.25">
+  <object id="11" name="minora" x="121" y="156.25">
    <properties>
-    <property name="type" value="witch"/>
+    <property name="type" value="minora"/>
    </properties>
    <point/>
   </object>

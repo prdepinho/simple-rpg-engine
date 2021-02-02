@@ -90,7 +90,7 @@ function PoisonSalesman:on_interact(interactor_name)
       end
     },
     show_proof = {
-      text = "You show the poisoned cheese to Picard.",
+      text = "(You show the poisoned cheese to Picard.)",
       go_to = 'proof_reaction'
     },
     no_proof = {

@@ -116,8 +116,7 @@
   </object>
   <object id="3" name="chest" x="114" y="32.5625" width="12.5" height="13.375">
    <properties>
-    <property name="item1" value="armory_spell:spell:poison:3"/>
-    <property name="item2" value="armory_money:item:money:5"/>
+    <property name="item1" value="armory_money:item:money:20"/>
     <property name="key" value=""/>
     <property name="locked" type="bool" value="false"/>
     <property name="open_delta_x" type="int" value="1"/>

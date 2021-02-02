@@ -23,10 +23,7 @@ function DeadVillager:create()
   if rules.roll_dice('d6') > 3 then
     self.data.stats.inventory[1] = { code = self.name .. 'cheese', name = 'cheese', type = 'item', quantity = 1 }
   else
-    local money = 1
-    if rules.roll_dice('d6') > 4 then
-      money = money + 1
-    end
+    local money = rules.roll_dice('2d4')
     self.data.stats.inventory[1] = { code = self.name .. "coin", name = "money", type = "item", quantity = money }
   end
 
