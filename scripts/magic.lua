@@ -270,8 +270,9 @@ function Magic:muramasa(attacker_name, defender_name, hit_result, damage_result)
     print('Muramasa: hit')
     if not self.control.data.muramasa_hits then
       self.control.data.muramasa_hits = 0
+    end
+    if not self.control.data.muramasa_level then
       self.control.data.muramasa_level = 1
-      print('Muramasa hits: 0')
     end
     self.control.data.muramasa_hits = self.control.data.muramasa_hits + 1
     print('Muramasa hits: self.control.data.muramasa_hits')
@@ -286,7 +287,6 @@ function Magic:muramasa(attacker_name, defender_name, hit_result, damage_result)
       { hits = 100, next = 'muramasa_d' },
       { hits = 0, next = '' }
     }
-
     if self.control.data.muramasa_hits == table[self.control.data.muramasa_level].hits then
       print('Muramasa level up')
       local position = sfml_get_character_position(attacker_name)

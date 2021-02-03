@@ -35,6 +35,7 @@ function Player:create()
   -- self.data.stats.inventory[2] = {code = "mumus_aromatic oil", name = "aromatic_oil", type = "item" }
   -- self.data.stats.inventory[8] = {code = "mumus_money", name = "money", type = "item", quantity = 26 }
   -- self.data.stats.inventory[1] = {code = "mumus_dust", name = "elf_dust", type = "item", quantity = 15 }
+  -- self.data.stats.inventory[1] = {code = "muramasa", name = "muramasa", type = "weapon" }
 end
 
 
