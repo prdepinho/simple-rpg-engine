@@ -1,6 +1,7 @@
 
 package.path = package.path .. ";../maps/?.lua"
 local Map = require "map"
+local rules = require "rules"
 
 local DragonLair = Map:new()
 
@@ -25,10 +26,49 @@ function DragonLair:enter()
       self.control:kill_character('sir_cavalion')
     end
   end
+  self.dragon_aware = false
 end
 
 function DragonLair:exit()
   Map.exit(self)
+end
+
+function DragonLair:talk_to_dragon(event, x, y, character_name, object_name)
+  if not self.dragon_aware then
+    local dragon = self.control.characters['dragon']
+    if event == 'step_on' and character_name == 'player' then
+      if not self.control:can_see('dragon', 'player') then
+        local dialogue = {
+          start = {
+            text = "I can smell you.",
+            go_to = 'end',
+            callback = function()
+              local pos = sfml_get_character_position('dragon')
+              dragon:cast_magic('true_seeing', pos.x, pos.y, rules.spell.true_seeing.range_radius, rules.spell.true_seeing.effect_radius)
+            end
+          },
+        }
+        sfml_dialogue(dialogue)
+      else
+        if not dragon.data.enemy then
+          self.dragon_aware = true
+          if not dragon.data.stats.status.dead then
+            local dialogue = {
+              start = {
+                text = "For your horror a huge dragon stands before you.",
+                go_to = 'end'
+              },
+              on_end = function()
+                sfml_center_camera('dragon')
+                dragon:on_interact(character_name)
+              end
+            }
+            sfml_dialogue(dialogue)
+          end
+        end
+      end
+    end
+  end
 end
 
 function DragonLair:cave_exit_steps(event, x, y, character_name, object_name)

@@ -65,7 +65,6 @@ function Map:set_objects()
                 sfml_change_map(object.properties.destiny)
               end
             end
-
           elseif event == "interact" then
             if character_name == 'player' then 
               if object.properties.locked then
@@ -130,6 +129,7 @@ function Map:set_objects()
             }
             sfml_dialogue(dialogue)
           end
+
         elseif object.properties.type == 'chest' then
           if event == 'interact' and character_name == 'player' then
             if object.properties.closed then
@@ -185,6 +185,7 @@ function Map:set_objects()
               end
             end
           end
+
         elseif object.properties.type == 'hit_die' then
           if event == 'interact' and character_name == 'player' and not object.properties.taken then
             sfml_start_animation('player', 'cast')

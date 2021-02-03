@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="12" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="17">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="12" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="22">
  <properties>
   <property name="for_of_war" type="bool" value="true"/>
   <property name="music" value=""/>
@@ -159,7 +159,7 @@
     <property name="type" value="hoard"/>
    </properties>
   </object>
-  <object id="8" name="bones7" x="97.6217" y="49.9448" width="11.3333" height="11">
+  <object id="8" name="bones7" x="113.622" y="50.8539" width="11.3333" height="11">
    <properties>
     <property name="item1" value="_key:item:rib_cage"/>
     <property name="type" value="hoard"/>
@@ -203,5 +203,30 @@
   </object>
   <object id="15" name="sir_cavalions_body" x="97.4755" y="97.252" width="12.9669" height="12.2962"/>
   <object id="16" name="cave_exit_steps" x="81.1551" y="161.639" width="28.8402" height="12.7434"/>
+  <object id="17" name="talk_to_dragon" x="49.8182" y="65.6364" width="91.8182" height="58.7273"/>
+  <object id="18" name="hoard4" x="82.1515" y="50.1364" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:money:52"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="19" name="hoard3" x="98.5152" y="49.5909" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:money:52"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="20" name="hoard2" x="81.9697" y="67.7727" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:money:52"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
+  <object id="21" name="hoard1" x="97.7879" y="67.0455" width="11.3333" height="11">
+   <properties>
+    <property name="item1" value="_key:item:money:52"/>
+    <property name="type" value="hoard"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

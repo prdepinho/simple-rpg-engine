@@ -293,8 +293,11 @@ function Magic:muramasa(attacker_name, defender_name, hit_result, damage_result)
       sfml_show_floating_message("I feel satisfied.", position.x, position.y)
       sfml_push_log("Muramasa: I feel satisfied.")
       sfml_start_fireworks('raise_dead', position.x, position.y)
+      sfml_play_sound('laughter.wav')
 
       attacker_stats.inventory[muramasa_index].name = table[self.control.data.muramasa_level].next
+      attacker_stats.weapon = attacker_stats.inventory[muramasa_index]
+
       self.control.data.muramasa_level = self.control.data.muramasa_level + 1
     end
   end
@@ -589,6 +592,10 @@ function Magic:true_seeing_enter(character)
       end
     end
 
+  else
+    if self.control.characters.player.data.stats.status.invisible then
+      sfml_character_set_transparency('player', 255)
+    end
   end
 end
 

@@ -37,9 +37,6 @@ function Dragon:create()
   rules.level_up(stats)
 
   stats.armor = { code = self.name .. "_armor", name = "dragon_scales", type = "armor" }
-  stats.inventory[1] = { code = "dragon_hoard_1", name = "money", type = "item", quantity = 124}
-  stats.inventory[2] = { code = "dragon_hoard_2", name = "money", type = "item", quantity = 124}
-  stats.inventory[3] = { code = "dragon_hoard_3", name = "money", type = "item", quantity = 50}
   stats.inventory[4] = { code = "dragon_scales", name = "dragon_scales", type = "item"}
 end
 
@@ -77,6 +74,9 @@ function Dragon:on_interact(interactor_name)
         self.control.data.met_dragon = true
       end
     },
+    on_end = function()
+      sfml_center_camera('player')
+    end,
     exit = {
       text = "Please, stay for dinner.",
       go_to = 'end',
