@@ -536,17 +536,7 @@ function Magic:raise_dead(caster, center, tiles, targets)
         self.control:strip_character_items(character_name)
         self.control:remove_character(character_name)
 
-        self.control:insert_character(skeleton_name, 'timed_skeleton', position.x, position.y)
-        sfml_loop_animation(skeleton_name, 'walk')
-        sfml_start_animation(skeleton_name, 'rise')
-
-        self.control.characters[skeleton_name]:set_timeout(turns)
-
-        if self.control.characters[caster].data.ally then
-          self.control.characters[skeleton_name].data.ally = true
-        elseif self.control.characters[caster].data.enemy then
-          self.control.characters[skeleton_name].data.enemy = true
-        end
+        self:create_skeleton(caster, skeleton_name, position, turns)
 
         local name = self.control.characters[character_name].data.stats.name 
         local msg = name .. ' - has risen for ' .. tostring(turns) .. ' turns'
@@ -554,6 +544,29 @@ function Magic:raise_dead(caster, center, tiles, targets)
 
       end
     end
+
+    for code, item in pairs(self.control.map.data.items) do
+      if (item.name == 'skull' or item.name == 'rib_cage') and item.x == position.x and item.y == position.y then
+        local skeleton_name = 'skeleton_' .. code
+        sfml_remove_item(code)
+        self.control.map.data.items[code] = nil
+        self:create_skeleton(caster, skeleton_name, position, turns)
+      end
+    end
+  end
+end
+
+function Magic:create_skeleton(caster, skeleton_name, position, turns)
+  self.control:insert_character(skeleton_name, 'timed_skeleton', position.x, position.y)
+  sfml_loop_animation(skeleton_name, 'walk')
+  sfml_start_animation(skeleton_name, 'rise')
+
+  self.control.characters[skeleton_name]:set_timeout(turns)
+
+  if self.control.characters[caster].data.ally then
+    self.control.characters[skeleton_name].data.ally = true
+  elseif self.control.characters[caster].data.enemy then
+    self.control.characters[skeleton_name].data.enemy = true
   end
 end
 
