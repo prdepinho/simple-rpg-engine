@@ -107,7 +107,7 @@
 0,0,0,204,205,188,189,0,0,204,205,0,0,0,220,221
 </data>
  </layer>
- <layer id="6" name="obstacle" width="16" height="16">
+ <layer id="6" name="obstacle" width="16" height="16" visible="0">
   <data encoding="csv">
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
@@ -127,7 +127,7 @@
 2,2,0,0,0,0,0,0,0,0,0,2,0,2,2,2
 </data>
  </layer>
- <layer id="7" name="invisible" width="16" height="16">
+ <layer id="7" name="invisible" width="16" height="16" visible="0">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -147,7 +147,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="8" name="objects">
+ <objectgroup id="8" name="objects" visible="0">
   <object id="1" name="thief5" x="184.021" y="236.433">
    <properties>
     <property name="type" value="thief_watcher"/>
