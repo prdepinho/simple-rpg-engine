@@ -1300,6 +1300,12 @@ public:
 		return 1;
 	}
 
+	static int sfml_quit_game(lua_State *state) {
+		_game.get_lua()->reset_data();
+		_game.change_to_main_menu_screen();
+		return 1;
+	}
+
 };
 
 void register_lua_accessible_functions(Lua &lua)
@@ -1383,6 +1389,7 @@ void register_lua_accessible_functions(Lua &lua)
 	lua_register(lua.get_state(), "sfml_update_fog_of_war", LuaFunction::sfml_update_fog_of_war);
 	lua_register(lua.get_state(), "sfml_is_targeted", LuaFunction::sfml_is_targeted);
 	lua_register(lua.get_state(), "sfml_clear_target", LuaFunction::sfml_clear_target);
+	lua_register(lua.get_state(), "sfml_quit_game", LuaFunction::sfml_quit_game);
 
 
 }

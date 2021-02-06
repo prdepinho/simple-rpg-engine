@@ -4,6 +4,7 @@ package.path = package.path .. ";../scripts/?.lua"
 local rules = require "rules"
 local animations = require "animations"
 local Priestess = require "priestess"
+local Endings = require "endings"
 
 local HeadPriestess = Priestess:new()
 
@@ -34,20 +35,7 @@ end
 
 function HeadPriestess:normal_ending()
   self.control.data.game_ended = true
-  local dialogue = {
-    start = {
-      foreground = {
-        image = "normal_ending.png",
-        origin = {
-          x = 0,
-          y = 0,
-        }
-      },
-      text = "Normal ending.",
-      go_to = 'end'
-    }
-  }
-  sfml_illustrated_dialogue(dialogue)
+  Endings:ending(self.control)
 end
 
 function HeadPriestess:on_interact(interactor_name)
