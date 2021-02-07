@@ -1,6 +1,5 @@
 
-package.path = package.path .. ";../maps/?.lua"
-local Map = require "map"
+local Map = require "maps.map"
 
 local TwinHousesWalk = Map:new()
 

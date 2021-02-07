@@ -1,9 +1,7 @@
 
-package.path = package.path .. ";../character/?.lua"
-package.path = package.path .. ";../scripts/?.lua"
-local rules = require "rules"
-local animations = require "animations"
-local Character = require "character"
+local rules = require "scripts.rules"
+local animations = require "character.animations"
+local Character = require "character.character"
 
 local Endings = {
   control = nil
@@ -519,7 +517,7 @@ function Endings:fin()
     credits = {
       text = "Thank you for playing. Mumu's Pilgrimage was developed by Paulo de Pinho.",
       go_to = 'end'
-    }
+    },
     on_end = function()
       sfml_quit_game()
     end

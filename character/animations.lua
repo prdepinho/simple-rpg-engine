@@ -1,5 +1,4 @@
-package.path = package.path .. ";../config/?.lua"
-require "settings"
+require "config.settings"
 
 local animations = {}
 

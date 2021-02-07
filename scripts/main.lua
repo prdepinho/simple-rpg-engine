@@ -1,12 +1,8 @@
 
-package.path = package.path .. ";../maps/?.lua"
-package.path = package.path .. ";../character/?.lua"
-package.path = package.path .. ";../scripts/?.lua"
-package.path = package.path .. ";../saves/?.lua"
-local rules = require "rules"
-local save = require "save"
-local Control = require "control"
-local magic = require "magic"
+local rules = require "scripts.rules"
+local save = require "scripts.save"
+local Control = require "scripts.control"
+local magic = require "scripts.magic"
 
 
 local control = Control:new(nil) 

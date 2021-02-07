@@ -25,11 +25,13 @@ int main()
 
 #if true
 
+#if false
 		Lua lua(Path::SCRIPTS + "test/main.lua");
 
 		// Lua *script = &lua;
 		Lua *script = _game.get_lua();
-#if true
+#endif
+#if false
 		int loops = 3;
 		for (int i = 0; i < loops; i++) {
 			LuaObject obj = script->get_object("alpha");
@@ -94,50 +96,8 @@ int main()
 
 		// script->call_function(&obj, "callback");
 		// script->call_function(obj.get_token("callback"));
-#else
-		int loops = 2;
-		for (int i = 0; i < loops; i++)
-		{
-			auto state = script->get_state();
-
-			lua_pushstring(state, "foobar");
-			int ref = luaL_ref(state, LUA_REGISTRYINDEX);
-			std::cout << "ref: " << ref << std::endl;
-
-			lua_rawgeti(state, LUA_REGISTRYINDEX, ref);
-			std::string str = lua_tostring(state, -1);
-			std::cout << "string: " << str << std::endl;
-			lua_pop(state, 1);
-
-			luaL_unref(state, LUA_REGISTRYINDEX, ref);
-
-			std::cout << "print" << std::endl;
-			int total = 10;
-			for (int i = 0; i < total; i++) {
-				lua_rawgeti(state, LUA_REGISTRYINDEX, i);
-				float type = lua_type(state, -1);
-				std::cout << "index[" << i << "] = " << type << std::endl;
-				lua_pop(state, 1);
-			}
-
-			std::getchar();
-		}
 
 #endif
-
-		// lua.call_function(obj.get_object("inside.internal"), "callback");
-		// lua.print_object(obj, "callback");
-
-		// lua.call_function(obj.get_object("test"), "increment");
-		// lua.call_function(obj.get_object("test"), "show_counter");
-
-		// lua.call_function(obj.get_object("test.show_counter"));
-
-
-		// lua.call_function(obj.get_object("update"));
-		// lua.execute_method("data_update");
-#else
-		_game.get_lua()->execute_method("test_dialogue");
 #endif
 
 #if false
@@ -227,67 +187,8 @@ int main()
 #endif
 
 #if false
-		Lua lua("../config.lua");
-
-		std::cout << lua.stack_dump() << std::endl;
-
-		std::cout << "i: " << lua.get_int("i", -1) << std::endl;
-		std::cout << "o: " << lua.get_int("o", -1) << std::endl;
-		std::cout << "f: " << lua.get_float("f", -1.5f) << std::endl;
-		std::cout << "g: " << lua.get_float("g", -1.5f) << std::endl;
-		std::cout << "b: " << (lua.get_boolean("b", false) ? "true" : "false") << std::endl;
-		std::cout << "c: " << (lua.get_boolean("c", false) ? "true" : "false") << std::endl;
-		std::cout << "d: " << (lua.get_boolean("d", false) ? "true" : "false") << std::endl;
-		std::cout << "s: " << lua.get_string("s", "foo") << std::endl;
-		std::cout << "st: " << lua.get_string("st", "foo") << std::endl;
-		std::cout << "u: " << lua.get_string("u", "foo") << std::endl;
-
-		std::cout << "i: " << lua.get_int("i") << std::endl;
-		std::cout << "f: " << lua.get_float("f") << std::endl;
-		std::cout << "b: " << (lua.get_boolean("b") ? "true" : "false") << std::endl;
-		std::cout << "s: " << lua.get_string("s") << std::endl;
-
-		std::cout << lua.stack_dump() << std::endl;
-
-		LuaObject obj = lua.get_object("root");
-		std::cout << "" << std::endl;
-		std::cout << "obj.s: " << obj.get_string("s") << std::endl;
-		std::cout << "obj.i: " << obj.get_int("i") << std::endl;
-		std::cout << "obj.f: " << obj.get_float("f") << std::endl;
-		std::cout << "obj.b: " << (obj.get_boolean("b") ? "true" : "false") << std::endl;
-
-		std::cout << "obj.branch.s: " << obj.get_string("branch.s") << std::endl;
-		std::cout << "obj.branch.i: " << obj.get_int("branch.i") << std::endl;
-		std::cout << "obj.branch.f: " << obj.get_float("branch.f") << std::endl;
-		std::cout << "obj.branch.b: " << (obj.get_boolean("branch.b") ? "true" : "false") << std::endl;
-
-		auto list = obj.get_object("list");
-		std::cout << "list size: " << list.size() << std::endl;
-
-		for (auto it = list.begin(); it != list.end(); ++it) {
-			std::cout << "key: " << it->first << ", value: ";
-			LuaObject &elm = it->second;
-			switch (elm.get_type()) {
-			case LuaObject::Type::BOOLEAN:
-				std::cout << "boolean: " << elm.get_boolean() << std::endl;
-				break;
-			case LuaObject::Type::NUMBER:
-				std::cout << "number: " << elm.get_float() << std::endl;
-				break;
-			case LuaObject::Type::STRING:
-				std::cout << "string: " << elm.get_string() << std::endl;
-				break;
-			default:
-				std::cout << "unhandled type" << std::endl;
-				break;
-			}
-		}
-
-
-		std::cout << lua.stack_dump() << std::endl;
-
+		Lua lua("config/settings.lua");
 		std::getchar();
-
 
 #endif
 	}

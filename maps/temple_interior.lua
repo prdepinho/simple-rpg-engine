@@ -1,8 +1,6 @@
 
-package.path = package.path .. ";../maps/?.lua"
-package.path = package.path .. ";../scripts/?.lua"
-local Map = require "map"
-local Endings = require "endings"
+local Map = require "maps.map"
+local Endings = require "scripts.endings"
 
 local TempleInterior = Map:new()
 

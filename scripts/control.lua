@@ -1,12 +1,8 @@
-package.path = package.path .. ";../maps/?.lua"
-package.path = package.path .. ";../character/?.lua"
-package.path = package.path .. ";../scripts/?.lua"
-package.path = package.path .. ";../saves/?.lua"
-local rules = require "rules"
-local save = require "save"
-local Magic = require "magic"
-local Character = require "character"
-local Map = require "map"
+local rules = require "scripts.rules"
+local save = require "scripts.save"
+local Magic = require "scripts.magic"
+local Character = require "character.character"
+local Map = require "maps.map"
 
 
 local start_game_map = 'temple'
@@ -993,17 +989,17 @@ function Control:get_save_files()
     local save_file = {}
 
     local filename = "save_" .. tostring(i)
-    local path = "../saves/" .. filename .. ".lua"
 
-    local file = io.open(path, 'r')
+    local file = io.open('saves/' .. filename .. '.lua', 'r')
     if not file then
       break
     end
+    local module_name = 'saves/' .. filename
 
-    if package.loaded[filename] then
-      package.loaded[filename] = nil
+    if package.loaded[module_name] then
+      package.loaded[module_name] = nil
     end
-    local module = require(filename)
+    local module = require(module_name)
     save_file.filename = filename
     save_file.title = module.data.title
     save_file.active = module.data.active
@@ -1063,6 +1059,7 @@ function Control:save_game(filename, title)
 end
 
 function Control:load_game(filename)
+  filename = 'saves/' .. filename
   print('load game: ' .. filename)
   local module = require(filename)
   self.loaded_map_data = module.data.map_data
@@ -1146,7 +1143,7 @@ function Control:add_character(type, name)
   end
 
   if self.character_modules[name] == nil then
-    self.character_modules[name] = require(type)
+    self.character_modules[name] = require('character.'..type)
   end
 
 
@@ -1310,7 +1307,7 @@ function Control:change_map(new_map)
   end
 
   self.map_module = {}
-  self.map_module = require(self.current_map)
+  self.map_module = require('maps.' .. self.current_map)
   self.map_module.data = self.loaded_map_data[self.current_map]
 
   self.map = self.map_module:new(nil, self)
@@ -1410,7 +1407,7 @@ end
 
 function Control:map_exit()
   if self.current_map and self.current_map ~= '' then
-    self:save_game("../saves/save_3.lua", "autosave")
+    self:save_game("saves/save_3.lua", "autosave")
   end
 
   self.map:exit()

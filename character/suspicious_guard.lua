@@ -1,9 +1,7 @@
 
-package.path = package.path .. ";../character/?.lua"
-package.path = package.path .. ";../scripts/?.lua"
-local rules = require "rules"
-local animations = require "animations"
-local CityGuard = require "city_guard"
+local rules = require "scripts.rules"
+local animations = require "character.animations"
+local CityGuard = require "character.city_guard"
 
 local SuspiciousGuard = CityGuard:new()
 

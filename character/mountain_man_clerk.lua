@@ -1,10 +1,8 @@
 
 
-package.path = package.path .. ";../character/?.lua"
-package.path = package.path .. ";../scripts/?.lua"
-local rules = require "rules"
-local animations = require "animations"
-local MountainMan = require "mountain_man"
+local rules = require "scripts.rules"
+local animations = require "character.animations"
+local MountainMan = require "character.mountain_man"
 
 local MountainManClerk = MountainMan:new()
 

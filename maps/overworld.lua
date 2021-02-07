@@ -1,8 +1,6 @@
 
-package.path = package.path .. ";../maps/?.lua"
-package.path = package.path .. ";../config/?.lua"
-require "settings"
-local Map = require "map"
+require "config.settings"
+local Map = require "maps.map"
 
 local Overworld = Map:new()
 

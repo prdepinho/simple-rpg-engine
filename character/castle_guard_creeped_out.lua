@@ -1,9 +1,7 @@
 
-package.path = package.path .. ";../character/?.lua"
-package.path = package.path .. ";../scripts/?.lua"
-local rules = require "rules"
-local animations = require "animations"
-local CastleGuard = require "castle_guard"
+local rules = require "scripts.rules"
+local animations = require "character.animations"
+local CastleGuard = require "character.castle_guard"
 
 local CastleGuardCreepedOut = CastleGuard:new()
 

@@ -21,15 +21,15 @@ sf::Color Color::VIOLET    = sf::Color(125, 0, 255);
 sf::Color Color::MAGENTA   = sf::Color(255, 0, 255);
 sf::Color Color::RASPBERRY = sf::Color(255, 0, 125);
 
-const std::string Path::ASSETS = "../assets/";
+const std::string Path::ASSETS = "assets/";
 const std::string Path::SOUNDS = Path::ASSETS + "sounds/";
 const std::string Path::MUSIC = Path::ASSETS + "music/";
-const std::string Path::CONFIG = "../config/";
-const std::string Path::SCRIPTS = "../scripts/";
+const std::string Path::CONFIG = "config/";
+const std::string Path::SCRIPTS = "scripts/";
 const std::string Path::SCREENS = Path::CONFIG + "screens/";
-const std::string Path::MAPS = "../maps/";
-const std::string Path::CHARACTERS = "../character/";
-const std::string Path::SAVES = "../saves/";
+const std::string Path::MAPS = "maps/";
+const std::string Path::CHARACTERS = "character/";
+const std::string Path::SAVES = "saves/";
 
 const std::string Config::TEXTURES = Path::CONFIG + "textures.lua";
 const std::string Config::SETTINGS = Path::CONFIG + "settings.lua";

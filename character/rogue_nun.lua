@@ -1,9 +1,7 @@
 
-package.path = package.path .. ";../character/?.lua"
-package.path = package.path .. ";../scripts/?.lua"
-local rules = require "rules"
-local animations = require "animations"
-local Priestess = require "priestess"
+local rules = require "scripts.rules"
+local animations = require "character.animations"
+local Priestess = require "character.priestess"
 
 local RogueNun = Priestess:new()
 

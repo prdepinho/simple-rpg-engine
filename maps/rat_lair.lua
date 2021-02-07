@@ -1,8 +1,6 @@
 
-package.path = package.path .. ";../scripts/?.lua"
-package.path = package.path .. ";../maps/?.lua"
-local Map = require "map"
-local save = require "save"
+local Map = require "maps.map"
+local save = require "scripts.save"
 
 local RatLair = Map:new()
 

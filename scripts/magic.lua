@@ -1,5 +1,5 @@
-local save = require "save"
-local rules = require "rules"
+local save = require "scripts.save"
+local rules = require "scripts.rules"
 
 local Magic = {
   control = {}

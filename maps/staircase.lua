@@ -1,6 +1,4 @@
 
-package.path = package.path .. ";../maps/?.lua"
-require "common"
 
 local M = {}
 

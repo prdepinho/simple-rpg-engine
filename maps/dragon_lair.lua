@@ -1,7 +1,6 @@
 
-package.path = package.path .. ";../maps/?.lua"
-local Map = require "map"
-local rules = require "rules"
+local Map = require "maps.map"
+local rules = require "scripts.rules"
 
 local DragonLair = Map:new()
 

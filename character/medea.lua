@@ -1,10 +1,8 @@
 
 
-package.path = package.path .. ";../character/?.lua"
-package.path = package.path .. ";../scripts/?.lua"
-local rules = require "rules"
-local animations = require "animations"
-local Witch = require "witch"
+local rules = require "scripts.rules"
+local animations = require "character.animations"
+local Witch = require "character.witch"
 
 local Medea = Witch:new()
 

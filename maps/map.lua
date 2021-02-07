@@ -1,6 +1,5 @@
 
-package.path = package.path .. ";../scripts/?.lua"
-local rules = require "rules"
+local rules = require "scripts.rules"
 
 local Map = {
   control = {},
