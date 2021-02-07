@@ -936,7 +936,6 @@ function Control:gain_money(character_name, how_much)
   local total = how_much
   for index, item in ipairs(character.data.stats.inventory) do
     if item.name == 'money' then
-      print('item stacked')
       item.quantity = item.quantity + how_much
       total = total - how_much
       break
@@ -944,9 +943,7 @@ function Control:gain_money(character_name, how_much)
   end
   if total > 0 then
     for index, item in ipairs(character.data.stats.inventory) do
-      print('loop')
       if item.code == '' then
-        print('item added')
         character.data.stats.inventory[index] = { code = self:next_item_code(), name = "money", type = "item", quantity = total }
         total = 0
         break
@@ -1138,7 +1135,6 @@ end
 -- callback that the engine calls when inserting a new character
 function Control:add_character(type, name)
   if self.loaded_character_data[name] and self.loaded_character_data[name].removed then
-    print('character ' .. name .. ' is removed')
     return
   end
 
@@ -1354,7 +1350,6 @@ function Control:map_enter()
 
   -- put characters on the same place where they were when you left the map
   for index, name in ipairs(sfml_get_characters_on_map()) do
-    print('character on map: ' .. name)
     if name ~= 'player' then
       local pos = self.characters[name].data.position
       if pos then
@@ -1370,7 +1365,6 @@ function Control:map_enter()
   for index, name in ipairs(sfml_get_characters_on_map()) do
     local character = self.characters[name]
     if character.data.spawning_map then
-      print('--------- spawning map remove: ' .. name)
       sfml_remove_character(name)
     end
   end
@@ -1379,7 +1373,6 @@ function Control:map_enter()
   if self.spawning_map[self.current_map] then
     for name, should in pairs(self.spawning_map[self.current_map]) do
       if should then
-        print('---------- spawning map add: ' .. name)
         local sdata = self.loaded_character_data[name].spawning_map
         self:insert_character(sdata.name, sdata.type, sdata.x, sdata.y)
       end
@@ -1398,7 +1391,6 @@ function Control:map_enter()
   self.map:enter()
 
   if self.show_log then
-    print('show log: ' .. tostring(self.log_visibility))
     sfml_show_log(self.log_visibility)
     self.show_log = false
   end
