@@ -196,7 +196,7 @@ function Endings:imps_take_over_temple()
   local dialogue = {
     start = {
       foreground = {
-        image = "blank.png",
+        image = "imps_take_over_temple.png",
         origin = { x = 0, y = 0, }
       },
       text = "Not long after that imps took over the temple with their insidious schemes, murmuring into the cat-girls' ears lies and temptations, which corrupted the teaching of Bastet and brought down the generation of cat-girls in Folia Gatas.",
@@ -211,7 +211,7 @@ function Endings:rats_run_over_temple()
   local dialogue = {
     start = {
       foreground = {
-        image = "blank.png",
+        image = "rats_run_over_temple.png",
         origin = { x = 0, y = 0, }
       },
       text = "Not long after that the temple was run over by rats. The pest fouled the food, destroyed clothes and finally attacked the cat-girls fearlessly. So many were the rats that the cat-girls had no chance of defending themselves. Mumu was mauled by the pest as it declared vengeance for the fallen queen.",
@@ -226,7 +226,7 @@ function Endings:temple_drought()
   local dialogue = {
     start = {
       foreground = {
-        image = "blank.png",
+        image = "drought.png",
         origin = { x = 0, y = 0, }
       },
       text = "Following Mumu's investiture a cat-girl from another island arrived at Folia Gatas predicting a great drought was nigh and many would suffer from the famine for a whole generation. The drought came, many cat-girls died or went into exile in despair that Bastet had abandoned them.",
@@ -241,7 +241,7 @@ function Endings:mumu_has_kittens()
   local dialogue = {
     start = {
       foreground = {
-        image = "blank.png",
+        image = "kittens.png",
         origin = { x = 0, y = 0, }
       },
       text = "Bastet was pleased with Mumu. Mumu took the robes of priestess and went to the sacred thalamus. Soon after she gave birth to many kittens that will become the next generation of cat-girls in Folia Gatas.",
