@@ -256,7 +256,7 @@ function Endings:come_inn_keeper_arrested()
   local dialogue = {
     start = {
       foreground = {
-        image = "blank.png",
+        image = "come_inn_arrest.png",
         origin = { x = 0, y = 0, }
       },
       text = "After the arrest of the inn keeper, Come Inn has been shut down and the building given to auction.",
@@ -284,7 +284,7 @@ function Endings:come_inn_loves_you()
   local dialogue = {
     start = {
       foreground = {
-        image = "blank.png",
+        image = "serving_girl.png",
         origin = { x = 0, y = 0, }
       },
       text = "The people of Come Inn remember fondly of the charismatic cat-girl that served them that day before the disappearence of the inn keeper and lament that they would never see her again.",
@@ -424,7 +424,7 @@ function Endings:tubal_dragon_smith()
   local dialogue = {
     start = {
       foreground = {
-        image = "blank.png",
+        image = "forging.png",
         origin = { x = 0, y = 0, }
       },
       text = "Tubal made a name for himself as the Dragon Smith. His shop received plety of attention and his time was always filled with requests from nobles and kings.",
@@ -466,7 +466,7 @@ function Endings:elves_protect_normindia()
   local dialogue = {
     start = {
       foreground = {
-        image = "blank.png",
+        image = "elves.png",
         origin = { x = 0, y = 0, }
       },
       text = "The elves, taken by surprise by the imp attack, took for themselves the responsibility of protecting Normindia, since the both human and elf societies are vulnerable to their insidious schemes.",
@@ -511,13 +511,17 @@ function Endings:fin()
         image = "blank.png",
         origin = { x = 0, y = 0, }
       },
-      text = "And this is the story of Mumu and her pilgrimage.",
+      text = "And this is the story.",
       go_to = 'credits',
     },
     credits = {
-      text = "Thank you for playing. Mumu's Pilgrimage was developed by Paulo de Pinho.",
-      go_to = 'end'
+      text = " Mumu's Pilgrimage was developed by Paulo de Pinho.",
+      go_to = 'later_credits'
     },
+    later_credits = {
+      text = "Thank you for playing.",
+      go_to = 'end'
+    }
     on_end = function()
       sfml_quit_game()
     end
