@@ -71,8 +71,7 @@ def create_map(name, width, height):
     class_name = camelcaseify(name)
 
     data = f"""
-package.path = package.path .. ";../maps/?.lua"
-local Map = require "map"
+local Map = require "maps.map"
 
 local {class_name} = Map:new()
 
@@ -122,11 +121,9 @@ def create_character(name):
     class_name = camelcaseify(name)
 
     data = f"""
-package.path = package.path .. ";../character/?.lua"
-package.path = package.path .. ";../scripts/?.lua"
-local animations = require "animations"
-local rules = require "rules"
-local Character = require "character"
+local rules = require "scripts.rules"
+local animations = require "character.animations"
+local Character = require "character.character"
 
 local {class_name} = Character:new()
 
