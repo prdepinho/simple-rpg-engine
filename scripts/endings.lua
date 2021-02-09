@@ -438,7 +438,7 @@ function Endings:cook_hanged()
   local dialogue = {
     start = {
       foreground = {
-        image = "blank.png",
+        image = "gallows.png",
         origin = { x = 0, y = 0, }
       },
       text = "The cook was hanged for treason. His corpsed remained in the gallows for a week until the Normindians could not stand the stench anymore.",
@@ -466,7 +466,7 @@ function Endings:nakamura_slowly_rebuilds()
   local dialogue = {
     start = {
       foreground = {
-        image = "blank.png",
+        image = "nakamura_village.png",
         origin = { x = 0, y = 0, }
       },
       text = "After the witch Minora was killed the strawberry monsters went away. Villagers who had ran to the hills returned and started the slow process of rebuilding their lives.",
@@ -480,7 +480,7 @@ function Endings:nakamura_is_forgotten()
   local dialogue = {
     start = {
       foreground = {
-        image = "blank.png",
+        image = "nakamura_village.png",
         origin = { x = 0, y = 0, }
       },
       text = "Nakamura village was lost to monsters and damned by tongues. No one approaches the place and stories about what passes there multiply.",
