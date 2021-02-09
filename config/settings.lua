@@ -23,10 +23,8 @@ turns_per_second = 5
 
 
 -- game volume: from 0 (silent) to 100 (full volume)
--- music_volume = 15
--- sound_volume = 15
-music_volume = 0
-sound_volume = 5
+music_volume = 15
+sound_volume = 15
 
 log_box_history_size = 50
 

@@ -507,7 +507,7 @@ function Endings:fin()
     later_credits = {
       text = "Thank you for playing.",
       go_to = 'end'
-    }
+    },
     on_end = function()
       sfml_quit_game()
     end

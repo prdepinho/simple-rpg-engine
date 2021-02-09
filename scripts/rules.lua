@@ -411,7 +411,7 @@ rules.ability_score_description = {
     return desc
   end,
   cha = function(score)
-    local desc = "Charisma is your personality and ability to interact with people. It influences many dialogue options and which companions you can have."
+    local desc = "Charisma is your personality and ability to interact with people. It influences many dialogue options and which companions you can have. "
     desc = desc .. "Charisma " .. tostring(score) .. " gives your companions "
     desc = desc .. tostring(rules.ability_modifier[score]) .. " bonus hit points."
     return desc

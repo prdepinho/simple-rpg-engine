@@ -26,6 +26,7 @@ public:
 	CharacterEditPanel(Character *character=nullptr, int x=0, int y=0, int w=0, int h=0);
 	virtual ~CharacterEditPanel();
 	virtual void create() override;
+	virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 	virtual Component *on_key_pressed(sf::Event &event) override;
 	static void show(Character *character, bool give_points, Screen &screen, Callback callback);
 	void move_cursor(Direction direction);
@@ -51,4 +52,8 @@ private:
 	int cursor = 0;
 	bool editable = true;
 	InputHandler input_handler;
+	struct {
+		sf::Sprite sprite;
+		sf::Texture texture;
+	} illustration;
 };

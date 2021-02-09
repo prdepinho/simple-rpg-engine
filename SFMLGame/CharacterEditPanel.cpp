@@ -29,6 +29,9 @@ void CharacterEditPanel::create() {
 	}
 
 
+	
+
+
 	int margin = 5;
 	int button_width = 30;
 	int button_height = 12;
@@ -219,8 +222,8 @@ void CharacterEditPanel::create() {
 	// text area
 	{
 		int lines_per_page = 10;
-		x = buttons[i-1].get_x() + buttons[i-1].get_width() + margin * 4;
-		y = name_label.get_y() + name_label.get_height() + margin;
+		x = margin;
+		y = buttons[i - 1].get_y() + buttons[i - 1].get_height() + margin;
 		w = 120;
 		text_area = TextArea(x, y, w, lines_per_page);
 		text_area.create();
@@ -228,8 +231,23 @@ void CharacterEditPanel::create() {
 		add_component(text_area);
 	}
 
+
+	// illustration
+	{
+		x = buttons[i-1].get_x() + buttons[i-1].get_width() + margin * 4;
+		y = name_label.get_y();
+		illustration.texture.loadFromFile(Path::ASSETS + "mumu.png");
+		illustration.sprite = sf::Sprite(illustration.texture);
+		illustration.sprite.setPosition(x, y);
+	}
+
 	Panel::create();
 	refresh();
+}
+
+void CharacterEditPanel::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+	Panel::draw(target, states);
+	target.draw(illustration.sprite, states);
 }
 
 void CharacterEditPanel::refresh() {
@@ -276,7 +294,9 @@ void CharacterEditPanel::refresh() {
 
 void CharacterEditPanel::show(Character *character, bool give_points, Screen &screen, Callback callback) {
 	static CharacterEditPanel panel;
-	panel = CharacterEditPanel(character, 0, 0, _game.get_resolution_width(), _game.get_resolution_height());
+	int width = _game.get_resolution_width();
+	int height = _game.get_resolution_height();
+	panel = CharacterEditPanel(character, 0, 0, width, height);
 	panel.give_points = give_points;
 	panel.add_function(callback);
 	panel.create();
