@@ -134,7 +134,7 @@ function Endings:epilogue()
 
   if self.control.data.cook_confessed then
     if self.control.data.queen_dead then
-      self:cook_got_away()
+      -- self:cook_got_away()
     else
       if self.control.data.cook_arrested then
         self:cook_hanged()
@@ -270,7 +270,7 @@ function Endings:come_inn_ruined()
   local dialogue = {
     start = {
       foreground = {
-        image = "blank.png",
+        image = "come_inn.png",
         origin = { x = 0, y = 0, }
       },
       text = "Ever since the inn keeper went missing, people fear the place and don't approach it, sometimes stating that they hear strange noises from the building.",
@@ -298,7 +298,7 @@ function Endings:rats_friendly()
   local dialogue = {
     start = {
       foreground = {
-        image = "blank.png",
+        image = "rats.png",
         origin = { x = 0, y = 0, }
       },
       text = "The rats remember Mumu and are thankful to her, teaching its ratling not to fear cat-girls anymore. Mumu's name soon became legend in the records of the Rats of Grey Fur.",
@@ -312,7 +312,7 @@ function Endings:rats_grievous()
   local dialogue = {
     start = {
       foreground = {
-        image = "blank.png",
+        image = "rats.png",
         origin = { x = 0, y = 0, }
       },
       text = "The Rats of Grey Fur declared war on all cat-girls for their mischievouness and organized with other rat-kin to persecute them from Folia Gatas.",
@@ -326,7 +326,7 @@ function Endings:rats_enemies()
   local dialogue = {
     start = {
       foreground = {
-        image = "blank.png",
+        image = "rats.png",
         origin = { x = 0, y = 0, }
       },
       text = "The rats mourned the death of their queen and declared perpetual war on all cat-girls.",
@@ -340,7 +340,7 @@ function Endings:thieves_guild_ruined()
   local dialogue = {
     start = {
       foreground = {
-        image = "blank.png",
+        image = "thieves.png",
         origin = { x = 0, y = 0, }
       },
       text = "The thieves' guild had a short life, as did its leader Garrett. No authority even suspected it existed at all.",
@@ -354,7 +354,7 @@ function Endings:thieves_guild_restored()
   local dialogue = {
     start = {
       foreground = {
-        image = "blank.png",
+        image = "thieves.png",
         origin = { x = 0, y = 0, }
       },
       text = "The thieves' guild became a well established institution. Now all in Normindia fear the cloaked rats and their bold feats of thievery and assassination.",
@@ -368,7 +368,7 @@ function Endings:sir_cavalion_venerated()
   local dialogue = {
     start = {
       foreground = {
-        image = "blank.png",
+        image = "sir_cavalion.png",
         origin = { x = 0, y = 0, }
       },
       text = "Sir Cavalion's body was interred at the Normindian Temple of Iltormyr, his sword hanging on the church wall facing the tri-faced god. The Normindian patriarch instituted a holiday on the day of his death.",
@@ -382,7 +382,7 @@ function Endings:sir_cavalion_hopeless_wanderer()
   local dialogue = {
     start = {
       foreground = {
-        image = "blank.png",
+        image = "sir_cavalion.png",
         origin = { x = 0, y = 0, }
       },
       text = "Sir Cavalion travelled the nations in search of meaning. Abandoned by his country, he felt abandoned by his god. No one ever saw him since.",
@@ -396,7 +396,7 @@ function Endings:sir_cavalion_hopeful_wanderer()
   local dialogue = {
     start = {
       foreground = {
-        image = "blank.png",
+        image = "sir_cavalion.png",
         origin = { x = 0, y = 0, }
       },
       text = "Sir Cavalion wanders the nations seeking to serve Iltormyr protecting the weak and smiting evil wherever he goes. Sir Cavalion found peace in his life, even though he found no rest in his journey.",
@@ -410,7 +410,7 @@ function Endings:dragon_friendly()
   local dialogue = {
     start = {
       foreground = {
-        image = "blank.png",
+        image = "dragon.png",
         origin = { x = 0, y = 0, }
       },
       text = "The dragon keeps terrorizing the mountain looking for delicious rats such as the on Mumu had brought him. Not long passed since the Normindians realized the wyrm's preferences and started providing him a constant shipment of rotents, which he accepted as tribute.",
@@ -428,20 +428,6 @@ function Endings:tubal_dragon_smith()
         origin = { x = 0, y = 0, }
       },
       text = "Tubal made a name for himself as the Dragon Smith. His shop received plety of attention and his time was always filled with requests from nobles and kings.",
-      go_to = 'end',
-    }
-  }
-  sfml_illustrated_dialogue(dialogue)
-end
-
-function Endings:cook_got_away()
-  local dialogue = {
-    start = {
-      foreground = {
-        image = "blank.png",
-        origin = { x = 0, y = 0, }
-      },
-      text = "The cook took advantage of the comotion in the castle and ran away before his sentence could have been executed. No one knows his whereabouts.",
       go_to = 'end',
     }
   }
