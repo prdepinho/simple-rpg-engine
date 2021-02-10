@@ -105,8 +105,22 @@ function PoisonSalesman:on_interact(interactor_name)
     }
   }
   if not self.control.data.come_inn_ruined then
-    if self.control.data.talk_to_picard and self.control.data.decided_to_help_rats then
-      table.insert(dialogue.start.options, { text = "Please, stop supplying poison to the inn.", go_to = 'stop_supply' })
+    if self.control.data.decided_to_help_rats then
+      if self.control.data.talk_to_picard then
+        table.insert(dialogue.start.options, { text = "Please, stop supplying poison to the inn.", go_to = 'stop_supply' })
+      elseif self.control.data.disposed_of_poison then
+        table.insert(dialogue.start.options, { text = "Are you supplying poison to the inn?", go_to = 'are_you_supply' })
+        dialogue.are_you_supply = {
+          text = "Well... Why, yes. But what business have you with this?",
+          options = {
+            { text = "Please, stop supplying poison to the inn.", go_to = 'stop_supply' },
+            { text = "No business at all.", go_to = 'end' },
+          },
+          callback = function()
+            self.control.data.talk_to_picard = true
+          end
+        }
+      end
     end
   end
 
@@ -120,7 +134,9 @@ function PoisonSalesman:on_interact(interactor_name)
   end
 
 
+
   sfml_dialogue(dialogue)
 end
+
 
 return PoisonSalesman

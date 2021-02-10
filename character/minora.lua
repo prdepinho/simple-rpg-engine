@@ -1,6 +1,6 @@
 
-local animations = require "scripts.animations"
-local rules = require "character.rules"
+local rules = require "scripts.rules"
+local animations = require "character.animations"
 local Witch = require "character.witch"
 
 local Minora = Witch:new()

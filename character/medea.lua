@@ -69,21 +69,11 @@ function Medea:on_interact(interactor_name)
       }
     },
     who = {
-      text = function()
-        if self.control.characters.player.data.stats.ability.cha >= 15 then
-          return "(Cha 15) My name is Medea. I was a princess from Callipygia and came to Normindia to marry a man I did not love."
-        else
-          return "I am an unfortunate of destiny."
-        end
-      end,
+      text = "Do not ask of me. I am but a wretched soul."
       go_to = 'end'
-    }
-  }
-
-  if self.control.data.lead_to_mountain then
-    table.insert(dialogue.start.options, { text = "Are you Medea, who escaped the castle?", go_to = 'are_you' })
-    dialogue.are_you = {
-      text = "I am. Woe to me, who bewitched my love and now I am deprived of both my life and my soul! I saw the witch of the woods and cast a spell on Jason to love me, but he became a dragon and I became a witch. There is no one more wretched than I.",
+    },
+    tell_story = {
+      text = "I learned from the witch of the woods a spell to make Jason love me. I paid a high price and what was my reward? Jason became a dragon! There is no one more wretched than I.",
       go_to = function()
         if self.control:is_companion('philip') then
           return 'philip_responds'
@@ -94,14 +84,13 @@ function Medea:on_interact(interactor_name)
         end
       end
     }
-    dialogue.choices = {
-      text = "",
-      options = {
-        { text = "The dragon must die.", go_to = 'dragon_dies' },
-        { text = "You and the dragon must die.", go_to = 'couple_dies' },
-        { text = "There must be some other way!", go_to = 'other_way' },
-        { text = "I don't want to meddle with this issue.", go_to = 'no_thanks' },
-      }
+  }
+
+  if self.control.data.lead_to_mountain then
+    table.insert(dialogue.start.options, { text = "Are you Medea, who escaped the castle?", go_to = 'are_you' })
+    dialogue.are_you = {
+      text = "I am. Woe to me, who bewitched my love and now I am deprived of both my life and my soul!",
+      go_to = 'tell_story'
     }
     dialogue.philip_responds = {
       text = "(Philip responds) Oh, no! I don't what I just heard! All is lost!",
@@ -118,17 +107,54 @@ function Medea:on_interact(interactor_name)
       go_to = 'choices'
     }
 
+    dialogue.choices = {
+      text = "Alas there is no way! The enchantment is too powerful to dispell. Only a miracle.",
+      options = {
+        { text = "The dragon must die.", go_to = 'dragon_dies' },
+        { text = "You and the dragon must die.", go_to = 'couple_dies' },
+        { text = "I don't want to meddle with this issue.", go_to = 'no_thanks' },
+      }
+    }
+
+    if false then
+      table.insert(dialogue.choices, { text = "There must be some other way!", go_to = 'other_way' })
+      dialogue.other_way = {
+        text = "There must be a way.",
+        go_to = 'end'
+      }
+    end
+
     dialogue.dragon_dies = {
-      text = "",
-      go_to = 'end'
+      text = "The dragon must die.",
+      go_to = 'let_me_go_with_you'
     }
     dialogue.couple_dies = {
-      text = "",
-      go_to = 'end'
+      text = "You and your lover will die for what you've done.",
+      go_to = 'die_now'
     }
-    dialogue.other_way = {
-      text = "",
-      go_to = 'end'
+
+    dialogue.let_me_go_with_you = {
+      text = "Let me go with you. I want to see him one last time.",
+      options = {
+        { text = "Come.", go_to = 'come' },
+        { text = "You will die now.", go_to = 'die_now' },
+      }
+    }
+
+    dialogue.come = {
+      text = "Let's go.",
+      go_to = 'end',
+      callback = function()
+        self.control.data.medea_see_jason_one_last_time = true
+        self.control:set_companion(self.name)
+      end
+    }
+    dialogue.die_now = {
+      text = "Fine! But I will not give myself up freely.",
+      go_to = 'end',
+      callback = function()
+        self.data.enemy = true
+      end
     }
 
     dialogue.no_thanks = {
@@ -178,12 +204,6 @@ function Medea:on_interact(interactor_name)
         self.control.data.sir_cavalion_left = true
       end
     }
-  end
-
-  if self.control.data.know_medea_is_witchs_apprentice then
-  end
-
-  if self.control.data.know_jason_is_dragon then
   end
 
 
@@ -237,7 +257,62 @@ function Medea:on_interact(interactor_name)
     }
   end
 
+
+
+  if self.control.data.know_medea_is_witchs_apprentice then
+    table.insert(dialogue.start.options, { text = "Medea, I know you are a witch.", go_to = 'you_are_a_witch' })
+    dialogue.you_are_a_witch = {
+      text = "Very bold of you! Have you come to lose a life, puss?",
+      options = {
+        { text = "I've come to help.", go_to = 'come_to_help' },
+        { text = "I've come for your head.", go_to = 'come_for_head' },
+        { text = "I don't want trouble.", go_to = 'no_trouble' },
+      }
+    }
+    dialogue.come_to_help = {
+      text = "I have no hope left.",
+      go_to = 'tell_story'
+    }
+    dialogue.come_for_head = {
+      text = "You will regret that.",
+      go_to = 'end',
+      callback = function()
+        self.data.enemy = true
+      end
+    }
+    dialogue.no_trouble = {
+      text = "Then leave me alone.",
+      go_to = 'end'
+    }
+  end
+
+  if self.control.data.know_jason_is_dragon then
+    table.insert(dialogue.start.options, { text = "Medea, I know about Jason.", go_to = 'about_jason' })
+    dialogue.about_jason = {
+      text = "(Medea starts crying)",
+      go_to = 'tell_story'
+    }
+  end
+
   if self.control:is_companion('philip') then
+    dialogue.start = {
+      text = "(Philip says) Princess Medea! We found you!",
+      go_to = 'medea_responds',
+      callback = function()
+      end
+    }
+    dialogue.medea_response = {
+      text = "(Medea responds) Philip? How did you find me?",
+      go_to = 'philip_responds'
+    }
+    dialogue.philip_responds = {
+      text = "(Philip responds) It metters not. Where is prince Jason?",
+      go_to = 'where_is_jason'
+    }
+    dialogue.where_is_jason = {
+      text = "Alas! He is gone!",
+      go_to = 'tell_story'
+    }
   end
 
   sfml_dialogue(dialogue)
@@ -246,6 +321,27 @@ end
 function Medea:on_death()
   Witch.on_death(self)
   self.control.data.medea_dead = true
+
+  if self.control.data.medea_will_kill_jason and then
+    for index, name in ipairs(sfml_get_characters_on_map()) do
+      if name == 'dragon' and not self.control.characters.dragon.data.stats.status.dead then
+        local dialogue = {
+          start = {
+            text = "(The dragon cries a dreadful roar) No!!",
+            go_to = 'end',
+            callback = function()
+              sfml_center_camera('dragon')
+            end
+          },
+          on_end = function()
+            sfml_center_camera('player')
+          end
+        }
+        sfml_dialogue(dialogue)
+        break;
+      end
+    end
+  end
 end
 
 return Medea

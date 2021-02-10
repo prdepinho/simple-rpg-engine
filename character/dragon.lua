@@ -136,7 +136,46 @@ function Dragon:on_interact(interactor_name)
     }
   end
 
-  if self.control:is_companion('sir_cavalion') then
+  if self.control:is_companion('medea') then
+    dialogue.start = {
+      text = "(Medea speaks to the dragon) Jason! It is me. Don't you recognize me?",
+      go_to = 'medea_talked',
+      callback = function()
+        sfml_center_camera('medea')
+        sfml_start_animation('medea', 'cast')
+      end
+    }
+    dialogue.medea_talked = {
+      text = "(The dragon responds) Medea, look away! I don't want to be seen like this.",
+      go_to = 'medea_responds',
+      callback = function()
+        sfml_center_camera('dragon')
+      end
+    }
+    dialogue.medea_responds = {
+      text = "(Medea responds) We came to put you out of your misery.",
+      go_to = 'put_out',
+      callback = function()
+        sfml_center_camera('medea')
+      end
+    }
+    dialogue.put_out = {
+      text = "(The dragon responds) No! You cannot do this to me!",
+      go_to = 'sorry',
+      callback = function()
+        sfml_center_camera('dragon')
+      end
+    }
+    dialogue.sorry = {
+      text = "I'm sorry, Jason.",
+      go_to = 'end',
+      callback = function()
+        self.control.data.medea_will_kill_jason = true
+        self.data.enemy = true
+        sfml_center_camera('medea')
+      end
+    }
+  elseif self.control:is_companion('sir_cavalion') then
     dialogue.start = {
       text = "(Sir Cavalion reaches for his weapons and speaks) Dragon! Let Iltormyr forsake my soul if I am to let you, foul snake, breathing fire on this land! Prepare yourself to return to the abyss!",
       go_to = 'dragon_response',
@@ -160,17 +199,35 @@ function Dragon:on_interact(interactor_name)
         sfml_center_camera('sir_cavalion')
       end
     }
-    dialogue.on_end = function()
-      sfml_center_camera('player')
-    end
   end
 
+  dialogue.on_end = function()
+    sfml_center_camera('player')
+  end
   sfml_dialogue(dialogue)
 end
 
 function Dragon:on_death()
   Character.on_death(self)
   self.control.data.dragon_dead = true
+
+  if self.control:is_companion('medea') then
+    local dialogue = {
+      start = {
+        text = "I will avenge you, my love!",
+        go_to = 'end',
+        callback = function()
+          sfml_center_camera('medea')
+          self.control:remove_companion('medea')
+          self.control.characters.medea.data.enemy = true
+        end
+      },
+      on_end = function()
+        sfml_center_camera('player')
+      end
+    }
+    sfml_dialogue(dialogue)
+  end
 end
 
 return Dragon
