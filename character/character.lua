@@ -117,22 +117,24 @@ end
 function Character:on_idle()
   if self.data.stats.status.fear then
     local feared = sfml_get_character_position(self.data.feared_character)
-    local position = sfml_get_character_position(self.name)
+    if feared then
+      local position = sfml_get_character_position(self.name)
 
-    local delta_x = position.x - feared.x
-    if delta_x ~= 0 then
-      delta_x = delta_x / math.abs(delta_x)
-    end
-    local delta_y = position.y - feared.y
-    if delta_y ~=0 then
-      delta_y = delta_y / math.abs(delta_y)
-    end
-    local dst = {
-      x = position.x + delta_x,
-      y = position.y + delta_y
-    }
+      local delta_x = position.x - feared.x
+      if delta_x ~= 0 then
+        delta_x = delta_x / math.abs(delta_x)
+      end
+      local delta_y = position.y - feared.y
+      if delta_y ~=0 then
+        delta_y = delta_y / math.abs(delta_y)
+      end
+      local dst = {
+        x = position.x + delta_x,
+        y = position.y + delta_y
+      }
 
-    sfml_move(self.name, dst.x, dst.y)
+      sfml_move(self.name, dst.x, dst.y)
+    end
     return
   end
 

@@ -39,12 +39,22 @@ function Imp:create()
   stats.armor = { code = self.name .. "_armor", name = "imp_scales", type = "armor" }
 end
 
+function Imp:on_enter()
+  Character.on_enter(self)
+  self.fear_uses = 2
+end
+
 function Imp:enemy_procedure()
   local target = self.control:closest_ally_on_sight(self.name)
   if target then
-    if rules.roll_dice('d4') == 1 then
-      local pos = sfml_get_character_position(target)
-      self:cast_magic('fear', pos.x, pos.y, rules.spell.fear.range_radius, rules.spell.fear.effect_radius)
+    if self.fear_uses > 0 then
+      if rules.roll_dice('d6') == 1 then
+        local pos = sfml_get_character_position(target)
+        self:cast_magic('fear', pos.x, pos.y, rules.spell.fear.range_radius, rules.spell.fear.effect_radius)
+        self.fear_uses = self.fear_uses - 1
+      else
+        self:attack(target)
+      end
     else
       self:attack(target)
     end
@@ -63,9 +73,14 @@ end
 function Imp:ally_procedure()
   local target = self.control:closest_enemy_on_sight(self.name)
   if target then
-    if rules.roll_dice('d4') == 1 then
-      local pos = sfml_get_character_position(target)
-      self:cast_magic('fear', pos.x, pos.y, rules.spell.fear.range_radius, rules.spell.fear.effect_radius)
+    if self.fear_uses > 0 then
+      if rules.roll_dice('d6') == 1 then
+        local pos = sfml_get_character_position(target)
+        self:cast_magic('fear', pos.x, pos.y, rules.spell.fear.range_radius, rules.spell.fear.effect_radius)
+        self.fear_uses = self.fear_uses - 1
+      else
+        self:attack(target)
+      end
     else
       self:attack(target)
     end
