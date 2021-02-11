@@ -932,6 +932,22 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			a_button_pressed = true;
 			a_button_delta = 0.f;
 			break;
+		case Control::LT:
+			log_box_scrolling_down = true;
+			log_box.scroll_down(1);
+			scrolling_count = 0.f;
+			break;
+		case Control::RT:
+			log_box_scrolling_up = true;
+			log_box.scroll_up(1);
+			scrolling_count = 0.f;
+			break;
+		case Control::LB:
+			scroll_left_select_item();
+			break;
+		case Control::RB:
+			scroll_right_select_item();
+			break;
 		}
 		switch (InputHandler::get_input_released(event)) {
 		case Control::A:
@@ -947,6 +963,14 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				}
 			}
 			break;
+		case Control::LT:
+			log_box_scrolling_down = false;
+			scrolling_count = 0.f;
+			break;
+		case Control::RT:
+			log_box_scrolling_up = false;
+			scrolling_count = 0.f;
+			break;
 		}
 	}
 
@@ -957,14 +981,6 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				set_player_control(true);
 				waiting = false;
 			}
-			break;
-		case Control::LT:
-			log_box_scrolling_down = false;
-			scrolling_count = 0.f;
-			break;
-		case Control::RT:
-			log_box_scrolling_up = false;
-			scrolling_count = 0.f;
 			break;
 		}
 
@@ -1014,24 +1030,8 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				}
 #endif
 				break;
-			case Control::LB:
-				scroll_left_select_item();
-				break;
-			case Control::RB:
-				scroll_right_select_item();
-				break;
 			case Control::X:
 				use_selected_item();
-				break;
-			case Control::LT:
-				log_box_scrolling_down = true;
-				log_box.scroll_down(1);
-				scrolling_count = 0.f;
-				break;
-			case Control::RT:
-				log_box_scrolling_up = true;
-				log_box.scroll_up(1);
-				scrolling_count = 0.f;
 				break;
 			case Control::RS:
 				camera_follow = !camera_follow;

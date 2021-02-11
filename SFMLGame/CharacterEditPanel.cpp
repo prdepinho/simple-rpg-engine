@@ -238,7 +238,7 @@ void CharacterEditPanel::create() {
 		y = name_label.get_y();
 		illustration.texture.loadFromFile(Path::ASSETS + "mumu.png");
 		illustration.sprite = sf::Sprite(illustration.texture);
-		illustration.sprite.setPosition(x, y);
+		illustration.sprite.setPosition((float)x, (float)y);
 	}
 
 	Panel::create();

@@ -1,6 +1,7 @@
 
 #include "InputHandler.h"
 #include "GameScreen.h"
+#include "Game.h"
 
 InputHandler::InputHandler() {
 	// std::map<int, Control> control_map {
@@ -209,11 +210,9 @@ Control InputHandler::_get_joystick_input_released(sf::Event &event) {
 			if (zaxis_released) {
 				if (event.joystickMove.position < -50) {
 					zaxis_released = false;
-					return Control::RT;
 				}
 				if (event.joystickMove.position >= 50) {
 					zaxis_released = false;
-					return Control::LT;
 				}
 			}
 			else {
