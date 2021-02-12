@@ -40,7 +40,7 @@ function NeatherWorld:player_elf_spawn_point(event, x, y, character_name, object
   if event == 'step_on' and character_name == 'player' then
     if self.control.data.elf_ally then
       if self.control.data.elves_win then
-        sfml_change_map('tower_top:middle_imp_place')
+        sfml_change_map('polis:elf_place')
       else
         sfml_text_box("You may go back to your world after defeating the imps.")
       end
@@ -64,7 +64,7 @@ function NeatherWorld:player_imp_spawn_point(event, x, y, character_name, object
       end
     elseif self.control.data.elf_ally then
       if self.control.data.elves_win then
-        sfml_change_map('tower_top:middle_imp_place')
+        sfml_change_map('polis:elf_place')
       else
         sfml_text_box("You may go back to your world after defeating the imps.")
       end

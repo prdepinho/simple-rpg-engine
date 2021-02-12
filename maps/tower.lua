@@ -102,6 +102,9 @@ function Tower:crystal_ball(event, x, y, character_name, object_name)
       dialogue.kill = {
         text = "You do? Wait, you are not really the fatass are you? Well, since you are so willing to help, come. I will take care of him afterwards.",
         go_to = 'yes',
+        callback = function()
+          self.control.data.imps_know_mumu = true
+        end
       }
 
     end

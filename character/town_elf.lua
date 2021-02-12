@@ -62,6 +62,10 @@ function TownElf:on_interact(interactor_name)
     }
 
     if self.control.data.witch_elf_dust_quest and not self.control.data.got_dust_from_town_elf then
+      if not dialogue.start.options then
+        dialogue.start.options = { { text = "I have to go.", go_to = 'end' }, }
+        dialogue.start.go_to = nil
+      end
       table.insert(dialogue.start.options, { text = "Can I have some dust from your wings?", go_to = 'ask_for_dust' })
       dialogue.ask_for_dust = {
         text = "You want what? But why?",
@@ -108,12 +112,24 @@ function TownElf:on_interact(interactor_name)
     end
 
     if self.control.data.know_of_fighting_elves then
+      if not dialogue.start.options then
+        dialogue.start.options = { { text = "I have to go.", go_to = 'end' }, }
+        dialogue.start.go_to = nil
+      end
       dialogue.come_with_us = {
         text = "Are you ready to come with us?",
         options = {
-          { text = "Not yet.", go_to = 'yes' },
-          { text = "Let's go.", go_to = 'end' },
+          { text = "Not yet.", go_to = 'not_yet' },
+          { text = "Let's go.", go_to = 'yes' },
         }
+      }
+      if self.control.data.took_silverware and not self.control.data.gave_elves_silverware then
+        table.insert(dialogue.come_with_us.options, { text = "I took the silverware from the castle.", go_to = 'took_silver' })
+      end
+
+      dialogue.not_yet = {
+        text = "Please, do be quick.",
+        go_to = 'end'
       }
       dialogue.yes = {
         text = "You are wrapped to the neather world. The imps are coming. Protect the cristal from the invading horde and defeat the imps.",
@@ -125,7 +141,7 @@ function TownElf:on_interact(interactor_name)
         end
       }
       if not self.control.data.joined_elves then
-        table.insert(dialogue.start.options
+        table.insert(dialogue.start.options,
           { text = "A gang of imps is going to attack the elves.", go_to = 'attack' }
         )
         dialogue.attack = {
@@ -138,16 +154,23 @@ function TownElf:on_interact(interactor_name)
       else
         dialogue.start = dialogue.come_with_us
       end
-      if self.control.data.took_silverware then
+      if self.control.data.took_silverware and not self.control.data.gave_elves_silverware then
         table.insert(dialogue.start.options,
           { text = "I took the silverware from the castle.", go_to = 'took_silver' }
         )
-        dialogue.silver = {
+        dialogue.took_silver = {
           text = "Great! We shall have great advantage against our enemy using these weapons.",
-          go_to = 'end',
+          go_to = 'come_with_us_two',
           callback = function()
             self.control.data.gave_elves_silverware = true
           end
+        }
+        dialogue.come_with_us_two = {
+          text = "Are you ready to come with us?",
+          options = {
+            { text = "Not yet.", go_to = 'not_yet' },
+            { text = "Let's go.", go_to = 'yes' },
+          }
         }
       end
     end

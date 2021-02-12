@@ -36,12 +36,19 @@ end
 
 function MiddleImp:on_interact(interactor_name)
   local dialogue = {
-    start = {
-      text = "Nice to meet you, feline friend. Let's go skin some elves. Hahahahah!",
+    meeting = {
+      text = "Well, as long as we do the job it doesn't matter if the pig is involved. I prefer it this way. No delay, we are ready for battle.",
       options = {
         { text = "Just a minute.", go_to = 'wait' },
         { text = "Let's go!", go_to = 'travel' },
-      }
+      },
+      callback = function()
+        self.control.data.imps_know_mumu = true
+      end
+    },
+    lets_go = {
+      text = "Alright! You have the spirit! Hahahahah!",
+      go_to = 'travel'
     },
     wait = {
       text = "Sure. Don't be long.",
@@ -57,6 +64,24 @@ function MiddleImp:on_interact(interactor_name)
       end
     }
   }
+
+  if not self.control.data.imps_know_mumu then
+    dialogue.start = {
+      text = "Wait, who are you?",
+      options = {
+        { text = "I'm Mumu.", go_to = 'meeting' },
+        { text = "We have no time. Let's go!", go_to = 'lets_go' },
+      }
+    }
+  else
+    dialogue.start = {
+      text = "Nice to meet you, feline friend. Let's go skin some elves. Hahahahah!",
+      options = {
+        { text = "Just a minute.", go_to = 'wait' },
+        { text = "Let's go!", go_to = 'travel' },
+      }
+    }
+  end
   sfml_dialogue(dialogue)
 end
 
