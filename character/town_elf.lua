@@ -19,6 +19,10 @@ function TownElf:create()
 end
 
 function TownElf:on_interact(interactor_name)
+
+  local index = self.control:find_in_inventory_by_name('player', 'silver_cutlery')
+  local took_silverware = index ~= nil
+
   if not self.data.interacted then
     local dialogue = {
       start = {
@@ -123,7 +127,7 @@ function TownElf:on_interact(interactor_name)
           { text = "Let's go.", go_to = 'yes' },
         }
       }
-      if self.control.data.took_silverware and not self.control.data.gave_elves_silverware then
+      if took_silverware and not self.control.data.gave_elves_silverware then
         table.insert(dialogue.come_with_us.options, { text = "I took the silverware from the castle.", go_to = 'took_silver' })
       end
 
@@ -154,7 +158,7 @@ function TownElf:on_interact(interactor_name)
       else
         dialogue.start = dialogue.come_with_us
       end
-      if self.control.data.took_silverware and not self.control.data.gave_elves_silverware then
+      if took_silverware and not self.control.data.gave_elves_silverware then
         table.insert(dialogue.start.options,
           { text = "I took the silverware from the castle.", go_to = 'took_silver' }
         )
@@ -163,6 +167,7 @@ function TownElf:on_interact(interactor_name)
           go_to = 'come_with_us_two',
           callback = function()
             self.control.data.gave_elves_silverware = true
+            self.control:remove_item_from_inventory(index, 'player')
           end
         }
         dialogue.come_with_us_two = {
