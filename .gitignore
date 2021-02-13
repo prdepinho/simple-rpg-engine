@@ -10,4 +10,7 @@ build/
 *.zip
 *.aps
 *.o
+*.iobj
+*.ipdb
+*.pdb
 out/

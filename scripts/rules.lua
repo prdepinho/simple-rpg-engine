@@ -236,6 +236,8 @@ function rules.new_character()
       {code = "", name = "no_item", type = "item"}, 
       {code = "", name = "no_item", type = "item"}, 
       {code = "", name = "no_item", type = "item"}, 
+      {code = "", name = "no_item", type = "item"}, 
+      {code = "", name = "no_item", type = "item"}, 
     },
     status = { 
       -- when not nil       = { duration = 0, challenge_level = 0 } -- duration -1 is permanent

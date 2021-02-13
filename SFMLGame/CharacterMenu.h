@@ -100,7 +100,7 @@ private:
 	Character *character;
 	std::vector<ItemButton> buttons;
 	int inventory_width = 2;
-	int inventory_height = 4;
+	int inventory_height = 5;
 	int button_size = 20;
 	int cursor;
 	InputHandler input_handler;

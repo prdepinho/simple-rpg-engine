@@ -55,7 +55,10 @@ function DragonLair:talk_to_dragon(event, x, y, character_name, object_name)
             local dialogue = {
               start = {
                 text = "For your horror a huge dragon stands before you.",
-                go_to = 'end'
+                go_to = 'end',
+                callback = function()
+                  sfml_center_camera('dragon')
+                end
               },
               on_end = function()
                 sfml_center_camera('dragon')

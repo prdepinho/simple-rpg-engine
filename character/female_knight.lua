@@ -89,7 +89,7 @@ function FemaleKnight:on_interact(interactor_name)
       }
     }
     dialogue.left = {
-      text = "Yes. Philip stayed in the castle, prince Jason's squire. He is usually in the stables.",
+      text = "Yes. Philip stayed in the castle, prince Jason's squire. He is usually in the stables watching the animals.",
       options = {
         { text = "Thank you.", go_to = 'end' },
         { text = "Where did they go?", go_to = 'where' },

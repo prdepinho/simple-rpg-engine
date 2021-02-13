@@ -37,7 +37,7 @@ function WitchOfTheWoods:create()
   stats.inventory[5] = { code = self.name .. "_fireball", name = "fireball", type = "spell", quantity = 3 }
   stats.inventory[6] = { code = self.name .. "_invisibility", name = "invisibility", type = "spell", quantity = 3 }
   stats.inventory[7] = { code = self.name .. "_fear", name = "fear", type = "spell", quantity = 3 }
-  stats.inventory[8] = { code = "witch_key", name = "witch_key", type = "key" }
+  stats.inventory[8] = { code = "witch_key", name = "witch_key", type = "item" }
   stats.weapon = stats.inventory[1]
 
 end
@@ -311,9 +311,7 @@ function WitchOfTheWoods:on_interact(interactor_name)
       table.insert(dialogue.intro.options, { text = "Mistress, please, teach me a new spell." , go_to = 'murder_quest' })
       dialogue.murder_quest = {
         text = "If you want to learn a new spell, you must dispose of a colleague of yours. My last student came to me, learned from me and abandoned her duties. I know she is hiding in the mountains. Kill Medea, bring her head to me and I will teach you your next spell.",
-        options = {
-          { text = "I will not murder a person.", go_to = 'refuse_murder' },
-        },
+        options = {},
         callback = function()
           self.control.data.know_medea_is_witchs_apprentice = true
         end
@@ -328,6 +326,7 @@ function WitchOfTheWoods:on_interact(interactor_name)
             local quantity = math.max(rules.arcane_spell_bonus(self.control.characters.player.data.stats) + 1, 1)
             self.control:add_item_to_inventory('player', self.control:next_item_code(), 'poison', 'spell', quantity)
             self.control:add_item_to_inventory('player', self.control:next_item_code(), 'invisibility', 'spell', quantity)
+            self.control.data.witch_head_quest = true
             self.control.data.witch_head_quest_completed = true
             self.control.data.learned_poison = true
             self.control.data.learned_invisibility = true
@@ -336,6 +335,7 @@ function WitchOfTheWoods:on_interact(interactor_name)
         }
       else
         table.insert(dialogue.murder_quest.options, { text = "Yes, ma'am.", go_to = 'accept_murder' })
+        table.insert(dialogue.murder_quest.options, { text = "I will not murder a person.", go_to = 'refuse_murder' })
       end
 
       dialogue.accept_murder = {
@@ -551,182 +551,197 @@ function WitchOfTheWoods:on_interact(interactor_name)
       dialogue.start = dialogue.intro
     end
 
+  end  -- witch_apprentice
 
 
-    -- interactions when acompanied by other characters
 
-    
-    if self.control.data.lead_to_forest then
-      table.insert(dialogue.start.options, { text = "I am looking for a couple of princes.", go_to = 'looking' })
-      dialogue.looking = {
-        text = "They came here a few weeks prior seeking my wisdom. Did something happen to them?",
-        options = {
-          { text = "Never mind.", go_to = 'never_mind' },
-          { text = "They disappeared.", go_to = 'disappeared' },
-        }
+  -- interactions when acompanied by other characters
+  if self.control.data.lead_to_forest then
+    print('lead to forest')
+    table.insert(dialogue.start.options, { text = "I am looking for a couple of princes.", go_to = 'looking' })
+    dialogue.looking = {
+      text = "They came here a few weeks prior seeking my wisdom. Did something happen to them?",
+      options = {
+        { text = "Never mind.", go_to = 'never_mind' },
+        { text = "They disappeared.", go_to = 'disappeared' },
       }
-      dialogue.never_mind = {
-        text = "Suit yourself.",
-        go_to = 'end'
+    }
+    dialogue.never_mind = {
+      text = "Suit yourself.",
+      go_to = 'end'
+    }
+    dialogue.disappeared = {
+      text = function()
+        if self.control.characters.player.data.stats.ability.cha >= 15 then
+          self.control.data.know_medea_is_witchs_apprentice = true
+          self.control.data.know_jason_is_dragon = true
+          self.control.data.lead_to_mountain = true
+          return "(Cha 15) Well, I'll help you. Your princess was my apprentice for a few days. She transformed your prince Jason into a dragon and they fled into the mountains. There is nothing you or I can do to revert that. They are lost forever."
+        else
+          self.control.data.lead_to_mountain = true
+          return "Poor thing. Let me help you. I think your princess is in the mountains. If you look there, you perhaps may find her."
+        end
+      end,
+      go_to = 'end'
+    }
+  end  -- lead_to_forest
+
+  if self.control.data.lead_to_witch then
+    print('lead to witch')
+    table.insert(dialogue.start.options, { text = "I came for the princes who consulted with you.", go_to = 'came_for' })
+    dialogue.came_for = {
+      text = "What about them? It's none of your business what's between my clients and me.",
+      options = {
+        { text = "I see.", go_to = 'end' },
       }
-      dialogue.disappeared = {
-        text = function()
-          if self.control.characters.player.data.stats.ability.cha >= 15 then
-            self.control.data.know_medea_is_witchs_apprentice = true
-            self.control.data.know_jason_is_dragon = true
-            self.control.data.lead_to_mountain = true
-            return "(Cha 15) Well, I'll help you. Your princess was my apprentice for a few days. She transformed your prince Jason into a dragon and they fled into the mountains. There is nothing you or I can do to revert that. They are lost forever."
-          else
-            self.control.data.lead_to_mountain = true
-            return "Poor thing. Let me help you. I think your princess is in the mountains. If you look there, you perhaps may find her."
-          end
-        end,
-        go_to = 'end'
+    }
+    if self.control.characters.player.data.stats.ability.cha >= 15 then
+      table.insert(dialogue.came_for.options, { text = "You are going to answer my questions!", go_to = 'intimidate' })
+      dialogue.intimidate = {
+        text = "Hmph! Have it your way. She is in the mountains. Go after her if you want. Or don't. To me it's the same.",
+        go_to = 'end',
+        callback = function()
+          self.control.data.lead_to_mountain = true
+        end
+      }
+    end
+    if self.control.characters.player.data.stats.ability.cha >= 13 then
+      table.insert(dialogue.came_for.options, { text = "Please, it's very important.", go_to = 'beg' })
+      dialogue.beg = {
+        text = "Well, if you really want to know, then I'll tell you. She is in the mountains. Now, go to her.",
+        go_to = 'end',
+        callback = function()
+          self.control.data.lead_to_mountain = true
+        end
       }
     end
 
-    if self.control.data.lead_to_witch then
-      table.insert(dialogue.start.options, { text = "I came for the princes who consulted with you.", go_to = 'came_for' })
-      dialogue.came_for = {
-        text = "What about them? It's none of your business what's between my clients and me.",
-        options = {
-          { text = "I see.", go_to = 'end' },
-        }
+    if self.control.data.know_medea_is_witchs_apprentice and not self.control.data.medea_dead then
+      table.insert(dialogue.start.options, { text = "The princess was your old apprentice, right?", go_to = 'princess_was_apprentice' })
+      dialogue.princess_was_apprentice = {
+        text = "She was, I guess. I care not. She did me wrong and deserves retribution.",
+        go_to = 'end'
       }
-      if self.control.characters.player.data.stats.ability.cha >= 15 then
-        table.insert(dialogue.came_for.options, { text = "You are going to answer my questions!", go_to = 'intimidate' })
-        dialogue.intimidate = {
-          text = "Hmph! Have it your way. She is in the mountains. Go after her if you want. Or don't. To me it's the same.",
-          go_to = 'end',
+      if self.control:is_companion('philip') then
+        dialogue.princess_was_apprentice.go_to = 'philip_doesnt_believe'
+        dialogue.philip_doesnt_believe = {
+          text = function()
+            if self.control:is_companion('female_knight') then
+              return "(Philip says) I don't believe princess Medea was a witch! (Lady Nestoria says) Where can we find Medea?"
+            else
+              return "(Philip says) I don't believe princess Medea was a witch!"
+            end
+          end,
+          go_to = 'yes_she_was',
+        }
+        dialogue.yes_she_was = {
+          text = "(The witch responds) Yes, she was. Now, if you want to have her, go to the mountains where she hides.",
+          go_to = function()
+            if self.control.data.witch_apprentice then
+              return 'do_your_job'
+            else
+              return 'end'
+            end
+          end,
           callback = function()
             self.control.data.lead_to_mountain = true
           end
         }
-      end
-      if self.control.characters.player.data.stats.ability.cha >= 13 then
-        table.insert(dialogue.came_for.options, { text = "Please, it's very important.", go_to = 'beg' })
-        dialogue.beg = {
-          text = "Well, if you really want to know, then I'll tell you. She is in the mountains. Now, go to her.",
-          go_to = 'end',
-          callback = function()
-            self.control.data.lead_to_mountain = true
-          end
+        dialogue.do_you_job = {
+          text = "And I expect you do your job, worm.",
+          go_to = 'end'
         }
       end
 
-      if self.control.data.know_medea_is_witchs_apprentice and not self.control.data.medea_dead then
-        table.insert(dialogue.start.options, { text = "The princess was your old apprentice, right?", go_to = 'princess_was_apprentice' })
-        dialogue.princess_was_apprentice = {
-          text = "She was, I guess. I care not. She did me wrong and deserves retribution.",
+      if self.control.data.medea_dead then
+        table.insert(dialogue.start.options, { text = "The woman I killed was the princess, right?", go_to = 'killed_the_princess' })
+        dialogue.killed_the_princess = {
+          text = "She was and you did well by killing her, my minion.",
           go_to = 'end'
         }
-        if self.control:is_companions('philip') then
-          dialogue.princess_was_apprentice.go_to = 'philip_doesnt_believe'
-          dialogue.philip_doesnt_believe = {
+        if self.control:is_companion('philip') then
+          dialogue.killed_the_princess.go_to = 'philips_reaction'
+          dialogue.philips_reaction = {
+            text = "(Philip interjects) You did what? You killed princess Medea! No doubt you killed prince Jason as well!",
+            options = {
+              { text = "I didn't know she was the princess.", go_to = 'i_didnt_know' },
+              { text = "I did it and I would do it again.", go_to = 'i_did_it' },
+            }
+          }
+          dialogue.i_did_it = {
             text = function()
-              if self.control:is_companions('female_knight') then
-                return "(Philip says) I don't believe princess Medea was a witch! (Lady Nestoria says) Where can we find Medea?"
+              if self.control:is_companion('female_knight') then
+                return "Prince Jason, I will avenge you! (Lady Nestoria says drawing her sword) You are but a witch your self. Prepare to die."
               else
-                return "(Philip says) I don't believe princess Medea was a witch!"
+                return "Prince Jason, I will avenge you!"
               end
             end,
-            go_to = 'yes_she_was',
-          }
-          dialogue.yes_she_was = {
-            text = "(The witch responds) Yes, she was. Now, if you want to have her, go to the mountains where she hides. And I expect you do your job, worm.",
             go_to = 'end',
             callback = function()
-              self.control.data.lead_to_mountain = true
+              self.control:remove_companion('philip')
+              self.control.characters.philip.data.enemy = true
+              if self.control:is_companion('female_knight') then
+                self.control:remove_companion('female_knight')
+                self.control.characters.female_knight.data.enemy = true
+              end
+            end
+          }
+          dialogue.i_didnt_know = {
+            text = function()
+              if self.control:is_companion('female_knight') then
+                return "But still you killed her! (Lady Nestoria says drawing her sword) Witch! You brought us to a trap. I will have your head at the point of a pike."
+              else
+                return "But still you killed her!"
+              end
+            end,
+            go_to = 'end',
+            callback = function()
+              self.control:remove_companion('philip')
+              self.control.characters.philip.data.enemy = true
+              if self.control:is_companion('female_knight') then
+                self.control:remove_companion('female_knight')
+                self.control.characters.female_knight.data.enemy = true
+              end
             end
           }
         end
-
-        if self.control.data.medea_dead then
-          table.insert(dialogue.start.options, { text = "The woman I killed was the princess, right?", go_to = 'killed_the_princess' })
-          dialogue.killed_the_princess = {
-            text = "She was and you did well by killing her, my minion.",
-            go_to = 'end'
-          }
-          if self.control:is_companions('philip') then
-            dialogue.killed_the_princess.go_to = 'philips_reaction'
-            dialogue.philips_reaction = {
-              text = "(Philip interjects) You did what? You killed princess Medea! No doubt you killed prince Jason as well!",
-              options = {
-                { text = "I didn't know she was the princess.", go_to = 'i_didnt_know' },
-                { text = "I did it and I would do it again.", go_to = 'i_did_it' },
-              }
-            }
-            dialogue.i_did_it = {
-              text = function()
-                if self.control:is_companion('female_knight') then
-                  return "Prince Jason, I will avenge you! (Lady Nestoria says drawing her sword) You are but a witch your self. Prepare to die."
-                else
-                  return "Prince Jason, I will avenge you!"
-                end
-              end,
-              go_to = 'end',
-              callback = function()
-                self.control:remove_companion('philip')
-                self.control.characters.philip.data.enemy = true
-                if self.control:is_companion('female_knight') then
-                  self.control:remove_companion('female_knight')
-                  self.control.characters.female_knight.data.enemy = true
-                end
-              end
-            }
-            dialogue.i_didnt_know = {
-              text = function()
-                if self.control:is_companion('female_knight') then
-                  return "But still you killed her! (Lady Nestoria says drawing her sword) Witch! You brought us to a trap. I will have your head at the point of a pike."
-                else
-                  return "But still you killed her!"
-                end
-              end,
-              go_to = 'end',
-              callback = function()
-                self.control:remove_companion('philip')
-                self.control.characters.philip.data.enemy = true
-                if self.control:is_companion('female_knight') then
-                  self.control:remove_companion('female_knight')
-                  self.control.characters.female_knight.data.enemy = true
-                end
-              end
-            }
-          end
-        end
       end
     end
+  end  -- lead_to_witch
 
-    if self.control:is_companion('philip') then
-    end
+  -- if self.control:is_companion('philip') then
+  --   print('philip is here')
+  --   dialogue.start = {
+  --     text = "",
+  --     go_to = ''
+  --   }
+  -- end  -- companion philip
 
-    if self.control:is_companion('medea') then
-      dialogue.start = {
-        text = "Medea, you bitch! How dare you return to me after disobeying me and running away? Worm! Kill her.",
-        options = {
-          { text = "Yes, ma'am.", go_to = 'kill_medea' },
-          { text = "You tiranny ends here, witch!", go_to = 'kill_witch' },
-        }
+  if self.control:is_companion('medea') then
+    dialogue.start = {
+      text = "Medea, you bitch! How dare you return to me after disobeying me and running away? Worm! Kill her.",
+      options = {
+        { text = "Yes, ma'am.", go_to = 'kill_medea' },
+        { text = "You tiranny ends here, witch!", go_to = 'kill_witch' },
       }
-      dialogue.kill_medea = {
-        text = "(Medea says) Traitor!",
-        go_to = 'end',
-        callback = function()
-          self.control:remove_companion('medea')
-          self.control.characters.medea.data.ally = false
-          self.control.characters.medea.data.enemy = true
-        end
-      }
-      dialogue.kill_witch = {
-        text = "Hmph! Ungrateful bunch.",
-        go_to = 'end',
-        callback = function()
-          self:become_enemy()
-        end
-      }
-    end
-
-  end
+    }
+    dialogue.kill_medea = {
+      text = "(Medea says) Traitor!",
+      go_to = 'end',
+      callback = function()
+        self.control:remove_companion('medea')
+        self.control.characters.medea.data.ally = false
+        self.control.characters.medea.data.enemy = true
+      end
+    }
+    dialogue.kill_witch = {
+      text = "Hmph! Ungrateful bunch.",
+      go_to = 'end',
+      callback = function()
+        self:become_enemy()
+      end
+    }
+  end  -- companion medea
 
   sfml_dialogue(dialogue)
 end

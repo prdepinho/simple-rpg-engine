@@ -42,7 +42,7 @@ function TownElf:on_interact(interactor_name)
         text = "What is it that you want?",
         options = {
           {
-            text = "Nothing.",
+            text = "I must be going.",
             go_to = "end"
           },
           {
@@ -115,7 +115,10 @@ function TownElf:on_interact(interactor_name)
       }
     end
 
-    if self.control.data.know_of_fighting_elves then
+    if self.control.data.elves_win then
+      dialogue.start.text = "We are safe for now."
+    elseif self.control.data.imps_win then
+    elseif self.control.data.know_of_fighting_elves then
       if not dialogue.start.options then
         dialogue.start.options = { { text = "I have to go.", go_to = 'end' }, }
         dialogue.start.go_to = nil
@@ -180,12 +183,6 @@ function TownElf:on_interact(interactor_name)
       end
     end
 
-    if self.control.data.elves_win then
-      dialogue.start = {
-        text = "We are safe for now.",
-        go_to = 'end'
-      }
-    end
     sfml_dialogue(dialogue)
   end
 end

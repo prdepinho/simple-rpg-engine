@@ -140,7 +140,7 @@ function MountainPass:landing_west(event, x, y, character_name, object_name)
 end
 
 function MountainPass:boulder(event, x, y, character_name, object_name)
-  if character_name == 'player' and event == 'interact' then
+  if character_name == 'player' and event == 'interact' and not self.data.boulder_moved then
     local dialogue = {
       start = {
         text = "A large boulder stands in the way.",

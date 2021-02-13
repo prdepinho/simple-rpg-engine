@@ -69,14 +69,14 @@ function Medea:on_interact(interactor_name)
       }
     },
     who = {
-      text = "Do not ask of me. I am but a wretched soul."
+      text = "Do not ask of me. I am but a wretched soul.",
       go_to = 'end'
     },
     tell_story = {
       text = "I learned from the witch of the woods a spell to make Jason love me. I paid a high price and what was my reward? Jason became a dragon! There is no one more wretched than I.",
       go_to = function()
         if self.control:is_companion('philip') then
-          return 'philip_responds'
+          return 'philip_ohnoes'
         elseif self.control:is_companion('sir_cavalion') then
           return 'cavalion_responds'
         else
@@ -92,28 +92,37 @@ function Medea:on_interact(interactor_name)
       text = "I am. Woe to me, who bewitched my love and now I am deprived of both my life and my soul!",
       go_to = 'tell_story'
     }
-    dialogue.philip_responds = {
-      text = "(Philip responds) Oh, no! I don't what I just heard! All is lost!",
+    dialogue.philip_ohnoes = {
+      text = "(Philip responds) Oh, no! I don't believe what I just heard! All is lost!",
       go_to = function()
         if self.control:is_companion('sir_cavalion') then
           return 'cavalion_responds'
         else
           return 'choices'
         end
+      end,
+      callback = function()
+        sfml_center_camera('philip')
       end
     }
     dialogue.cavalion_responds = {
       text = "(Sir Cavalion says) The dragon is prince Jason? That explains why it just appeared recently. Mumu, we must do something to bing him back!",
-      go_to = 'choices'
+      go_to = 'choices',
+      callback = function()
+        sfml_center_camera('sir_cavalion')
+      end
     }
 
     dialogue.choices = {
       text = "Alas there is no way! The enchantment is too powerful to dispell. Only a miracle.",
       options = {
-        { text = "The dragon must die.", go_to = 'dragon_dies' },
-        { text = "You and the dragon must die.", go_to = 'couple_dies' },
+        { text = "The dragon must die.", go_to = 'let_me_go_with_you' },
+        { text = "You and the dragon must die.", go_to = 'die_now' },
         { text = "I don't want to meddle with this issue.", go_to = 'no_thanks' },
-      }
+      },
+      callback = function()
+        sfml_center_camera('medea')
+      end
     }
 
     if false then
@@ -124,21 +133,15 @@ function Medea:on_interact(interactor_name)
       }
     end
 
-    dialogue.dragon_dies = {
-      text = "The dragon must die.",
-      go_to = 'let_me_go_with_you'
-    }
-    dialogue.couple_dies = {
-      text = "You and your lover will die for what you've done.",
-      go_to = 'die_now'
-    }
-
     dialogue.let_me_go_with_you = {
       text = "Let me go with you. I want to see him one last time.",
       options = {
         { text = "Come.", go_to = 'come' },
         { text = "You will die now.", go_to = 'die_now' },
-      }
+      },
+      callback = function()
+        sfml_center_camera('medea')
+      end
     }
 
     dialogue.come = {
@@ -154,6 +157,7 @@ function Medea:on_interact(interactor_name)
       go_to = 'end',
       callback = function()
         self.data.enemy = true
+        sfml_center_camera('medea')
       end
     }
 
@@ -170,11 +174,15 @@ function Medea:on_interact(interactor_name)
       end,
       callback = function()
         self.control.data.left_medea_alone = true
+        sfml_center_camera('medea')
       end
     }
     dialogue.philip_leaves = {
       text = "(Philip says) I will go back to the castle. They ought to know something. Thank you, Mumu for finding the princes.",
-      go_to = 'philip_leaves_end'
+      go_to = 'philip_leaves_end',
+      callback = function()
+        sfml_center_camera('philip')
+      end
     }
     dialogue.philip_leaves_end = {
       text = "(Philip leaves.)",
@@ -188,11 +196,15 @@ function Medea:on_interact(interactor_name)
       callback = function()
         self.control:remove_companion('philip')
         sfml_remove_character('philip')
+        sfml_center_camera('philip')
       end
     }
     dialogue.sir_cavalion_leaves = {
       text = "If you will do nothing then I will face the dragon alone.",
       go_to = 'sir_cavalion_leaves_end',
+      callback = function()
+        sfml_center_camera('sir_cavalion')
+      end
     }
     dialogue.sir_cavalion_leaves_end = {
       text = "(Sir Cavalion leaves.)",
@@ -299,19 +311,29 @@ function Medea:on_interact(interactor_name)
       text = "(Philip says) Princess Medea! We found you!",
       go_to = 'medea_responds',
       callback = function()
+        sfml_center_camera('philip')
       end
     }
-    dialogue.medea_response = {
+    dialogue.medea_responds = {
       text = "(Medea responds) Philip? How did you find me?",
-      go_to = 'philip_responds'
+      go_to = 'philip_responds',
+      callback = function()
+        sfml_center_camera('medea')
+      end
     }
     dialogue.philip_responds = {
       text = "(Philip responds) It metters not. Where is prince Jason?",
-      go_to = 'where_is_jason'
+      go_to = 'where_is_jason',
+      callback = function()
+        sfml_center_camera('philip')
+      end
     }
     dialogue.where_is_jason = {
       text = "Alas! He is gone!",
-      go_to = 'tell_story'
+      go_to = 'tell_story',
+      callback = function()
+        sfml_center_camera('medea')
+      end
     }
   end
 
@@ -322,7 +344,7 @@ function Medea:on_death()
   Witch.on_death(self)
   self.control.data.medea_dead = true
 
-  if self.control.data.medea_will_kill_jason and then
+  if self.control.data.medea_will_kill_jason then
     for index, name in ipairs(sfml_get_characters_on_map()) do
       if name == 'dragon' and not self.control.characters.dragon.data.stats.status.dead then
         local dialogue = {

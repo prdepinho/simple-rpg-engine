@@ -99,6 +99,7 @@ function Blacksmith:on_interact(interactor_name)
       text = "Cost? I'll make it for free! It will be my masterpiece! All will know of Tubal, the dragon smith!",
       go_to = 'end',
       callback = function()
+        self.control:remove_item_from_inventory(index, 'player')
         self:forge()
       end
     }
@@ -106,6 +107,7 @@ function Blacksmith:on_interact(interactor_name)
       text = "You will not be disappointed.",
       go_to = 'end',
       callback = function()
+        self.control:remove_item_from_inventory(index, 'player')
         self:forge()
       end
     }

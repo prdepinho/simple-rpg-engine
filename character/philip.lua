@@ -109,7 +109,7 @@ function Philip:on_interact(interactor_name)
             text = "Alright, alright! I'll tell you everything. Princess Medea wanted to see the witch. She convinced prince Jason to go there and I took them there. They went into the hut and something happened. I don't know what, but prince Jason came changed. Spoke little and seemed worried. I tried talking to him, but every time I approached him princess Medea stood between us and looked at me like a snake would a prey.",
             options = {
               { text = "I see. Thank you.", go_to = 'end' },
-              { text = "We have to do and confront the witch.", go_to = 'confront_witch' },
+              { text = "We have to go and confront the witch.", go_to = 'confront_witch' },
               { text = "You are dead for betraying your master!", go_to = 'dead' },
             }
           }

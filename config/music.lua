@@ -16,4 +16,5 @@ music = {
   "handel.wav",
   "choral.wav",
   "dread.wav",
+  "weiss.wav",
 }

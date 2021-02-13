@@ -497,11 +497,11 @@ function Endings:fin()
         image = "blank.png",
         origin = { x = 0, y = 0, }
       },
-      text = "And this is the story.",
+      text = "And this is how the story ends.",
       go_to = 'credits',
     },
     credits = {
-      text = " Mumu's Pilgrimage was developed by Paulo de Pinho.",
+      text = "Mumu's Pilgrimage was developed by Paulo de Pinho.",
       go_to = 'later_credits'
     },
     later_credits = {
