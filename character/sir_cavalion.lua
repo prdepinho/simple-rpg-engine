@@ -172,9 +172,13 @@ function SirCavalion:on_interact(interactor_name)
       dialogue.dragon_did_it = {
         text = "The dragon killed itself? Is it even possible?",
         options = {
-          { text = "It is apparently.", go_to = 'diaogue_end' },
+          { text = "It is apparently.", go_to = 'apparently' },
           { text = "It breathed a fireball right onto itself.", go_to = 'suicide_by_fire' },
         }
+      }
+      dialogue.apparently = {
+        text = "I see. There are mysteries that elude reason.",
+        go_to = 'dialogue_end'
       }
       dialogue.suicide_by_fire = {
         text = "It did? It must have been a young stupid dragon to do that.",
