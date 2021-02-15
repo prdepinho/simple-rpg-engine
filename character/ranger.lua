@@ -38,7 +38,7 @@ function Ranger:create()
   stats.inventory[4] = {code = self.name .. "_armor", name = 'leather_armor', type = 'armor'}
   stats.weapon = stats.inventory[1]
   stats.ammo = stats.inventory[2]
-  stats.armor = stats.inventory[3]
+  stats.armor = stats.inventory[4]
 end
 
 function Ranger:enemy_procedure()
