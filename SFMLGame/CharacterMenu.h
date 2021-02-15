@@ -94,6 +94,7 @@ public:
 	void change_state(State state);
 	void set_selected_button_index(int index) { this->selected_button_index = index; }
 	int get_cursor() const { return cursor; }
+	int get_inventory_size() const { return inventory_width * inventory_height; }
 private:
 	int selected_button_index;
 	State state = State::NORMAL;

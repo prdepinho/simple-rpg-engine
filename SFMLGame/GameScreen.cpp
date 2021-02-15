@@ -833,7 +833,7 @@ void GameScreen::scroll_left_select_item() {
 
 	if (i > 0) {
 		do {
-			i = i <= 1 ? 8 : i - 1;
+			i = i <= 1 ? (int)inventory->size() : i - 1;
 			LuaObject *item = inventory->get_object(std::to_string(i));
 			std::string code = item->get_string("code");
 			std::string name = item->get_string("name");
@@ -862,7 +862,7 @@ void GameScreen::scroll_right_select_item() {
 
 	if (i > 0) {
 		do {
-			i = (i % 8) + 1;
+			i = (i % (int)inventory->size()) + 1;
 			LuaObject *item = inventory->get_object(std::to_string(i));
 			std::string code = item->get_string("code");
 			std::string name = item->get_string("name");
