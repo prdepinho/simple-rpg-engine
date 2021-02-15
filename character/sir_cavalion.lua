@@ -125,7 +125,7 @@ function SirCavalion:on_interact(interactor_name)
     }
 
     if self.control.data.dragon_dead then
-      local index = self.control:find_in_inventory_by_name('player', 'dragon_scale')
+      local index = self.control:find_in_inventory_by_name('player', 'dragon_scales')
       table.insert(dialogue.start.options, { text = "The dragon is dead.", go_to = 'dead_dragon' })
 
       dialogue.invite.options = {
@@ -199,7 +199,9 @@ function SirCavalion:on_interact(interactor_name)
         text = "(Sir Cavalion leaves.)",
         go_to = 'end',
         callback = function()
-          self.control:remove_companion('sir_cavalion')
+          if self.control:is_companion('sir_cavalion') then
+            self.control:remove_companion('sir_cavalion')
+          end
           sfml_remove_character('sir_cavalion')
           self.control.data.sir_cavalion_left = true
           self.control.data.sir_cavalion_didnt_fight_dragon = true
