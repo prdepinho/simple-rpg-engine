@@ -97,7 +97,7 @@ function Endings:epilogue()
       self:rats_grievous()
     end
   else
-    if not self.control.data.rat_king_dead then
+    if self.control.data.rat_king_dead then
       self:rats_enemies()
     end
   end

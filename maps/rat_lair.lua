@@ -17,6 +17,7 @@ end
 
 function RatLair:enter()
   Map.enter(self)
+  self.control.data.met_rats = true
   if self.control.data.served_inn then
     local x = self.data.objects.inn_keeper_place.coords[1].x
     local y = self.data.objects.inn_keeper_place.coords[1].y
