@@ -1,6 +1,7 @@
 
 import sys
 import os
+import zipfile
 
 
 def camelcaseify(string):
@@ -210,6 +211,44 @@ if __name__ == '__main__':
             exit()
 
         create_character(name)
+
+    elif function == 'build':
+        with open('SFMLGame.exe', 'rb') as f:
+            with open('mumus_pilgrimage.exe', 'wb') as ff:
+                ff.write(f.read())
+
+        to_zip_dirs = [
+                'assets',
+                'character',
+                'config',
+                'maps',
+                'saves',
+                'scripts',
+                ]
+        to_zip_files = [
+                'mumus_pilgrimage.exe',
+                'openal32.dll',
+                'sfml-audio-2.dll',
+                'sfml-graphics-2.dll',
+                'sfml-network-2.dll',
+                'sfml-system-2.dll',
+                'sfml-window-2.dll',
+                'LICENSE.txt'
+                ]
+
+        zip = zipfile.ZipFile('mumus_pilgrimage.zip', 'w', zipfile.ZIP_DEFLATED)
+
+        for folder in to_zip_dirs:
+            for dir_path, dir_names, files in os.walk(folder):
+                for file in files:
+                    filename = os.path.join(dir_path, file)
+                    zip.write(filename)
+
+        for filename in to_zip_files:
+            zip.write(filename)
+
+        zip.close()
+        print('build created successfuly')
 
     else:
         print('function: either map or character')
