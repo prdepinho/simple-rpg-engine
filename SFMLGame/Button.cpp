@@ -104,30 +104,38 @@ Component* Button::on_key_pressed(sf::Event &event) {
 
 	switch (InputHandler::get_input(event)) {
 	case Control::A:
-		on_click();
+		on_click(sf::Mouse::Button::Left);
 		return this;
 	}
 
 	return nullptr;
 }
 
-Component* Button::on_click() {
-	if (!activated) {
-		Resources::play_sound("boop.wav");
+Component* Button::on_click(sf::Mouse::Button b) {
+	switch (b) {
+	case sf::Mouse::Button::Left:
+	{
+		if (!activated) {
+			Resources::play_sound("boop.wav");
+			return this;
+		}
+		bool rval = false;
+		for (Callback function : functions) {
+			rval = rval || function(this);
+			// function(this);
+		}
+		if (rval) {
+			Resources::play_sound("crrreee.wav");
+		}
+		else {
+			Resources::play_sound("boop.wav");
+		}
 		return this;
 	}
-	bool rval = false;
-	for (Callback function : functions) {
-		rval = rval || function(this);
-		// function(this);
+	case sf::Mouse::Button::Right:
+		break;
 	}
-	if (rval) {
-		Resources::play_sound("crrreee.wav");
-	}
-	else {
-		Resources::play_sound("boop.wav");
-	}
-	return this;
+	return nullptr;
 }
 
 void Button::on_clic_inactive() {

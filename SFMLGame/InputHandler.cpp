@@ -29,6 +29,7 @@ InputHandler::InputHandler() {
 		{sf::Keyboard::End,			Control::B},
 		{sf::Keyboard::Numpad1,		Control::B},
 		{sf::Keyboard::X,			Control::B},
+		{sf::Keyboard::Escape,		Control::B},
 
 		{sf::Keyboard::U,			Control::Y},
 		{sf::Keyboard::Numpad3,		Control::Y},
@@ -56,8 +57,13 @@ InputHandler::InputHandler() {
 		{sf::Keyboard::C,			Control::START},
 
 		{sf::Keyboard::Divide,		Control::LT},
+		{sf::Keyboard::E,			Control::LT},
 
 		{sf::Keyboard::Multiply,	Control::RT},
+		{sf::Keyboard::R,			Control::RT},
+
+		{sf::Keyboard::F,			Control::LS},
+		{sf::Keyboard::G,			Control::RS},
 	};
 	for (auto it = control_map.begin(); it != control_map.end(); ++it) {
 		int key = it->first;

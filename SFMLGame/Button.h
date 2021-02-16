@@ -24,7 +24,7 @@ public:
 	virtual Component* on_pressed(int x, int y) override; 
 	virtual Component* on_released(int x, int y) override;
 	virtual Component* on_key_pressed(sf::Event &event) override;
-	virtual Component* on_click() override;
+	virtual Component* on_click(sf::Mouse::Button b) override;
 	virtual void on_selected(bool show_outline = true);
 
 	void on_activated() override;

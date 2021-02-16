@@ -17,7 +17,7 @@ ItemContextMenu::~ItemContextMenu() {}
 void ItemContextMenu::create() {
 	bool equipable = item.get_type() == "weapon" || item.get_type() == "armor" || item.get_type() == "shield" || item.get_type() == "ammo";
 
-	int buttons_total = 3;
+	int buttons_total = 4;
 	if (equipable)
 		buttons_total += 1;
 
@@ -158,6 +158,20 @@ void ItemContextMenu::create() {
 					menu.update_loot_buttons();
 				}
 			}
+			call_functions(this);
+			get_screen()->remove_component(*this);
+			return true; 
+		});
+		buttons[i].create();
+		add_component(buttons[i]);
+		i++;
+	}
+	{
+		x = get_x() + margin;
+		y = buttons[i - 1].get_y() + button_height;
+		w = button_length;
+		h = button_height - 1;
+		buttons[i] = Button("Back", x, y, w, h, [&](Component*) {
 			call_functions(this);
 			get_screen()->remove_component(*this);
 			return true; 
@@ -456,14 +470,14 @@ void StatsPanel::refresh(Character *character) {
 
 Inventory::Inventory(int x, int y) {
 	set_position(x, y);
-	set_dimensions(button_size * 2, (button_size * 4) + (button_size * 2));
+	set_dimensions(button_size * 2, (button_size * 5) + (button_size * 4));
 }
 
 Inventory::~Inventory() {
 }
 
 void Inventory::create() {
-	buttons = std::vector<ItemButton>(inventory_width * inventory_height + 3);
+	buttons = std::vector<ItemButton>(inventory_width * inventory_height + 4);
 	int k = 0;
 	for (int i = 0; i < inventory_height; i++) {
 		for (int j = 0; j < inventory_width; j++) {
@@ -559,7 +573,17 @@ void Inventory::create() {
 	}
 	{
 		y = buttons[k - 1].get_y() + button_size;
-		buttons[k] = ItemButton("Exit", k, x, y, w, h, [&](Component*) {
+		buttons[k] = ItemButton("Back", k, x, y, w, h, [&](Component*) {
+			CharacterMenu::get().close();
+			return true;
+		});
+		buttons[k].create();
+		add_component(buttons[k]);
+		k++;
+	}
+	{
+		y = buttons[k - 1].get_y() + button_size;
+		buttons[k] = ItemButton("Quit", k, x, y, w, h, [&](Component*) {
 			ChoicePanel::show("Are you sure you want to quit the game?", *get_screen(), 
 				[&]() {
 					Log("Yes.");
@@ -737,7 +761,7 @@ CharacterMenu::CharacterMenu() {
 	// set_dimensions(50, (32 * 2) + 2);
 
 	int w = _game.get_resolution_width() * 3 / 4;
-	int h = _game.get_resolution_height() * 2 / 3;
+	int h = _game.get_resolution_height() * 3 / 4;
 	int x = (_game.get_resolution_width() / 2) - (w / 2);
 	int y = (_game.get_resolution_height() / 2) - (h / 2);
 	set_position(x, y);
@@ -820,7 +844,7 @@ void CharacterMenu::show(Screen &screen, Character *character, Callback callback
 
 
 	x = menu.margin * 2 + menu.get_x();
-	y = menu.margin * 3 + menu.get_y() + menu.get_height() - 9 * 7;
+	y = menu.margin * 3 + menu.get_y() + menu.get_height() - 9 * 9 - 2;
 	int w = menu.get_width() - 70;
 	int lines = 1;
 	menu.name_area = TextArea(x, y, w, lines);
@@ -828,7 +852,7 @@ void CharacterMenu::show(Screen &screen, Character *character, Callback callback
 	menu.add_component(menu.name_area);
 
 	x = menu.margin + menu.get_x();
-	y = menu.margin * 2 + menu.get_y() + menu.get_height() - 8 * 5;
+	y = menu.margin * 2 + menu.get_y() + menu.get_height() - 9 * 7;
 	w = menu.get_width() - 50;
 	lines = 4;
 	menu.info_area = TextArea(x, y, w, lines);

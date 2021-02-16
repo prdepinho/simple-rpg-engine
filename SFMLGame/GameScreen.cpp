@@ -586,7 +586,15 @@ void GameScreen::control_mouse_move() {
 
 		player_character->clear_schedule();
 		schedule_character_movement(*player_character, tile_x, tile_y, 200, false);
-		if (get_map().get_tile(tile_x, tile_y).obstacle)
+
+		Character *target = get_live_character_on_tile(tile_x, tile_y);
+		if (target != nullptr && is_enemy(*target)) {
+			schedule_character_attack(*player_character, *target);
+		}
+		else if (a_button_pressed && target) {
+			_game.get_lua()->characters_exchange_position("player", target->get_name());
+		}
+		else if (get_map().get_tile(tile_x, tile_y).obstacle)
 			schedule_character_interaction(*player_character, tile_x, tile_y);
 	}
 }
@@ -1047,6 +1055,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 	// 	std::cout << "button: " << event.joystickButton.button << ", " << event.joystickButton.joystickId << std::endl;
 	// 	break;
 	case sf::Event::MouseButtonPressed:
+		
 		if (selected_component == &container) {
 			if (event.mouseButton.button == sf::Mouse::Button::Middle) {
 				control_mouse_pan_hold();

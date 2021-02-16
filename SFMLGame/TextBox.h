@@ -110,4 +110,5 @@ private:
 	bool illustrated = false;
 
 	bool shown = false;
+	bool shown_options = false;
 };

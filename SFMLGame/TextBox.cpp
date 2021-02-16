@@ -532,14 +532,19 @@ void DialogueBox::scroll_down() {
 Component *DialogueBox::on_pressed(int x, int y) {
 	if (completely_written) {
 		if (end_line == text_lines.size()) {
-			if (go_to != "end") {
-				next();
+			if (shown_options) {
+				// do nothing.
 			}
 			else {
-				on_end();
-				get_screen()->remove_component(*this);
-				get_screen()->select_container();
-				call_functions(this);
+				if (go_to != "end") {
+					next();
+				}
+				else {
+					on_end();
+					get_screen()->remove_component(*this);
+					get_screen()->select_container();
+					call_functions(this);
+				}
 			}
 		}
 		else {
@@ -653,9 +658,11 @@ void DialogueBox::next() {
 			for (auto it = options->begin(); it != options->end(); ++it) {
 				std::string text = it->second.get_string("text");
 				std::string dst = it->second.get_string("go_to");
+				shown_options = true;
 				options_panel.add_option(text, dst, [&](Component* c) {
 					OptionButton *button = dynamic_cast<OptionButton*>(c);
 					push_text(button->get_label(), true);
+					shown_options = false;
 					go_to = button->get_dst();
 					get_screen()->remove_component(options_panel);
 					get_screen()->select(*this);

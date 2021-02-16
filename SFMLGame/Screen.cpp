@@ -162,10 +162,13 @@ Component *Screen::handle_event(sf::Event &event, float elapsed_time) {
 		break;
 	case sf::Event::KeyPressed:
 		switch (event.key.code) {
+#if false
 		case sf::Keyboard::Escape:
 			window->close();
 			break;
+#endif
 		case sf::Keyboard::Tab:
+#if false
 			{
 				if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RShift)){
 					select_previous();
@@ -175,6 +178,7 @@ Component *Screen::handle_event(sf::Event &event, float elapsed_time) {
 				}
 			}
 			break;
+#endif
 		default:
 			{
 				if (selected_component != nullptr) {
@@ -216,6 +220,7 @@ Component *Screen::handle_event(sf::Event &event, float elapsed_time) {
 			Component *pressed_gui = container.on_released(mouse_position_gui_x, mouse_position_gui_y);
 			if (selected_component == pressed_gui) {
 				selected_component->on_click();
+				selected_component->on_click(event.mouseButton.button);
 			}
 			selected_component->on_released(mouse_position_gui_x, mouse_position_gui_y);
 		}
