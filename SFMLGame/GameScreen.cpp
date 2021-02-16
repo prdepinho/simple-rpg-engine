@@ -595,8 +595,12 @@ void GameScreen::control_mouse_move() {
 			else if (a_button_pressed && target) {
 				_game.get_lua()->characters_exchange_position("player", target->get_name());
 			}
-			else if (get_map().get_tile(tile_x, tile_y).obstacle)
+			else if (get_map().get_tile(tile_x, tile_y).obstacle) {
 				schedule_character_interaction(*player_character, tile_x, tile_y);
+			}
+			else if (!get_items_on_tile(tile_x, tile_y).empty()) {
+				schedule_character_interaction(*player_character, tile_x, tile_y);
+			}
 		}
 	}
 }
@@ -1537,7 +1541,7 @@ bool GameScreen::schedule_character_movement(Character &character, int tile_x, i
 	// disconsider non enemies as obstacles when path-finding
 	{
 		for (Character *character : characters) {
-			if (!_game.get_lua()->is_enemy(*character)) {
+			if (!_game.get_lua()->is_enemy(*character) && !is_dead(character)) {
 				auto pos = character_position(*character);
 				if (pos != sf::Vector2i{tile_x, tile_y}) {
 					map.get_tile(pos.x, pos.y).obstacle = false;
@@ -1550,7 +1554,7 @@ bool GameScreen::schedule_character_movement(Character &character, int tile_x, i
 
 	{
 		for (Character *character : characters) {
-			if (!_game.get_lua()->is_enemy(*character)) {
+			if (!_game.get_lua()->is_enemy(*character) && !is_dead(character)) {
 				auto pos = character_position(*character);
 				map.get_tile(pos.x, pos.y).obstacle = true;
 			}
