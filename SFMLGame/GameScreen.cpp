@@ -575,27 +575,29 @@ void GameScreen::control_loot(int tile_x, int tile_y) {
 
 
 void GameScreen::control_mouse_move() {
-	auto mouse_position = get_mouse_game_position();
-	int x = (int)mouse_position.x;
-	int y = (int)mouse_position.y;
+	if (!player_busy && in_control) {
+		auto mouse_position = get_mouse_game_position();
+		int x = (int)mouse_position.x;
+		int y = (int)mouse_position.y;
 
-	if (map.in_bounds(x, y)) {
-		auto tile_coord = map.get_tile_coord(x, y);
-		int tile_x = tile_coord.x;
-		int tile_y = tile_coord.y;
+		if (map.in_bounds(x, y)) {
+			auto tile_coord = map.get_tile_coord(x, y);
+			int tile_x = tile_coord.x;
+			int tile_y = tile_coord.y;
 
-		player_character->clear_schedule();
-		schedule_character_movement(*player_character, tile_x, tile_y, 200, false);
+			player_character->clear_schedule();
+			schedule_character_movement(*player_character, tile_x, tile_y, 200, false);
 
-		Character *target = get_live_character_on_tile(tile_x, tile_y);
-		if (target != nullptr && is_enemy(*target)) {
-			schedule_character_attack(*player_character, *target);
+			Character *target = get_live_character_on_tile(tile_x, tile_y);
+			if (target != nullptr && is_enemy(*target)) {
+				schedule_character_attack(*player_character, *target);
+			}
+			else if (a_button_pressed && target) {
+				_game.get_lua()->characters_exchange_position("player", target->get_name());
+			}
+			else if (get_map().get_tile(tile_x, tile_y).obstacle)
+				schedule_character_interaction(*player_character, tile_x, tile_y);
 		}
-		else if (a_button_pressed && target) {
-			_game.get_lua()->characters_exchange_position("player", target->get_name());
-		}
-		else if (get_map().get_tile(tile_x, tile_y).obstacle)
-			schedule_character_interaction(*player_character, tile_x, tile_y);
 	}
 }
 
@@ -1006,12 +1008,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 				break;
 			case Control::START:
 				// open menu
-				block_input = true;
-				CharacterMenu::show(*this, player_character, [&](Component *) {
-					block_input = false;
-					Overlay::refresh(*this, player_character);
-					return true;
-				});
+				show_character_menu();
 				break;
 			case Control::SELECT:
 #if true
@@ -1253,6 +1250,16 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 }
 
 
+void GameScreen::show_character_menu() {
+	if (!player_busy && !block_input) {
+		block_input = true;
+		CharacterMenu::show(*this, player_character, [&](Component *) {
+			block_input = false;
+			Overlay::refresh(*this, player_character);
+			return true;
+		});
+	}
+}
 
 void GameScreen::add_character(std::string type, std::string name, int tile_x, int tile_y) {
 	Character *character = new Character();
@@ -1522,6 +1529,47 @@ void GameScreen::schedule_character_wait(Character &character, int turns) {
 	}
 }
 
+#if true
+bool GameScreen::schedule_character_movement(Character &character, int tile_x, int tile_y, int limit, bool ignore_obstacle) {
+	sf::Vector2i start(character_position(character));
+	sf::Vector2i end(tile_x, tile_y);
+
+	// disconsider non enemies as obstacles when path-finding
+	{
+		for (Character *character : characters) {
+			if (!_game.get_lua()->is_enemy(*character)) {
+				auto pos = character_position(*character);
+				if (pos != sf::Vector2i{tile_x, tile_y}) {
+					map.get_tile(pos.x, pos.y).obstacle = false;
+				}
+			}
+		}
+	}
+
+	std::stack<Direction> path = AStar::search(map, start, end, 200, ignore_obstacle);
+
+	{
+		for (Character *character : characters) {
+			if (!_game.get_lua()->is_enemy(*character)) {
+				auto pos = character_position(*character);
+				map.get_tile(pos.x, pos.y).obstacle = true;
+			}
+		}
+	}
+
+	int size = (int)path.size();
+
+	while (!path.empty()) {
+		Direction direction = path.top();
+		auto *action = new MoveAction(&character, direction, ignore_obstacle);
+		character.schedule_action(action);
+		path.pop();
+	}
+	return size < limit;
+}
+
+#else
+
 bool GameScreen::schedule_character_movement(Character &character, int tile_x, int tile_y, int limit, bool ignore_obstacle) {
 	sf::Vector2i start(character_position(character));
 	sf::Vector2i end(tile_x, tile_y);
@@ -1537,6 +1585,7 @@ bool GameScreen::schedule_character_movement(Character &character, int tile_x, i
 	}
 	return size < limit;
 }
+#endif
 
 void GameScreen::schedule_character_interaction(Character &character, int tile_x, int tile_y) {
 #if true
@@ -1579,10 +1628,17 @@ void GameScreen::move_character(Character &character, Direction direction, bool 
 
 	pick_tile(character, position);
 	if (!can_move(character, position.x, position.y, ignore_obstacle)) {
-		character.clear_schedule();
-		player_busy = false;
-		// Log("%s Clear", character.get_name().c_str());
-		return;
+		// if character in the way, pass him
+		Character *character_in_the_way = get_live_character_on_tile(position.x, position.y);
+		if (character_in_the_way && !_game.get_lua()->is_enemy(*character_in_the_way)) {
+			// pass through
+		}
+		else {
+			character.clear_schedule();
+			player_busy = false;
+			// Log("%s Clear", character.get_name().c_str());
+			return;
+		}
 	}
 
 

@@ -210,6 +210,8 @@ public:
 	void scroll_left_select_item();
 	void scroll_right_select_item();
 	void use_selected_item();
+
+	void show_character_menu();
 private:
 
 	std::priority_queue<Action*, std::vector<Action*>, ActionComparison> turn_actions; // the actions that take place in a single turn

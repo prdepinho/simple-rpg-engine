@@ -171,6 +171,7 @@ public:
 	Overlay();
 	~Overlay();
 	virtual void create() override;
+	virtual Component* on_click(sf::Mouse::Button b) override;
 	static void refresh(Screen &screen, Character *character);
 	static Overlay &get() { static Overlay overlay; return overlay; }
 	static void set_select_item_index(int index);

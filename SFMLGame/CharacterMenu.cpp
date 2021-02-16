@@ -1179,6 +1179,15 @@ void Overlay::create() {
 	add_component(selected_item_quantity);
 }
 
+Component* Overlay::on_click(sf::Mouse::Button b) {
+	switch (b) {
+	case sf::Mouse::Button::Left:
+		GameScreen *screen = dynamic_cast<GameScreen*>(get_screen());
+		screen->show_character_menu();
+		return this;
+	}
+	return nullptr;
+}
 
 void Overlay::set_select_item_index(int index) {
 	Overlay &overlay = get();
