@@ -16,6 +16,13 @@ SelectTileMode::~SelectTileMode() {}
 void SelectTileMode::create() {
 	create_range_shapes();
 	create_effect_shapes();
+
+	sf::Vector2f mouse_position = game_screen->get_mouse_game_position();
+	auto new_cursor = game_screen->get_map().get_tile_coord((int)mouse_position.x, (int)mouse_position.y);
+	if (in_bounds(new_cursor)) {
+		cursor = new_cursor;
+		create_effect_shapes();
+	}
 }
 
 void SelectTileMode::destroy() {
