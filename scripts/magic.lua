@@ -441,17 +441,15 @@ function Magic:armor(caster, center, tiles, targets)
 
   local caster_stats = self.control.characters[caster].data.stats
 
-  for index, character_name in ipairs(targets) do
-    local position = sfml_get_character_position(character_name)
-    sfml_start_fireworks("armor", position.x, position.y)
+  local position = sfml_get_character_position(caster)
+  sfml_start_fireworks("armor", position.x, position.y)
 
-    sfml_show_floating_message(rules.status.armor.name, position.x, position.y)
-    
-    local duration = rules.roll_dice("3d6")
-    duration = duration + rules.arcane_spell_bonus(caster_stats)
+  sfml_show_floating_message(rules.status.armor.name, position.x, position.y)
+  
+  local duration = rules.roll_dice("3d6")
+  duration = duration + rules.arcane_spell_bonus(caster_stats)
 
-    self.control:set_status(character_name, "armor", 0, duration)
-  end
+  self.control:set_status(caster, "armor", 0, duration)
 end
 
 function Magic:armor_start(character)
@@ -479,17 +477,15 @@ function Magic:strength(caster, center, tiles, targets)
 
   local caster_stats = self.control.characters[caster].data.stats
 
-  for index, character_name in ipairs(targets) do
-    local position = sfml_get_character_position(character_name)
-    sfml_start_fireworks("strength", position.x, position.y)
+  local position = sfml_get_character_position(caster)
+  sfml_start_fireworks("strength", position.x, position.y)
 
-    sfml_show_floating_message(rules.status.strength.name, position.x, position.y)
-    
-    local duration = rules.roll_dice("3d6")
-    duration = duration + rules.divine_spell_bonus(caster_stats)
+  sfml_show_floating_message(rules.status.strength.name, position.x, position.y)
+  
+  local duration = rules.roll_dice("3d6")
+  duration = duration + rules.divine_spell_bonus(caster_stats)
 
-    self.control:set_status(character_name, "strength", 0, duration)
-  end
+  self.control:set_status(caster, "strength", 0, duration)
 end
 
 function Magic:strength_start(character)
@@ -578,17 +574,15 @@ function Magic:true_seeing(caster, center, tiles, targets)
 
   local caster_stats = self.control.characters[caster].data.stats
 
-  for index, character_name in ipairs(targets) do
-    local position = sfml_get_character_position(character_name)
-    sfml_start_fireworks("true_seeing", position.x, position.y)
+  local position = sfml_get_character_position(caster)
+  sfml_start_fireworks("true_seeing", position.x, position.y)
 
-    sfml_show_floating_message(rules.status.true_seeing.name, position.x, position.y)
-    
-    local duration = rules.roll_dice("3d6")
-    duration = duration + rules.divine_spell_bonus(caster_stats)
+  sfml_show_floating_message(rules.status.true_seeing.name, position.x, position.y)
+  
+  local duration = rules.roll_dice("3d6")
+  duration = duration + rules.divine_spell_bonus(caster_stats)
 
-    self.control:set_status(character_name, "true_seeing", 0, duration)
-  end
+  self.control:set_status(caster, "true_seeing", 0, duration)
 end
 
 function Magic:true_seeing_enter(character)
@@ -763,8 +757,7 @@ function Magic:cloak(caster, center, tiles, targets)
 
   local caster_stats = self.control.characters[caster].data.stats
 
-  for index, character_name in ipairs(targets) do
-    local position = sfml_get_character_position(character_name)
+    local position = sfml_get_character_position(caster)
     sfml_start_fireworks("invisibility", position.x, position.y)
 
     sfml_show_floating_message(rules.item.cloak.name, position.x, position.y)
@@ -789,14 +782,12 @@ function Magic:cloak(caster, center, tiles, targets)
         sfml_show_floating_message("Failed", position.x, position.y)
         sfml_push_log("Failed to hide: There are enemies looking.")
       else
-        self.control:set_status(character_name, "invisible", 10 + dex_mod, duration)
+        self.control:set_status(caster, "invisible", 10 + dex_mod, duration)
       end
 
     else
-      self.control:set_status(character_name, "invisible", 10 + dex_mod, duration)
+      self.control:set_status(caster, "invisible", 10 + dex_mod, duration)
     end
-
-  end
 
 end
 

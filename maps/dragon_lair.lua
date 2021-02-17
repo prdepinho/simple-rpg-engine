@@ -106,6 +106,28 @@ function DragonLair:cave_exit_steps(event, x, y, character_name, object_name)
   end
 end
 
+function DragonLair:dragon_hoard(event, x, y, character_name, object_name)
+  if character_name == 'player' and event == 'step_on' then
+    local dragon = self.control.characters.dragon
+    if not dragon.data.stats.status.dead and not dragon.data.enemy and self.control:can_see('dragon', 'player') then
+      local dialogue = {
+        start = {
+          text = "That's far enough, thief!",
+          go_to = 'end',
+          callback = function()
+            sfml_center_camera('dragon')
+            dragon.data.enemy = true
+          end
+        },
+        on_end = function()
+          sfml_center_camera('player')
+        end
+      }
+      sfml_dialogue(dialogue)
+    end
+  end
+end
+
 return DragonLair
 
 

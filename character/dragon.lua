@@ -41,6 +41,12 @@ end
 function Dragon:on_enter()
   Character.on_enter(self)
   self.breath_attack = true
+
+  if self.control.data.rats_went_to_dragon and not self.control.data.dragon_swallowed_rats then
+    self.control.data.dragon_swallowed_rats = true
+    self.data.stats.inventory[5] = self.control.loaded_character_data.rat_king.stats.inventory[2]
+    self.control.loaded_character_data.rat_king.stats.inventory[2] = {code = "", name = "no_item", type = "item"}
+  end
 end
 
 function Dragon:enemy_procedure()
@@ -91,6 +97,7 @@ function Dragon:on_interact(interactor_name)
     }
   }
 
+
   if self.control.data.sir_cavalion_went_ahead_alone then
     table.insert(dialogue.start.options, { text = "I will avenge Sir Cavalion's death!", go_to = 'avenge' })
     dialogue.avenge = {
@@ -111,6 +118,15 @@ function Dragon:on_interact(interactor_name)
       table.insert(dialogue.start.options, { text = "I know a rat colony you might enjoy.", go_to = 'rats' })
       dialogue.rats = {
         text = "Hehehehe. Send them in.",
+        go_to = 'end',
+        callback = function()
+          self.control.data.send_rats_to_dragon = true
+        end
+      }
+    elseif self.control.characters.player.data.stats.ability.cha >= 13 then
+      table.insert(dialogue.start.options, { text = "(Cha 13) I'll bring something you'll like.", go_to = 'bring' })
+      dialogue.bring = {
+        text = "Ok. If you bring me lot's of something I like I'll give you something for your truble.",
         go_to = 'end',
         callback = function()
           self.control.data.send_rats_to_dragon = true
