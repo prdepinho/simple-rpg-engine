@@ -175,6 +175,7 @@ bool GameScreen::update(float elapsed_time) {
 	Screen::update(elapsed_time);
 
 	// status line
+#if false
 	{
 		std::string status = player_busy ? "busy" : "free";
 		status = !is_player_in_control() ? "wait" : status;
@@ -183,6 +184,7 @@ bool GameScreen::update(float elapsed_time) {
 		}
 		busy.draw_line(_game.get_resolution_width() - 40, 0, status, sf::Color::Magenta); // white with shadow
 	}
+#endif
 
 	if (current_mode)
 		current_mode->update(elapsed_time);
@@ -663,6 +665,7 @@ void GameScreen::control_mouse_pan_move() {
 	int dif_y = (int)(holding_start_position.y - mouse_game_position.y);
 	pan_game_view(sf::Vector2f{ (float)dif_x, (float)dif_y });
 	holding_start_position = get_mouse_game_position();
+	middle_button_drag_delta += std::abs(dif_x) + std::abs(dif_y);
 }
 
 
@@ -1061,6 +1064,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 			if (event.mouseButton.button == sf::Mouse::Button::Middle) {
 				control_mouse_pan_hold();
 				middle_button_delta = 0.f;
+				middle_button_drag_delta = 0.f;
 			}
 			else if (event.mouseButton.button == sf::Mouse::Left) {
 				control_mouse_move();
@@ -1071,7 +1075,7 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 		if (selected_component == &container) {
 			if (event.mouseButton.button == sf::Mouse::Button::Middle) {
 				control_mouse_pan_release();
-				if (middle_button_delta < 0.25) {
+				if (middle_button_delta < 0.25 && middle_button_drag_delta < 0.01f) {
 					use_selected_item();
 				}
 			}
