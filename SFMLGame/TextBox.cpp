@@ -570,6 +570,11 @@ Component *DialogueBox::on_pressed(int x, int y) {
 	return this;
 }
 
+Component *DialogueBox::on_pressed_outside(int x, int y, sf::Mouse::Button b) {
+	this->on_pressed(x, y);
+	return this;
+}
+
 void DialogueBox::show(LuaObject dialogue, Screen &screen, Callback callback, bool illustrated, bool box_at_bottom) {
 	DialogueBox &dialogue_box = get();
 

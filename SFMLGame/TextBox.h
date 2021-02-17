@@ -85,6 +85,7 @@ public:
 	virtual void update(float elapsed_time) override;
 	virtual Component *on_key_pressed(sf::Event &event) override;
 	virtual Component *on_pressed(int x, int y) override;
+	virtual Component *on_pressed_outside(int x, int y, sf::Mouse::Button b) override;
 
 	static void show(LuaObject dialog_object, Screen &screen, Callback callback=Callback(), bool illustrated=false, bool box_at_bottom=false);
 	static DialogueBox &get() { static DialogueBox box; return box; }

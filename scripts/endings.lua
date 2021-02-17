@@ -18,6 +18,7 @@ end
 
 function Endings:normal_ending()
   print(self.control.data.head_priestess_dead)
+  self.ending = 'normal'
   local dialogue = {
     start = {
       foreground = {
@@ -37,6 +38,7 @@ end
 
 function Endings:headless_ending()
   print(self.control.data.head_priestess_dead)
+  self.ending = 'headless'
   local dialogue = {
     start = {
       foreground = {
@@ -497,7 +499,7 @@ function Endings:fin()
         image = "blank.png",
         origin = { x = 0, y = 0, }
       },
-      text = "And this is how the story ends.",
+      text = "The end.",
       go_to = 'credits',
     },
     credits = {
@@ -509,10 +511,33 @@ function Endings:fin()
       go_to = 'end'
     },
     on_end = function()
+      -- self:achievements()
       sfml_quit_game()
     end
   }
   sfml_illustrated_dialogue(dialogue)
 end
+
+-- function Endings:achievements()
+--   local dialogue = {
+--     lines = 12,
+--     start = {
+--       foreground = {
+--         image = "blank.png",
+--         origin = { x = 0, y = 0, }
+--       },
+--       text = function()
+--         local str = "Achievements:\n"
+--         str = str .. "Ending: " .. self.ending
+--         return str
+--       end,
+--       go_to = 'end',
+--     },
+--     on_end = function()
+--       sfml_quit_game()
+--     end
+--   }
+--   sfml_illustrated_dialogue(dialogue)
+-- end
 
 return Endings

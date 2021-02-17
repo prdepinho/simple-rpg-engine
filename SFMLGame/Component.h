@@ -32,6 +32,9 @@ public:
 
 	bool is_created() const { return created; }
 
+	void set_focus(bool focus) { this->focus = focus; }
+	bool is_focus() const { return focus; }
+
 	Game *get_game();
 	Screen *get_screen() { return parent_screen; }
 	void set_screen(Screen *screen);
@@ -58,12 +61,14 @@ public:
 	// input
 	virtual Component* on_pressed(int x, int y);
 	virtual Component* on_released(int x, int y);
+	virtual Component* on_pressed_outside(int x, int y, sf::Mouse::Button b);
+	virtual Component* on_released_outside(int x, int y, sf::Mouse::Button b);
 	virtual Component* on_held(int x, int y);
 	virtual Component* on_key_pressed(sf::Keyboard::Key key);
 	virtual Component* on_key_pressed(sf::Event &event);
 	virtual Component* on_text_input(char c);
-	virtual Component* on_click() { return nullptr; }
-	virtual Component* on_click(sf::Mouse::Button b) { return nullptr; }
+	virtual Component* on_click();
+	virtual Component* on_click(sf::Mouse::Button b);
 	virtual Component* on_joystick_event(sf::Event &event);
 	virtual void on_activated() {}
 	virtual void on_disactivated() {}
@@ -96,6 +101,7 @@ protected:
 	Component *parent_component;
 	Screen *parent_screen;
 	bool created = false;
+	bool focus = false;
 
 private:
 	std::string identifier;

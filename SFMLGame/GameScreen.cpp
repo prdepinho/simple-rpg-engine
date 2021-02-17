@@ -923,10 +923,18 @@ Component *GameScreen::handle_event(sf::Event &event, float elapsed_time) {
 
 	Component *interacted_component = Screen::handle_event(event, elapsed_time);
 
+#if false
 	// TODO: correct mouse event handling.
 	if (event.type != sf::Event::MouseButtonPressed)
 		if (interacted_component)
 			return nullptr;
+#else
+	if (interacted_component == &container && (event.type == sf::Event::MouseButtonPressed || event.type == sf::Event::MouseButtonReleased)) {
+	}
+	else if (interacted_component) {
+		return nullptr;
+	}
+#endif
 	
 	if (block_input) {
 		return nullptr;

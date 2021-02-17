@@ -13,5 +13,6 @@ build/
 *.iobj
 *.ipdb
 *.pdb
+*.ilk
 out/
 saves/

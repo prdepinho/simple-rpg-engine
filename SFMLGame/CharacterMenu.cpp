@@ -10,7 +10,9 @@
 
 
 
-ItemContextMenu::ItemContextMenu() {}
+ItemContextMenu::ItemContextMenu() {
+	set_focus(true);
+}
 
 ItemContextMenu::~ItemContextMenu() {}
 
@@ -766,6 +768,7 @@ CharacterMenu::CharacterMenu() {
 	int y = (_game.get_resolution_height() / 2) - (h / 2);
 	set_position(x, y);
 	set_dimensions(w, h);
+	set_focus(true);
 }
 
 CharacterMenu::~CharacterMenu() {
@@ -814,6 +817,22 @@ Component *CharacterMenu::on_key_pressed(sf::Event &event) {
 	case Control::SELECT:
 		break;
 	}
+	return nullptr;
+}
+
+Component *CharacterMenu::on_click(sf::Mouse::Button b) {
+	Component *interacted = nullptr;
+	if (loot.is_selected()) {
+		interacted = loot.on_click(b);
+	}
+	else if (inventory.is_selected()) {
+		interacted = inventory.on_click(b);
+	}
+
+	if (interacted) {
+		return interacted;
+	}
+
 	return nullptr;
 }
 
@@ -1184,9 +1203,8 @@ Component* Overlay::on_click(sf::Mouse::Button b) {
 	case sf::Mouse::Button::Left:
 		GameScreen *screen = dynamic_cast<GameScreen*>(get_screen());
 		screen->show_character_menu();
-		return this;
 	}
-	return nullptr;
+	return this;
 }
 
 void Overlay::set_select_item_index(int index) {

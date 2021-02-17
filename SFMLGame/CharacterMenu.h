@@ -132,6 +132,7 @@ public:
 	virtual ~CharacterMenu();
 	virtual void create() override;
 	virtual Component *on_key_pressed(sf::Event &event) override;
+	virtual Component *on_click(sf::Mouse::Button b) override;
 	static void show(Screen &screen, Character *character, Callback callback=Callback());
 	static void show_loot(Screen &screen, Character *character, int tile_x, int tile_y, Callback callback=Callback());
 	static CharacterMenu &get() { static CharacterMenu menu; return menu; }

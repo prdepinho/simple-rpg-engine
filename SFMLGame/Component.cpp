@@ -105,6 +105,14 @@ Component* Component::on_released(int x, int y) {
 	return this;
 }
 
+Component* Component::on_pressed_outside(int x, int y, sf::Mouse::Button b) {
+	return this;
+}
+
+Component* Component::on_released_outside(int x, int y, sf::Mouse::Button b) {
+	return this;
+}
+
 Component* Component::on_held(int x, int y) {
 	if (!activated) {
 		return parent_component;
@@ -146,6 +154,14 @@ Component* Component::on_key_pressed(sf::Event &event) {
 			interacted = child->on_key_pressed(event);
 	}
 	return interacted;
+}
+
+Component* Component::on_click() {
+	return this;
+}
+
+Component* Component::on_click(sf::Mouse::Button b) {
+	return this;
 }
 
 Component* Component::on_text_input(char c) {

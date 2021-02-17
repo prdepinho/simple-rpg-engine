@@ -34,10 +34,21 @@ void Screen::add_component(Component &component, bool select_component) {
 	component.set_screen(this);
 	if (select_component)
 		select(component);
+	if (component.is_focus()) {
+		focus_stack.push_back(&component);
+	}
 }
 
 void Screen::remove_component(Component &component) {
 	container.remove_component(component);
+	if (component.is_focus()) {
+		for (auto it = focus_stack.begin(); it != focus_stack.end();) {
+			if (*it == &component)
+				it = focus_stack.erase(it);
+			else
+				++it;
+		}
+	}
 }
 
 void Screen::select(Component & component)
@@ -203,12 +214,17 @@ Component *Screen::handle_event(sf::Event &event, float elapsed_time) {
 			int mouse_position_gui_x = static_cast<int>(mouse_gui_position.x);
 			int mouse_position_gui_y = static_cast<int>(mouse_gui_position.y);
 
-			sf::Vector2f mouse_map_position = get_mouse_game_position();
-			int mouse_position_map_x = static_cast<int>(mouse_map_position.x);
-			int mouse_position_map_y = static_cast<int>(mouse_map_position.y);
+			if (!focus_stack.empty() && !focus_stack.back()->in_bounds(mouse_position_gui_x, mouse_position_gui_y)) {
+				focus_stack.back()->on_pressed_outside(mouse_position_gui_x, mouse_position_gui_y, event.mouseButton.button);
+			}
+			else {
+				sf::Vector2f mouse_map_position = get_mouse_game_position();
+				int mouse_position_map_x = static_cast<int>(mouse_map_position.x);
+				int mouse_position_map_y = static_cast<int>(mouse_map_position.y);
 
-			interacted_component = container.on_pressed(mouse_position_gui_x, mouse_position_gui_y);
-			select(*interacted_component);
+				interacted_component = container.on_pressed(mouse_position_gui_x, mouse_position_gui_y);
+				select(*interacted_component);
+			}
 		}
 		break;
 	case sf::Event::MouseButtonReleased:
@@ -217,12 +233,17 @@ Component *Screen::handle_event(sf::Event &event, float elapsed_time) {
 			int mouse_position_gui_x = static_cast<int>(mouse_position.x);
 			int mouse_position_gui_y = static_cast<int>(mouse_position.y);
 
-			Component *pressed_gui = container.on_released(mouse_position_gui_x, mouse_position_gui_y);
-			if (selected_component == pressed_gui) {
-				selected_component->on_click();
-				selected_component->on_click(event.mouseButton.button);
+			if (!focus_stack.empty() && !focus_stack.back()->in_bounds(mouse_position_gui_x, mouse_position_gui_y)) {
+				focus_stack.back()->on_released_outside(mouse_position_gui_x, mouse_position_gui_y, event.mouseButton.button);
 			}
-			selected_component->on_released(mouse_position_gui_x, mouse_position_gui_y);
+			else {
+				Component *pressed_gui = container.on_released(mouse_position_gui_x, mouse_position_gui_y);
+				if (selected_component == pressed_gui) {
+					interacted_component = selected_component->on_click();
+					interacted_component = selected_component->on_click(event.mouseButton.button);
+					selected_component->on_released(mouse_position_gui_x, mouse_position_gui_y);
+				}
+			}
 		}
 		break;
 	}

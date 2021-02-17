@@ -59,6 +59,8 @@ protected:
 
 	Component *selected_component;
 
+	std::vector<Component*> focus_stack;
+
 	Component container;
 	sf::RenderWindow *window;
 	Game *game;
