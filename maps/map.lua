@@ -451,10 +451,10 @@ end
 
 function Map:play_map_music()
   if self.data.properties.music and self.data.properties.music ~= '' then
-    if sfml_get_current_music() ~= self.data.properties.music then
-      sfml_loop_music(self.data.properties.music)
-    elseif self.data.properties.music == 'none' then
+    if self.data.properties.music == 'none' then
       sfml_stop_music()
+    elseif sfml_get_current_music() ~= self.data.properties.music then
+      sfml_loop_music(self.data.properties.music)
     end
   end
 end
