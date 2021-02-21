@@ -67,7 +67,7 @@ void GameScreen::create() {
 		log_box = LogBox(7);
 		log_box.create();
 		add_component(log_box);
-		// log_box.hide();
+		log_box.hide();
 	}
 
 	// debug console
