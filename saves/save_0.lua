@@ -1,6 +1,6 @@
 M = {}
 M.data = {
-  title = "",
   active = false,
+  title = "",
 }
 return M

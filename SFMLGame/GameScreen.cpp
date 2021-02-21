@@ -317,7 +317,7 @@ bool GameScreen::update(float elapsed_time) {
 	if ((turn_count += elapsed_time) >= turn_duration && effects.empty() && floating_messages.empty()) {
 
 		// new turn
-		if (turn_actions.empty() && (!in_control || player_character->schedule_size() > 0)) {
+		if (turn_actions.empty() && !in_dialogue && (!in_control || player_character->schedule_size() > 0)) {
 
 			++turn;
 			turn_count = 0.f;
@@ -2089,11 +2089,13 @@ void GameScreen::show_illustrated_dialogue_box(LuaObject dialogue) {
 
 void GameScreen::show_queued_dialogue_box(QueueableDialogue dialogue) {
 	block_input = true;
+	in_dialogue = true;
 	if (dialogue.illustrated) {
 		show_foreground();
 		bool bottom = true;
 		DialogueBox::show(dialogue.dialogue, *this, [&](Component *c) {
 			block_input = false;
+			in_dialogue = false;
 			hide_foreground();
 			return true;
 		}, true, bottom);
@@ -2102,6 +2104,7 @@ void GameScreen::show_queued_dialogue_box(QueueableDialogue dialogue) {
 		bool bottom = false;
 		DialogueBox::show(dialogue.dialogue, *this, [&](Component *c) {
 			block_input = false;
+			in_dialogue = false;
 			return true;
 		}, true, bottom);
 	}

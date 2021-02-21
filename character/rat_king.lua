@@ -90,12 +90,6 @@ function RatKing:on_interact(interactor_name)
     callback = function()
       self.control.data.rats_went_to_dragon = true
       self.control.data.rats_gone = true
-      self.control.characters.rat1.data.stats.status.dead = true
-      self.control.characters.rat2.data.stats.status.dead = true
-      self.control.characters.rat3.data.stats.status.dead = true
-      self.control.characters.rat4.data.stats.status.dead = true
-      self.control.characters.rat5.data.stats.status.dead = true
-      self.control.characters.rat_king.data.stats.status.dead = true
     end
   }
 
@@ -197,12 +191,12 @@ function RatKing:on_interact(interactor_name)
       text = "The rats move from their lair.",
       go_to = 'end',
       callback = function()
-        self.control.map:remove_rats()
         for i = 1, 5, 1 do
           character_name = 'rat' .. tostring(i)
-          self.control.loaded_character_data[character_name].stats.status.dead = true
+          self.control:kill_character(character_name, 'player')
         end
-        self.control.loaded_character_data['rat_king'].stats.status.dead = true
+        self.control:kill_character('rat_king', 'player')
+        self.control.map:remove_rats()
       end
     }
   end

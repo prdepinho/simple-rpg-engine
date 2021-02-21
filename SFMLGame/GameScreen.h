@@ -289,6 +289,7 @@ private:
 	std::queue<QueueableDialogue> dialogue_queue;
 	bool show_character_creation = false;
 	bool give_character_creation_points = false;
+	bool in_dialogue = false;
 
 	std::map<std::string, Component*> mapped_components;
 
