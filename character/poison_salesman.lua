@@ -31,6 +31,7 @@ function PoisonSalesman:create()
 end
 
 function PoisonSalesman:on_death()
+  Character.on_death(self)
   self.control.data.stop_poison_supply = true
 end
 

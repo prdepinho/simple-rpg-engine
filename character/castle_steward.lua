@@ -59,6 +59,7 @@ function CastleSteward:on_interact(interactor_name)
       text = "I'll inform the queen. About the imps, we don't have the men to protect the castle if they intent on attacking us, even armed with forks and whatnot.",
       go_to = 'end',
       callback = function()
+        self.control.loaded_character_data.cook.stats.status.dead = true
         self.control.data.cook_arrested = true
       end
     }

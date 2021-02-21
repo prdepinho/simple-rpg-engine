@@ -90,6 +90,12 @@ function RatKing:on_interact(interactor_name)
     callback = function()
       self.control.data.rats_went_to_dragon = true
       self.control.data.rats_gone = true
+      self.control.characters.rat1.data.stats.status.dead = true
+      self.control.characters.rat2.data.stats.status.dead = true
+      self.control.characters.rat3.data.stats.status.dead = true
+      self.control.characters.rat4.data.stats.status.dead = true
+      self.control.characters.rat5.data.stats.status.dead = true
+      self.control.characters.rat_king.data.stats.status.dead = true
     end
   }
 

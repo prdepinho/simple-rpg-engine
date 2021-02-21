@@ -543,7 +543,7 @@ function Control:attack(attacker_name, defender_name)
 
     sfml_push_log(hit_msg)
     sfml_show_floating_message(fmsg, position.x, position.y)
-    self:kill_character(defender_name)
+    self:kill_character(defender_name, attacker_name)
 
   elseif hit_result.hit then
     fmsg = tostring(damage_result.total_damage)
@@ -601,7 +601,7 @@ function Control:attack(attacker_name, defender_name)
   end
 
   if damage_result.total_damage > 0 then
-    self:damage_character(defender_name, damage_result.total_damage)
+    self:damage_character(defender_name, damage_result.total_damage, attacker_name)
   end
 
   local effect = rules.weapon[attacker.stats.weapon.name].effect
@@ -611,7 +611,7 @@ function Control:attack(attacker_name, defender_name)
 
 end  
 
-function Control:damage_character(character_name, damage)
+function Control:damage_character(character_name, damage, attacker_name)
   if damage < 0 then
     damage = 0
   end
@@ -622,7 +622,7 @@ function Control:damage_character(character_name, damage)
 
   if character.stats.current_hp <= 0 then
     character.stats.current_hp = 0
-    self:kill_character(character_name)
+    self:kill_character(character_name, attacker_name)
   end
 
   if character_name == "player" then
@@ -646,7 +646,13 @@ function Control:heal_character(character_name, heal)
   end
 end
 
-function Control:kill_character(character_name)
+function Control:kill_character(character_name, killer_name)
+  if killer_name == 'player' then
+    self.data.player_kills = self.data.player_kills or 0
+    self.data.player_kills = self.data.player_kills + 1
+    self.data.player_kills_names = self.data.player_kills_names or {}
+    table.insert(self.data.player_kills_names, character_name)
+  end
   local character = self.characters[character_name].data
   for key, status in pairs(character.stats.status) do
     character.stats.status[key] = false

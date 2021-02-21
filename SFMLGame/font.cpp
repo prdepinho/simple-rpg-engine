@@ -90,7 +90,7 @@ std::vector<std::string> Font::split_lines(std::string text, int width) {
 	for (unsigned int i = 0; i < words.size(); i++) {
 		std::string word = words[i];
 		int word_width = Font::line_width(word);
-		if (line_width + word_width > width) {
+		if (line_width + word_width > width || word == "\n") {
 			lines.push_back(line);
 			line = "";
 			line_width = 0;
@@ -110,10 +110,18 @@ std::vector<std::string> Font::split_words(std::string text) {
 	std::string word = "";
 	for (unsigned int i = 0; i < text.size(); i++) {
 		char c = text[i];
-		word += c;
-		if (c == ' ' || c == '\n' || i == text.size() -1) {
+		if (c == ' ' || i == text.size() -1) {
+			word += c;
 			words.push_back(word);
 			word = "";
+		}
+		else if (c == '\n') {
+			words.push_back(word);
+			words.push_back("\n");
+			word = "";
+		}
+		else {
+			word += c;
 		}
 	}
 	return words;

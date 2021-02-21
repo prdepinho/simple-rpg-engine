@@ -78,12 +78,27 @@ function Endings:temples_fate()
     end
   else
     -- mumu is invested
-    if self.control.data.gave_sister_to_witch then
+    if self.control.data.gave_sister_to_witch or self:killed_a_sister() then
       self:temple_drought()
     else
       self:mumu_has_kittens()
     end
   end
+end
+
+function Endings:killed_a_sister()
+  for index, name in ipairs(self.control.data.player_kills_names) do
+    if name == 'rat_warden'
+        or name == 'quartermaster'
+        or name == 'archer_instructor'
+        or name == 'obstacle_person'
+        or name == 'rogue_nun'
+        or name == 'priestess'
+        or name == 'sister_calisto' then
+      return true
+    end
+  end
+  return false
 end
 
 
@@ -536,11 +551,11 @@ function Endings:achievements()
         origin = { x = 0, y = 0, }
       },
       text = function()
-        -- come inn room pay and don't rest
-        -- dragon offer rats when they are dead
-        -- show medea's portrait in the castle
         local str = "Achievements:\n"
         str = str .. "Ending: " .. self.ending .. "\n"
+
+        str = str .. "Hit dice found: " .. tostring(self.control.characters.player.data.stats.level - 1) 
+        str = str .. " out of " .. tostring(6) .. "\n"
 
         self.control.data.player_kills = self.control.data.player_kills or 0
         self.control.data.player_kills_names = self.control.data.player_kills_names or {}

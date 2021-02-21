@@ -58,6 +58,7 @@ function Crystal:on_idle()
 end
 
 function Crystal:on_death()
+  Character.on_death(self)
   local position = sfml_get_character_position(self.name)
   sfml_start_fireworks("fireball_blast", position.x, position.y)
 end

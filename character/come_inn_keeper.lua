@@ -33,6 +33,7 @@ function ComeInnKeeper:create()
 end
 
 function ComeInnKeeper:on_death()
+  Character.on_death(self)
   self.control.data.come_inn_ruined = true
 end
 

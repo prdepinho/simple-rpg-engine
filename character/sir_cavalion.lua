@@ -284,6 +284,7 @@ function SirCavalion:on_interact(interactor_name)
 end
 
 function SirCavalion:on_death()
+  Character.on_death(self)
   self.control.data.sir_cavalion_dead = true
 end
 

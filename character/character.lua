@@ -176,6 +176,8 @@ function Character:on_attacked(attacker_name)
 end
 
 function Character:on_death()
+  self.control.data.characters_killed = self.control.data.characters_killed or 0
+  self.control.data.characters_killed = self.control.data.characters_killed + 1
   if self.control:is_companion(self.name) then
     self.control:remove_companion(self.name)
     self.control:character_change_spawning_map(self.name)

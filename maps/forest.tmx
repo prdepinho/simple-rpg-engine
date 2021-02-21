@@ -315,7 +315,7 @@
    </properties>
    <point/>
   </object>
-  <object id="11" name="rabbit4" x="100.667" y="309.333">
+  <object id="11" name="rabbit4" x="120.167" y="298.333">
    <properties>
     <property name="type" value="rabbit"/>
    </properties>

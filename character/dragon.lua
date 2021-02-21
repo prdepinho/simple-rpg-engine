@@ -114,7 +114,7 @@ function Dragon:on_interact(interactor_name)
       dialogue.start.text = "I await anxiously for your tribute."
       dialogue.start.options[1].go_to = 'end'
 
-    elseif self.control.data.rats_quest_accepted then
+    elseif self.control.data.rats_quest_accepted and not self.control.data.rat_king_dead then
       table.insert(dialogue.start.options, { text = "I know a rat colony you might enjoy.", go_to = 'rats' })
       dialogue.rats = {
         text = "Hehehehe. Send them in.",
@@ -123,7 +123,7 @@ function Dragon:on_interact(interactor_name)
           self.control.data.send_rats_to_dragon = true
         end
       }
-    elseif self.control.characters.player.data.stats.ability.cha >= 13 then
+    elseif self.control.characters.player.data.stats.ability.cha >= 13 and not self.control.data.rat_king_dead then
       table.insert(dialogue.start.options, { text = "(Cha 13) I'll bring something you'll like.", go_to = 'bring' })
       dialogue.bring = {
         text = "Ok. If you bring me lot's of something I like I'll give you something for your truble.",

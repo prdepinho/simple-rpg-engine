@@ -72,7 +72,7 @@ function ThiefWatcher:on_interact(interactor_name)
       }
     }
     dialogue.need = {
-      text = "Too bad.",
+      text = "Too bad.       ",
       options = {
         { text = "I must go.", go_to = 'go_back' },
         { text = "I'll get them from your dead hands!", go_to = 'trouble' },

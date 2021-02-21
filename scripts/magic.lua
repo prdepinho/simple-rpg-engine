@@ -43,7 +43,7 @@ function Magic:magic_missile_blast(caster, center, tiles, targets)
       local fmsg = tostring(damage)
       sfml_show_floating_message(fmsg, position.x, position.y)
 
-      self.control:damage_character(character_name, damage)
+      self.control:damage_character(character_name, damage, caster)
       self.control:character_on_attacked(caster, character_name)
       sfml_shake_screen(1, 2)
     end
@@ -132,7 +132,7 @@ function Magic:fireball_blast(caster, center, tiles, targets)
     local fmsg = tostring(damage)
     sfml_show_floating_message(fmsg, position.x, position.y)
 
-    self.control:damage_character(character_name, damage)
+    self.control:damage_character(character_name, damage, caster)
     self.control:character_on_attacked(caster, character_name)
     sfml_shake_screen(15, 5)
   end
@@ -237,7 +237,7 @@ function Magic:silver_attack(attacker_name, defender_name, hit_result, damage_re
     local position = sfml_get_character_position(defender_name)
 
     local damage = rules.roll_dice('1d6')
-    self.control:damage_character(defender_name, damage)
+    self.control:damage_character(defender_name, damage, attacker_name)
     sfml_show_floating_message(tostring(damage), position.x, position.y)
     sfml_push_log(defender.name .. ' has taken ' .. tostring(damage) .. ' silver damage')
 
