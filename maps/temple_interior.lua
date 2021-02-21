@@ -25,7 +25,7 @@ end
 
 function TempleInterior:idol(event, x, y, character_name, object_name)
   if self.control.data.idols_visited == 3 and not self.control.data.game_ended then
-    Endings:ending(self.control)
+    Endings.show_ending(self.control)
   else
     Map.idol(self, event, x, y, character_name, object_name)
   end

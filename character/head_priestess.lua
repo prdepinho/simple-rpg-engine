@@ -33,7 +33,7 @@ end
 
 function HeadPriestess:normal_ending()
   self.control.data.game_ended = true
-  Endings:ending(self.control)
+  Endings.show_ending(self.control)
 end
 
 function HeadPriestess:on_interact(interactor_name)

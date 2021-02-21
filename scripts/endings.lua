@@ -7,12 +7,21 @@ local Endings = {
   control = nil
 }
 
-function Endings:ending(control)
+function Endings:new(o, control)
+  o = o or {}
+  setmetatable(o, self)
+  self.__index = self
   self.control = control
-  if self.control.data.head_priestess_dead then
-    self:headless_ending()
+  return o
+end
+
+function Endings.show_ending(control)
+  local obj = Endings:new(nil, control)
+  obj.control.data.player_kills = obj.control.data.player_kills or 0
+  if obj.control.data.head_priestess_dead or obj.control.data.player_kills >= 50 then
+    obj:headless_ending()
   else
-    self:normal_ending()
+    obj:normal_ending()
   end
 end
 
@@ -511,33 +520,43 @@ function Endings:fin()
       go_to = 'end'
     },
     on_end = function()
-      -- self:achievements()
-      sfml_quit_game()
+      self:achievements()
+      -- sfml_quit_game()
     end
   }
   sfml_illustrated_dialogue(dialogue)
 end
 
--- function Endings:achievements()
---   local dialogue = {
---     lines = 12,
---     start = {
---       foreground = {
---         image = "blank.png",
---         origin = { x = 0, y = 0, }
---       },
---       text = function()
---         local str = "Achievements:\n"
---         str = str .. "Ending: " .. self.ending
---         return str
---       end,
---       go_to = 'end',
---     },
---     on_end = function()
---       sfml_quit_game()
---     end
---   }
---   sfml_illustrated_dialogue(dialogue)
--- end
+function Endings:achievements()
+  local dialogue = {
+    lines = 12,
+    start = {
+      foreground = {
+        image = "blank.png",
+        origin = { x = 0, y = 0, }
+      },
+      text = function()
+        -- come inn room pay and don't rest
+        -- dragon offer rats when they are dead
+        -- show medea's portrait in the castle
+        local str = "Achievements:\n"
+        str = str .. "Ending: " .. self.ending .. "\n"
+
+        self.control.data.player_kills = self.control.data.player_kills or 0
+        self.control.data.player_kills_names = self.control.data.player_kills_names or {}
+        str = str .. "Player kills: " .. self.control.data.player_kills .. "\n"
+        for index, name in ipairs(self.control.data.player_kills_names) do
+          str = str .. "  " .. self.control.loaded_character_data[name].stats.name .. "\n"
+        end
+        return str
+      end,
+      go_to = 'end',
+    },
+    on_end = function()
+      sfml_quit_game()
+    end
+  }
+  sfml_illustrated_dialogue(dialogue)
+end
 
 return Endings
