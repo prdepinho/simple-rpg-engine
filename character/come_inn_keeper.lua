@@ -54,11 +54,11 @@ function ComeInnKeeper:on_interact(interactor_name)
     room = {
       text = "It is a copper, sweetheart.",
       options = {
-        { text = "Here you go.", go_to = 'pay' },
+        { text = "Here you go.", go_to = 'pay_room' },
         { text = "Sorry, I won't take it.", go_to = 'end' },
       }
     },
-    pay = {
+    pay_room = {
       text = function()
         local rval = self.control:spend_money('player', 1, self.name)
         if rval then
@@ -185,11 +185,11 @@ function ComeInnKeeper:on_interact(interactor_name)
     dialogue.buy_cheese = {
       text = "Of course. That will be one copper.",
       options = {
-        { text = "Here you go.", go_to = 'pay' },
+        { text = "Here you go.", go_to = 'pay_cheese' },
         { text = "Maybe later.", go_to = 'end' },
       }
     }
-    dialogue.pay = {
+    dialogue.pay_cheese = {
       text = function()
         local rval = self.control:spend_money('player', 2, self.name)
         if rval then
