@@ -75,6 +75,13 @@ function RatKing:on_interact(interactor_name)
       go_to = 'end'
     }
   }
+  dialogue.go_away = {
+    text = "The rats move from their lair.",
+    go_to = 'end',
+    callback = function()
+      self.control.map:remove_rats()
+    end
+  }
 
   dialogue.go_to_thieves_guild = {
     text = "Are you sure about that? Alright, I'll talk to the others. Babies! We have a new home. Let's go.",
@@ -179,13 +186,6 @@ function RatKing:on_interact(interactor_name)
     dialogue.dont_know = {
       text = "This is the only place we have.",
       go_to = 'end'
-    }
-    dialogue.go_away = {
-      text = "The rats move from their lair.",
-      go_to = 'end',
-      callback = function()
-        self.control.map:remove_rats()
-      end
     }
     dialogue.go_away_and_die = {
       text = "The rats move from their lair.",
