@@ -120,7 +120,7 @@ public:
 private:
 	std::vector<ItemButton> buttons;
 	int loot_width = 2;
-	int loot_height = 4;
+	int loot_height = 5;
 	int button_size = 20;
 	int cursor;
 	InputHandler input_handler;
