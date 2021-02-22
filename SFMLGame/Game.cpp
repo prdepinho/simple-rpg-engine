@@ -71,7 +71,7 @@ void Game::start() {
 		}
 
 		float fps = 1.f / elapsed_time;
-		window.setTitle("SFML Game " + std::to_string(fps));
+		// window.setTitle("Mumu's Pilgrimage: " + std::to_string(fps));
 
 		if (!run) {
 			return;
@@ -169,6 +169,17 @@ void Game::configure_game()
 	else
 		if (limit_framerate)
 			window.setFramerateLimit(framerate);
+
+	{
+		window.setTitle("Mumu's Pilgrimage");
+		auto image = sf::Image();
+		if (!image.loadFromFile(Path::ASSETS + "icon.png")) {
+			throw std::exception("Could not load icon.png");
+		}
+		else {
+			window.setIcon(32, 32, image.getPixelsPtr());
+		}
+	}
 }
 
 void Game::change_resolution(int w, int h, float modifier) {
