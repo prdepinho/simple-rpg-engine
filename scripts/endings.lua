@@ -551,17 +551,24 @@ function Endings:achievements()
         origin = { x = 0, y = 0, }
       },
       text = function()
-        local str = "Achievements:\n"
-        str = str .. "Ending: " .. self.ending .. "\n"
-
-        str = str .. "Hit dice found: " .. tostring(self.control.characters.player.data.stats.level - 1) 
-        str = str .. " out of " .. tostring(6) .. "\n"
-
         self.control.data.player_kills = self.control.data.player_kills or 0
         self.control.data.player_kills_names = self.control.data.player_kills_names or {}
-        str = str .. "Player kills: " .. self.control.data.player_kills .. "\n"
+
+        local alignment = self:alignment()
+
+        local str = "Achievements:\n"
+        str = str .. "Ending Type: " .. self.ending .. "\n"
+        str = str .. "Alignment: " .. alignment.alignment .. "\n"
+        str = str .. "  Points: " .. "\n"
+        str = str .. "    Good: " .. tostring(alignment.points.good) .. "\n"
+        str = str .. "    Evil: " .. tostring(alignment.points.evil) .. "\n"
+        str = str .. "    Lawful: " .. tostring(alignment.points.lawful) .. "\n"
+        str = str .. "    Chaotic: " .. tostring(alignment.points.chaotic) .. "\n"
+        str = str .. "Hit dice found: " .. tostring(self.control.characters.player.data.stats.level - 1) 
+        str = str .. " out of " .. tostring(6) .. "\n"
+        str = str .. "Kills: " .. self.control.data.player_kills .. "\n"
         for index, name in ipairs(self.control.data.player_kills_names) do
-          str = str .. "  " .. self.control.loaded_character_data[name].stats.name .. "\n"
+          str =  str .. "  " .. tostring(index) .. ". " .. self.control.loaded_character_data[name].stats.name .. "\n"
         end
         return str
       end,
@@ -572,6 +579,121 @@ function Endings:achievements()
     end
   }
   sfml_illustrated_dialogue(dialogue)
+end
+
+function Endings:alignment()
+  local points = {
+    lawful = 0,  -- 7
+    chaotic = 0, -- 6
+    good = 0,    -- 7
+    evil = 0     -- 6
+  }
+
+  if self.control.data.player_kills > 50 then
+    points.chaotic = points.chaotic + 10
+    points.evil = points.evil + 10
+  end
+
+  if self.control.data.witch_refused_tutelage then
+    points.lawful = points.lawful + 1
+  end
+  if self.control.data.witch_apprentice then
+    points.chaotic = points.chaotic + 1
+  end
+  if self.control.data.severed_relations_with_witch then
+    points.lawful = points.lawful + 1
+  end
+  if self.control.data.witch_elf_dust_quest_completed then
+    points.evil = points.evil + 1
+  end
+  if self.control.data.witch_head_quest_completed then
+    points.evil = points.evil + 1
+  end
+  if self.control.data.sacrifice_quest_complete then
+    points.evil = points.evil + 1
+  end
+  if self.control.data.rats_in_the_guild then
+    points.good = points.good + 1
+  end
+  if self.control.data.rats_went_to_dragon then
+    points.evil = points.evil + 1
+  end
+  if self.control.data.got_rats_reward and self.control.data.rat_king_dead then
+    points.chaotic = points.chaotic + 1
+    points.evil = points.evil + 1
+  end
+  if self.control.data.served_inn then
+    points.lawful = points.lawful + 1
+  end
+  if self.control.data.kill_rats_myself then
+    points.good = points.good + 1
+  end
+  if self.control.data.leave_rats_be then
+    points.chaotic = points.chaotic + 1
+  end
+  if self.control.data.thieves_guild_member then
+    points.chaotic = points.chaotic + 1
+  end
+  if self.control.data.come_inn_arrested then
+    points.lawful = points.lawful + 1
+  end
+  if self.control.data.disposed_of_poison then
+    points.good = points.good + 1
+  end
+  if self.control.data.thieves_sent_away then
+    points.lawful = points.lawful + 1
+  end
+  if self.control.data.dragon_dead then
+    points.good = points.good + 1
+  end
+  if self.control.data.accepted_sir_cavalion_invitation then
+    points.good = points.good + 1
+  end
+  if self.control.data.cook_arrested then
+    points.lawful = points.lawful + 1
+  end
+  if self.control.data.imp_ally then
+    points.chaotic = points.chaotic + 1
+  end
+  if self.control.data.elf_ally then
+    points.lawful = points.lawful + 1
+  end
+  if self.control.data.queen_dead then
+    points.chaotic = points.chaotic + 1
+    points.evil = points.evil + 1
+  end
+  if self.control.data.minora_dead then
+    points.good = points.good + 1
+  end
+  if self.control.data.gave_glasses then
+    points.good = points.good + 1
+  end
+
+  local alignment = {
+    order = 'Neutral',
+    morals = 'Neutral'
+  }
+
+  if points.lawful - points.chaotic <= -2 then
+    alignment.order = 'Chaotic'
+  elseif points.lawful - points.chaotic >= 2 then
+    alignment.order = 'Lawful'
+  end
+
+  if points.good - points.evil <= -2 then
+    alignment.morals = 'Evil'
+  elseif points.good - points.evil >= 2 then
+    alignment.morals = 'Good'
+  end
+
+  if alignment.order == 'Neutral' and alignment.morals == 'Neutral' then
+    alignment.order = 'True'
+  end
+
+  return {
+    points = points,
+    alignment = alignment.order .. ' ' .. alignment.morals
+  }
 end
 
 return Endings
