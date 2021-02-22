@@ -137,11 +137,11 @@ rules.weapon = {
 }
 
 rules.ammo = {
-  no_ammo       = { name = "No ammo",       category = "",              damage_bonus = 0, range_bonus = 0, stack_capacity = 20, icon = {x = 16*0, y = 16*1}, projectile_effect = "",       desc = "" },
-  arrow         = { name = "Arrow",         category = "arrow",         damage_bonus = 0, range_bonus = 0, stack_capacity = 20, icon = {x = 16*2, y = 16*5}, projectile_effect = "arrow",  desc = "Arrows for bows." },
-  bolt          = { name = "Bolt",          category = "bolt",          damage_bonus = 0, range_bonus = 0, stack_capacity = 20, icon = {x = 16*3, y = 16*0}, projectile_effect = "bolt",   desc = "Crossbow bolts." },
-  sling_bullet  = { name = "Sling Bullet",  category = "sling_bullet",  damage_bonus = 0, range_bonus = 0, stack_capacity = 20, icon = {x = 16*4, y = 16*0}, projectile_effect = "bullet", desc = "Bullets for the sling." },
-  gun_bullet    = { name = "Gun Bullet",    category = "gun_bullet",    damage_bonus = 0, range_bonus = 0, stack_capacity = 20, icon = {x = 16*5, y = 16*0}, projectile_effect = "bullet", desc = "Bullets and gunpowder for guns." },
+  no_ammo       = { name = "No ammo",       category = "",              damage_bonus = 0, range_bonus = 0, stack_capacity = 60, icon = {x = 16*0, y = 16*1}, projectile_effect = "",       desc = "" },
+  arrow         = { name = "Arrow",         category = "arrow",         damage_bonus = 0, range_bonus = 0, stack_capacity = 60, icon = {x = 16*2, y = 16*5}, projectile_effect = "arrow",  desc = "Arrows for bows." },
+  bolt          = { name = "Bolt",          category = "bolt",          damage_bonus = 0, range_bonus = 0, stack_capacity = 60, icon = {x = 16*3, y = 16*0}, projectile_effect = "bolt",   desc = "Crossbow bolts." },
+  sling_bullet  = { name = "Sling Bullet",  category = "sling_bullet",  damage_bonus = 0, range_bonus = 0, stack_capacity = 60, icon = {x = 16*4, y = 16*0}, projectile_effect = "bullet", desc = "Bullets for the sling." },
+  gun_bullet    = { name = "Gun Bullet",    category = "gun_bullet",    damage_bonus = 0, range_bonus = 0, stack_capacity = 60, icon = {x = 16*5, y = 16*0}, projectile_effect = "bullet", desc = "Bullets and gunpowder for guns." },
 }
 
 rules.item = {
