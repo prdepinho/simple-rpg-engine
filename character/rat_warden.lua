@@ -23,7 +23,7 @@ end
 function RatWarden:on_interact(interactor_name)
   local dialogue = {
     start = {
-      text = "Hello, Mumu. You must be ready to face enemies head on. Please, arm your self with the tools on the table and proceede into the first chamber. Don't forget to equip your weapon and armor before going in.",
+      text = "Hello, Mumu. You must be ready to face enemies head on. Please, arm your self with the tools on the table and proceede into the first chamber. Don't forget to equip your weapon and shield before going in.",
       go_to = 'end'
     }
   }

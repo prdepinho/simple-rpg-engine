@@ -244,7 +244,7 @@
   <object id="18" name="weapon" x="18.0203" y="161.45" width="12.25" height="12.75">
    <properties>
     <property name="item1" value="temple_mace:weapon:mace"/>
-    <property name="item2" value="temple_gambeson:armor:gambeson"/>
+    <property name="item2" value="temple_shield:shield:shield"/>
     <property name="type" value="hoard"/>
    </properties>
   </object>
