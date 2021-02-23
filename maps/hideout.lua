@@ -40,7 +40,7 @@ function Hideout:passive_thieves_can_see()
   if not self.control.data.thieves_sent_away then
     for i = 1, 5, 1 do
       local name = 'thief' .. tostring(i)
-      if not self.control.characters[name].data.enemy and self.control:can_see(name, 'player') then
+      if not self.control.loaded_character_data[name].enemy and self.control:can_see(name, 'player') then
         return true
       end
     end

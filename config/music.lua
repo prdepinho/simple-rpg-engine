@@ -17,4 +17,7 @@ music = {
   "choral.wav",
   "dread.wav",
   "weiss.wav",
+  "battle.wav",
+  "temple.wav",
+  "shrine.wav",
 }

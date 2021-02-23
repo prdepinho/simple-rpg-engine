@@ -18,11 +18,31 @@ end
 function Endings.show_ending(control)
   local obj = Endings:new(nil, control)
   obj.control.data.player_kills = obj.control.data.player_kills or 0
-  if obj.control.data.head_priestess_dead or obj.control.data.player_kills >= 50 then
+  if obj.control.data.player_kills >= 100 then
+    obj:wrath_ending()
+  elseif obj.control.data.head_priestess_dead or obj.control.data.player_kills >= 50 then
     obj:headless_ending()
   else
     obj:normal_ending()
   end
+end
+
+function Endings:wrath_ending()
+  self.ending = 'wrath'
+  local dialogue = {
+    start = {
+      foreground = {
+        image = "folia_gatas.png",
+        origin = { x = 0, y = 0 }
+      },
+      text = "No one was left in Folia Gatas. The few survivors managed to flee the fated island and the legend of the Wrath of Bastet circulated throughout the world.",
+      go_to = 'end',
+      callback = function()
+        self:achievements()
+      end
+    }
+  }
+  sfml_illustrated_dialogue(dialogue)
 end
 
 function Endings:normal_ending()
@@ -544,7 +564,7 @@ end
 
 function Endings:achievements()
   local dialogue = {
-    lines = 12,
+    lines = 22,
     start = {
       foreground = {
         image = "blank.png",
