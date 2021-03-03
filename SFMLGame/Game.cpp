@@ -174,7 +174,8 @@ void Game::configure_game()
 		window.setTitle("Mumu's Pilgrimage");
 		auto image = sf::Image();
 		if (!image.loadFromFile(Path::ASSETS + "icon.png")) {
-			throw std::exception("Could not load icon.png");
+			Log("Could not load icon.png");
+			throw std::exception();
 		}
 		else {
 			window.setIcon(32, 32, image.getPixelsPtr());

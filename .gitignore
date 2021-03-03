@@ -14,5 +14,6 @@ build/
 *.ipdb
 *.pdb
 *.ilk
+*.bin
 out/
 saves/

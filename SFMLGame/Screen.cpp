@@ -112,12 +112,12 @@ void Screen::select_next() {
 	}
 }
 
-inline sf::Vector2f Screen::get_mouse_gui_position() {
+sf::Vector2f Screen::get_mouse_gui_position() {
 	window->setView(gui_view);
 	return window->mapPixelToCoords(sf::Mouse::getPosition(*window));
 }
 
-inline sf::Vector2f Screen::get_mouse_game_position() {
+sf::Vector2f Screen::get_mouse_game_position() {
 	window->setView(game_view);
 	return window->mapPixelToCoords(sf::Mouse::getPosition(*window));
 }

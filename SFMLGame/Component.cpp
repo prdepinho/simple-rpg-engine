@@ -183,17 +183,17 @@ Component* Component::on_joystick_event(sf::Event &event) {
 	return interacted;
 }
 
-inline void Component::show() {
+void Component::show() {
 	activate();
 	visible = true;
 }
 
-inline void Component::hide() {
+void Component::hide() {
 	disactivate();
 	visible = false;
 }
 
-inline bool Component::is_visible() const {
+bool Component::is_visible() const {
 	return visible;
 }
 
