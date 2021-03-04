@@ -216,13 +216,26 @@ if __name__ == '__main__':
     elif function == 'build' or function == 'build_linux':
         if function == 'build_linux':
             in_exe = 'SFMLGame.bin'
-            out_exe = 'mumus_pilgrimage'
+            out_exe = 'linux64/mumus_pilgrimage'
             with open(in_exe, 'rb') as f:
                 with open(out_exe, 'wb') as ff:
                     ff.write(f.read())
             mode = os.stat(out_exe).st_mode
             mode |= (mode & 0o444) >> 2
             os.chmod(out_exe, mode)
+            to_zip_dirs = [
+                    'assets',
+                    'character',
+                    'config',
+                    'maps',
+                    'saves',
+                    'scripts',
+                    'linux64',
+                    ]
+            to_zip_files = [
+                    'mumus_pilgrimage',
+                    'LICENSE.txt',
+                    ]
 
         elif function == 'build':
             in_exe = 'SFMLGame.exe'
@@ -230,27 +243,14 @@ if __name__ == '__main__':
             with open(in_exe, 'rb') as f:
                 with open(out_exe, 'wb') as ff:
                     ff.write(f.read())
-
-        to_zip_dirs = [
-                'assets',
-                'character',
-                'config',
-                'maps',
-                'saves',
-                'scripts',
-                ]
-        if function == 'build_linux':
-            to_zip_files = [
-                    out_exe,
-                    'libopenal.so.1',
-                    'libsndio.so.7.0',
-                    'libsfml-audio.so.2.5',
-                    'libsfml-graphics.so.2.5',
-                    'libsfml-system.so.2.5',
-                    'libsfml-window.so.2.5',
-                    'LICENSE.txt'
+            to_zip_dirs = [
+                    'assets',
+                    'character',
+                    'config',
+                    'maps',
+                    'saves',
+                    'scripts',
                     ]
-        elif function == 'build':
             to_zip_files = [
                     out_exe,
                     'openal32.dll',
@@ -259,7 +259,7 @@ if __name__ == '__main__':
                     'sfml-network-2.dll',
                     'sfml-system-2.dll',
                     'sfml-window-2.dll',
-                    'LICENSE.txt'
+                    'LICENSE.txt',
                     ]
 
         zip = zipfile.ZipFile('mumus_pilgrimage.zip', 'w', zipfile.ZIP_DEFLATED)
