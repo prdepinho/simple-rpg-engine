@@ -1,6 +1,7 @@
 
 import sys
 import os
+import stat
 import zipfile
 
 
@@ -212,10 +213,23 @@ if __name__ == '__main__':
 
         create_character(name)
 
-    elif function == 'build':
-        with open('SFMLGame.exe', 'rb') as f:
-            with open('mumus_pilgrimage.exe', 'wb') as ff:
-                ff.write(f.read())
+    elif function == 'build' or function == 'build_linux':
+        if function == 'build_linux':
+            in_exe = 'SFMLGame.bin'
+            out_exe = 'mumus_pilgrimage'
+            with open(in_exe, 'rb') as f:
+                with open(out_exe, 'wb') as ff:
+                    ff.write(f.read())
+            mode = os.stat(out_exe).st_mode
+            mode |= (mode & 0o444) >> 2
+            os.chmod(out_exe, mode)
+
+        elif function == 'build':
+            in_exe = 'SFMLGame.exe'
+            out_exe = 'mumus_pilgrimage.exe'
+            with open(in_exe, 'rb') as f:
+                with open(out_exe, 'wb') as ff:
+                    ff.write(f.read())
 
         to_zip_dirs = [
                 'assets',
@@ -225,16 +239,26 @@ if __name__ == '__main__':
                 'saves',
                 'scripts',
                 ]
-        to_zip_files = [
-                'mumus_pilgrimage.exe',
-                'openal32.dll',
-                'sfml-audio-2.dll',
-                'sfml-graphics-2.dll',
-                'sfml-network-2.dll',
-                'sfml-system-2.dll',
-                'sfml-window-2.dll',
-                'LICENSE.txt'
-                ]
+        if function == 'build_linux':
+            to_zip_files = [
+                    out_exe,
+                    'libsfml-audio.so.2.5',
+                    'libsfml-graphics.so.2.5',
+                    'libsfml-system.so.2.5',
+                    'libsfml-window.so.2.5',
+                    'LICENSE.txt'
+                    ]
+        elif function == 'build':
+            to_zip_files = [
+                    out_exe,
+                    'openal32.dll',
+                    'sfml-audio-2.dll',
+                    'sfml-graphics-2.dll',
+                    'sfml-network-2.dll',
+                    'sfml-system-2.dll',
+                    'sfml-window-2.dll',
+                    'LICENSE.txt'
+                    ]
 
         zip = zipfile.ZipFile('mumus_pilgrimage.zip', 'w', zipfile.ZIP_DEFLATED)
 
