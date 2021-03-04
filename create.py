@@ -242,6 +242,7 @@ if __name__ == '__main__':
         if function == 'build_linux':
             to_zip_files = [
                     out_exe,
+                    'libopenal.so.1',
                     'libsfml-audio.so.2.5',
                     'libsfml-graphics.so.2.5',
                     'libsfml-system.so.2.5',
