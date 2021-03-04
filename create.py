@@ -243,6 +243,7 @@ if __name__ == '__main__':
             to_zip_files = [
                     out_exe,
                     'libopenal.so.1',
+                    'libsndio.so.7.0',
                     'libsfml-audio.so.2.5',
                     'libsfml-graphics.so.2.5',
                     'libsfml-system.so.2.5',
