@@ -215,6 +215,7 @@ if __name__ == '__main__':
 
     elif function == 'build' or function == 'build_linux':
         if function == 'build_linux':
+            zip_name = 'mumus_pilgrimage_linux.zip'
             in_exe = 'SFMLGame.bin'
             out_exe = 'linux64/mumus_pilgrimage'
             with open(in_exe, 'rb') as f:
@@ -238,6 +239,7 @@ if __name__ == '__main__':
                     ]
 
         elif function == 'build':
+            zip_name = 'mumus_pilgrimage.zip'
             in_exe = 'SFMLGame.exe'
             out_exe = 'mumus_pilgrimage.exe'
             with open(in_exe, 'rb') as f:
@@ -262,7 +264,7 @@ if __name__ == '__main__':
                     'LICENSE.txt',
                     ]
 
-        zip = zipfile.ZipFile('mumus_pilgrimage.zip', 'w', zipfile.ZIP_DEFLATED)
+        zip = zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED)
 
         for folder in to_zip_dirs:
             for dir_path, dir_names, files in os.walk(folder):
